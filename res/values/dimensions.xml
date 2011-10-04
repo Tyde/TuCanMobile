@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="login_send_text">25dip</dimen>
+    <dimen name="biglink">25dip</dimen>
+    <dimen name="activity_titles">20dip</dimen>
+    
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="LoginBoxes">
+  	<item name="android:textSize">20sp</item>
+  </style>  
+  <style name="LoginSendButton">
+  	<item name="android:textColor">@color/tucan_green</item>
+  	<item name="android:textStyle">italic</item>
+  	<item name="android:textSize">@dimen/login_send_text</item>
+  </style>
+  <style name="mainmenu_nav_strings">
+  	<item name="android:textSize">@dimen/biglink</item>
+  	<item name="android:typeface">sans</item>
+  	
+  </style>
+</resources>

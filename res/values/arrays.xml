@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="mainmenu_options">
+    	<item>Vorlesungsverzeichnis</item>
+		<item>Stundenplan</item>
+		<item>Veranstaltungen</item>
+		<item>Prüfungen</item>
+    </string-array>
+</resources>

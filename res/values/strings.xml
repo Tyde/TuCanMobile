@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, TuCanMobileActivity!</string>
+    <string name="app_name">TuCanMobile</string>
+    
+    <!-- Login -->
+    <string name="login_tuid">TU-ID:</string>
+    <string name="login_pw">Password:</string>
+    <string name="login_send">Anmelden</string>
+    <string name="login_stay_logged">Passwort merken</string>
+    
+    <!-- Vorlesungsverzeichnis -->
+    <string name="mmenu_vv">Vorlesungsverzeichnis</string>
+</resources>
