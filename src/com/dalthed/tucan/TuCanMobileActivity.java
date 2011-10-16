@@ -3,8 +3,11 @@ package com.dalthed.tucan;
 
 import java.net.URL;
 
+import com.dalthed.tucan.ui.MainMenu;
+
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -28,7 +31,7 @@ public class TuCanMobileActivity extends Activity {
     	HTTPSBrowser newBrowser = new HTTPSBrowser();
     	
     	TextView answertextv = (TextView) findViewById(R.id.textView2);
-    	try {
+    	/*try {
 			newBrowser.execute(
 					new URL[] {new URL("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=EXTERNALPAGES&ARGUMENTS=-N000000000000001")}
 			);
@@ -40,11 +43,11 @@ public class TuCanMobileActivity extends Activity {
 			Toast notifyall = Toast.makeText(TucanMobile.getAppContext(), e.getMessage(), Toast.LENGTH_SHORT);
 			notifyall.show();
 		}
-    	
+    	*/
 		
 		
-    	/*final Intent i = new Intent(this,MainMenu.class);
-    	startActivity(i);*/
+    	final Intent i = new Intent(this,MainMenu.class);
+    	startActivity(i);
     	
     }
 }
