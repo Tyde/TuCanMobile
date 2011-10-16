@@ -1,42 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:weightSum="1" android:orientation="vertical">
-    <ImageView android:layout_width="wrap_content" android:id="@+id/imageView1" android:layout_height="wrap_content" android:src="@drawable/logo"></ImageView>
-    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout1" android:orientation="vertical" android:layout_marginLeft="40dip" android:layout_marginRight="40dip" android:layout_marginTop="110dip" android:weightSum="1">
-        <TextView 
-        	android:id="@+id/textView1" 
-        	android:layout_width="wrap_content" 
-        	android:layout_height="wrap_content" 
-        	android:text="@string/login_tuid"></TextView>
-        <EditText  style="@style/LoginBoxes"
-        	
-        	android:layout_height="wrap_content" 
-        	android:layout_width="fill_parent">
-            <requestFocus></requestFocus>
-        </EditText>
-        <TextView 
-        	
-        	android:layout_width="wrap_content" 
-        	android:layout_height="wrap_content"
-        	android:text="@string/login_pw"
-        	></TextView>
-        <EditText style="@style/LoginBoxes" android:id="@+id/editText2" android:layout_height="wrap_content" android:layout_width="fill_parent" android:inputType="textPassword"></EditText>
-        <CheckBox 
-        	android:text="@string/login_stay_logged" 
-        	android:id="@+id/checkBox1" 
-        	android:layout_width="wrap_content" 
-        	android:layout_height="wrap_content"
-        	style="@style/LoginBoxes"></CheckBox>
-        <Button 
-        	android:layout_height="wrap_content" 
-        	android:id="@+id/button1" 
-        	android:layout_gravity="right" 
-        	android:layout_width="wrap_content" 
-        	android:text="Button"
-        	android:onClick="onClickSendLogin"
-        	></Button>
-        
-    </LinearLayout>
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:weightSum="1" android:orientation="vertical">
+	<ImageView android:layout_width="wrap_content" android:id="@+id/imageView1"
+		android:layout_height="wrap_content" android:src="@drawable/logo"></ImageView>
+	<LinearLayout android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:id="@+id/linearLayout1"
+		android:orientation="vertical" android:layout_marginLeft="40dip"
+		android:layout_marginRight="40dip" android:layout_marginTop="110dip"
+		android:weightSum="1">
+		<TextView android:id="@+id/textView1" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="@string/login_tuid"></TextView>
+		<EditText style="@style/LoginBoxes" android:layout_height="wrap_content"
+			android:layout_width="fill_parent">
+			<requestFocus></requestFocus>
+		</EditText>
+		<TextView android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="@string/login_pw"></TextView>
+		<EditText style="@style/LoginBoxes" android:id="@+id/editText2"
+			android:layout_height="wrap_content" android:layout_width="fill_parent"
+			android:inputType="textPassword"></EditText>
+		<CheckBox android:text="@string/login_stay_logged"
+			android:id="@+id/checkBox1" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" style="@style/LoginBoxes"></CheckBox>
+		<Button android:layout_height="wrap_content" android:id="@+id/button1"
+			android:layout_gravity="right" android:layout_width="wrap_content"
+			android:text="Button" android:onClick="onClickSendLogin"></Button>
+	<TextView android:text="" android:id="@+id/textView2"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+	</LinearLayout>
+	
 </LinearLayout>
+</ScrollView>
