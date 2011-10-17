@@ -56,4 +56,15 @@ public class CookieManager {
 		return sb.substring(0, sb.length() - glue.length());
 		
 	}
+	
+	public void generateManagerfromHTTPString(String host,String HTTPString) {
+		String [] multipleCookies = HTTPString.split(";\\s*");
+		for(String ccy : multipleCookies){
+			String[] eachVal=ccy.split("=");
+			if(eachVal.length==2)
+				inputCookie(host,eachVal[0], eachVal[1]);
+			else
+				inputCookie(host,eachVal[0], null);
+		}
+	}
 }

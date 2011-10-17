@@ -15,12 +15,12 @@
 		<TextView android:id="@+id/textView1" android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:text="@string/login_tuid"></TextView>
 		<EditText style="@style/LoginBoxes" android:layout_height="wrap_content"
-			android:layout_width="fill_parent">
+			android:layout_width="fill_parent" android:id="@+id/login_usrname">
 			<requestFocus></requestFocus>
 		</EditText>
-		<TextView android:layout_width="wrap_content"
+		<TextView android:layout_width="wrap_content" 
 			android:layout_height="wrap_content" android:text="@string/login_pw"></TextView>
-		<EditText style="@style/LoginBoxes" android:id="@+id/editText2"
+		<EditText style="@style/LoginBoxes" android:id="@+id/login_pw"
 			android:layout_height="wrap_content" android:layout_width="fill_parent"
 			android:inputType="textPassword"></EditText>
 		<CheckBox android:text="@string/login_stay_logged"

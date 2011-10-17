@@ -1,25 +1,81 @@
 package com.dalthed.tucan.ui;
 
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.dalthed.tucan.R;
+import com.dalthed.tucan.Connection.AnswerObject;
+import com.dalthed.tucan.Connection.BrowseMethods;
+import com.dalthed.tucan.Connection.CookieManager;
+import com.dalthed.tucan.Connection.RequestObject;
 
 public class MainMenu extends ListActivity  {
 	
-	
+	CookieManager localCookieManager;
+	private static final String LOG_TAG = "TuCanMobile";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu);
+        String CookieHTTPString = getIntent().getExtras().getString("Cookie");
+        String lastCalledURLString = getIntent().getExtras().getString("URL");
+        URL lastCalledURL;
+		try {
+			lastCalledURL = new URL(lastCalledURLString);
+			localCookieManager=new CookieManager();
+	        localCookieManager.generateManagerfromHTTPString(lastCalledURL.getHost(), CookieHTTPString);
+	        SecureBrowser callOverviewBrowser = new SecureBrowser();
+	        RequestObject thisRequest = new RequestObject(lastCalledURLString, RequestObject.METHOD_GET, "");
+	        
+	        callOverviewBrowser.execute(thisRequest);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			Log.e(LOG_TAG, e.getMessage());
+		}
         
         showMenuElements();
+    }
+    
+    public class SecureBrowser extends AsyncTask<RequestObject, Integer, AnswerObject> {
+    	ProgressDialog dialog;
+    	
+    	@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			dialog = ProgressDialog.show(MainMenu.this,"","Lade...",true);
+		}
+    	
+		@Override
+		protected AnswerObject doInBackground(RequestObject... requestInfo) {
+			AnswerObject answer = new AnswerObject("", "", null,null);
+			RequestObject significantRequest = requestInfo[0];
+			BrowseMethods Browser=new BrowseMethods();
+			answer=Browser.browse(significantRequest); 
+			return answer;
+		}
+
+
+		@Override
+		protected void onPostExecute(AnswerObject result) {
+			// TODO Auto-generated method stub
+			dialog.dismiss();
+		}
+		
+		
+		
+    	
     }
     private void showMenuElements() {
     	

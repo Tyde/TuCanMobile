@@ -3,6 +3,8 @@ package com.dalthed.tucan;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.BrowseMethods;
@@ -13,12 +15,14 @@ import com.dalthed.tucan.ui.MainMenu;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,32 +45,34 @@ public class TuCanMobileActivity extends Activity {
     	
     	
     	try {
+    		//TuCan leitet 3 mal weiter, damit der Login-Vorgang Abgeschlossen wird 
 			RequestObject[] thisRequest = new RequestObject[4];
+			//Cookie Abholen
 			thisRequest[0] = new RequestObject("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=STARTPAGE_DISPATCH&ARGUMENTS=-N000000000000001", RequestObject.METHOD_GET, "");
-			String postdata= "usrname=se68kado&pass=326435&APPNAME=CampusNet&PRGNAME=LOGINCHECK&ARGUMENTS=clino%2Cusrname%2Cpass%2Cmenuno%2Cpersno%2Cbrowser%2Cplatform&clino=000000000000001&menuno=000344&persno=00000000&browser=&platform=";
+			
+			//Login Senden
+			EditText usrnameField 	= 	(EditText) findViewById(R.id.login_usrname);
+			EditText pwdField		=	(EditText) findViewById(R.id.login_pw);
+			String	usrname	=	usrnameField.getText().toString();
+			String 	pwd		=	pwdField.getText().toString();
+			
+			String postdata= "usrname="+usrname+"&pass="+pwd+"&APPNAME=CampusNet&PRGNAME=LOGINCHECK&ARGUMENTS=clino%2Cusrname%2Cpass%2Cmenuno%2Cpersno%2Cbrowser%2Cplatform&clino=000000000000001&menuno=000344&persno=00000000&browser=&platform=";
 			thisRequest[1] = new RequestObject("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi", RequestObject.METHOD_POST, postdata);
 			
     		
-			//RequestObject otherRequest=new RequestObject("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi", RequestObject.METHOD_POST, postdata);
-			//Log.i(LOG_TAG, "This is Request 0 "+ otherRequest.getmyURL().getHost() );
+			
 			newBrowser.execute(thisRequest);
 			
 			
-			//Toast notifyall = Toast.makeText(TucanMobile.getAppContext(), newBrowser.get().getHTML(), Toast.LENGTH_SHORT);
-			//notifyall.show();
-			
-			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			Log.e(LOG_TAG,"FEHLER");
+			Log.e(LOG_TAG,"FEHLER" +e.getMessage());
 			//Toast notifyall = Toast.makeText(TucanMobile.getAppContext(), e.getMessage(), Toast.LENGTH_SHORT);
 			//notifyall.show();
 		}
     	
 		
 		/*
-    	final Intent i = new Intent(this,MainMenu.class);
-    	startActivity(i);*/
+    	*/
     	
     }
     
@@ -78,25 +84,29 @@ public class TuCanMobileActivity extends Activity {
     	
     	@Override
     	protected AnswerObject doInBackground(RequestObject... requestInfo) {
-    		AnswerObject answer = new AnswerObject("", "", new CookieManager());
+    		AnswerObject answer = new AnswerObject("", "", null,null);
     		for(int i = 0;i<requestInfo.length;i++){
     			
     			if(requestInfo[i]!= null){
     				BrowseMethods Browser=new BrowseMethods();
-    				Log.i(LOG_TAG, "Browse with RequestObject:" + i);
-    				answer=Browser.browse(requestInfo[0]);  
+    				Log.i(LOG_TAG, "Browse with RequestObject:" + i + " URL:"+requestInfo[i].getmyURL().toString());
+    				answer=Browser.browse(requestInfo[i]);  
     				
     			}
     			else{
     				break;
     			}
-    			if(i<requestInfo.length)
+    			if(i<requestInfo.length-1)
     			{
-	    			if(answer.getRedirectURLString()!=""){
+	    			if(answer.getRedirectURLString()!="" && requestInfo[i+1]==null){
 	    				Log.i(LOG_TAG, "Insert new Redirect URL in RequestObject:" + answer.getRedirectURLString());
-						requestInfo[i+1]=new RequestObject("https://"+requestInfo[i].getmyURL().getHost()+answer.getRedirectURLString(), RequestObject.METHOD_GET, "");
+						requestInfo[i+1]=new RequestObject("https://"+requestInfo[i].getmyURL().getHost()+answer.getRedirectURLString()
+								, RequestObject.METHOD_GET
+								, "");
+	    				
 	    			}
-	    			requestInfo[i+1].setCookieManager(answer.getCookieManager());
+	    			if(requestInfo[i+1]!= null)
+	    				requestInfo[i+1].setCookieManager(answer.getCookieManager());
     			}
     			else{
     				Log.e(LOG_TAG,"Zu viele Redirects");
@@ -108,11 +118,33 @@ public class TuCanMobileActivity extends Activity {
     	
     	
     	protected void onPostExecute(AnswerObject result) {
-    		dialog.dismiss();
-    		TextView answertextv = (TextView) findViewById(R.id.textView2);
-    		answertextv.setText(result.getHTML());
-    		Toast notifyall = Toast.makeText(getApplicationContext(), result.getHTML()+"DONE", Toast.LENGTH_SHORT);
-    		notifyall.show();
+    		Pattern findUser = Pattern.compile("<span\\s+class=\"loginDataName\"\\s+id=\"loginDataName\"><b>Name<span\\s+class=\"colon\">:</span>\\s+</b>(.*?)</span>");
+    		Matcher findUsermatcher = findUser.matcher(result.getHTML());
+    		boolean found=false;
+    		String User="";
+    		while(findUsermatcher.find()){
+    			User=findUsermatcher.group(1);
+    			Log.i(LOG_TAG,"Match:"+findUsermatcher.group(1));
+    			found=true;
+    		}
+    		if(found==true){
+    			dialog.dismiss();
+        		final Intent i = new Intent(TuCanMobileActivity.this,MainMenu.class);
+        		i.putExtra("Cookie", result.getCookieManager().getCookieHTTPString("www.tucan.tu-darmstadt.de"));
+        		i.putExtra("URL", result.getLastCalledURL());
+        		startActivity(i);
+    		}
+    		else{
+    			dialog.dismiss();
+    			Toast wrongLoginNotif = Toast.makeText(TuCanMobileActivity.this, "Login fehlerhaft", Toast.LENGTH_LONG);
+    			wrongLoginNotif.show();
+    			
+    		}
+    		
+    		
+    		
+        	
+    		
     	}
     }
     

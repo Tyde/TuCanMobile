@@ -19,7 +19,7 @@ public class RequestObject {
 	public RequestObject(String RequestString,CookieManager RequestCookiemanager,String method,String postdata)  {
 		try {
 			this.RequestURL=new URL(RequestString);
-			Log.i(LOG_TAG,"Hier haste die URL:"+RequestString);
+			//Log.i(LOG_TAG,"Hier haste die URL:"+RequestString);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			Log.e(LOG_TAG,"Malfomed URL");
@@ -42,7 +42,6 @@ public class RequestObject {
 	}
 	
 	public URL getmyURL() {
-		Log.i(LOG_TAG,"geturlHier haste die URL:"+this.RequestURL.getHost());
 		return this.RequestURL;		
 	}
 	

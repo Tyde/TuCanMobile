@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -24,10 +25,11 @@ public class BrowseMethods {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		HTTPConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.2) Gecko/20090729 Firefox/3.5.2 (.NET CLR 3.5.30729)");
+		HTTPConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:7.0.1) Gecko/20100101 Firefox/7.0.1");
 		HTTPConnection.setInstanceFollowRedirects(false);
 		if(myCookies.domain_exists(domain)){
 			HTTPConnection.setRequestProperty("Cookie", myCookies.getCookieHTTPString(domain));
+			Log.i(LOG_TAG,"Written Cookie: "+myCookies.getCookieHTTPString(domain));
 		}
 	}
 
@@ -41,13 +43,13 @@ public class BrowseMethods {
 			String RequestMethod=requestInfo.getMethod();
 			String postdata=requestInfo.getPostData();
 			HTTPConnection = (HttpsURLConnection) realURL.openConnection();
-			Log.i(LOG_TAG, "Started Connection with"+ realURL.getHost());
-			
+			Log.i(LOG_TAG, "Started Connection with: "+ realURL.toString());
+			HTTPConnection.setDoOutput(true);
 			
 			setImportantHeaders(RequestMethod,realURL.getHost());
 			if(RequestMethod=="POST")
 			{
-				HTTPConnection.setDoOutput(true);
+				
 				OutputStreamWriter out = new OutputStreamWriter(HTTPConnection.getOutputStream());
 				out.write(postdata);
 				out.close();
@@ -59,6 +61,8 @@ public class BrowseMethods {
 			InputStream in = HTTPConnection.getInputStream();
 			InputStreamReader isr = new InputStreamReader(in);
 			BufferedReader bin = new BufferedReader(isr);
+			
+			
 			for(int n=0;;n++){
 				String headerValue = HTTPConnection.getHeaderField(n);
 				String headerName = HTTPConnection.getHeaderFieldKey(n);
@@ -88,6 +92,7 @@ public class BrowseMethods {
 			int contentlength =HTTPConnection.getContentLength();
 			Log.i(LOG_TAG,contentlength+"...");
 			
+			
 			String inputLine;
 			
 			while ((inputLine = bin.readLine()) != null){
@@ -95,11 +100,11 @@ public class BrowseMethods {
 				alllines+=inputLine;
 			}
 			in.close();
-			Log.i(LOG_TAG,alllines);
+			//Log.i(LOG_TAG,alllines);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return new AnswerObject(alllines,redirectURL,myCookies);
+		return new AnswerObject(alllines,redirectURL,myCookies,requestInfo.getmyURL().toString());
 	}
 }
