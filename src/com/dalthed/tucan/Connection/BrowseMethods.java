@@ -9,9 +9,13 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import android.util.Log;
+
 public class BrowseMethods {
 	private HttpsURLConnection HTTPConnection;
 	private CookieManager myCookies;
+	
+	private static final String LOG_TAG = "TuCanMobile";
 	
 	private void setImportantHeaders(String RequestMethod,String domain){
 		try {
@@ -32,12 +36,12 @@ public class BrowseMethods {
 		String alllines="";
 		
 		try {
-			URL realURL=requestInfo.getURL();
+			URL realURL=requestInfo.getmyURL();
 			myCookies=requestInfo.getCookies();
 			String RequestMethod=requestInfo.getMethod();
 			String postdata=requestInfo.getPostData();
 			HTTPConnection = (HttpsURLConnection) realURL.openConnection();
-			
+			Log.i(LOG_TAG, "Started Connection with"+ realURL.getHost());
 			
 			
 			setImportantHeaders(RequestMethod,realURL.getHost());
@@ -61,10 +65,10 @@ public class BrowseMethods {
 				if(headerValue==null && headerName==null){
 					break;
 				}
-				System.out.println(headerName+":"+headerValue);
+				Log.i(LOG_TAG,headerName+":"+headerValue);
 				
 				if("Set-Cookie".equalsIgnoreCase(headerName)){
-					System.out.println("Lese Cookies aus");
+					Log.i(LOG_TAG,"Lese Cookies aus");
 					String[] multipleCookies = headerValue.split(";\\s*");
 					for(String ccy : multipleCookies){
 						String[] eachVal=ccy.split("=");
@@ -82,16 +86,16 @@ public class BrowseMethods {
 				
 			}
 			int contentlength =HTTPConnection.getContentLength();
-			System.out.println(contentlength+"...");
+			Log.i(LOG_TAG,contentlength+"...");
 			
 			String inputLine;
 			
 			while ((inputLine = bin.readLine()) != null){
-				System.out.println((alllines.length()/contentlength)+"%");
+				//Log.i(LOG_TAG,(alllines.length()/contentlength)+"%");
 				alllines+=inputLine;
 			}
 			in.close();
-			System.out.println(alllines);
+			Log.i(LOG_TAG,alllines);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

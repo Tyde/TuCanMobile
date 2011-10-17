@@ -5,10 +5,13 @@ import java.util.Map;
 
 import java.util.Iterator;
 
+import android.util.Log;
+
 
 public class CookieManager {
 
 	private Map<String,Map<String,String>> Cookies;
+	private static final String LOG_TAG = "TuCanMobile";
 	
 	public CookieManager(){
 		Cookies = new HashMap<String,Map<String,String>>();
@@ -18,11 +21,11 @@ public class CookieManager {
 		if(Cookies.get(domain)==null) {
 			Map <String,String> DomainMap = new HashMap<String,String>();
 			Cookies.put(domain, DomainMap);
-			System.out.println("Domain in Storage registriert: "+domain);
+			Log.i(LOG_TAG,"Domain in Storage registriert: "+domain);
 		}
 		Map <String,String> DomainMap = Cookies.get(domain);
 		DomainMap.put(name, value);
-		System.out.println("Cookie in Storage ("+domain+") aufgenommen: "+name+ " = " + value);
+		Log.i(LOG_TAG,"Cookie in Storage ("+domain+") aufgenommen: "+name+ " = " + value);
 	}
 	
 	public boolean domain_exists(String domain){

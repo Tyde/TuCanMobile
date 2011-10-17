@@ -3,6 +3,8 @@ package com.dalthed.tucan.Connection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.util.Log;
+
 public class RequestObject {
 	private URL RequestURL;
 	private CookieManager RequestCookies;
@@ -12,9 +14,16 @@ public class RequestObject {
 	final public static String METHOD_GET="GET";
 	final public static String METHOD_POST="POST";
 	
+	private static final String LOG_TAG = "TuCanMobile";
 	
-	public RequestObject(String RequestString,CookieManager RequestCookiemanager,String method,String postdata) throws MalformedURLException  {
-		this.RequestURL=new URL(RequestString);
+	public RequestObject(String RequestString,CookieManager RequestCookiemanager,String method,String postdata)  {
+		try {
+			this.RequestURL=new URL(RequestString);
+			Log.i(LOG_TAG,"Hier haste die URL:"+RequestString);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			Log.e(LOG_TAG,"Malfomed URL");
+		}
 		this.RequestCookies=RequestCookiemanager;
 		if(method==METHOD_GET){
 			this.RequestMethod=METHOD_GET;
@@ -28,12 +37,17 @@ public class RequestObject {
 		this.RequestpostData=postdata;
 	}
 	
-	public RequestObject(String RequestString,String method,String postdata) throws MalformedURLException{
-		new RequestObject(RequestString,new CookieManager(),method,postdata);
+	public RequestObject(String RequestString,String method,String postdata) {
+		this(RequestString,new CookieManager(),method,postdata);
 	}
 	
-	public URL getURL() {
+	public URL getmyURL() {
+		Log.i(LOG_TAG,"geturlHier haste die URL:"+this.RequestURL.getHost());
 		return this.RequestURL;		
+	}
+	
+	public void setCookieManager(CookieManager newManager) {
+		this.RequestCookies=newManager;
 	}
 	
 	public CookieManager getCookies() {
