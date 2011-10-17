@@ -8,6 +8,9 @@
     <string name="login_send">Anmelden</string>
     <string name="login_stay_logged">Passwort merken</string>
     
+    <!--  Hauptmenü -->
+    <string name="mm_events_title">Heutige Veranstaltungen:</string>
+    
     <!-- Vorlesungsverzeichnis -->
     <string name="mmenu_vv">Vorlesungsverzeichnis//</string>
 </resources>

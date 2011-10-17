@@ -17,4 +17,12 @@
   	<item name="android:textColor">@color/tucan_title_darkgrey</item>
   	<item name="android:textStyle">bold</item>
   </style>
+  <style name="mm_events_title">
+  	<item name="android:textSize">@dimen/mm_event_title</item>
+  	<item name="android:textColor">@color/tucan_title_darkgrey</item>
+  	<item name="android:textStyle">bold</item>
+  </style>
+  <style name="mm_events_list">
+  	<item name="android:textSize">@dimen/mm_event_list</item>
+  </style>
 </resources>

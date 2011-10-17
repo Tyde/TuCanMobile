@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -27,6 +28,7 @@ public class BrowseMethods {
 		}
 		HTTPConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:7.0.1) Gecko/20100101 Firefox/7.0.1");
 		HTTPConnection.setInstanceFollowRedirects(false);
+		HTTPConnection.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=windows-1251");
 		if(myCookies.domain_exists(domain)){
 			HTTPConnection.setRequestProperty("Cookie", myCookies.getCookieHTTPString(domain));
 			Log.i(LOG_TAG,"Written Cookie: "+myCookies.getCookieHTTPString(domain));

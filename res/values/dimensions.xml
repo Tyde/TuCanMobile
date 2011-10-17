@@ -3,5 +3,6 @@
     <dimen name="login_send_text">25dip</dimen>
     <dimen name="biglink">25dip</dimen>
     <dimen name="activity_titles">20dip</dimen>
-    
+    <dimen name="mm_event_title">18dip</dimen>
+    <dimen name="mm_event_list">14dip</dimen>
 </resources>
