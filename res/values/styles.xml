@@ -11,6 +11,10 @@
   <style name="mainmenu_nav_strings">
   	<item name="android:textSize">@dimen/biglink</item>
   	<item name="android:typeface">sans</item>
-  	
+  </style>
+  <style name="tucan_title">
+  	<item name="android:textSize">@dimen/activity_titles</item>
+  	<item name="android:textColor">@color/tucan_title_darkgrey</item>
+  	<item name="android:textStyle">bold</item>
   </style>
 </resources>

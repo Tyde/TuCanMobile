@@ -2,5 +2,6 @@
 <resources>
     <color name="tucan_green">#99a504</color>
     <color name="tucan_grey">#a2a6ab</color>
+    <color name="tucan_title_darkgrey">#6b6d6f</color>
     
 </resources>

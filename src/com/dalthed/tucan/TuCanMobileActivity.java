@@ -1,13 +1,21 @@
 package com.dalthed.tucan;
 
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.dalthed.tucan.Connection.AnswerObject;
+import com.dalthed.tucan.Connection.BrowseMethods;
+import com.dalthed.tucan.Connection.CookieManager;
+
+import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.ui.MainMenu;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -30,24 +38,74 @@ public class TuCanMobileActivity extends Activity {
     public void onClickSendLogin (final View sfNormal) {
     	HTTPSBrowser newBrowser = new HTTPSBrowser();
     	
-    	TextView answertextv = (TextView) findViewById(R.id.textView2);
-    	/*try {
-			newBrowser.execute(
-					new URL[] {new URL("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=EXTERNALPAGES&ARGUMENTS=-N000000000000001")}
-			);
-			Toast notifyall = Toast.makeText(TucanMobile.getAppContext(), newBrowser.get(), Toast.LENGTH_SHORT);
-			notifyall.show();
-			answertextv.setText(newBrowser.get());
+    	
+    	try {
+			RequestObject[] thisRequest = new RequestObject[4];
+			thisRequest[0] = new RequestObject("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=STARTPAGE_DISPATCH&ARGUMENTS=-N000000000000001", RequestObject.METHOD_GET, "");
+			String postdata= "usrname=se68kado&pass=326435&APPNAME=CampusNet&PRGNAME=LOGINCHECK&ARGUMENTS=clino%2Cusrname%2Cpass%2Cmenuno%2Cpersno%2Cbrowser%2Cplatform&clino=000000000000001&menuno=000344&persno=00000000&browser=&platform=";
+			thisRequest[1] = new RequestObject("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi", RequestObject.METHOD_POST, postdata);
+			newBrowser.execute(thisRequest);
+			
+			
+			//Toast notifyall = Toast.makeText(TucanMobile.getAppContext(), newBrowser.get().getHTML(), Toast.LENGTH_SHORT);
+			//notifyall.show();
+			
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			Toast notifyall = Toast.makeText(TucanMobile.getAppContext(), e.getMessage(), Toast.LENGTH_SHORT);
 			notifyall.show();
 		}
-    	*/
+    	
 		
-		
+		/*
     	final Intent i = new Intent(this,MainMenu.class);
-    	startActivity(i);
+    	startActivity(i);*/
+    	
+    }
+    
+    public class HTTPSBrowser extends AsyncTask<RequestObject, Integer, AnswerObject>  {
+    	ProgressDialog dialog;
+    	protected void onPreExecute() {
+             dialog = ProgressDialog.show(TuCanMobileActivity.this,"","Anmelden...",true);
+        }
+    	
+    	@Override
+    	protected AnswerObject doInBackground(RequestObject... requestInfo) {
+    		AnswerObject answer = new AnswerObject("", "", new CookieManager());
+    		for(int i = 0;i<requestInfo.length;i++){
+    			
+    			if(requestInfo[i]!= null){
+    				BrowseMethods Browser=new BrowseMethods();
+    				answer=Browser.browse(requestInfo[0]);    				
+    			}
+    			else{
+    				break;
+    			}
+    			if(answer.getRedirectURLString()!=""){
+    				try {
+						requestInfo[i+1]=new RequestObject(answer.getRedirectURLString(), RequestObject.METHOD_GET, "");
+					} catch (MalformedURLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+    			}
+    		}
+    		
+    		return  answer;
+    	}
+    	
+    	
+    	protected void onPostExecute(AnswerObject result) {
+    		dialog.dismiss();
+    		TextView answertextv = (TextView) findViewById(R.id.textView2);
+    		answertextv.setText(result.getHTML());
+    		Toast notifyall = Toast.makeText(getApplicationContext(), result.getHTML()+"DONE", Toast.LENGTH_SHORT);
+    		notifyall.show();
+    	}
+    }
+    
+    public void onRequestisAnswered(){
     	
     }
 }
