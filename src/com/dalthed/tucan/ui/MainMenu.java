@@ -3,6 +3,14 @@ package com.dalthed.tucan.ui;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import android.app.ListActivity;
 import android.app.ProgressDialog;
@@ -37,7 +45,7 @@ public class MainMenu extends ListActivity  {
 			localCookieManager=new CookieManager();
 	        localCookieManager.generateManagerfromHTTPString(lastCalledURL.getHost(), CookieHTTPString);
 	        SecureBrowser callOverviewBrowser = new SecureBrowser();
-	        RequestObject thisRequest = new RequestObject(lastCalledURLString, RequestObject.METHOD_GET, "");
+	        RequestObject thisRequest = new RequestObject(lastCalledURLString,localCookieManager, RequestObject.METHOD_GET, "");
 	        
 	        callOverviewBrowser.execute(thisRequest);
 		} catch (MalformedURLException e) {
@@ -69,7 +77,23 @@ public class MainMenu extends ListActivity  {
 
 		@Override
 		protected void onPostExecute(AnswerObject result) {
-			// TODO Auto-generated method stub
+			dialog.setMessage("Berechne...");
+			
+			Document doc = Jsoup.parse(result.getHTML());
+			Element EventTable = doc.select("table.nb").first();
+			Elements EventRows = EventTable.select("tr.tbdata");
+			Iterator<Element> RowIt = EventRows.iterator();
+			String[] Events = new String[EventRows.size()];
+			int i=0;
+			while(RowIt.hasNext()){
+				Element currentElement = (Element) RowIt.next();
+				String EventString = currentElement.select("td[headers=Name]").select("a").first().text();
+				Events[i]=EventString;
+				i++;
+				Toast.makeText(MainMenu.this, EventString, Toast.LENGTH_LONG).show();
+			}
+			
+		
 			dialog.dismiss();
 		}
 		

@@ -28,7 +28,7 @@
 			android:layout_height="wrap_content" style="@style/LoginBoxes"></CheckBox>
 		<Button android:layout_height="wrap_content" android:id="@+id/button1"
 			android:layout_gravity="right" android:layout_width="wrap_content"
-			android:text="Button" android:onClick="onClickSendLogin"></Button>
+			android:text="@string/login_send" android:onClick="onClickSendLogin"></Button>
 	<TextView android:text="" android:id="@+id/textView2"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
 	</LinearLayout>

@@ -1,21 +1,20 @@
 package com.dalthed.tucan;
 
 
-import java.net.MalformedURLException;
-import java.net.URL;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.BrowseMethods;
-import com.dalthed.tucan.Connection.CookieManager;
+
 
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.ui.MainMenu;
 
 
 import android.app.Activity;
-import android.app.AlertDialog;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -23,7 +22,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
+
 import android.widget.Toast;
 
 
@@ -50,30 +49,24 @@ public class TuCanMobileActivity extends Activity {
 			//Cookie Abholen
 			thisRequest[0] = new RequestObject("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=STARTPAGE_DISPATCH&ARGUMENTS=-N000000000000001", RequestObject.METHOD_GET, "");
 			
-			//Login Senden
+			//Login auslesen und senden
 			EditText usrnameField 	= 	(EditText) findViewById(R.id.login_usrname);
 			EditText pwdField		=	(EditText) findViewById(R.id.login_pw);
 			String	usrname	=	usrnameField.getText().toString();
 			String 	pwd		=	pwdField.getText().toString();
 			
+			//vordefinierte Post-Data
+			//TODO: Dynamisch <input 's auslesen [evtl]
 			String postdata= "usrname="+usrname+"&pass="+pwd+"&APPNAME=CampusNet&PRGNAME=LOGINCHECK&ARGUMENTS=clino%2Cusrname%2Cpass%2Cmenuno%2Cpersno%2Cbrowser%2Cplatform&clino=000000000000001&menuno=000344&persno=00000000&browser=&platform=";
+			//AnmeldeRequest Senden
 			thisRequest[1] = new RequestObject("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi", RequestObject.METHOD_POST, postdata);
-			
+			//Restliche Requests werden aus der Antwort ausgelesen..
     		
-			
+			//Requests abscicken
 			newBrowser.execute(thisRequest);
-			
-			
 		} catch (Exception e) {
-			Log.e(LOG_TAG,"FEHLER" +e.getMessage());
-			//Toast notifyall = Toast.makeText(TucanMobile.getAppContext(), e.getMessage(), Toast.LENGTH_SHORT);
-			//notifyall.show();
+			Log.e(LOG_TAG,"FEHLER: " +e.getMessage());
 		}
-    	
-		
-		/*
-    	*/
-    	
     }
     
     public class HTTPSBrowser extends AsyncTask<RequestObject, Integer, AnswerObject>  {
@@ -86,12 +79,10 @@ public class TuCanMobileActivity extends Activity {
     	protected AnswerObject doInBackground(RequestObject... requestInfo) {
     		AnswerObject answer = new AnswerObject("", "", null,null);
     		for(int i = 0;i<requestInfo.length;i++){
-    			
     			if(requestInfo[i]!= null){
     				BrowseMethods Browser=new BrowseMethods();
-    				Log.i(LOG_TAG, "Browse with RequestObject:" + i + " URL:"+requestInfo[i].getmyURL().toString());
-    				answer=Browser.browse(requestInfo[i]);  
-    				
+    				//Requests letztendlich abschicken
+    				answer=Browser.browse(requestInfo[i]);      				
     			}
     			else{
     				break;
