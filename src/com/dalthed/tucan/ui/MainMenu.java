@@ -12,6 +12,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.app.Activity;
+import android.app.Application;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -30,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dalthed.tucan.R;
+import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.BrowseMethods;
 import com.dalthed.tucan.Connection.CookieManager;
@@ -39,6 +41,8 @@ public class MainMenu extends Activity  {
 	
 	CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
+	String menu_link_vv = "";
+	String UserName = "";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +80,9 @@ public class MainMenu extends Activity  {
 				switch(position) {
 				case 0:
 					Intent StartVVIntent = new Intent(MainMenu.this, VV.class);
+					StartVVIntent.putExtra("URL", menu_link_vv);
+					StartVVIntent.putExtra("Cookie", localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+					StartVVIntent.putExtra("UserName", UserName);
 					startActivity(StartVVIntent);
 					//Vorlesungsverzeichnis
 					break;
@@ -95,12 +102,12 @@ public class MainMenu extends Activity  {
     }
     
     public class SecureBrowser extends AsyncTask<RequestObject, Integer, AnswerObject> {
-    	//ProgressDialog dialog;
+    	ProgressDialog dialog;
     	ProgressBar mm_pbar;
     	@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
-			//dialog = ProgressDialog.show(MainMenu.this,"","Lade...",true);
+			dialog = ProgressDialog.show(MainMenu.this,"","Lade...",true);
     		mm_pbar=(ProgressBar) findViewById(R.id.mm_progress);
     		mm_pbar.setVisibility(View.VISIBLE);
 		}
@@ -117,9 +124,12 @@ public class MainMenu extends Activity  {
 
 		@Override
 		protected void onPostExecute(AnswerObject result) {
-			//dialog.setMessage("Berechne...");
+			dialog.setMessage("Berechne...");
 			mm_pbar.setVisibility(View.GONE);
+			
+			//HTML auslesen
 			Document doc = Jsoup.parse(result.getHTML());
+			//Tabelle mit den Terminen finden und Durchlaufen
 			Element EventTable = doc.select("table.nb").first();
 			Elements EventRows = EventTable.select("tr.tbdata");
 			Iterator<Element> RowIt = EventRows.iterator();
@@ -135,15 +145,22 @@ public class MainMenu extends Activity  {
 				Events[i]=EventString;
 				i++;
 			}
-			String UserName = doc.select("span#loginDataName").text().split(":")[1];
+			UserName = doc.select("span#loginDataName").text().split(":")[1];
 			TextView usertextview = (TextView) findViewById(R.id.mm_username);
+			URL lcURL=null;
+			try {
+				lcURL = new URL(result.getLastCalledURL());
+			} catch (MalformedURLException e) {
+				Log.e(LOG_TAG,"Malformed URL");
+			}
+			
+			menu_link_vv = lcURL.getProtocol()+"://"+lcURL.getHost()+doc.select("li[title=VV]").select("a").attr("href");
+			Toast.makeText(MainMenu.this, menu_link_vv , Toast.LENGTH_LONG).show();
+			
 			usertextview.setText(UserName);
 			ListView EventList= (ListView) findViewById(R.id.mm_eventList);
-			//EventList.setAdapter(new ArrayAdapter<String>(MainMenu.this, 
-			//		R.layout.row, R.id.label,
-			//		Events));
 			EventList.setAdapter(new EventAdapter(Events,Times));
-			//dialog.dismiss();
+			dialog.dismiss();
 		}
 	}
     
