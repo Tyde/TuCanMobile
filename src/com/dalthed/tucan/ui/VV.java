@@ -2,6 +2,7 @@ package com.dalthed.tucan.ui;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jsoup.Jsoup;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TucanMobile;
@@ -30,6 +32,7 @@ public class VV extends ListActivity {
 	CookieManager localCookieManager;
 	String UserName = "";
 	String[] Listlinks;
+	String myHTML;
 	ArrayAdapter<String> ListAdapter = null;
 	private static final String LOG_TAG = "TuCanMobile";
 	@Override
@@ -86,15 +89,23 @@ public class VV extends ListActivity {
 			//mm_pbar.setVisibility(View.GONE);
 			
 			//HTML auslesen
+			Log.i(LOG_TAG,"HTML zum parsen bereit");
 			Document doc = Jsoup.parse(result.getHTML());
+			if(result.getHTML()==""){
+				System.out.println("Leeres HTML");
+			}
 			Elements ulList = doc.select("ul#auditRegistration_list").first().select("li");
 			Iterator<Element> ListIterator = ulList.iterator();
-			String[] AllListElementStrings = new String[ulList.size()];
+			//String[] AllListElementStrings = new String[ulList.size()];
+			ArrayList<String> AllListElementStrings = new ArrayList<String>();
 			Listlinks = new String[ulList.size()];
+			Log.i(LOG_TAG,"Größe: "+ulList.size());
 			int i=0;
 			while(ListIterator.hasNext()){
-				AllListElementStrings[i]=ListIterator.next().select("a").text();
-				Listlinks[i]=ListIterator.next().select("a").attr("href");
+				Element next = ListIterator.next();
+				AllListElementStrings.add(next.select("a").text());
+				Listlinks[i]=next.select("a").attr("href");
+				Log.i(LOG_TAG,"Bin bei "+i);
 				i++;
 			}
 			callsetListAdapter(AllListElementStrings);
@@ -108,6 +119,9 @@ public class VV extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
+		//Toast.makeText(this, position + " angeklickt. Suche "+Listlinks[position], Toast.LENGTH_LONG);
+		//Log.i(LOG_TAG,position + " angeklickt");
+		//Log.i(LOG_TAG,"Suche "+Listlinks[0]);
 		//Webhandling Start
         SecureBrowser callOverviewBrowser = new SecureBrowser();
         RequestObject thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+
@@ -120,7 +134,7 @@ public class VV extends ListActivity {
 		//Webhandling End
 	}
 
-	public void callsetListAdapter(String[] Elements){
+	public void callsetListAdapter(ArrayList<String> Elements){
 		if(ListAdapter!=null)
 			ListAdapter.clear();
 		ListAdapter=new ArrayAdapter<String>(this,
