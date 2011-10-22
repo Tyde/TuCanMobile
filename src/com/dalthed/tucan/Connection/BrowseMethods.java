@@ -26,9 +26,9 @@ public class BrowseMethods {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		HTTPConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:7.0.1) Gecko/20100101 Firefox/7.0.1");
+		//HTTPConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:7.0.1) Gecko/20100101 Firefox/7.0.1");
 		HTTPConnection.setInstanceFollowRedirects(false);
-		HTTPConnection.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=windows-1251");
+		//HTTPConnection.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=windows-1251");
 		if(myCookies.domain_exists(domain)){
 			HTTPConnection.setRequestProperty("Cookie", myCookies.getCookieHTTPString(domain));
 			Log.i(LOG_TAG,"Written Cookie: "+myCookies.getCookieHTTPString(domain));
@@ -71,7 +71,7 @@ public class BrowseMethods {
 				if(headerValue==null && headerName==null){
 					break;
 				}
-				Log.i(LOG_TAG,headerName+":"+headerValue);
+				
 				
 				if("Set-Cookie".equalsIgnoreCase(headerName)){
 					Log.i(LOG_TAG,"Lese Cookies aus");
@@ -94,14 +94,16 @@ public class BrowseMethods {
 			int contentlength =HTTPConnection.getContentLength();
 			Log.i(LOG_TAG,contentlength+"...");
 			
-			
+			StringBuilder inputBuilder = new StringBuilder();
 			String inputLine;
 			
 			while ((inputLine = bin.readLine()) != null){
 				//Log.i(LOG_TAG,(alllines.length()/contentlength)+"%");
-				alllines+=inputLine;
+				//alllines+=inputLine;
+				inputBuilder.append(inputLine);
 			}
 			in.close();
+			alllines=inputBuilder.toString();
 			//Log.i(LOG_TAG,alllines);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

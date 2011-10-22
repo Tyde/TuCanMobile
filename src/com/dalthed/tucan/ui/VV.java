@@ -12,13 +12,14 @@ import org.jsoup.select.Elements;
 
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+
 
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TucanMobile;
@@ -64,13 +65,12 @@ public class VV extends ListActivity {
 	
 	public class SecureBrowser extends AsyncTask<RequestObject, Integer, AnswerObject> {
     	ProgressDialog dialog;
-    	//ProgressBar mm_pbar;
     	@Override
 		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			dialog = ProgressDialog.show(VV.this,"","Lade...",true);
-    		//mm_pbar=(ProgressBar) findViewById(R.id.mm_progress);
-    		//mm_pbar.setVisibility(View.VISIBLE);
+			
+			dialog = ProgressDialog.show(VV.this,"",
+							getResources().getString(R.string.ui_load_data),true);
+    		
 		}
     	
 		@Override
@@ -85,30 +85,42 @@ public class VV extends ListActivity {
 
 		@Override
 		protected void onPostExecute(AnswerObject result) {
-			dialog.setMessage("Berechne...");
+			dialog.setMessage(getResources().getString(R.string.ui_calc));
 			//mm_pbar.setVisibility(View.GONE);
 			
 			//HTML auslesen
 			Log.i(LOG_TAG,"HTML zum parsen bereit");
 			Document doc = Jsoup.parse(result.getHTML());
-			if(result.getHTML()==""){
-				System.out.println("Leeres HTML");
+			Elements tbdata=doc.select("tr.tbdata");
+			if(tbdata.size()>0){
+				Log.i(LOG_TAG, "In Event-Table angekomen");
+				Intent EventStartIntent = new Intent(VV.this,VV_Events.class);
+				EventStartIntent.putExtra("URL", result.getLastCalledURL());
+				EventStartIntent.putExtra("User", UserName);
+				EventStartIntent.putExtra("Cookie", 
+							result
+								.getCookieManager()
+									.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+				startActivity(EventStartIntent);
+				
 			}
-			Elements ulList = doc.select("ul#auditRegistration_list").first().select("li");
-			Iterator<Element> ListIterator = ulList.iterator();
-			//String[] AllListElementStrings = new String[ulList.size()];
-			ArrayList<String> AllListElementStrings = new ArrayList<String>();
-			Listlinks = new String[ulList.size()];
-			Log.i(LOG_TAG,"Größe: "+ulList.size());
-			int i=0;
-			while(ListIterator.hasNext()){
-				Element next = ListIterator.next();
-				AllListElementStrings.add(next.select("a").text());
-				Listlinks[i]=next.select("a").attr("href");
-				Log.i(LOG_TAG,"Bin bei "+i);
-				i++;
+			else {
+				Elements ulList = doc.select("ul#auditRegistration_list").first().select("li");
+				Iterator<Element> ListIterator = ulList.iterator();
+				ArrayList<String> AllListElementStrings = new ArrayList<String>();
+				Listlinks = new String[ulList.size()];
+				Log.i(LOG_TAG,"Größe: "+ulList.size());
+				int i=0;
+				while(ListIterator.hasNext()){
+					Element next = ListIterator.next();
+					AllListElementStrings.add(next.select("a").text());
+					Listlinks[i]=next.select("a").attr("href");
+					Log.i(LOG_TAG,"Bin bei "+i);
+					i++;
+				}
+				callsetListAdapter(AllListElementStrings);
 			}
-			callsetListAdapter(AllListElementStrings);
+			
 			
 			
 			

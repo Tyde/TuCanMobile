@@ -11,6 +11,7 @@ import com.dalthed.tucan.Connection.BrowseMethods;
 
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.ui.MainMenu;
+import com.dalthed.tucan.ui.ProgressBarDialogFactory;
 
 
 import android.app.Activity;
@@ -72,13 +73,28 @@ public class TuCanMobileActivity extends Activity {
     public class HTTPSBrowser extends AsyncTask<RequestObject, Integer, AnswerObject>  {
     	ProgressDialog dialog;
     	protected void onPreExecute() {
-             dialog = ProgressDialog.show(TuCanMobileActivity.this,"","Anmelden...",true);
+    		//ProgressDialog anfertigen und anzeigen
+    		dialog=ProgressBarDialogFactory
+    				.createProgressDialog(TuCanMobileActivity.this,getResources().getString(R.string.ui_login));
+    		dialog.show();
         }
     	
     	@Override
+		protected void onProgressUpdate(Integer... values) {
+    		//Fortschritt Berechnen und anzeigen
+    		int Progress= (int) ((((double) values[0]+1)/(double) values[1])*100);
+    		Log.i(LOG_TAG,values[0]+" von "+values[1]+ " ergibt: "+Progress);
+			dialog.setProgress(Progress);
+		}
+
+		@Override
     	protected AnswerObject doInBackground(RequestObject... requestInfo) {
+			
     		AnswerObject answer = new AnswerObject("", "", null,null);
     		for(int i = 0;i<requestInfo.length;i++){
+    			//requestInfo[i] kann null sein, da das Array mit 2 null-Objekten übergeben wird und dort erst
+    			//später Redirects hinein geschrieben werden
+    			//TODO: requestInfo in ArrayList umwandeln ?
     			if(requestInfo[i]!= null){
     				BrowseMethods Browser=new BrowseMethods();
     				//Requests letztendlich abschicken
@@ -87,8 +103,10 @@ public class TuCanMobileActivity extends Activity {
     			else{
     				break;
     			}
+    			//Letztes Objekt
     			if(i<requestInfo.length-1)
     			{
+    				
 	    			if(answer.getRedirectURLString()!="" && requestInfo[i+1]==null){
 	    				Log.i(LOG_TAG, "Insert new Redirect URL in RequestObject:" + answer.getRedirectURLString());
 						requestInfo[i+1]=new RequestObject("https://"+requestInfo[i].getmyURL().getHost()+answer.getRedirectURLString()
@@ -102,6 +120,7 @@ public class TuCanMobileActivity extends Activity {
     			else{
     				Log.e(LOG_TAG,"Zu viele Redirects");
     			}
+    			publishProgress(new Integer[]{i,requestInfo.length});
     		}
     		
     		return  answer;
@@ -109,6 +128,9 @@ public class TuCanMobileActivity extends Activity {
     	
     	
     	protected void onPostExecute(AnswerObject result) {
+    		dialog.setMessage(getResources().getString(R.string.ui_calc));
+    		
+    		//TODO: Update to JSoup
     		Pattern findUser = Pattern.compile("<span\\s+class=\"loginDataName\"\\s+id=\"loginDataName\"><b>Name<span\\s+class=\"colon\">:</span>\\s+</b>(.*?)</span>");
     		Matcher findUsermatcher = findUser.matcher(result.getHTML());
     		boolean found=false;

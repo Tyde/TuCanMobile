@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@+id/row_vv_events"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<TextView android:text="TextView" android:id="@+id/row_vv_veranst"
+		style="@style/mm_events_title" android:layout_width="wrap_content"
+		android:layout_height="wrap_content"></TextView>
+	<TextView android:id="@+id/row_vv_type" style="@style/mm_events_list"
+		android:layout_width="wrap_content"
+		android:text="TextViewasd" android:layout_height="wrap_content"
+		android:layout_gravity="right"></TextView>
+	<TextView android:text="TextVweiew" android:id="@+id/row_vv_dozent"
+		style="@style/mm_events_list" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_marginTop="20dip"></TextView>
+</FrameLayout>

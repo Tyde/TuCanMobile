@@ -12,8 +12,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.app.Activity;
-import android.app.Application;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -131,20 +129,31 @@ public class MainMenu extends Activity  {
 			Document doc = Jsoup.parse(result.getHTML());
 			//Tabelle mit den Terminen finden und Durchlaufen
 			Element EventTable = doc.select("table.nb").first();
-			Elements EventRows = EventTable.select("tr.tbdata");
-			Iterator<Element> RowIt = EventRows.iterator();
-			String[] Events = new String[EventRows.size()];
-			String[] Times = new String[EventRows.size()];
-			int i=0;
-			while(RowIt.hasNext()){
-				Element currentElement = (Element) RowIt.next();
-				String EventString = currentElement.select("td[headers=Name]").select("a").first().text();
-				String EventTimeString = currentElement.select("td[headers=von]").select("a").first().text();
-				String EventTimeEndString = currentElement.select("td[headers=bis]").select("a").first().text();
-				Times[i]=EventTimeString+"-"+EventTimeEndString;
-				Events[i]=EventString;
-				i++;
+			String[] Events;
+			String[] Times;
+			if(EventTable==null){
+				Events = new String[1];
+				Times = new String[1];
+				Events[0]="Keine Heutigen Veranstaltungen";
+				Times[0]="";
 			}
+			else{
+				Elements EventRows = EventTable.select("tr.tbdata");
+				Iterator<Element> RowIt = EventRows.iterator();
+				Events = new String[EventRows.size()];
+				Times = new String[EventRows.size()];
+				int i=0;
+				while(RowIt.hasNext()){
+					Element currentElement = (Element) RowIt.next();
+					String EventString = currentElement.select("td[headers=Name]").select("a").first().text();
+					String EventTimeString = currentElement.select("td[headers=von]").select("a").first().text();
+					String EventTimeEndString = currentElement.select("td[headers=bis]").select("a").first().text();
+					Times[i]=EventTimeString+"-"+EventTimeEndString;
+					Events[i]=EventString;
+					i++;
+				}
+			}
+			
 			UserName = doc.select("span#loginDataName").text().split(":")[1];
 			TextView usertextview = (TextView) findViewById(R.id.mm_username);
 			URL lcURL=null;
@@ -155,7 +164,7 @@ public class MainMenu extends Activity  {
 			}
 			
 			menu_link_vv = lcURL.getProtocol()+"://"+lcURL.getHost()+doc.select("li[title=VV]").select("a").attr("href");
-			Toast.makeText(MainMenu.this, menu_link_vv , Toast.LENGTH_LONG).show();
+			//Toast.makeText(MainMenu.this, menu_link_vv , Toast.LENGTH_LONG).show();
 			
 			usertextview.setText(UserName);
 			ListView EventList= (ListView) findViewById(R.id.mm_eventList);
@@ -167,10 +176,9 @@ public class MainMenu extends Activity  {
     
     @Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-    	if (  Integer.valueOf(android.os.Build.VERSION.SDK) < 7 //Instead use android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR
-                && keyCode == KeyEvent.KEYCODE_BACK
+    	if (  keyCode == KeyEvent.KEYCODE_BACK
                 && event.getRepeatCount() == 0) {
-            localCookieManager=new CookieManager();
+    		localCookieManager=new CookieManager();
             Toast.makeText(this, "Abgemeldet", Toast.LENGTH_SHORT).show();
         }
 		return super.onKeyDown(keyCode, event);
