@@ -10,6 +10,7 @@ import com.dalthed.tucan.Connection.BrowseMethods;
 
 
 import com.dalthed.tucan.Connection.RequestObject;
+import com.dalthed.tucan.preferences.MainPreferences;
 import com.dalthed.tucan.ui.MainMenu;
 import com.dalthed.tucan.ui.ProgressBarDialogFactory;
 
@@ -18,11 +19,18 @@ import android.app.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import android.widget.Toast;
 
@@ -33,12 +41,27 @@ public class TuCanMobileActivity extends Activity {
     /** Called when the activity is first created. */
     //private HTTPSbrowser mBrowserService;
 	private static final String LOG_TAG = "TuCanMobile";
-	
-	
+	private EditText usrnameField;
+	private EditText pwdField;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        
+        
+        
+        final SharedPreferences einstellungen = MainPreferences.getSettings(this);
+        String tuid= einstellungen.getString("tuid","");
+        String pw = einstellungen.getString("pw", "");
+        
+        usrnameField 	= 	(EditText) findViewById(R.id.login_usrname);
+		pwdField		=	(EditText) findViewById(R.id.login_pw);
+		usrnameField.setText(tuid);
+		pwdField.setText(pw);
+        
+		ImageView img = (ImageView) findViewById(R.id.imageView1);
+		img.requestFocus();
+        
     }
     public void onClickSendLogin (final View sfNormal) {
     	HTTPSBrowser newBrowser = new HTTPSBrowser();
@@ -51,8 +74,7 @@ public class TuCanMobileActivity extends Activity {
 			thisRequest[0] = new RequestObject("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=STARTPAGE_DISPATCH&ARGUMENTS=-N000000000000001", RequestObject.METHOD_GET, "");
 			
 			//Login auslesen und senden
-			EditText usrnameField 	= 	(EditText) findViewById(R.id.login_usrname);
-			EditText pwdField		=	(EditText) findViewById(R.id.login_pw);
+			
 			String	usrname	=	usrnameField.getText().toString();
 			String 	pwd		=	pwdField.getText().toString();
 			
@@ -70,7 +92,35 @@ public class TuCanMobileActivity extends Activity {
 		}
     }
     
-    public class HTTPSBrowser extends AsyncTask<RequestObject, Integer, AnswerObject>  {
+    
+    
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.loginmenu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.loginmenu_opt_setpreferences:
+			Intent settingsACTIVITY = new Intent(getBaseContext(),MainPreferences.class);
+			startActivity(settingsACTIVITY);
+			return true;
+		case R.id.loginmenu_opt_close:
+			finish();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+		
+	}
+
+
+
+	public class HTTPSBrowser extends AsyncTask<RequestObject, Integer, AnswerObject>  {
     	ProgressDialog dialog;
     	protected void onPreExecute() {
     		//ProgressDialog anfertigen und anzeigen
@@ -142,6 +192,15 @@ public class TuCanMobileActivity extends Activity {
     		}
     		if(found==true){
     			dialog.dismiss();
+    			CheckBox remember = (CheckBox) findViewById(R.id.checkBox1);
+    			if(remember.isChecked()){
+    				final SharedPreferences einstellungen = MainPreferences.getSettings(TuCanMobileActivity.this);
+    				SharedPreferences.Editor editor = einstellungen.edit();
+    				editor.putString("tuid", usrnameField.getText().toString());
+    				editor.putString("pw", pwdField.getText().toString());
+    				editor.commit();
+    				
+    			}
         		final Intent i = new Intent(TuCanMobileActivity.this,MainMenu.class);
         		i.putExtra("Cookie", result.getCookieManager().getCookieHTTPString("www.tucan.tu-darmstadt.de"));
         		i.putExtra("URL", result.getLastCalledURL());

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<PreferenceCategory android:title="@string/settings_username">
+		<EditTextPreference android:key="tuid"
+			android:title="@string/settings_tuid" android:defaultValue="" />
+		<EditTextPreference 
+			android:key="pw"
+			android:title="@string/settings_pw"
+			android:summary="Zusammenfassung"
+			android:inputType="textPassword" />
+
+	</PreferenceCategory>
+	
+</PreferenceScreen>

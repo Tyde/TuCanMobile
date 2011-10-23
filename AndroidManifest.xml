@@ -27,14 +27,15 @@
         <activity android:name=".ui.VV_Events"
             android:theme="@android:style/Theme.Light.NoTitleBar"
             android:label="Vorlesungen"></activity>
-        <service android:name=".service.HTTPBrowserRemoteImpl"
-        	android:process=":HTTPBrowserRemote">
-        	<intent-filter>
-        		<action 
-        			android:name="com.dalthed.tucan.service.HTTPBrowserRemote"> </action>
-        		</intent-filter>
-        </service>
+       	
+            
+         <activity android:name=".preferences.MainPreferences"
+             android:label="Einstellungen">
+             
+         </activity>
         
+            
+            
 
     </application>
 </manifest>
