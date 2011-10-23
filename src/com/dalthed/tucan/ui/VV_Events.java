@@ -4,10 +4,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import com.dalthed.tucan.R;
@@ -58,12 +60,12 @@ public class VV_Events extends ListActivity {
 			Log.e(LOG_TAG, e.getMessage());
 		}
 	}
-
-	class EventAdapter extends ArrayAdapter<String>{
+	
+	class EventOverviewAdapter extends ArrayAdapter<String>{
 
 		String[] EventType,EventDozent;
-		public EventAdapter(Context context,String[] EventNames,String[] EventType,String[] EventDozent) {
-			super(context,R.layout.row,R.id.row_vv_veranst,EventNames);
+		public EventOverviewAdapter(String[] EventNames,String[] EventType,String[] EventDozent) {
+			super(VV_Events.this,R.layout.row_vv_events,R.id.row_vv_veranst,EventNames);
 			this.EventDozent=EventDozent;
 			this.EventType=EventType;
 		}
@@ -71,11 +73,11 @@ public class VV_Events extends ListActivity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View row = super.getView(position, convertView, parent);
-			//TextView TypeTextView = (TextView) row.findViewById(R.id.row_vv_type);
-			//TextView DozentTextView = (TextView) row.findViewById(R.id.row_vv_dozent);
+			TextView TypeTextView = (TextView) row.findViewById(R.id.row_vv_type);
+			TextView DozentTextView = (TextView) row.findViewById(R.id.row_vv_dozent);
 
-			//TypeTextView.setText(EventType[position]);
-			//DozentTextView.setText(EventDozent[position]);
+			TypeTextView.setText(EventType[position]);
+			DozentTextView.setText(EventDozent[position]);
 			
 			return row;
 		}
@@ -123,19 +125,24 @@ public class VV_Events extends ListActivity {
 					Element leftcolumn = rows.get(1);
 					Element rightcolumn = rows.get(3);
 					Eventnames[i]=leftcolumn.select("a").text();
-					Eventdozent[i]=leftcolumn
-							.text()
-							.split("<br>")[0];
+					List<Node> importantnotes = leftcolumn.childNodes();
+					Iterator<Node> imnit = importantnotes.iterator();
+					while(imnit.hasNext()){
+						Log.i(LOG_TAG,imnit.next().outerHtml());
+					}
+					Eventdozent[i]=importantnotes.get(3).toString();
 					Eventtype[i]=rightcolumn.text();
+					Log.i(LOG_TAG,Eventtype[i]);
 					i++;
 				}
 			}
-			EventAdapter TableAdapter = new EventAdapter(VV_Events.this, Eventnames, Eventtype, Eventdozent);
+			//EventAdapter TableAdapter = new EventAdapter(VV_Events.this, Eventnames, Eventtype, Eventdozent);
+			ArrayAdapter TableAdapter = new EventOverviewAdapter(Eventnames, Eventtype, Eventdozent);
 			callsetListAdapter(TableAdapter);
 			dialog.dismiss();
 		}
 	}
-	public void callsetListAdapter(EventAdapter ElementsAdapter){
+	public void callsetListAdapter(ArrayAdapter ElementsAdapter){
 		
 		setListAdapter(ElementsAdapter);	
 	}

@@ -5,4 +5,5 @@
     <dimen name="activity_titles">20dip</dimen>
     <dimen name="mm_event_title">18dip</dimen>
     <dimen name="mm_event_list">14dip</dimen>
+    <dimen name="vv_event_title">15dip</dimen>
 </resources>

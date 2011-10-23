@@ -8,6 +8,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -60,8 +61,8 @@ public class BrowseMethods {
 			//HTTPConnection.setChunkedStreamingMode(0);
 			
 			
-			InputStream in = HTTPConnection.getInputStream();
-			InputStreamReader isr = new InputStreamReader(in);
+			GZIPInputStream in = (GZIPInputStream) HTTPConnection.getInputStream();
+			InputStreamReader isr = new InputStreamReader(in,"ISO8859_1");
 			BufferedReader bin = new BufferedReader(isr);
 			
 			

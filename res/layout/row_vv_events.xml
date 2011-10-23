@@ -1,16 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:id="@+id/row_vv_events"
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="horizontal" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
-	<TextView android:text="TextView" android:id="@+id/row_vv_veranst"
-		style="@style/mm_events_title" android:layout_width="wrap_content"
-		android:layout_height="wrap_content"></TextView>
-	<TextView android:id="@+id/row_vv_type" style="@style/mm_events_list"
-		android:layout_width="wrap_content"
-		android:text="TextViewasd" android:layout_height="wrap_content"
-		android:layout_gravity="right"></TextView>
-	<TextView android:text="TextVweiew" android:id="@+id/row_vv_dozent"
-		style="@style/mm_events_list" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_marginTop="20dip"></TextView>
-</FrameLayout>
+
+
+<!-- 
+<TableLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     android:stretchColumns="1">
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        >
+
+       
+
+            <TextView
+                android:id="@+id/row_vv_veranst"
+                style="@style/mm_events_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" 
+                />
+
+            <TextView
+                android:id="@+id/row_vv_type"
+                style="@style/mm_events_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:text="TextViewasd" />
+
+            
+           
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/row_vv_dozent"
+            style="@style/mm_events_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextVweiew" />
+
+    </TableRow>
+
+</TableLayout>
+ -->
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tableLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        android:stretchColumns="1">
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:weightSum="5" >
+
+            <TextView
+                android:id="@+id/row_vv_veranst"
+                style="@style/vv_events_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextViewafwwfawfawfawfawfawfawfawfawfawfawf" 
+                android:layout_weight="4.9"
+                />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/row_vv_type"
+                style="@style/mm_events_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="TextView" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/row_vv_dozent"
+                style="@style/mm_events_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+        </TableRow>
+
+    </TableLayout>

@@ -131,7 +131,7 @@ public class MainMenu extends Activity  {
 			Element EventTable = doc.select("table.nb").first();
 			String[] Events;
 			String[] Times;
-			if(EventTable==null){
+			if(EventTable==null || EventTable.attr("summary")=="Eingegangene Nachrichten"){
 				Events = new String[1];
 				Times = new String[1];
 				Events[0]="Keine Heutigen Veranstaltungen";
