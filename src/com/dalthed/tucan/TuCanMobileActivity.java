@@ -59,6 +59,9 @@ public class TuCanMobileActivity extends Activity {
 		usrnameField.setText(tuid);
 		pwdField.setText(pw);
         
+		if(tuid!="" && pw!=""){
+			onClickSendLogin(null);
+		}
 		ImageView img = (ImageView) findViewById(R.id.imageView1);
 		img.requestFocus();
         

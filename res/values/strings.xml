@@ -16,6 +16,9 @@
     <!-- Vorlesungsverzeichnis -->
     <string name="mmenu_vv">Vorlesungsverzeichnis//</string>
     
+    <!-- Prüfungen -->
+    <string name="exams_title">Prüfungen//</string>
+    
     <!-- UI Dynamic -->
     <string name="ui_login">Anmelden...</string>
     <string name="ui_load_data">Lade Daten...</string>
