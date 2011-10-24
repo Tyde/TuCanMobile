@@ -61,7 +61,6 @@ public class MainMenu extends Activity {
 
 			callOverviewBrowser.execute(thisRequest);
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			Log.e(LOG_TAG, e.getMessage());
 		}
 		// Webhandling End
@@ -93,7 +92,8 @@ public class MainMenu extends Activity {
 					// Veranstaltungen
 					break;
 				case 3:
-					Intent StartExamIntent = new Intent(MainMenu.this, Exams.class);
+					Intent StartExamIntent = new Intent(MainMenu.this,
+							Exams.class);
 					StartExamIntent.putExtra("URL", menu_link_ex);
 					StartExamIntent.putExtra("Cookie", localCookieManager
 							.getCookieHTTPString(TucanMobile.TUCAN_HOST));
@@ -117,7 +117,6 @@ public class MainMenu extends Activity {
 
 		@Override
 		protected void onPreExecute() {
-			// TODO Auto-generated method stub
 			dialog = ProgressDialog.show(MainMenu.this, "", "Lade...", true);
 			mm_pbar = (ProgressBar) findViewById(R.id.mm_progress);
 			mm_pbar.setVisibility(View.VISIBLE);
@@ -188,8 +187,6 @@ public class MainMenu extends Activity {
 					+ lcURL.getHost()
 					+ doc.select("li[title=Prüfungen]").select("a")
 							.attr("href");
-			Toast.makeText(MainMenu.this, menu_link_ex, Toast.LENGTH_LONG)
-					.show();
 
 			usertextview.setText(UserName);
 			ListView EventList = (ListView) findViewById(R.id.mm_eventList);
@@ -217,7 +214,6 @@ public class MainMenu extends Activity {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			// TODO Auto-generated method stub
 			View row = super.getView(position, convertView, parent);
 			TextView clockText = (TextView) row.findViewById(R.id.row_time);
 			clockText.setText(startClock[position]);

@@ -18,11 +18,17 @@
         android:layout_gravity="right"
         android:text="@string/exams_title" >
     </TextView>
-
+	<Spinner
+        android:id="@+id/exam_semester_spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:visibility="gone"/>
     <ListView
         android:id="@+id/android:list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
     </ListView>
+
+    
 
 </LinearLayout>

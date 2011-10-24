@@ -14,34 +14,34 @@ public class TucanMobile extends Application {
 	private static Context Appcontext;
 	public final static String TUCAN_HOST = "www.tucan.tu-darmstadt.de";
 	public final static String TUCAN_PROT = "https://";
+
 	@Override
 	public void onCreate() {
-		TucanMobile.Appcontext=getApplicationContext();
+		TucanMobile.Appcontext = getApplicationContext();
 	}
-	
-	public static Context getAppContext(){
+
+	public static Context getAppContext() {
 		return Appcontext;
 	}
-	public void generateNoteOnSD(String sFileName, String sBody){
-	    try
-	    {
-	        File root = new File(Environment.getExternalStorageDirectory(), "Notes");
-	        if (!root.exists()) {
-	            root.mkdirs();
-	        }
-	        File gpxfile = new File(root, sFileName);
-	        FileWriter writer = new FileWriter(gpxfile);
-	        writer.append(sBody);
-	        writer.flush();
-	        writer.close();
-	        Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
-	    }
-	    catch(IOException e)
-	    {
-	         e.printStackTrace();
-	         String importError = e.getMessage();
-	         Log.e("TuCanMobile", importError);
-	    }
-	   }
+
+	public void generateNoteOnSD(String sFileName, String sBody) {
+		try {
+			File root = new File(Environment.getExternalStorageDirectory(),
+					"Notes");
+			if (!root.exists()) {
+				root.mkdirs();
+			}
+			File gpxfile = new File(root, sFileName);
+			FileWriter writer = new FileWriter(gpxfile);
+			writer.append(sBody);
+			writer.flush();
+			writer.close();
+			Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+		} catch (IOException e) {
+			e.printStackTrace();
+			String importError = e.getMessage();
+			Log.e("TuCanMobile", importError);
+		}
+	}
 
 }

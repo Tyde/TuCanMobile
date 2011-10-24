@@ -18,7 +18,7 @@ import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.BrowseMethods;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
-import com.dalthed.tucan.ui.VV.SecureBrowser;
+
 
 import android.app.ListActivity;
 import android.app.ProgressDialog;

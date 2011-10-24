@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">TuCanMobile</string>
-    
+
     <!-- Login -->
     <string name="login_tuid">TU-ID:</string>
     <string name="login_pw">Password:</string>
@@ -9,25 +10,24 @@
     <string name="login_stay_logged">Passwort merken</string>
     <string name="loginmenu_preferences">Einstellungen</string>
     <string name="loginmenu_close">Schließen</string>
-    
-    <!--  Hauptmenü -->
+
+    <!-- Hauptmenü -->
     <string name="mm_events_title">Heutige Veranstaltungen:</string>
-    
+
     <!-- Vorlesungsverzeichnis -->
     <string name="mmenu_vv">Vorlesungsverzeichnis//</string>
-    
+
     <!-- Prüfungen -->
     <string name="exams_title">Prüfungen//</string>
-    
+
     <!-- UI Dynamic -->
     <string name="ui_login">Anmelden...</string>
     <string name="ui_load_data">Lade Daten...</string>
     <string name="ui_calc">Berechne...</string>
-    
+
     <!-- Preferences -->
     <string name="settings_username">TU-ID und Passwort:</string>
     <string name="settings_tuid">TU-ID:</string>
     <string name="settings_pw">Passwort:</string>
-    
-       
+
 </resources>

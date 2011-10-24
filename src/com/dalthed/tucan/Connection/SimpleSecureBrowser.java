@@ -8,13 +8,23 @@ import com.dalthed.tucan.ui.SimpleWebListActivity;
 import android.app.ProgressDialog;
 
 import android.os.AsyncTask;
-
+/**
+ * SimpleSecureBrowser ist ein AsyncTask welcher die RequestObjects passend abschickt und zurückgibt.
+ * Muss aus einer SimpleWebListActivity gestartet werden. Nachdem die Daten angekommen sind, wird
+ * die onPostExecute der aufrufenden SimpleWebListActivity aufgerufen.
+ * @author Tyde
+ *
+ */
 public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, AnswerObject> {
-	protected SimpleWebListActivity outerContext;
+	protected SimpleWebListActivity outerCallingActivity;
 	ProgressDialog dialog;
-	public SimpleSecureBrowser (SimpleWebListActivity context) {
+	/**
+	 * Die Activity muss übergeben werden, damit der Browser die Methode onPostExecute aufrufen kann
+	 * @param callingActivity
+	 */
+	public SimpleSecureBrowser (SimpleWebListActivity callingActivity) {
 		super();
-		outerContext=context;
+		outerCallingActivity=callingActivity;
 	}
 	@Override
 	protected AnswerObject doInBackground(RequestObject... requestInfo) {
@@ -27,14 +37,14 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 
 	@Override
 	protected void onPreExecute() {
-		dialog = ProgressDialog.show(outerContext,"",
-				outerContext.getResources().getString(R.string.ui_load_data),true);
+		dialog = ProgressDialog.show(outerCallingActivity,"",
+				outerCallingActivity.getResources().getString(R.string.ui_load_data),true);
 	}
 
 	@Override
 	protected void onPostExecute(AnswerObject result) {
-		dialog.setTitle(outerContext.getResources().getString(R.string.ui_calc));
-		outerContext.onPostExecute(result);
+		dialog.setTitle(outerCallingActivity.getResources().getString(R.string.ui_calc));
+		outerCallingActivity.onPostExecute(result);
 		dialog.dismiss();
 	}
 	
