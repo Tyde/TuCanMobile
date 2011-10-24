@@ -13,12 +13,14 @@ import org.jsoup.select.Elements;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TucanMobile;
@@ -33,9 +35,9 @@ public class Exams extends SimpleWebListActivity {
 	private CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
 	private int mode = 0;
-	private ArrayList<String> examLinks;
-	private ArrayList<String> examNames;
+	private ArrayList<String> examLinks,examNames,examNameBuffer;
 	private ArrayAdapter<String> ListAdapter;
+	private String  URLStringtoCall;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,7 +45,7 @@ public class Exams extends SimpleWebListActivity {
 
 		// Webhandling Start
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
-		String URLStringtoCall = getIntent().getExtras().getString("URL");
+		URLStringtoCall = getIntent().getExtras().getString("URL");
 		UserName = getIntent().getExtras().getString("UserName");
 		URL URLtoCall;
 
@@ -65,21 +67,53 @@ public class Exams extends SimpleWebListActivity {
 	}
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		switch (position) {
-		case 2:
-			mode=2;
+		if(mode==0){
 			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(this);
-			Log.i(LOG_TAG,"URL: "+TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+examLinks.get(2));
-			RequestObject thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+examLinks.get(2),
-					localCookieManager, RequestObject.METHOD_GET, "");
-			callOverviewBrowser.execute(thisRequest);
-			break;
-		default:
-			break;
+			RequestObject thisRequest;
+			switch (position) {
+			case 1:
+				mode=1;
+				Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
+			
+				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+examLinks.get(1),
+						localCookieManager, RequestObject.METHOD_GET, "");
+				callOverviewBrowser.execute(thisRequest);
+				Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
+				break;
+			case 2:
+				mode=2;
+				Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
+				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+examLinks.get(2),
+						localCookieManager, RequestObject.METHOD_GET, "");
+				callOverviewBrowser.execute(thisRequest);
+				Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
+				break;
+			default:
+				break;
+			}
+		}
+		
+		
+	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0 && mode!=0) {
+			
+			examNameBuffer=(ArrayList<String>) examNames.clone();
+			ListAdapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, examNameBuffer);
+			Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
+			setListAdapter(ListAdapter);
+			mode=0;			
+			Spinner semesterSpinner = (Spinner) findViewById(R.id.exam_semester_spinner);
+			semesterSpinner.setVisibility(View.GONE);
+			return true;
+		}
+		else {
+			return super.onKeyDown(keyCode, event);
 		}
 		
 	}
-	
 	
 	class ModuleAdapter extends ArrayAdapter<String>{
 
@@ -134,24 +168,56 @@ public class Exams extends SimpleWebListActivity {
 
 				// Log.i(LOG_TAG,next.toString()+"Hakki");
 			}
+			
+			examNameBuffer=(ArrayList<String>) examNames.clone();
 			ListAdapter = new ArrayAdapter<String>(this,
-					android.R.layout.simple_list_item_1, examNames);
+					android.R.layout.simple_list_item_1, examNameBuffer);
 			setListAdapter(ListAdapter);
 		}
-		else if(mode==2){
-			ArrayList<String> ResultName = new ArrayList<String>();
-			ArrayList<String> ResultGrade = new ArrayList<String>();
-			ArrayList<String> ResultDate = new ArrayList<String>();
+		else{
 			
-			Iterator<Element> ExamResultRowIterator = doc.select("tr.tbdata").iterator();
-			while(ExamResultRowIterator.hasNext()){
-				Element next = ExamResultRowIterator.next();
-				Elements ExamResultCols = next.select("td");
-				Log.i(LOG_TAG,"Größe Cols:"+ExamResultCols.size());
-				ResultName.add(Jsoup.parse(ExamResultCols.get(0).html().split("<br />")[0]).text());
-				ResultDate.add(ExamResultCols.get(1).text());
-				ResultGrade.add(ExamResultCols.get(2).text() + "  "+ ExamResultCols.get(3).text());
+		
+			if(mode==1){
+				ArrayList<String> ResultName = new ArrayList<String>();
+				ArrayList<String> ResultGrade = new ArrayList<String>();
+				ArrayList<String> ResultCredits = new ArrayList<String>();
+				Element ModuleOverviewTable = doc.select("div.tb").first();
+				Iterator<Element> ExamResultRowIterator = ModuleOverviewTable.select("tbody").first().select("tr").iterator();
+				while(ExamResultRowIterator.hasNext()){
+					Element next = ExamResultRowIterator.next();
+					Elements ExamResultCols = next.select("td");
+					Log.i(LOG_TAG,"Größe Cols:"+ExamResultCols.size());
+					if(ExamResultCols.size()>0){
+						ResultName.add(ExamResultCols.get(1).text());
+						ResultCredits.add(ExamResultCols.get(4).text());
+						ResultGrade.add(ExamResultCols.get(2).text());
+					}
+					
+				}
+				ListAdapter.clear();
+				ListAdapter = new ModuleAdapter(ResultName, ResultGrade, ResultCredits);
+				setListAdapter(ListAdapter);
+				Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
 			}
+			else if(mode==2){
+				ArrayList<String> ResultName = new ArrayList<String>();
+				ArrayList<String> ResultGrade = new ArrayList<String>();
+				ArrayList<String> ResultDate = new ArrayList<String>();
+				Iterator<Element> ExamResultRowIterator = doc.select("tr.tbdata").iterator();
+				while(ExamResultRowIterator.hasNext()){
+					Element next = ExamResultRowIterator.next();
+					Elements ExamResultCols = next.select("td");
+					Log.i(LOG_TAG,"Größe Cols:"+ExamResultCols.size());
+					ResultName.add(Jsoup.parse(ExamResultCols.get(0).html().split("<br />")[0]).text());
+					ResultDate.add(ExamResultCols.get(1).text());
+					ResultGrade.add(ExamResultCols.get(2).text() + "  "+ ExamResultCols.get(3).text());
+				}
+				ListAdapter.clear();
+				ListAdapter = new ModuleAdapter(ResultName, ResultGrade, ResultDate);
+				setListAdapter(ListAdapter);
+				
+			}
+			
 			ArrayList<String> SemesterOptionName = new ArrayList<String>();
 			ArrayList<String> SemesterOptionValue = new ArrayList<String>();
 			Iterator<Element> SemesterOptionIterator = doc.select("option").iterator();
@@ -167,9 +233,7 @@ public class Exams extends SimpleWebListActivity {
 			semesterSpinner.setVisibility(View.VISIBLE);
 			semesterSpinner.setAdapter(SpinnerAdapter);
 			semesterSpinner.setSelection(SpinnerAdapter.getCount()-1);
-			ListAdapter.clear();
-			ListAdapter = new ModuleAdapter(ResultName, ResultGrade, ResultDate);
-			setListAdapter(ListAdapter);
+			Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
 			
 		}
 		

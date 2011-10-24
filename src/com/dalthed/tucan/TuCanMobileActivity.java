@@ -2,20 +2,26 @@ package com.dalthed.tucan;
 
 
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.BrowseMethods;
+import com.dalthed.tucan.Connection.CookieManager;
+import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 
 
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.preferences.MainPreferences;
 import com.dalthed.tucan.ui.MainMenu;
 import com.dalthed.tucan.ui.ProgressBarDialogFactory;
+import com.dalthed.tucan.ui.SimpleWebActivity;
 
-
-import android.app.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -37,7 +43,7 @@ import android.widget.Toast;
 
 
 
-public class TuCanMobileActivity extends Activity {
+public class TuCanMobileActivity extends SimpleWebActivity {
     /** Called when the activity is first created. */
     //private HTTPSbrowser mBrowserService;
 	private static final String LOG_TAG = "TuCanMobile";
@@ -58,8 +64,23 @@ public class TuCanMobileActivity extends Activity {
 		pwdField		=	(EditText) findViewById(R.id.login_pw);
 		usrnameField.setText(tuid);
 		pwdField.setText(pw);
-        
-		if(tuid!="" && pw!=""){
+        //https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=MLSSTART&ARGUMENTS=
+		String settCookie=einstellungen.getString("Cookie", null);
+		String settArg=einstellungen.getString("Session", null);
+		if(settCookie!=null && settArg!=null){
+			//taking the fast Road
+			Toast.makeText(this, "Versuch: FastLogin", Toast.LENGTH_SHORT);
+			CookieManager localCookieManager = new CookieManager();
+			localCookieManager.generateManagerfromHTTPString(
+					TucanMobile.TUCAN_HOST, settCookie);
+			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
+					this);
+			RequestObject thisRequest = new RequestObject("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=MLSSTART&ARGUMENTS="+settArg+",",
+					localCookieManager, RequestObject.METHOD_GET, "");
+
+			callOverviewBrowser.execute(thisRequest);
+		}
+		else if(tuid!="" && pw!=""){
 			onClickSendLogin(null);
 		}
 		ImageView img = (ImageView) findViewById(R.id.imageView1);
@@ -120,7 +141,7 @@ public class TuCanMobileActivity extends Activity {
 		}
 		
 	}
-
+	
 
 
 	public class HTTPSBrowser extends AsyncTask<RequestObject, Integer, AnswerObject>  {
@@ -171,7 +192,7 @@ public class TuCanMobileActivity extends Activity {
 	    				requestInfo[i+1].setCookieManager(answer.getCookieManager());
     			}
     			else{
-    				Log.e(LOG_TAG,"Zu viele Redirects");
+    				Log.i(LOG_TAG,"Zu viele Redirects");
     			}
     			publishProgress(new Integer[]{i,requestInfo.length});
     		}
@@ -181,8 +202,8 @@ public class TuCanMobileActivity extends Activity {
     	
     	
     	protected void onPostExecute(AnswerObject result) {
+    		String SessionArgument="";
     		dialog.setMessage(getResources().getString(R.string.ui_calc));
-    		
     		//TODO: Update to JSoup
     		Pattern findUser = Pattern.compile("<span\\s+class=\"loginDataName\"\\s+id=\"loginDataName\"><b>Name<span\\s+class=\"colon\">:</span>\\s+</b>(.*?)</span>");
     		Matcher findUsermatcher = findUser.matcher(result.getHTML());
@@ -195,12 +216,24 @@ public class TuCanMobileActivity extends Activity {
     		}
     		if(found==true){
     			dialog.dismiss();
+    			String lcURLString=result.getLastCalledURL();
+    			try {
+					URL lcURL = new URL (lcURLString);
+					SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1].split(",")[0];
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    			
     			CheckBox remember = (CheckBox) findViewById(R.id.checkBox1);
     			if(remember.isChecked()){
     				final SharedPreferences einstellungen = MainPreferences.getSettings(TuCanMobileActivity.this);
     				SharedPreferences.Editor editor = einstellungen.edit();
     				editor.putString("tuid", usrnameField.getText().toString());
     				editor.putString("pw", pwdField.getText().toString());
+    				editor.putString("Cookie", result.getCookieManager().getCookieHTTPString(TucanMobile.TUCAN_HOST));
+    				Log.i(LOG_TAG,SessionArgument);
+    				editor.putString("Session", SessionArgument);
     				editor.commit();
     				
     			}
@@ -215,15 +248,25 @@ public class TuCanMobileActivity extends Activity {
     			wrongLoginNotif.show();
     			
     		}
-    		
-    		
-    		
-        	
-    		
     	}
     }
     
     public void onRequestisAnswered(){
     	
     }
+	@Override
+	public void onPostExecute(AnswerObject result) {
+		Document doc = Jsoup.parse(result.getHTML());
+		String UserName = doc.select("span#loginDataName").text().split(":")[1];
+		if(!UserName.equals("")){
+			final Intent i = new Intent(TuCanMobileActivity.this,MainMenu.class);
+    		i.putExtra("Cookie", result.getCookieManager().getCookieHTTPString("www.tucan.tu-darmstadt.de"));
+    		i.putExtra("URL", result.getLastCalledURL());
+    		startActivity(i);
+		}
+		else {
+			Toast.makeText(this, "Schneller Login fehlgeschlagen", Toast.LENGTH_LONG);
+			onClickSendLogin(null);
+		}
+	}
 }

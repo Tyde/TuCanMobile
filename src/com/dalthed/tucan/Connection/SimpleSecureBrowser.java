@@ -2,6 +2,7 @@ package com.dalthed.tucan.Connection;
 
 import com.dalthed.tucan.R;
 
+import com.dalthed.tucan.ui.SimpleWebActivity;
 import com.dalthed.tucan.ui.SimpleWebListActivity;
 
 
@@ -16,14 +17,22 @@ import android.os.AsyncTask;
  *
  */
 public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, AnswerObject> {
-	protected SimpleWebListActivity outerCallingActivity;
+	protected SimpleWebListActivity outerCallingListActivity;
+	protected SimpleWebActivity outerCallingActivity;
 	ProgressDialog dialog;
+	
 	/**
 	 * Die Activity muss übergeben werden, damit der Browser die Methode onPostExecute aufrufen kann
 	 * @param callingActivity
 	 */
 	public SimpleSecureBrowser (SimpleWebListActivity callingActivity) {
 		super();
+		outerCallingListActivity=callingActivity;
+		outerCallingActivity=null;
+	}
+	
+	public SimpleSecureBrowser (SimpleWebActivity callingActivity) {
+		outerCallingListActivity=null;
 		outerCallingActivity=callingActivity;
 	}
 	@Override
@@ -37,14 +46,26 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 
 	@Override
 	protected void onPreExecute() {
-		dialog = ProgressDialog.show(outerCallingActivity,"",
-				outerCallingActivity.getResources().getString(R.string.ui_load_data),true);
+		if(outerCallingListActivity==null){
+			dialog = ProgressDialog.show(outerCallingActivity,"",
+					outerCallingActivity.getResources().getString(R.string.ui_load_data),true);
+		}
+		else {
+			dialog = ProgressDialog.show(outerCallingListActivity,"",
+					outerCallingListActivity.getResources().getString(R.string.ui_load_data),true);
+		}
 	}
 
 	@Override
 	protected void onPostExecute(AnswerObject result) {
-		dialog.setTitle(outerCallingActivity.getResources().getString(R.string.ui_calc));
-		outerCallingActivity.onPostExecute(result);
+		if(outerCallingListActivity==null){
+			dialog.setTitle(outerCallingActivity.getResources().getString(R.string.ui_calc));
+			outerCallingActivity.onPostExecute(result);
+		}
+		else {
+			dialog.setTitle(outerCallingListActivity.getResources().getString(R.string.ui_calc));
+			outerCallingListActivity.onPostExecute(result);
+		}
 		dialog.dismiss();
 	}
 	
