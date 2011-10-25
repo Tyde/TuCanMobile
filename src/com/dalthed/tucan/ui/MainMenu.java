@@ -9,10 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,18 +19,18 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dalthed.tucan.R;
+import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
-import com.dalthed.tucan.Connection.BrowseMethods;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
+import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 
-public class MainMenu extends Activity {
+public class MainMenu extends SimpleWebActivity {
 
 	CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
@@ -55,7 +52,8 @@ public class MainMenu extends Activity {
 			localCookieManager = new CookieManager();
 			localCookieManager.generateManagerfromHTTPString(
 					lastCalledURL.getHost(), CookieHTTPString);
-			SecureBrowser callOverviewBrowser = new SecureBrowser();
+			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
+					this);
 			RequestObject thisRequest = new RequestObject(lastCalledURLString,
 					localCookieManager, RequestObject.METHOD_GET, "");
 
@@ -71,7 +69,6 @@ public class MainMenu extends Activity {
 				android.R.layout.simple_list_item_1, getResources()
 						.getStringArray(R.array.mainmenu_options)));
 		MenuList.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView arg0, View arg1, int position,
 					long arg3) {
@@ -110,91 +107,6 @@ public class MainMenu extends Activity {
 
 	}
 
-	public class SecureBrowser extends
-			AsyncTask<RequestObject, Integer, AnswerObject> {
-		ProgressDialog dialog;
-		ProgressBar mm_pbar;
-
-		@Override
-		protected void onPreExecute() {
-			dialog = ProgressDialog.show(MainMenu.this, "", "Lade...", true);
-			mm_pbar = (ProgressBar) findViewById(R.id.mm_progress);
-			mm_pbar.setVisibility(View.VISIBLE);
-		}
-
-		@Override
-		protected AnswerObject doInBackground(RequestObject... requestInfo) {
-			AnswerObject answer = new AnswerObject("", "", null, null);
-			RequestObject significantRequest = requestInfo[0];
-			BrowseMethods Browser = new BrowseMethods();
-			answer = Browser.browse(significantRequest);
-			return answer;
-		}
-
-		@Override
-		protected void onPostExecute(AnswerObject result) {
-			dialog.setMessage("Berechne...");
-			mm_pbar.setVisibility(View.GONE);
-
-			// HTML auslesen
-			Document doc = Jsoup.parse(result.getHTML());
-			// Tabelle mit den Terminen finden und Durchlaufen
-			Element EventTable = doc.select("table.nb").first();
-			String[] Events;
-			String[] Times;
-			if (EventTable == null
-					|| EventTable.attr("summary") == "Eingegangene Nachrichten") {
-				Events = new String[1];
-				Times = new String[1];
-				Events[0] = "Keine Heutigen Veranstaltungen";
-				Times[0] = "";
-			} else {
-				Elements EventRows = EventTable.select("tr.tbdata");
-				Iterator<Element> RowIt = EventRows.iterator();
-				Events = new String[EventRows.size()];
-				Times = new String[EventRows.size()];
-				int i = 0;
-				while (RowIt.hasNext()) {
-					Element currentElement = (Element) RowIt.next();
-					String EventString = currentElement
-							.select("td[headers=Name]").select("a").first()
-							.text();
-					String EventTimeString = currentElement
-							.select("td[headers=von]").select("a").first()
-							.text();
-					String EventTimeEndString = currentElement
-							.select("td[headers=bis]").select("a").first()
-							.text();
-					Times[i] = EventTimeString + "-" + EventTimeEndString;
-					Events[i] = EventString;
-					i++;
-				}
-			}
-
-			UserName = doc.select("span#loginDataName").text().split(":")[1];
-			TextView usertextview = (TextView) findViewById(R.id.mm_username);
-			URL lcURL = null;
-			try {
-				lcURL = new URL(result.getLastCalledURL());
-			} catch (MalformedURLException e) {
-				Log.e(LOG_TAG, "Malformed URL");
-			}
-
-			menu_link_vv = lcURL.getProtocol() + "://" + lcURL.getHost()
-					+ doc.select("li[title=VV]").select("a").attr("href");
-			menu_link_ex = lcURL.getProtocol()
-					+ "://"
-					+ lcURL.getHost()
-					+ doc.select("li[title=Prüfungen]").select("a")
-							.attr("href");
-
-			usertextview.setText(UserName);
-			ListView EventList = (ListView) findViewById(R.id.mm_eventList);
-			EventList.setAdapter(new EventAdapter(Events, Times));
-			dialog.dismiss();
-		}
-	}
-
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
@@ -219,6 +131,67 @@ public class MainMenu extends Activity {
 			clockText.setText(startClock[position]);
 			return row;
 		}
+	}
+
+	@Override
+	public void onPostExecute(AnswerObject result) {
+		// HTML auslesen
+		Document doc = Jsoup.parse(result.getHTML());
+		if(doc.select("span.notLoggedText").text().length()>0){
+			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
+			startActivity(BackToLoginIntent);
+		}
+		else {
+			// Tabelle mit den Terminen finden und Durchlaufen
+			Element EventTable = doc.select("table.nb").first();
+			String[] Events;
+			String[] Times;
+			if (EventTable == null
+					|| EventTable.attr("summary") == "Eingegangene Nachrichten") {
+				Events = new String[1];
+				Times = new String[1];
+				Events[0] = "Keine Heutigen Veranstaltungen";
+				Times[0] = "";
+			} else {
+				Elements EventRows = EventTable.select("tr.tbdata");
+				Iterator<Element> RowIt = EventRows.iterator();
+				Events = new String[EventRows.size()];
+				Times = new String[EventRows.size()];
+				int i = 0;
+				while (RowIt.hasNext()) {
+					Element currentElement = (Element) RowIt.next();
+					String EventString = currentElement.select("td[headers=Name]")
+							.select("a").first().text();
+					String EventTimeString = currentElement
+							.select("td[headers=von]").select("a").first().text();
+					String EventTimeEndString = currentElement
+							.select("td[headers=bis]").select("a").first().text();
+					Times[i] = EventTimeString + "-" + EventTimeEndString;
+					Events[i] = EventString;
+					i++;
+				}
+			}
+
+			UserName = doc.select("span#loginDataName").text().split(":")[1];
+			TextView usertextview = (TextView) findViewById(R.id.mm_username);
+			URL lcURL = null;
+			try {
+				lcURL = new URL(result.getLastCalledURL());
+			} catch (MalformedURLException e) {
+				Log.e(LOG_TAG, "Malformed URL");
+			}
+
+			menu_link_vv = lcURL.getProtocol() + "://" + lcURL.getHost()
+					+ doc.select("li[title=VV]").select("a").attr("href");
+			menu_link_ex = lcURL.getProtocol() + "://" + lcURL.getHost()
+					+ doc.select("li[title=Prüfungen]").select("a").attr("href");
+
+			usertextview.setText(UserName);
+			ListView EventList = (ListView) findViewById(R.id.mm_eventList);
+			EventList.setAdapter(new EventAdapter(Events, Times));
+		}
+		
+
 	}
 
 }

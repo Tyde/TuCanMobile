@@ -69,6 +69,8 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 		String settArg=einstellungen.getString("Session", null);
 		if(settCookie!=null && settArg!=null){
 			//taking the fast Road
+			CheckBox remember = (CheckBox) findViewById(R.id.checkBox1);
+			remember.setChecked(true);
 			Toast.makeText(this, "Versuch: FastLogin", Toast.LENGTH_SHORT);
 			CookieManager localCookieManager = new CookieManager();
 			localCookieManager.generateManagerfromHTTPString(
@@ -257,16 +259,24 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 	@Override
 	public void onPostExecute(AnswerObject result) {
 		Document doc = Jsoup.parse(result.getHTML());
-		String UserName = doc.select("span#loginDataName").text().split(":")[1];
-		if(!UserName.equals("")){
-			final Intent i = new Intent(TuCanMobileActivity.this,MainMenu.class);
-    		i.putExtra("Cookie", result.getCookieManager().getCookieHTTPString("www.tucan.tu-darmstadt.de"));
-    		i.putExtra("URL", result.getLastCalledURL());
-    		startActivity(i);
+		try{
+			String UserName = doc.select("span#loginDataName").text().split(":")[1];
+			if(!UserName.equals("")){
+				final Intent i = new Intent(TuCanMobileActivity.this,MainMenu.class);
+	    		i.putExtra("Cookie", result.getCookieManager().getCookieHTTPString("www.tucan.tu-darmstadt.de"));
+	    		i.putExtra("URL", result.getLastCalledURL());
+	    		startActivity(i);
+			}
+			else {
+				Toast.makeText(this, "Schneller Login fehlgeschlagen", Toast.LENGTH_LONG);
+				onClickSendLogin(null);
+			}
 		}
-		else {
+		catch(Exception e) {
+			Log.i(LOG_TAG,"Fehler: "+e.getMessage());
 			Toast.makeText(this, "Schneller Login fehlgeschlagen", Toast.LENGTH_LONG);
 			onClickSendLogin(null);
 		}
+		
 	}
 }

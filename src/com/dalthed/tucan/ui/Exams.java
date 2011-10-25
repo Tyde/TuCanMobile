@@ -10,6 +10,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dalthed.tucan.R;
+import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
 
 import com.dalthed.tucan.Connection.AnswerObject;
@@ -140,102 +142,109 @@ public class Exams extends SimpleWebListActivity {
 
 	public void onPostExecute(AnswerObject result) {
 		Document doc = Jsoup.parse(result.getHTML());
-		if(mode==0){
-			Elements links = doc.select("li#link000280").select("li");
-			Iterator<Element> linkIt = links.iterator();
-			examLinks = new ArrayList<String>();
-			examNames = new ArrayList<String>();
-			while (linkIt.hasNext()) {
-				Element next = linkIt.next();
-				String id = next.id();
+		if(doc.select("span.notLoggedText").text().length()>0){
+			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
+			startActivity(BackToLoginIntent);
+		}
+		else {
+			if(mode==0){
+				Elements links = doc.select("li#link000280").select("li");
+				Iterator<Element> linkIt = links.iterator();
+				examLinks = new ArrayList<String>();
+				examNames = new ArrayList<String>();
+				while (linkIt.hasNext()) {
+					Element next = linkIt.next();
+					String id = next.id();
 
-				if (id.equals("link000318") || id.equals("link000316")) {
-					String link = next.select("a").attr("href");
-					String name = next.select("a").text();
-					examLinks.add(link);
-					examNames.add(name);
-				} else if (id.equals("link000323")) {
-					Iterator<Element> subLinks = next.select("li.depth_3")
-							.iterator();
-					while (subLinks.hasNext()) {
-						Element subnext = subLinks.next();
-						String link = subnext.select("a").attr("href");
-						String name = subnext.select("a").text();
+					if (id.equals("link000318") || id.equals("link000316")) {
+						String link = next.select("a").attr("href");
+						String name = next.select("a").text();
 						examLinks.add(link);
 						examNames.add(name);
+					} else if (id.equals("link000323")) {
+						Iterator<Element> subLinks = next.select("li.depth_3")
+								.iterator();
+						while (subLinks.hasNext()) {
+							Element subnext = subLinks.next();
+							String link = subnext.select("a").attr("href");
+							String name = subnext.select("a").text();
+							examLinks.add(link);
+							examNames.add(name);
+						}
 					}
-				}
 
-				// Log.i(LOG_TAG,next.toString()+"Hakki");
+					// Log.i(LOG_TAG,next.toString()+"Hakki");
+				}
+				
+				examNameBuffer=(ArrayList<String>) examNames.clone();
+				ListAdapter = new ArrayAdapter<String>(this,
+						android.R.layout.simple_list_item_1, examNameBuffer);
+				setListAdapter(ListAdapter);
 			}
+			else{
+				
 			
-			examNameBuffer=(ArrayList<String>) examNames.clone();
-			ListAdapter = new ArrayAdapter<String>(this,
-					android.R.layout.simple_list_item_1, examNameBuffer);
-			setListAdapter(ListAdapter);
-		}
-		else{
-			
-		
-			if(mode==1){
-				ArrayList<String> ResultName = new ArrayList<String>();
-				ArrayList<String> ResultGrade = new ArrayList<String>();
-				ArrayList<String> ResultCredits = new ArrayList<String>();
-				Element ModuleOverviewTable = doc.select("div.tb").first();
-				Iterator<Element> ExamResultRowIterator = ModuleOverviewTable.select("tbody").first().select("tr").iterator();
-				while(ExamResultRowIterator.hasNext()){
-					Element next = ExamResultRowIterator.next();
-					Elements ExamResultCols = next.select("td");
-					Log.i(LOG_TAG,"Größe Cols:"+ExamResultCols.size());
-					if(ExamResultCols.size()>0){
-						ResultName.add(ExamResultCols.get(1).text());
-						ResultCredits.add(ExamResultCols.get(4).text());
-						ResultGrade.add(ExamResultCols.get(2).text());
+				if(mode==1){
+					ArrayList<String> ResultName = new ArrayList<String>();
+					ArrayList<String> ResultGrade = new ArrayList<String>();
+					ArrayList<String> ResultCredits = new ArrayList<String>();
+					Element ModuleOverviewTable = doc.select("div.tb").first();
+					Iterator<Element> ExamResultRowIterator = ModuleOverviewTable.select("tbody").first().select("tr").iterator();
+					while(ExamResultRowIterator.hasNext()){
+						Element next = ExamResultRowIterator.next();
+						Elements ExamResultCols = next.select("td");
+						Log.i(LOG_TAG,"Größe Cols:"+ExamResultCols.size());
+						if(ExamResultCols.size()>0){
+							ResultName.add(ExamResultCols.get(1).text());
+							ResultCredits.add(ExamResultCols.get(4).text());
+							ResultGrade.add(ExamResultCols.get(2).text());
+						}
+						
 					}
+					ListAdapter.clear();
+					ListAdapter = new ModuleAdapter(ResultName, ResultGrade, ResultCredits);
+					setListAdapter(ListAdapter);
+					Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
+				}
+				else if(mode==2){
+					ArrayList<String> ResultName = new ArrayList<String>();
+					ArrayList<String> ResultGrade = new ArrayList<String>();
+					ArrayList<String> ResultDate = new ArrayList<String>();
+					Iterator<Element> ExamResultRowIterator = doc.select("tr.tbdata").iterator();
+					while(ExamResultRowIterator.hasNext()){
+						Element next = ExamResultRowIterator.next();
+						Elements ExamResultCols = next.select("td");
+						Log.i(LOG_TAG,"Größe Cols:"+ExamResultCols.size());
+						ResultName.add(Jsoup.parse(ExamResultCols.get(0).html().split("<br />")[0]).text());
+						ResultDate.add(ExamResultCols.get(1).text());
+						ResultGrade.add(ExamResultCols.get(2).text() + "  "+ ExamResultCols.get(3).text());
+					}
+					ListAdapter.clear();
+					ListAdapter = new ModuleAdapter(ResultName, ResultGrade, ResultDate);
+					setListAdapter(ListAdapter);
 					
 				}
-				ListAdapter.clear();
-				ListAdapter = new ModuleAdapter(ResultName, ResultGrade, ResultCredits);
-				setListAdapter(ListAdapter);
-				Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
-			}
-			else if(mode==2){
-				ArrayList<String> ResultName = new ArrayList<String>();
-				ArrayList<String> ResultGrade = new ArrayList<String>();
-				ArrayList<String> ResultDate = new ArrayList<String>();
-				Iterator<Element> ExamResultRowIterator = doc.select("tr.tbdata").iterator();
-				while(ExamResultRowIterator.hasNext()){
-					Element next = ExamResultRowIterator.next();
-					Elements ExamResultCols = next.select("td");
-					Log.i(LOG_TAG,"Größe Cols:"+ExamResultCols.size());
-					ResultName.add(Jsoup.parse(ExamResultCols.get(0).html().split("<br />")[0]).text());
-					ResultDate.add(ExamResultCols.get(1).text());
-					ResultGrade.add(ExamResultCols.get(2).text() + "  "+ ExamResultCols.get(3).text());
+				
+				ArrayList<String> SemesterOptionName = new ArrayList<String>();
+				ArrayList<String> SemesterOptionValue = new ArrayList<String>();
+				Iterator<Element> SemesterOptionIterator = doc.select("option").iterator();
+				while(SemesterOptionIterator.hasNext()){
+					Element next = SemesterOptionIterator.next();
+					SemesterOptionName.add(next.text());
+					SemesterOptionValue.add(next.attr("value"));
 				}
-				ListAdapter.clear();
-				ListAdapter = new ModuleAdapter(ResultName, ResultGrade, ResultDate);
-				setListAdapter(ListAdapter);
+				ArrayAdapter<String> SpinnerAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, SemesterOptionName);
+				
+				
+				Spinner semesterSpinner = (Spinner) findViewById(R.id.exam_semester_spinner);
+				semesterSpinner.setVisibility(View.VISIBLE);
+				semesterSpinner.setAdapter(SpinnerAdapter);
+				semesterSpinner.setSelection(SpinnerAdapter.getCount()-1);
+				Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
 				
 			}
-			
-			ArrayList<String> SemesterOptionName = new ArrayList<String>();
-			ArrayList<String> SemesterOptionValue = new ArrayList<String>();
-			Iterator<Element> SemesterOptionIterator = doc.select("option").iterator();
-			while(SemesterOptionIterator.hasNext()){
-				Element next = SemesterOptionIterator.next();
-				SemesterOptionName.add(next.text());
-				SemesterOptionValue.add(next.attr("value"));
-			}
-			ArrayAdapter<String> SpinnerAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, SemesterOptionName);
-			
-			
-			Spinner semesterSpinner = (Spinner) findViewById(R.id.exam_semester_spinner);
-			semesterSpinner.setVisibility(View.VISIBLE);
-			semesterSpinner.setAdapter(SpinnerAdapter);
-			semesterSpinner.setSelection(SpinnerAdapter.getCount()-1);
-			Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
-			
 		}
+		
 		
 	}
 

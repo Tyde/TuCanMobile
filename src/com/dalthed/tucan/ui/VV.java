@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.dalthed.tucan.R;
+import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
 
@@ -89,32 +90,39 @@ public class VV extends SimpleWebListActivity {
 	public void onPostExecute(AnswerObject result) {
 		Log.i(LOG_TAG, "HTML zum parsen bereit");
 		Document doc = Jsoup.parse(result.getHTML());
-		Elements tbdata = doc.select("tr.tbdata");
-		if (tbdata.size() > 0) {
-			Log.i(LOG_TAG, "In Event-Table angekomen");
-			Intent EventStartIntent = new Intent(VV.this, VV_Events.class);
-			EventStartIntent.putExtra("URL", result.getLastCalledURL());
-			EventStartIntent.putExtra("User", UserName);
-			EventStartIntent.putExtra("Cookie", result.getCookieManager()
-					.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-			startActivity(EventStartIntent);
-
-		} else {
-			Elements ulList = doc.select("ul#auditRegistration_list").first()
-					.select("li");
-			Iterator<Element> ListIterator = ulList.iterator();
-			ArrayList<String> AllListElementStrings = new ArrayList<String>();
-			Listlinks = new String[ulList.size()];
-			Log.i(LOG_TAG, "Größe: " + ulList.size());
-			int i = 0;
-			while (ListIterator.hasNext()) {
-				Element next = ListIterator.next();
-				AllListElementStrings.add(next.select("a").text());
-				Listlinks[i] = next.select("a").attr("href");
-				Log.i(LOG_TAG, "Bin bei " + i);
-				i++;
+		
+		if(doc.select("span.notLoggedText").text().length()>0){
+			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
+			startActivity(BackToLoginIntent);
+		}
+		else {
+			Elements tbdata = doc.select("tr.tbdata");
+			if (tbdata.size() > 0) {
+				Log.i(LOG_TAG, "In Event-Table angekomen");
+				Intent EventStartIntent = new Intent(VV.this, VV_Events.class);
+				EventStartIntent.putExtra("URL", result.getLastCalledURL());
+				EventStartIntent.putExtra("User", UserName);
+				EventStartIntent.putExtra("Cookie", result.getCookieManager()
+						.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+				startActivity(EventStartIntent);
+	
+			} else {
+				Elements ulList = doc.select("ul#auditRegistration_list").first()
+						.select("li");
+				Iterator<Element> ListIterator = ulList.iterator();
+				ArrayList<String> AllListElementStrings = new ArrayList<String>();
+				Listlinks = new String[ulList.size()];
+				Log.i(LOG_TAG, "Größe: " + ulList.size());
+				int i = 0;
+				while (ListIterator.hasNext()) {
+					Element next = ListIterator.next();
+					AllListElementStrings.add(next.select("a").text());
+					Listlinks[i] = next.select("a").attr("href");
+					Log.i(LOG_TAG, "Bin bei " + i);
+					i++;
+				}
+				callsetListAdapter(AllListElementStrings);
 			}
-			callsetListAdapter(AllListElementStrings);
 		}
 	}
 

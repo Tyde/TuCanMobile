@@ -24,7 +24,7 @@ public class TucanMobile extends Application {
 		return Appcontext;
 	}
 
-	public void generateNoteOnSD(String sFileName, String sBody) {
+	public static void generateNoteOnSD(String sFileName, String sBody,Context mContext) {
 		try {
 			File root = new File(Environment.getExternalStorageDirectory(),
 					"Notes");
@@ -36,7 +36,7 @@ public class TucanMobile extends Application {
 			writer.append(sBody);
 			writer.flush();
 			writer.close();
-			Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
 		} catch (IOException e) {
 			e.printStackTrace();
 			String importError = e.getMessage();
