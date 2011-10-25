@@ -1,5 +1,6 @@
 package com.dalthed.tucan.ui;
 
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -80,6 +81,12 @@ public class Exams extends SimpleWebListActivity {
 			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(this);
 			RequestObject thisRequest;
 			switch (position) {
+			case 0:
+				mode=10;
+				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+examLinks.get(0),
+						localCookieManager, RequestObject.METHOD_GET, "");
+				callOverviewBrowser.execute(thisRequest);
+				break;
 			case 1:
 				mode=1;
 				Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
@@ -127,6 +134,13 @@ public class Exams extends SimpleWebListActivity {
 				else if(mode==2){
 					RequestObject thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+
 							TucanMobile.TUCAN_HOST+examLinks.get(2)+"-N"+SemesterOptionValue.get(position),
+							localCookieManager, RequestObject.METHOD_GET, "");
+					SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(Exams.this);
+					callOverviewBrowser.execute(thisRequest);
+				}
+				else if(mode==10){
+					RequestObject thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+
+							TucanMobile.TUCAN_HOST+examLinks.get(0)+"-N"+SemesterOptionValue.get(position),
 							localCookieManager, RequestObject.METHOD_GET, "");
 					SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(Exams.this);
 					callOverviewBrowser.execute(thisRequest);
@@ -233,8 +247,26 @@ public class Exams extends SimpleWebListActivity {
 			}
 			else{
 				
-			
-				if(mode==1){
+				if(mode==10){
+					ArrayList<String> ExamName = new ArrayList<String>();
+					ArrayList<String> ExamDate = new ArrayList<String>();
+					ArrayList<String> ExamState = new ArrayList<String>();
+					Element ModuleOverviewTable = doc.select("div.tb").first();
+					Iterator<Element> ExamRowIterator = ModuleOverviewTable.select("tbody").first().select("tr").iterator();
+					while(ExamRowIterator.hasNext()){
+						Element next = ExamRowIterator.next();
+						Elements ExamCols = next.select("td");
+						if(ExamCols.size()>0){
+							ExamName.add(ExamCols.get(1).text());
+							ExamDate.add(ExamCols.get(3).text());
+							ExamState.add(ExamCols.get(4).text());
+						}
+					}
+					ListAdapter.clear();
+					ListAdapter = new ModuleAdapter(ExamName, ExamDate, ExamState);
+					setListAdapter(ListAdapter);
+				}
+				else if(mode==1){
 					ArrayList<String> ResultName = new ArrayList<String>();
 					ArrayList<String> ResultGrade = new ArrayList<String>();
 					ArrayList<String> ResultCredits = new ArrayList<String>();
@@ -274,6 +306,7 @@ public class Exams extends SimpleWebListActivity {
 					setListAdapter(ListAdapter);
 					
 				}
+				
 				
 				SemesterOptionName = new ArrayList<String>();
 				SemesterOptionValue = new ArrayList<String>();
