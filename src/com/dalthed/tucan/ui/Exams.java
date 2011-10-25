@@ -117,7 +117,7 @@ public class Exams extends SimpleWebListActivity {
 		public void onItemSelected(AdapterView<?> parent, View view,
 				int position, long id) {
 			if(hitcount==0){
-				Toast.makeText(Exams.this, "Firstcall", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(Exams.this, "Firstcall", Toast.LENGTH_SHORT).show();
 				
 			}
 			else {
@@ -155,7 +155,7 @@ public class Exams extends SimpleWebListActivity {
 
 		@Override
 		public void onNothingSelected(AdapterView<?> parent) {
-			// TODO Auto-generated method stub
+			//Passiert einfach mal nicht!!
 			
 		}
 		

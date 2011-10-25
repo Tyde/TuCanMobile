@@ -19,6 +19,9 @@
 
     <!-- Prüfungen -->
     <string name="exams_title">Prüfungen//</string>
+    
+    <!-- Nachrichten -->
+    <string name="messages_title">Nachrichten//</string>
 
     <!-- UI Dynamic -->
     <string name="ui_login">Anmelden...</string>

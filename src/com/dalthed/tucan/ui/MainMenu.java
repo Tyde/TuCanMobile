@@ -36,6 +36,7 @@ public class MainMenu extends SimpleWebActivity {
 	private static final String LOG_TAG = "TuCanMobile";
 	private String menu_link_vv = "";
 	private String menu_link_ex = "";
+	private String menu_link_msg = "";
 	private String UserName = "";
 
 	@Override
@@ -99,7 +100,13 @@ public class MainMenu extends SimpleWebActivity {
 					// Prüfungen
 					break;
 				case 4:
-					// Nachrichten
+					Intent StartMessageIntent = new Intent(MainMenu.this,
+							Messages.class);
+					StartMessageIntent.putExtra("URL", menu_link_msg);
+					StartMessageIntent.putExtra("Cookie", localCookieManager
+							.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+					StartMessageIntent.putExtra("UserName", UserName);
+					startActivity(StartMessageIntent);
 					break;
 				}
 			}
@@ -180,15 +187,20 @@ public class MainMenu extends SimpleWebActivity {
 			} catch (MalformedURLException e) {
 				Log.e(LOG_TAG, "Malformed URL");
 			}
+			Elements LinkstoOuterWorld = doc.select("div.tb");
+			Element ArchivLink=LinkstoOuterWorld.get(1).select("a").first();
 
 			menu_link_vv = lcURL.getProtocol() + "://" + lcURL.getHost()
 					+ doc.select("li[title=VV]").select("a").attr("href");
 			menu_link_ex = lcURL.getProtocol() + "://" + lcURL.getHost()
 					+ doc.select("li[title=Prüfungen]").select("a").attr("href");
+			menu_link_msg = lcURL.getProtocol() + "://" + lcURL.getHost()
+					+ ArchivLink.attr("href");
 
 			usertextview.setText(UserName);
 			ListView EventList = (ListView) findViewById(R.id.mm_eventList);
 			EventList.setAdapter(new EventAdapter(Events, Times));
+			
 		}
 		
 
