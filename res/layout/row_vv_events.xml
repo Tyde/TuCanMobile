@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" 
+        xmlns:android="http://schemas.android.com/apk/res/android">
+<TableLayout 
     android:id="@+id/tableLayout1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:stretchColumns="1" >
+    
+    android:stretchColumns="*" >
+
+    
+
 
     <TableRow
         android:id="@+id/tableRow1"
@@ -17,21 +27,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="4.9"
-            android:text="TextViewafwwfawfawfawfawfawfawfawfawfawfawf" />
+            android:text="TextViewafawfawf" />
     </TableRow>
 
     <TableRow
         android:id="@+id/tableRow3"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
+
+       
 
-        <TextView
-            android:id="@+id/row_vv_type"
-            style="@style/mm_events_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="TextView" />
+            <TextView
+                android:id="@+id/row_vv_type"
+                style="@style/mm_events_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="TextView" />
+
+       
     </TableRow>
 
     <TableRow
@@ -48,3 +62,4 @@
     </TableRow>
 
 </TableLayout>
+</LinearLayout>

@@ -20,8 +20,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView;
 
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
@@ -37,9 +39,14 @@ public class Exams extends SimpleWebListActivity {
 	private CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
 	private int mode = 0;
+	
 	private ArrayList<String> examLinks,examNames,examNameBuffer;
 	private ArrayAdapter<String> ListAdapter;
 	private String  URLStringtoCall;
+	private ArrayList<String> SemesterOptionName;
+	private ArrayList<String> SemesterOptionValue;
+	private int SemesterOptionSelected=0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -97,6 +104,48 @@ public class Exams extends SimpleWebListActivity {
 		
 		
 	}
+	public class OnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
+		int hitcount = 0;
+		@Override
+		public void onItemSelected(AdapterView<?> parent, View view,
+				int position, long id) {
+			if(hitcount==0){
+				Toast.makeText(Exams.this, "Firstcall", Toast.LENGTH_SHORT).show();
+				
+			}
+			else {
+				
+				if(mode==1){
+					//Toast.makeText(Exams.this, "Call "+position+ " haslink: "+ 
+					//		TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+examLinks.get(1)+SemesterOptionValue.get(position), Toast.LENGTH_SHORT).show();
+					RequestObject thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+
+							TucanMobile.TUCAN_HOST+examLinks.get(1)+"-N"+SemesterOptionValue.get(position),
+							localCookieManager, RequestObject.METHOD_GET, "");
+					SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(Exams.this);
+					callOverviewBrowser.execute(thisRequest);
+				}
+				else if(mode==2){
+					RequestObject thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+
+							TucanMobile.TUCAN_HOST+examLinks.get(2)+"-N"+SemesterOptionValue.get(position),
+							localCookieManager, RequestObject.METHOD_GET, "");
+					SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(Exams.this);
+					callOverviewBrowser.execute(thisRequest);
+				}
+				
+			}
+			hitcount++;
+			
+			
+			
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> parent) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0 && mode!=0) {
@@ -104,7 +153,7 @@ public class Exams extends SimpleWebListActivity {
 			examNameBuffer=(ArrayList<String>) examNames.clone();
 			ListAdapter = new ArrayAdapter<String>(this,
 					android.R.layout.simple_list_item_1, examNameBuffer);
-			Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
+			//Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
 			setListAdapter(ListAdapter);
 			mode=0;			
 			Spinner semesterSpinner = (Spinner) findViewById(R.id.exam_semester_spinner);
@@ -131,7 +180,7 @@ public class Exams extends SimpleWebListActivity {
 			View row = super.getView(position, convertView, parent);
 			TextView TypeTextView = (TextView) row.findViewById(R.id.row_vv_type);
 			TextView DozentTextView = (TextView) row.findViewById(R.id.row_vv_dozent);
-
+			
 			TypeTextView.setText(resultGrade.get(position));
 			DozentTextView.setText(resultDate.get(position));
 			
@@ -149,6 +198,7 @@ public class Exams extends SimpleWebListActivity {
 		else {
 			if(mode==0){
 				Elements links = doc.select("li#link000280").select("li");
+				
 				Iterator<Element> linkIt = links.iterator();
 				examLinks = new ArrayList<String>();
 				examNames = new ArrayList<String>();
@@ -225,13 +275,20 @@ public class Exams extends SimpleWebListActivity {
 					
 				}
 				
-				ArrayList<String> SemesterOptionName = new ArrayList<String>();
-				ArrayList<String> SemesterOptionValue = new ArrayList<String>();
+				SemesterOptionName = new ArrayList<String>();
+				SemesterOptionValue = new ArrayList<String>();
+				
 				Iterator<Element> SemesterOptionIterator = doc.select("option").iterator();
+				int i=0;
 				while(SemesterOptionIterator.hasNext()){
 					Element next = SemesterOptionIterator.next();
 					SemesterOptionName.add(next.text());
 					SemesterOptionValue.add(next.attr("value"));
+					if(next.hasAttr("selected")) {
+						Log.i(LOG_TAG,next.text() + " is selected, has val "+i);
+						SemesterOptionSelected=i;
+					}
+					i++;
 				}
 				ArrayAdapter<String> SpinnerAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, SemesterOptionName);
 				
@@ -239,7 +296,8 @@ public class Exams extends SimpleWebListActivity {
 				Spinner semesterSpinner = (Spinner) findViewById(R.id.exam_semester_spinner);
 				semesterSpinner.setVisibility(View.VISIBLE);
 				semesterSpinner.setAdapter(SpinnerAdapter);
-				semesterSpinner.setSelection(SpinnerAdapter.getCount()-1);
+				semesterSpinner.setSelection(SemesterOptionSelected);
+				semesterSpinner.setOnItemSelectedListener(new OnItemSelectedListener());
 				Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
 				
 			}
