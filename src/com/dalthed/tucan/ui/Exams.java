@@ -117,14 +117,11 @@ public class Exams extends SimpleWebListActivity {
 		public void onItemSelected(AdapterView<?> parent, View view,
 				int position, long id) {
 			if(hitcount==0){
-				//Toast.makeText(Exams.this, "Firstcall", Toast.LENGTH_SHORT).show();
 				
 			}
 			else {
 				
 				if(mode==1){
-					//Toast.makeText(Exams.this, "Call "+position+ " haslink: "+ 
-					//		TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+examLinks.get(1)+SemesterOptionValue.get(position), Toast.LENGTH_SHORT).show();
 					RequestObject thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+
 							TucanMobile.TUCAN_HOST+examLinks.get(1)+"-N"+SemesterOptionValue.get(position),
 							localCookieManager, RequestObject.METHOD_GET, "");

@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dalthed.tucan.R;
+import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
@@ -94,41 +95,41 @@ public class Messages extends SimpleWebListActivity {
 	@Override
 	public void onPostExecute(AnswerObject result) {
 		Document doc = Jsoup.parse(result.getHTML());
-		
-		if(mode==0){
-			String AllMailLink = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST + doc.select("div.tbcontrol").select("a").last().attr("href");
-			mode=1;
-			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
-					this);
-			RequestObject thisRequest = new RequestObject(AllMailLink,
-					localCookieManager, RequestObject.METHOD_GET, "");
-			callOverviewBrowser.execute(thisRequest);
+		if(doc.select("span.notLoggedText").text().length()>0){
+			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
+			startActivity(BackToLoginIntent);
 		}
 		else {
-			Iterator<Element> MessageRows = doc.select("tr.tbdata").iterator();
-			ArrayList<String> MessageDate = new ArrayList<String>();
-			ArrayList<String> MessageAuthor = new ArrayList<String>();
-			ArrayList<String> MessageTitle = new ArrayList<String>();
-			MessageLink = new ArrayList<String>();
-			
-			while(MessageRows.hasNext()){
-				Element next = MessageRows.next();
-				Elements MessageCols = next.select("td");
-				if(MessageCols.size()>0){
-					MessageDate.add(MessageCols.get(1).text()+" - "+MessageCols.get(2).text());
-					MessageAuthor.add("Von: "+MessageCols.get(3).text());
-					MessageTitle.add(MessageCols.get(4).text());
-					MessageLink.add(MessageCols.get(4).select("a").attr("href"));
-				}			
+			if(mode==0){
+				String AllMailLink = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST + doc.select("div.tbcontrol").select("a").last().attr("href");
+				mode=1;
+				SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
+						this);
+				RequestObject thisRequest = new RequestObject(AllMailLink,
+						localCookieManager, RequestObject.METHOD_GET, "");
+				callOverviewBrowser.execute(thisRequest);
 			}
-			MessageAdapter ListAdapter = new MessageAdapter(MessageTitle, MessageDate, MessageAuthor);
-			setListAdapter(ListAdapter);
+			else {
+				Iterator<Element> MessageRows = doc.select("tr.tbdata").iterator();
+				ArrayList<String> MessageDate = new ArrayList<String>();
+				ArrayList<String> MessageAuthor = new ArrayList<String>();
+				ArrayList<String> MessageTitle = new ArrayList<String>();
+				MessageLink = new ArrayList<String>();
+				
+				while(MessageRows.hasNext()){
+					Element next = MessageRows.next();
+					Elements MessageCols = next.select("td");
+					if(MessageCols.size()>0){
+						MessageDate.add(MessageCols.get(1).text()+" - "+MessageCols.get(2).text());
+						MessageAuthor.add("Von: "+MessageCols.get(3).text());
+						MessageTitle.add(MessageCols.get(4).text());
+						MessageLink.add(MessageCols.get(4).select("a").attr("href"));
+					}			
+				}
+				MessageAdapter ListAdapter = new MessageAdapter(MessageTitle, MessageDate, MessageAuthor);
+				setListAdapter(ListAdapter);
+			}
 		}
-		
-		
-		
-		
-
 	}
 
 }

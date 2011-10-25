@@ -8,11 +8,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
 import com.dalthed.tucan.R;
+import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
@@ -50,16 +52,23 @@ public class SingleMessage extends SimpleWebActivity {
 	@Override
 	public void onPostExecute(AnswerObject result) {
 		Document doc = Jsoup.parse(result.getHTML());
-		Elements TableRows = doc.select("table.tb").select("tr");
-		TextView authorTextView = (TextView) findViewById(R.id.message_Author);
-		TextView dateTextView = (TextView) findViewById(R.id.message_Date);
-		TextView titleTextView = (TextView) findViewById(R.id.message_title);
-		TextView textTextView = (TextView) findViewById(R.id.message_text);
+		if(doc.select("span.notLoggedText").text().length()>0){
+			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
+			startActivity(BackToLoginIntent);
+		}
+		else {
+			Elements TableRows = doc.select("table.tb").select("tr");
+			TextView authorTextView = (TextView) findViewById(R.id.message_Author);
+			TextView dateTextView = (TextView) findViewById(R.id.message_Date);
+			TextView titleTextView = (TextView) findViewById(R.id.message_title);
+			TextView textTextView = (TextView) findViewById(R.id.message_text);
+			
+			authorTextView	.setText(TableRows.get(2).select("td").get(1).text());
+			dateTextView	.setText(TableRows.get(3).select("td").get(1).text());
+			titleTextView	.setText(TableRows.get(4).select("td").get(1).text());
+			textTextView	.setText(TableRows.get(5).select("td").get(1).html().replaceAll("<br />", "\n"));
+		}
 		
-		authorTextView	.setText(TableRows.get(2).select("td").get(1).text());
-		dateTextView	.setText(TableRows.get(3).select("td").get(1).text());
-		titleTextView	.setText(TableRows.get(4).select("td").get(1).text());
-		textTextView	.setText(TableRows.get(5).select("td").get(1).html().replaceAll("<br />", "\n"));
 		
 
 	}

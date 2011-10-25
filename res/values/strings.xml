@@ -20,6 +20,9 @@
     <!-- Prüfungen -->
     <string name="exams_title">Prüfungen//</string>
     
+    <!-- Veranstaltungen -->
+    <string name="events_title">Veranstaltungen//</string>
+    
     <!-- Nachrichten -->
     <string name="messages_title">Nachrichten//</string>
 

@@ -87,6 +87,13 @@ public class MainMenu extends SimpleWebActivity {
 					// Stundenplan
 					break;
 				case 2:
+					Intent StartEventIntent = new Intent(MainMenu.this,
+							Events.class);
+					StartEventIntent.putExtra("URL", menu_link_ex);
+					StartEventIntent.putExtra("Cookie", localCookieManager
+							.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+					StartEventIntent.putExtra("UserName", UserName);
+					startActivity(StartEventIntent);
 					// Veranstaltungen
 					break;
 				case 3:
