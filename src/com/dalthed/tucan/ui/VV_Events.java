@@ -13,6 +13,7 @@ import org.jsoup.select.Elements;
 
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
+import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
@@ -25,6 +26,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class VV_Events extends SimpleWebListActivity {
@@ -32,7 +34,7 @@ public class VV_Events extends SimpleWebListActivity {
 	CookieManager localCookieManager;
 	String UserName = "";
 	private static final String LOG_TAG = "TuCanMobile";
-
+	private String[] Eventlink;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -88,6 +90,17 @@ public class VV_Events extends SimpleWebListActivity {
 
 	}
 
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		Intent StartSingleEventIntent = new Intent(VV_Events.this, SingleEvent.class);
+		StartSingleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+Eventlink[position]);
+		StartSingleEventIntent.putExtra("Cookie", localCookieManager
+				.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+		//StartSingleEventIntent.putExtra("UserName", UserName);
+		startActivity(StartSingleEventIntent);
+	}
+
 	public void callsetListAdapter(ArrayAdapter<String> ElementsAdapter) {
 
 		setListAdapter(ElementsAdapter);
@@ -106,6 +119,7 @@ public class VV_Events extends SimpleWebListActivity {
 			String[] Eventnames = new String[tbdata.size()];
 			String[] Eventdozent = new String[tbdata.size()];
 			String[] Eventtype = new String[tbdata.size()];
+			Eventlink = new String[tbdata.size()];
 			int i = 0;
 			if (tbdata.size() > 0) {
 				Iterator<Element> EventListIterator = tbdata.iterator();
@@ -114,6 +128,7 @@ public class VV_Events extends SimpleWebListActivity {
 					Elements rows = nextElement.select("td");
 					Element leftcolumn = rows.get(1);
 					Element rightcolumn = rows.get(3);
+					Eventlink[i] = leftcolumn.select("a").attr("href");
 					Eventnames[i] = leftcolumn.select("a").text();
 					List<Node> importantnotes = leftcolumn.childNodes();
 					Iterator<Node> imnit = importantnotes.iterator();

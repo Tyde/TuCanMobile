@@ -120,29 +120,11 @@ public class TuCanMobileActivity extends SimpleWebActivity {
     
     
     
-    @Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.loginmenu, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
+   
 
 
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.loginmenu_opt_setpreferences:
-			Intent settingsACTIVITY = new Intent(getBaseContext(),MainPreferences.class);
-			startActivity(settingsACTIVITY);
-			return true;
-		case R.id.loginmenu_opt_close:
-			finish();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-		
-	}
+	
 	
 
 

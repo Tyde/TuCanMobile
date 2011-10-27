@@ -38,6 +38,8 @@ public class MainMenu extends SimpleWebActivity {
 	private String menu_link_ex = "";
 	private String menu_link_msg = "";
 	private String UserName = "";
+	
+	private String[] today_event_links;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -171,11 +173,14 @@ public class MainMenu extends SimpleWebActivity {
 				Iterator<Element> RowIt = EventRows.iterator();
 				Events = new String[EventRows.size()];
 				Times = new String[EventRows.size()];
+				today_event_links = new String[EventRows.size()];
 				int i = 0;
 				while (RowIt.hasNext()) {
 					Element currentElement = (Element) RowIt.next();
 					String EventString = currentElement.select("td[headers=Name]")
 							.select("a").first().text();
+					today_event_links[i]=currentElement.select("td[headers=Name]")
+							.select("a").first().attr("href");
 					String EventTimeString = currentElement
 							.select("td[headers=von]").select("a").first().text();
 					String EventTimeEndString = currentElement
@@ -207,6 +212,20 @@ public class MainMenu extends SimpleWebActivity {
 			usertextview.setText(UserName);
 			ListView EventList = (ListView) findViewById(R.id.mm_eventList);
 			EventList.setAdapter(new EventAdapter(Events, Times));
+			EventList.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					Intent StartSingleEventIntent = new Intent(MainMenu.this, SingleEvent.class);
+					StartSingleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+today_event_links[position]);
+					StartSingleEventIntent.putExtra("Cookie", localCookieManager
+							.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+					//StartSingleEventIntent.putExtra("UserName", UserName);
+					startActivity(StartSingleEventIntent);
+					
+				}
+			});
 			
 		}
 		

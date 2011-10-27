@@ -92,7 +92,7 @@ public class Events extends SimpleWebListActivity {
 				break;
 			}
 		}
-		else {
+		else if(mode==1) {
 			Intent StartSingleEventIntent = new Intent(Events.this, SingleEvent.class);
 			StartSingleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+eventLink.get(position));
 			StartSingleEventIntent.putExtra("Cookie", localCookieManager

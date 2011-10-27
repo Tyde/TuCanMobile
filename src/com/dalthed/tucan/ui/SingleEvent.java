@@ -140,7 +140,17 @@ public class SingleEvent extends SimpleWebListActivity {
 		
 		TextView SingleEventTitle = (TextView) findViewById(R.id.singleevent_title);
 		SingleEventTitle.setText(Title);
-		Element rows= doc.select("table[courseid]").first().select("tr").get(1).select("td").first();
+		Elements Deltarows= doc.select("table[courseid]").first().select("tr");
+		Element rows;
+		if(Deltarows.size()==1){
+			rows=Deltarows.get(0).select("td").first();
+		}
+		else {
+			rows=Deltarows.get(1).select("td").first();
+		}
+				
+				
+				
 		Elements Paragraphs = rows.select("p");
 		Iterator<Element> PaIt = Paragraphs.iterator();
 		ArrayList<String> titles = new ArrayList<String>();
@@ -201,29 +211,32 @@ public class SingleEvent extends SimpleWebListActivity {
 		ArrayList<String> materialDesc = new ArrayList<String>();
 		materialLink = new ArrayList<String>();
 		ArrayList<String> materialFile = new ArrayList<String>();
-		while(materialTable.hasNext()){
-			Element next=materialTable.next();
-			
-			if(next.select("td").size()>1) {
-				ct++;
-				System.out.println(ct+ "  "+(ct%3));
-				int mod=(ct%3);
-				switch (mod) {
-				case 1:
-					materialNumber.add(next.select("td").get(0).text());
-					materialName.add(next.select("td").get(1).text());
-					
-					break;
-				case 2:
-					materialDesc.add(next.select("td").get(1).text());
-					break;
-				case 0:
-					materialLink.add(next.select("td").get(1).select("a").attr("href"));
-					materialFile.add(next.select("td").get(1).select("a").text());
-					break;
+		if(materialTable!=null){
+			while(materialTable.hasNext()){
+				Element next=materialTable.next();
+				
+				if(next.select("td").size()>1) {
+					ct++;
+					System.out.println(ct+ "  "+(ct%3));
+					int mod=(ct%3);
+					switch (mod) {
+					case 1:
+						materialNumber.add(next.select("td").get(0).text());
+						materialName.add(next.select("td").get(1).text());
+						
+						break;
+					case 2:
+						materialDesc.add(next.select("td").get(1).text());
+						break;
+					case 0:
+						materialLink.add(next.select("td").get(1).select("a").attr("href"));
+						materialFile.add(next.select("td").get(1).select("a").text());
+						break;
+					}
 				}
 			}
 		}
+		
 		if(ct>2){
 			FileAdapter = new AppointmentAdapter(materialNumber, materialFile, null, materialName, materialDesc);
 			thereAreFiles=true;
@@ -237,8 +250,16 @@ public class SingleEvent extends SimpleWebListActivity {
 	}
 	
 	private static String[] crop(String startstring){
-		String[] splitted = startstring.split("</b>");
-		return new String[]{Jsoup.parse(splitted[0]).text().trim(),Jsoup.parse(splitted[1]).text()};
+		if(startstring.length()>0){
+			String[] splitted = startstring.split("</b>");
+			return new String[] { 
+					Jsoup.parse(splitted[0]).text().trim(),
+					Jsoup.parse(splitted[1]).text() };
+		}
+		else {
+			return new String[] {"",""};
+			
+		}
 	}
 	
 	@Override
