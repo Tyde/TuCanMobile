@@ -200,6 +200,7 @@ public class Exams extends SimpleWebListActivity {
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	public void onPostExecute(AnswerObject result) {
 		Document doc = Jsoup.parse(result.getHTML());
 		if(doc.select("span.notLoggedText").text().length()>0){

@@ -45,6 +45,10 @@
         <activity android:label="Veranstaltungen"
             android:name=".ui.Events"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+        
+        <activity android:label="Veranstaltung"
+            android:name=".ui.SingleEvent"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
             
         <!-- Prüfungen -->
 

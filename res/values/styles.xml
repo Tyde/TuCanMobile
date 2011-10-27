@@ -30,4 +30,15 @@
   	<item name="android:textColor">@color/tucan_title_darkgrey</item>
   	<item name="android:textStyle">bold</item>
   </style>
+  <style name="event_title">
+      <item name="android:textSize">@dimen/event_title</item>
+      <item name="android:textColor">#000000</item>
+  </style>
+  <style name="singleevent_property">
+      <item name="android:textSize">@dimen/vv_event_title</item>
+      <item name="android:textStyle">bold</item>
+  </style>
+  <style name="singleevent_value">
+      <item name="android:textSize">@dimen/vv_event_title</item>
+  </style>
 </resources>

@@ -10,7 +10,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.app.Activity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,11 +30,10 @@ import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
-import com.dalthed.tucan.ui.Exams.ModuleAdapter;
-import com.dalthed.tucan.ui.Exams.OnItemSelectedListener;
+
 
 public class Events extends SimpleWebListActivity {
-	private String UserName;
+
 	private CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
 	private String URLStringtoCall;
@@ -44,7 +43,7 @@ public class Events extends SimpleWebListActivity {
 	private ArrayList<String> SemesterOptionName;
 	private ArrayList<String> SemesterOptionValue;
 	private int SemesterOptionSelected=0;
-
+	private ArrayList<String> eventLink ;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,7 +51,6 @@ public class Events extends SimpleWebListActivity {
 
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		URLStringtoCall = getIntent().getExtras().getString("URL");
-		UserName = getIntent().getExtras().getString("UserName");
 		URL URLtoCall;
 
 		try {
@@ -94,6 +92,14 @@ public class Events extends SimpleWebListActivity {
 				break;
 			}
 		}
+		else {
+			Intent StartSingleEventIntent = new Intent(Events.this, SingleEvent.class);
+			StartSingleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+eventLink.get(position));
+			StartSingleEventIntent.putExtra("Cookie", localCookieManager
+					.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+			//StartSingleEventIntent.putExtra("UserName", UserName);
+			startActivity(StartSingleEventIntent);
+		}
 	}
 
 	@Override
@@ -126,7 +132,7 @@ public class Events extends SimpleWebListActivity {
 						android.R.layout.simple_list_item_1, eventNameBuffer);
 				setListAdapter(ListAdapter);
 			} else {
-
+				eventLink= new ArrayList<String>();
 				if (mode == 10) {
 					ArrayList<String> eventName = new ArrayList<String>();
 					ArrayList<String> eventHead = new ArrayList<String>();
@@ -141,6 +147,8 @@ public class Events extends SimpleWebListActivity {
 							eventName.add(ExamCols.get(2).text());
 							eventHead.add(ExamCols.get(3).text());
 							eventCredits.add(ExamCols.get(4).text());
+							eventLink.add(ExamCols.get(2).select("a").attr("href"));
+							Log.i(LOG_TAG,"Link"+ExamCols.get(2).select("a").attr("href"));
 						}
 					}
 					ListAdapter.clear();
@@ -160,6 +168,8 @@ public class Events extends SimpleWebListActivity {
 						Elements ExamCols = next.select("td");
 						if (ExamCols.size() > 0) {
 							eventName.add(ExamCols.get(2).text());
+							eventLink.add(ExamCols.get(2).select("a").attr("href"));
+							Log.i(LOG_TAG,"Link"+ExamCols.get(2).select("a").attr("href"));
 							eventHead.add(ExamCols.get(3).text());
 							eventTime.add(ExamCols.get(4).text());
 						}
@@ -259,6 +269,7 @@ public class Events extends SimpleWebListActivity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0 && mode!=0) {
 			
+			@SuppressWarnings("unchecked")
 			ArrayList<String> eventNameBuffer = (ArrayList<String>) eventNames
 					.clone();
 			ListAdapter = new ArrayAdapter<String>(this,

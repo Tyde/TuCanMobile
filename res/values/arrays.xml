@@ -3,8 +3,16 @@
     <string-array name="mainmenu_options">
     	<item>Vorlesungsverzeichnis</item>
 		<item>-disabled-Stundenplan</item>
-		<item>-disabled-Veranstaltungen</item>
+		<item>Veranstaltungen</item>
 		<item>Prüfungen</item>
 		<item>Nachrichten</item>
+    </string-array>
+    
+       
+    <string-array name="singleevent_options">
+        <item>Informationen</item>
+        <item>Materialien</item>
+        <item>Termine</item>      
+        <!-- <item>Kleingruppen</item>-->   
     </string-array>
 </resources>
