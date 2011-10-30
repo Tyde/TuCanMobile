@@ -41,4 +41,11 @@
   <style name="singleevent_value">
       <item name="android:textSize">@dimen/vv_event_title</item>
   </style>
+  <style name="schedule_daytitlebar">
+      <item name="android:background">@color/triadic_dark</item>
+      
+  </style>
+  <style name="schedule_daytitlebartext">
+      <item name="android:textColor">@color/tucan_grey</item>
+  </style>
 </resources>

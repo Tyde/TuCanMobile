@@ -1,6 +1,7 @@
 package com.dalthed.tucan.Connection;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ProtocolException;
@@ -18,7 +19,9 @@ import android.util.Log;
 public class BrowseMethods {
 	private HttpsURLConnection HTTPConnection;
 	private CookieManager myCookies;
-
+	public boolean iwantthereader=false;
+	public InputStream in;
+	public InputStreamReader isr;
 	private static final String LOG_TAG = "TuCanMobile";
 	/**
 	 * setImportantHeaders setzt Header für den HTTP-Request
@@ -66,49 +69,53 @@ public class BrowseMethods {
 				out.close();
 			}
 
-
+			/*
 			GZIPInputStream in = (GZIPInputStream) HTTPConnection
-					.getInputStream();
-			InputStreamReader isr = new InputStreamReader(in, "ISO8859_1");
-			BufferedReader bin = new BufferedReader(isr);
-
-			for (int n = 0;; n++) {
-				String headerValue = HTTPConnection.getHeaderField(n);
-				String headerName = HTTPConnection.getHeaderFieldKey(n);
-				if (headerValue == null && headerName == null) {
-					break;
-				}
-
-				if ("Set-Cookie".equalsIgnoreCase(headerName)) {
-					Log.i(LOG_TAG, "Lese Cookies aus");
-					String[] multipleCookies = headerValue.split(";\\s*");
-					for (String ccy : multipleCookies) {
-						String[] eachVal = ccy.split("=");
-						if (eachVal.length == 2)
-							myCookies.inputCookie(realURL.getHost(),
-									eachVal[0], eachVal[1]);
-						else
-							myCookies.inputCookie(realURL.getHost(),
-									eachVal[0], null);
+					.getInputStream();*/
+			in = HTTPConnection.getInputStream();
+			isr = new InputStreamReader(in, "ISO8859_1");
+			
+			if(iwantthereader==false){
+				
+				BufferedReader bin = new BufferedReader(isr);
+				for (int n = 0;; n++) {
+					String headerValue = HTTPConnection.getHeaderField(n);
+					String headerName = HTTPConnection.getHeaderFieldKey(n);
+					if (headerValue == null && headerName == null) {
+						break;
 					}
+
+					if ("Set-Cookie".equalsIgnoreCase(headerName)) {
+						Log.i(LOG_TAG, "Lese Cookies aus");
+						String[] multipleCookies = headerValue.split(";\\s*");
+						for (String ccy : multipleCookies) {
+							String[] eachVal = ccy.split("=");
+							if (eachVal.length == 2)
+								myCookies.inputCookie(realURL.getHost(),
+										eachVal[0], eachVal[1]);
+							else
+								myCookies.inputCookie(realURL.getHost(),
+										eachVal[0], null);
+						}
+					}
+					if ("refresh".equalsIgnoreCase(headerName)) {
+						String[] getredirectURL = headerValue.split("URL=");
+						redirectURL = getredirectURL[1];
+					}
+
 				}
-				if ("refresh".equalsIgnoreCase(headerName)) {
-					String[] getredirectURL = headerValue.split("URL=");
-					redirectURL = getredirectURL[1];
+				int contentlength = HTTPConnection.getContentLength();
+				Log.i(LOG_TAG, contentlength + "...");
+
+				StringBuilder inputBuilder = new StringBuilder();
+				String inputLine;
+
+				while ((inputLine = bin.readLine()) != null) {
+					inputBuilder.append(inputLine);
 				}
-
+				in.close();
+				alllines = inputBuilder.toString();
 			}
-			int contentlength = HTTPConnection.getContentLength();
-			Log.i(LOG_TAG, contentlength + "...");
-
-			StringBuilder inputBuilder = new StringBuilder();
-			String inputLine;
-
-			while ((inputLine = bin.readLine()) != null) {
-				inputBuilder.append(inputLine);
-			}
-			in.close();
-			alllines = inputBuilder.toString();
 			
 		} catch (Exception e) {
 			

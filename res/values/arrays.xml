@@ -2,7 +2,7 @@
 <resources>
     <string-array name="mainmenu_options">
     	<item>Vorlesungsverzeichnis</item>
-		<item>-disabled-Stundenplan</item>
+		<item>Stundenplan</item>
 		<item>Veranstaltungen</item>
 		<item>Prüfungen</item>
 		<item>Nachrichten</item>

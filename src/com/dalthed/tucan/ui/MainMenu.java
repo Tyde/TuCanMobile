@@ -37,10 +37,14 @@ public class MainMenu extends SimpleWebActivity {
 	private String menu_link_vv = "";
 	private String menu_link_ex = "";
 	private String menu_link_msg = "";
+	private String menu_link_export = "";
+	private String menu_link_month = "";
 	private String UserName = "";
+	String SessionArgument="";
 	
 	private String[] today_event_links;
 
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -86,6 +90,13 @@ public class MainMenu extends SimpleWebActivity {
 					// Vorlesungsverzeichnis
 					break;
 				case 1:
+					Intent StartScheduleIntent = new Intent(MainMenu.this,
+							Schedule.class);
+					StartScheduleIntent.putExtra("URL", menu_link_month);
+					StartScheduleIntent.putExtra("Cookie", localCookieManager
+							.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+					StartScheduleIntent.putExtra("Session", SessionArgument);
+					startActivity(StartScheduleIntent);
 					// Stundenplan
 					break;
 				case 2:
@@ -158,12 +169,19 @@ public class MainMenu extends SimpleWebActivity {
 			startActivity(BackToLoginIntent);
 		}
 		else {
+			String lcURLString=result.getLastCalledURL();
+			try {
+				URL lcURL = new URL (lcURLString);
+				SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1].split(",")[0];
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			// Tabelle mit den Terminen finden und Durchlaufen
 			Element EventTable = doc.select("table.nb").first();
 			String[] Events;
 			String[] Times;
-			if (EventTable == null
-					|| EventTable.attr("summary") == "Eingegangene Nachrichten") {
+			if (EventTable.select("tr.tbdata").select("td").size()==5) {
 				Events = new String[1];
 				Times = new String[1];
 				Events[0] = "Keine Heutigen Veranstaltungen";
@@ -208,7 +226,12 @@ public class MainMenu extends SimpleWebActivity {
 					+ doc.select("li[title=Prüfungen]").select("a").attr("href");
 			menu_link_msg = lcURL.getProtocol() + "://" + lcURL.getHost()
 					+ ArchivLink.attr("href");
-
+			menu_link_export = lcURL.getProtocol() + "://" + lcURL.getHost()
+					+doc.select("li#link000272").select("a").attr("href");
+			menu_link_month = lcURL.getProtocol() + "://" + lcURL.getHost()
+					+doc.select("li#link000271").select("a").attr("href");
+			
+			Log.i(LOG_TAG, menu_link_export);
 			usertextview.setText(UserName);
 			ListView EventList = (ListView) findViewById(R.id.mm_eventList);
 			EventList.setAdapter(new EventAdapter(Events, Times));

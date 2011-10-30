@@ -49,6 +49,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 	private static final String LOG_TAG = "TuCanMobile";
 	private EditText usrnameField;
 	private EditText pwdField;
+	String SessionArgument="";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -186,7 +187,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
     	
     	
     	protected void onPostExecute(AnswerObject result) {
-    		String SessionArgument="";
+    		
     		dialog.setMessage(getResources().getString(R.string.ui_calc));
     		//TODO: Update to JSoup
     		Pattern findUser = Pattern.compile("<span\\s+class=\"loginDataName\"\\s+id=\"loginDataName\"><b>Name<span\\s+class=\"colon\">:</span>\\s+</b>(.*?)</span>");

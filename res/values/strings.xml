@@ -25,6 +25,9 @@
     
     <!-- Nachrichten -->
     <string name="messages_title">Nachrichten//</string>
+    
+    <!-- Stundenplan -->
+    <string name="schedule_title">Stundenplan//</string>
 
     <!-- UI Dynamic -->
     <string name="ui_login">Anmelden...</string>
