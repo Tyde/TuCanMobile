@@ -42,7 +42,7 @@ public class MainMenu extends SimpleWebActivity {
 	private String menu_link_month = "";
 	private String UserName = "";
 	String SessionArgument="";
-	
+	private boolean noeventstoday=false;
 	private String[] today_event_links;
 
 	
@@ -194,6 +194,7 @@ public class MainMenu extends SimpleWebActivity {
 					Times = new String[1];
 					Events[0] = "Keine Heutigen Veranstaltungen";
 					Times[0] = "";
+					noeventstoday = true;
 				} else {
 					Elements EventRows = EventTable.select("tr.tbdata");
 					Iterator<Element> RowIt = EventRows.iterator();
@@ -249,13 +250,14 @@ public class MainMenu extends SimpleWebActivity {
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
-					Intent StartSingleEventIntent = new Intent(MainMenu.this, SingleEvent.class);
-					StartSingleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+today_event_links[position]);
-					StartSingleEventIntent.putExtra("Cookie", localCookieManager
-							.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-					//StartSingleEventIntent.putExtra("UserName", UserName);
-					startActivity(StartSingleEventIntent);
-					
+					if(noeventstoday==false){
+						Intent StartSingleEventIntent = new Intent(MainMenu.this, SingleEvent.class);
+						StartSingleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+today_event_links[position]);
+						StartSingleEventIntent.putExtra("Cookie", localCookieManager
+								.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+						//StartSingleEventIntent.putExtra("UserName", UserName);
+						startActivity(StartSingleEventIntent);
+					}										
 				}
 			});
 			
