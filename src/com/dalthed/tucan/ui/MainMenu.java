@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
@@ -49,7 +50,7 @@ public class MainMenu extends SimpleWebActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
-
+		BugSenseHandler.setup(this,"ed5c1682");
 		// Webhandling Start
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		String lastCalledURLString = getIntent().getExtras().getString("URL");

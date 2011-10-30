@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
@@ -40,7 +41,7 @@ public class VV extends SimpleWebListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.vv);
-
+		BugSenseHandler.setup(this,"ed5c1682");
 		// Webhandling Start
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		String URLStringtoCall = getIntent().getExtras().getString("URL");

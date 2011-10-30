@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
@@ -39,6 +40,7 @@ public class Messages extends SimpleWebListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.messages);
+		BugSenseHandler.setup(this,"ed5c1682");
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		URLStringtoCall = getIntent().getExtras().getString("URL");
 		UserName = getIntent().getExtras().getString("UserName");

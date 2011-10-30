@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.Connection.AnswerObject;
@@ -29,6 +30,7 @@ public class SingleMessage extends SimpleWebActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.singlemessage);
+		BugSenseHandler.setup(this,"ed5c1682");
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		URLStringtoCall = getIntent().getExtras().getString("URL");
 		URL URLtoCall;

@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
@@ -38,7 +39,7 @@ public class Schedule extends SimpleWebListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.schedule);
-		
+		BugSenseHandler.setup(this,"ed5c1682");
 
 		
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");

@@ -11,6 +11,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
@@ -40,7 +41,7 @@ public class VV_Events extends SimpleWebListActivity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.vv_events);
-
+		BugSenseHandler.setup(this,"ed5c1682");
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		String URLStringtoCall = getIntent().getExtras().getString("URL");
 		UserName = getIntent().getExtras().getString("UserName");

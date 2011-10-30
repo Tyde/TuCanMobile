@@ -4,12 +4,15 @@ package com.dalthed.tucan;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.BrowseMethods;
 import com.dalthed.tucan.Connection.CookieManager;
@@ -54,6 +57,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        BugSenseHandler.setup(this,"ed5c1682");
         
         
         
@@ -107,7 +111,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 			
 			//vordefinierte Post-Data
 			//TODO: Dynamisch <input 's auslesen [evtl]
-			String postdata= "usrname="+usrname+"&pass="+pwd+"&APPNAME=CampusNet&PRGNAME=LOGINCHECK&ARGUMENTS=clino%2Cusrname%2Cpass%2Cmenuno%2Cpersno%2Cbrowser%2Cplatform&clino=000000000000001&menuno=000344&persno=00000000&browser=&platform=";
+			String postdata= "usrname="+URLEncoder.encode(usrname,"UTF-8")+"&pass="+URLEncoder.encode(pwd,"UTF-8")+"&APPNAME=CampusNet&PRGNAME=LOGINCHECK&ARGUMENTS=clino%2Cusrname%2Cpass%2Cmenuno%2Cpersno%2Cbrowser%2Cplatform&clino=000000000000001&menuno=000344&persno=00000000&browser=&platform=";
 			//AnmeldeRequest Senden
 			thisRequest[1] = new RequestObject("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi", RequestObject.METHOD_POST, postdata);
 			//Restliche Requests werden aus der Antwort ausgelesen..
@@ -189,11 +193,50 @@ public class TuCanMobileActivity extends SimpleWebActivity {
     	protected void onPostExecute(AnswerObject result) {
     		
     		dialog.setMessage(getResources().getString(R.string.ui_calc));
+    		
+    		
     		//TODO: Update to JSoup
     		Pattern findUser = Pattern.compile("<span\\s+class=\"loginDataName\"\\s+id=\"loginDataName\"><b>Name<span\\s+class=\"colon\">:</span>\\s+</b>(.*?)</span>");
     		Matcher findUsermatcher = findUser.matcher(result.getHTML());
     		boolean found=false;
     		String User="";
+    		
+    		Document doc = Jsoup.parse(result.getHTML());
+    		Element UserSpan = doc.select("span#loginDataName").first();
+    		if(UserSpan==null){
+    			dialog.dismiss();
+    			Toast wrongLoginNotif = Toast.makeText(TuCanMobileActivity.this, "Login fehlerhaft", Toast.LENGTH_LONG);
+    			wrongLoginNotif.show();
+    		}
+    		else {
+    			dialog.dismiss();
+    			String lcURLString=result.getLastCalledURL();
+    			try {
+					URL lcURL = new URL (lcURLString);
+					SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1].split(",")[0];
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    			User=Jsoup.parse(UserSpan.html().split(":")[1]).text();
+    			CheckBox remember = (CheckBox) findViewById(R.id.checkBox1);
+    			if(remember.isChecked()){
+    				final SharedPreferences einstellungen = MainPreferences.getSettings(TuCanMobileActivity.this);
+    				SharedPreferences.Editor editor = einstellungen.edit();
+    				editor.putString("tuid", usrnameField.getText().toString());
+    				editor.putString("pw", pwdField.getText().toString());
+    				editor.putString("Cookie", result.getCookieManager().getCookieHTTPString(TucanMobile.TUCAN_HOST));
+    				Log.i(LOG_TAG,SessionArgument);
+    				editor.putString("Session", SessionArgument);
+    				editor.commit();
+    				
+    			}
+        		final Intent i = new Intent(TuCanMobileActivity.this,MainMenu.class);
+        		i.putExtra("Cookie", result.getCookieManager().getCookieHTTPString("www.tucan.tu-darmstadt.de"));
+        		i.putExtra("URL", result.getLastCalledURL());
+        		startActivity(i);
+    		}
+    		/*
     		while(findUsermatcher.find()){
     			User=findUsermatcher.group(1);
     			Log.i(LOG_TAG,"Match:"+findUsermatcher.group(1));
@@ -233,6 +276,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
     			wrongLoginNotif.show();
     			
     		}
+    		*/
     	}
     }
     
