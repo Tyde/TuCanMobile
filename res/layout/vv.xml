@@ -22,7 +22,8 @@
     <ListView
         android:id="@+id/android:list"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layoutAnimation="@anim/layout_bottom_to_top_slide" >
     </ListView>
 
     <ListView
