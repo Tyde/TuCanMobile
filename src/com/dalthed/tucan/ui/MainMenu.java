@@ -181,31 +181,39 @@ public class MainMenu extends SimpleWebActivity {
 			Element EventTable = doc.select("table.nb").first();
 			String[] Events;
 			String[] Times;
-			if (EventTable.select("tr.tbdata").select("td").size()==5) {
+			if(EventTable==null){
 				Events = new String[1];
 				Times = new String[1];
 				Events[0] = "Keine Heutigen Veranstaltungen";
 				Times[0] = "";
-			} else {
-				Elements EventRows = EventTable.select("tr.tbdata");
-				Iterator<Element> RowIt = EventRows.iterator();
-				Events = new String[EventRows.size()];
-				Times = new String[EventRows.size()];
-				today_event_links = new String[EventRows.size()];
-				int i = 0;
-				while (RowIt.hasNext()) {
-					Element currentElement = (Element) RowIt.next();
-					String EventString = currentElement.select("td[headers=Name]")
-							.select("a").first().text();
-					today_event_links[i]=currentElement.select("td[headers=Name]")
-							.select("a").first().attr("href");
-					String EventTimeString = currentElement
-							.select("td[headers=von]").select("a").first().text();
-					String EventTimeEndString = currentElement
-							.select("td[headers=bis]").select("a").first().text();
-					Times[i] = EventTimeString + "-" + EventTimeEndString;
-					Events[i] = EventString;
-					i++;
+			}
+			else  {
+				if (EventTable.select("tr.tbdata").select("td").size()==5) {
+					Events = new String[1];
+					Times = new String[1];
+					Events[0] = "Keine Heutigen Veranstaltungen";
+					Times[0] = "";
+				} else {
+					Elements EventRows = EventTable.select("tr.tbdata");
+					Iterator<Element> RowIt = EventRows.iterator();
+					Events = new String[EventRows.size()];
+					Times = new String[EventRows.size()];
+					today_event_links = new String[EventRows.size()];
+					int i = 0;
+					while (RowIt.hasNext()) {
+						Element currentElement = (Element) RowIt.next();
+						String EventString = currentElement.select("td[headers=Name]")
+								.select("a").first().text();
+						today_event_links[i]=currentElement.select("td[headers=Name]")
+								.select("a").first().attr("href");
+						String EventTimeString = currentElement
+								.select("td[headers=von]").select("a").first().text();
+						String EventTimeEndString = currentElement
+								.select("td[headers=bis]").select("a").first().text();
+						Times[i] = EventTimeString + "-" + EventTimeEndString;
+						Events[i] = EventString;
+						i++;
+					}
 				}
 			}
 
