@@ -1,40 +1,30 @@
 package com.dalthed.tucan.ui;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
-import java.util.PropertyResourceBundle;
-
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
-import com.dalthed.tucan.Connection.BrowseMethods;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
-import com.dalthed.tucan.ui.SingleEvent.OnItemSelectedListener;
 
 public class Schedule extends SimpleWebListActivity {
 	private CookieManager localCookieManager;
@@ -152,6 +142,16 @@ public class Schedule extends SimpleWebListActivity {
 
 	}
 	
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		Intent singleEventIntent = new Intent(Schedule.this,SingleEvent.class);
+		singleEventIntent.putExtra("PREPLink", true);
+		singleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+eventLink.get(position));
+		singleEventIntent.putExtra("Cookie", localCookieManager
+				.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+		startActivity(singleEventIntent);
+	}
+
 	class AppointmentAdapter extends ArrayAdapter<String> {
 		ArrayList<String> appointmentTime,appointmentName,appointmentDay;
 		ArrayList<Boolean> appontmentfirstofDay;

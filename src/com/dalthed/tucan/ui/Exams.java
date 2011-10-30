@@ -104,6 +104,11 @@ public class Exams extends SimpleWebListActivity {
 				callOverviewBrowser.execute(thisRequest);
 				Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
 				break;
+			case 3:
+				mode=3;
+				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+examLinks.get(3),
+						localCookieManager, RequestObject.METHOD_GET, "");
+				callOverviewBrowser.execute(thisRequest);
 			default:
 				break;
 			}
@@ -243,7 +248,7 @@ public class Exams extends SimpleWebListActivity {
 						android.R.layout.simple_list_item_1, examNameBuffer);
 				setListAdapter(ListAdapter);
 			}
-			else{
+			else if(mode==10 || mode==1 || mode==2){
 				
 				if(mode==10){
 					ArrayList<String> ExamName = new ArrayList<String>();
@@ -332,9 +337,67 @@ public class Exams extends SimpleWebListActivity {
 				Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
 				
 			}
+			else if(mode==3){
+				ArrayList<String> ResultName = new ArrayList<String>();
+				ArrayList<String> ResultGrade = new ArrayList<String>();
+				ArrayList<String> ResultCredits = new ArrayList<String>();
+				ArrayList<String> ResultCountedCredits = new ArrayList<String>();
+				Element ModuleOverviewTable = doc.select("div.tb").first();
+				Iterator<Element> ExamResultRowIterator = ModuleOverviewTable.select("tbody").first().select("tr").iterator();
+				while(ExamResultRowIterator.hasNext()){
+					Element next = ExamResultRowIterator.next();
+					Elements ExamResultCols = next.select("td");
+					if(ExamResultCols.size()>1){
+						ResultName.add(ExamResultCols.get(1).text());
+						ResultCountedCredits.add(ExamResultCols.get(3).text());
+						ResultCredits.add(ExamResultCols.get(4).text());
+						ResultGrade.add(ExamResultCols.get(5).text());
+					}
+					
+				}
+				ListAdapter = new AccomplishmentAdapter(ResultName, ResultGrade, ResultCredits, ResultCountedCredits);
+				setListAdapter(ListAdapter);
+			}
 		}
 		
 		
+	}
+	class AccomplishmentAdapter extends ArrayAdapter<String> {
+		ArrayList<String> resultName, resultGrade, resultCredits,
+				resultCountedCredits;
+
+		public AccomplishmentAdapter(ArrayList<String> resName,
+				ArrayList<String> resGrade, ArrayList<String> resCredits,
+				ArrayList<String> resCtCredits) {
+			super(Exams.this, R.layout.singleevent_row_date,
+					R.id.singleevent_row_date_date, resCredits);
+			this.resultName = resName;
+			this.resultGrade = resGrade;
+			this.resultCredits = resCredits;
+			this.resultCountedCredits = resCtCredits;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View row = super.getView(position, convertView, parent);
+			
+			TextView AppTimeView = (TextView) row
+					.findViewById(R.id.singleevent_row_date_time);
+			TextView AppNumberView = (TextView) row
+					.findViewById(R.id.singleevent_row_date_number);
+			TextView AppRoomView = (TextView) row
+					.findViewById(R.id.singleevent_row_date_room);
+			TextView AppInstructorView = (TextView) row
+					.findViewById(R.id.singleevent_row_date_instructor);
+			
+			AppTimeView.setText(this.resultCountedCredits.get(position));
+			AppNumberView.setText("");
+			AppRoomView.setText(this.resultName.get(position));
+			AppInstructorView.setText(this.resultGrade.get(position));
+
+			return row;
+		}
+
 	}
 
 }

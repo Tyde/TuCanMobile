@@ -10,7 +10,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,25 +33,29 @@ public class SingleEvent extends SimpleWebListActivity {
 
 	private CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
-	private String  URLStringtoCall;
-	
+	private String URLStringtoCall;
+	private Boolean PREPCall;
+
 	ArrayList<String> materialLink;
-	
+
 	AppointmentAdapter DateAppointmentAdapter;
 	ArrayAdapter<String> FileAdapter;
 	SingleEventAdapter PropertyValueAdapter;
-	int mode=0;
-	boolean thereAreFiles=false;
+	int mode = 0;
+	boolean thereAreFiles = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.singleevent);
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		URLStringtoCall = getIntent().getExtras().getString("URL");
+		PREPCall = getIntent().getExtras().getBoolean("PREPLink");
 		URL URLtoCall;
 		Spinner optionSpinner = (Spinner) findViewById(R.id.singleevent_spinner);
-		ArrayAdapter<String> spinnerAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,
-				getResources().getStringArray(R.array.singleevent_options));
+		ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, getResources()
+						.getStringArray(R.array.singleevent_options));
 		optionSpinner.setAdapter(spinnerAdapter);
 		optionSpinner.setOnItemSelectedListener(new OnItemSelectedListener());
 
@@ -70,42 +73,47 @@ public class SingleEvent extends SimpleWebListActivity {
 		} catch (MalformedURLException e) {
 			Log.e(LOG_TAG, e.getMessage());
 		}
-		
-		
+
 	}
-	
+
 	class SingleEventAdapter extends ArrayAdapter<String> {
 		ArrayList<String> values;
-		public SingleEventAdapter(ArrayList<String> properties,ArrayList<String> values) {
-			super(SingleEvent.this,R.layout.singleevent_row, R.id.singleevent_row_property,
-					properties);
-			this.values=values;
+
+		public SingleEventAdapter(ArrayList<String> properties,
+				ArrayList<String> values) {
+			super(SingleEvent.this, R.layout.singleevent_row,
+					R.id.singleevent_row_property, properties);
+			this.values = values;
 		}
+
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View row = super.getView(position, convertView, parent);
 			TextView ValueTextView = (TextView) row
 					.findViewById(R.id.singleevent_row_value);
-			
 
-			ValueTextView.setText(" "+this.values.get(position));
+			ValueTextView.setText(" " + this.values.get(position));
 
 			return row;
 		}
-		
+
 	}
-	
+
 	class AppointmentAdapter extends ArrayAdapter<String> {
-		ArrayList<String> appointmentTime,appointmentNumber,appointmentRoom,appointmentInstructor;
-		public AppointmentAdapter(ArrayList<String> appDate,ArrayList<String> appTime
-				,ArrayList<String> appNumber,ArrayList<String> appRoom,ArrayList<String> appInstructor) {
-			super(SingleEvent.this,R.layout.singleevent_row_date, R.id.singleevent_row_date_date,
-					appDate);
-			this.appointmentTime=appTime;
-			this.appointmentInstructor=appInstructor;
-			this.appointmentNumber=appNumber;
-			this.appointmentRoom=appRoom;
+		ArrayList<String> appointmentTime, appointmentNumber, appointmentRoom,
+				appointmentInstructor;
+
+		public AppointmentAdapter(ArrayList<String> appDate,
+				ArrayList<String> appTime, ArrayList<String> appNumber,
+				ArrayList<String> appRoom, ArrayList<String> appInstructor) {
+			super(SingleEvent.this, R.layout.singleevent_row_date,
+					R.id.singleevent_row_date_date, appDate);
+			this.appointmentTime = appTime;
+			this.appointmentInstructor = appInstructor;
+			this.appointmentNumber = appNumber;
+			this.appointmentRoom = appRoom;
 		}
+
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View row = super.getView(position, convertView, parent);
@@ -117,9 +125,9 @@ public class SingleEvent extends SimpleWebListActivity {
 					.findViewById(R.id.singleevent_row_date_room);
 			TextView AppInstructorView = (TextView) row
 					.findViewById(R.id.singleevent_row_date_instructor);
-			
+
 			AppTimeView.setText(this.appointmentTime.get(position));
-			if(this.appointmentNumber!=null)
+			if (this.appointmentNumber != null)
 				AppNumberView.setText(this.appointmentNumber.get(position));
 			else
 				AppNumberView.setText("");
@@ -128,170 +136,178 @@ public class SingleEvent extends SimpleWebListActivity {
 
 			return row;
 		}
-		
+
 	}
-	
-	
-	
+
 	@Override
 	public void onPostExecute(AnswerObject result) {
-		Document doc=Jsoup.parse(result.getHTML());
-		String Title=doc.select("h1").text();
-		
-		TextView SingleEventTitle = (TextView) findViewById(R.id.singleevent_title);
-		SingleEventTitle.setText(Title);
-		Elements Deltarows= doc.select("table[courseid]").first().select("tr");
-		Element rows;
-		if(Deltarows.size()==1){
-			rows=Deltarows.get(0).select("td").first();
-		}
-		else {
-			rows=Deltarows.get(1).select("td").first();
-		}
-				
-				
-				
-		Elements Paragraphs = rows.select("p");
-		Iterator<Element> PaIt = Paragraphs.iterator();
-		ArrayList<String> titles = new ArrayList<String>();
-		ArrayList<String> values = new ArrayList<String>();
-		
-		while(PaIt.hasNext()){
-			
-			Element next= PaIt.next();
-			String[] information = crop(next.html());
-			titles.add(information[0]);
-			values.add(information[1]);
-			
-		}
-		
-		PropertyValueAdapter = new SingleEventAdapter(titles, values);
-		setListAdapter(PropertyValueAdapter);
-		
-		//Termin-Selektor:
-		//Terminselektor
-		
-		Iterator<Element> captionIt = doc.select("caption").iterator();
-		Iterator<Element> DateTable=null;
-		Iterator<Element> materialTable=null;
-		while(captionIt.hasNext()){
-			Element next=captionIt.next();
-			if(next.text().equals("Termine")){
-				System.out.println(next.parent().html());
-				DateTable=next.parent().select("tr").iterator();
-			}
-			else if(next.text().contains("Material")){
-				
-				materialTable=next.parent().select("tr").iterator();
-			}
-		}
-		ArrayList<String> eventNumber = new ArrayList<String>();
-		ArrayList<String> eventDate = new ArrayList<String>();
-		ArrayList<String> eventTime = new ArrayList<String>();
+		Document doc = Jsoup.parse(result.getHTML());
+		if (PREPCall == false) {
+			String Title = doc.select("h1").text();
 
-		ArrayList<String> eventRoom = new ArrayList<String>();
-		ArrayList<String> eventInstructor = new ArrayList<String>();
-		
-		while(DateTable.hasNext()){
-			Element next=DateTable.next();
-			Elements cols=next.select("td");
-			eventNumber.add(cols.get(0).text());
-			eventDate.add(cols.get(1).text());
-			eventTime.add(cols.get(2).text() + "-" + cols.get(3).text());
-			eventRoom.add(cols.get(4).text());
-			eventInstructor.add(cols.get(5).text());
-		}
-		
-		DateAppointmentAdapter = new AppointmentAdapter(eventDate, eventTime, eventNumber, eventRoom, eventInstructor);
-		
-		
-		int ct=0;
-		ArrayList<String> materialNumber = new ArrayList<String>();
-		ArrayList<String> materialName = new ArrayList<String>();
-		ArrayList<String> materialDesc = new ArrayList<String>();
-		materialLink = new ArrayList<String>();
-		ArrayList<String> materialFile = new ArrayList<String>();
-		if(materialTable!=null){
-			while(materialTable.hasNext()){
-				Element next=materialTable.next();
-				
-				if(next.select("td").size()>1) {
-					ct++;
-					System.out.println(ct+ "  "+(ct%3));
-					int mod=(ct%3);
-					switch (mod) {
-					case 1:
-						materialNumber.add(next.select("td").get(0).text());
-						materialName.add(next.select("td").get(1).text());
-						
-						break;
-					case 2:
-						materialDesc.add(next.select("td").get(1).text());
-						break;
-					case 0:
-						materialLink.add(next.select("td").get(1).select("a").attr("href"));
-						materialFile.add(next.select("td").get(1).select("a").text());
-						break;
+			TextView SingleEventTitle = (TextView) findViewById(R.id.singleevent_title);
+			SingleEventTitle.setText(Title);
+			Elements Deltarows = doc.select("table[courseid]").first()
+					.select("tr");
+			Element rows;
+			if (Deltarows.size() == 1) {
+				rows = Deltarows.get(0).select("td").first();
+			} else {
+				rows = Deltarows.get(1).select("td").first();
+			}
+
+			Elements Paragraphs = rows.select("p");
+			Iterator<Element> PaIt = Paragraphs.iterator();
+			ArrayList<String> titles = new ArrayList<String>();
+			ArrayList<String> values = new ArrayList<String>();
+
+			while (PaIt.hasNext()) {
+
+				Element next = PaIt.next();
+				String[] information = crop(next.html());
+				titles.add(information[0]);
+				values.add(information[1]);
+
+			}
+
+			PropertyValueAdapter = new SingleEventAdapter(titles, values);
+			setListAdapter(PropertyValueAdapter);
+
+			// Termin-Selektor:
+			// Terminselektor
+
+			Iterator<Element> captionIt = doc.select("caption").iterator();
+			Iterator<Element> DateTable = null;
+			Iterator<Element> materialTable = null;
+			while (captionIt.hasNext()) {
+				Element next = captionIt.next();
+				if (next.text().equals("Termine")) {
+					System.out.println(next.parent().html());
+					DateTable = next.parent().select("tr").iterator();
+				} else if (next.text().contains("Material")) {
+
+					materialTable = next.parent().select("tr").iterator();
+				}
+			}
+			ArrayList<String> eventNumber = new ArrayList<String>();
+			ArrayList<String> eventDate = new ArrayList<String>();
+			ArrayList<String> eventTime = new ArrayList<String>();
+
+			ArrayList<String> eventRoom = new ArrayList<String>();
+			ArrayList<String> eventInstructor = new ArrayList<String>();
+
+			while (DateTable.hasNext()) {
+				Element next = DateTable.next();
+				Elements cols = next.select("td");
+				eventNumber.add(cols.get(0).text());
+				eventDate.add(cols.get(1).text());
+				eventTime.add(cols.get(2).text() + "-" + cols.get(3).text());
+				eventRoom.add(cols.get(4).text());
+				eventInstructor.add(cols.get(5).text());
+			}
+
+			DateAppointmentAdapter = new AppointmentAdapter(eventDate,
+					eventTime, eventNumber, eventRoom, eventInstructor);
+
+			int ct = 0;
+			ArrayList<String> materialNumber = new ArrayList<String>();
+			ArrayList<String> materialName = new ArrayList<String>();
+			ArrayList<String> materialDesc = new ArrayList<String>();
+			materialLink = new ArrayList<String>();
+			ArrayList<String> materialFile = new ArrayList<String>();
+			if (materialTable != null) {
+				while (materialTable.hasNext()) {
+					Element next = materialTable.next();
+
+					if (next.select("td").size() > 1) {
+						ct++;
+						System.out.println(ct + "  " + (ct % 3));
+						int mod = (ct % 3);
+						switch (mod) {
+						case 1:
+							materialNumber.add(next.select("td").get(0).text());
+							materialName.add(next.select("td").get(1).text());
+
+							break;
+						case 2:
+							materialDesc.add(next.select("td").get(1).text());
+							break;
+						case 0:
+							materialLink.add(next.select("td").get(1)
+									.select("a").attr("href"));
+							materialFile.add(next.select("td").get(1)
+									.select("a").text());
+							break;
+						}
 					}
 				}
 			}
+
+			if (ct > 2) {
+				FileAdapter = new AppointmentAdapter(materialNumber,
+						materialFile, null, materialName, materialDesc);
+				thereAreFiles = true;
+			} else
+				FileAdapter = new ArrayAdapter<String>(this,
+						android.R.layout.simple_list_item_1,
+						new String[] { "Kein Material" });
+
+		} else {
+			String nextlink = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+					+ doc.select("div.detailout").select("a").attr("href");
+			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
+					this);
+			RequestObject thisRequest = new RequestObject(nextlink,
+					localCookieManager, RequestObject.METHOD_GET, "");
+			PREPCall = false;
+			callOverviewBrowser.execute(thisRequest);
 		}
-		
-		if(ct>2){
-			FileAdapter = new AppointmentAdapter(materialNumber, materialFile, null, materialName, materialDesc);
-			thereAreFiles=true;
-		}			
-		else 
-			FileAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,new String[]{"Kein Material"});
-			
-			
-		
-		
+
 	}
-	
-	private static String[] crop(String startstring){
-		if(startstring.length()>0){
+
+	private static String[] crop(String startstring) {
+		if (startstring.length() > 0) {
 			String[] splitted = startstring.split("</b>");
-			return new String[] { 
-					Jsoup.parse(splitted[0]).text().trim(),
+			return new String[] { Jsoup.parse(splitted[0]).text().trim(),
 					Jsoup.parse(splitted[1]).text() };
-		}
-		else {
-			return new String[] {"",""};
-			
+		} else {
+			return new String[] { "", "" };
+
 		}
 	}
-	
+
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		if(mode==1 && thereAreFiles){
-			String url=TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+materialLink.get(position);
-			Log.i(LOG_TAG,url);
+		if (mode == 1 && thereAreFiles) {
+			String url = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+					+ materialLink.get(position);
+			Log.i(LOG_TAG, url);
 			Uri mUri = Uri.parse(url);
-			Intent DownloadFile = new Intent(Intent.ACTION_VIEW,mUri);
-			
+			Intent DownloadFile = new Intent(Intent.ACTION_VIEW, mUri);
+
 			startActivity(DownloadFile);
 		}
 	}
 
-	public class OnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
-		
+	public class OnItemSelectedListener implements
+			android.widget.AdapterView.OnItemSelectedListener {
+
 		@Override
 		public void onItemSelected(AdapterView<?> parent, View view,
 				int position, long id) {
 			switch (position) {
 			case 0:
 				setListAdapter(PropertyValueAdapter);
-				mode=0;
+				mode = 0;
 				break;
 			case 1:
 				setListAdapter(FileAdapter);
-				mode=1;
+				mode = 1;
 				break;
 			case 2:
 				setListAdapter(DateAppointmentAdapter);
-				mode=0;
+				mode = 0;
 				break;
 			default:
 				break;
@@ -301,7 +317,7 @@ public class SingleEvent extends SimpleWebListActivity {
 		@Override
 		public void onNothingSelected(AdapterView<?> parent) {
 			// TODO Auto-generated method stub
-			
+
 		}
 	}
 }
