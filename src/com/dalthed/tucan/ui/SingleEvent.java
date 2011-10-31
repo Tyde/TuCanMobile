@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
+import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
@@ -144,126 +145,133 @@ public class SingleEvent extends SimpleWebListActivity {
 	@Override
 	public void onPostExecute(AnswerObject result) {
 		Document doc = Jsoup.parse(result.getHTML());
-		if (PREPCall == false) {
-			String Title = doc.select("h1").text();
+		if(doc.select("span.notLoggedText").text().length()>0){
+			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
+			startActivity(BackToLoginIntent);
+		}
+		else {
+			if (PREPCall == false) {
+				String Title = doc.select("h1").text();
 
-			TextView SingleEventTitle = (TextView) findViewById(R.id.singleevent_title);
-			SingleEventTitle.setText(Title);
-			Elements Deltarows = doc.select("table[courseid]").first()
-					.select("tr");
-			Element rows;
-			if (Deltarows.size() == 1) {
-				rows = Deltarows.get(0).select("td").first();
-			} else {
-				rows = Deltarows.get(1).select("td").first();
-			}
-
-			Elements Paragraphs = rows.select("p");
-			Iterator<Element> PaIt = Paragraphs.iterator();
-			ArrayList<String> titles = new ArrayList<String>();
-			ArrayList<String> values = new ArrayList<String>();
-
-			while (PaIt.hasNext()) {
-
-				Element next = PaIt.next();
-				String[] information = crop(next.html());
-				titles.add(information[0]);
-				values.add(information[1]);
-
-			}
-
-			PropertyValueAdapter = new SingleEventAdapter(titles, values);
-			setListAdapter(PropertyValueAdapter);
-
-			// Termin-Selektor:
-			// Terminselektor
-
-			Iterator<Element> captionIt = doc.select("caption").iterator();
-			Iterator<Element> DateTable = null;
-			Iterator<Element> materialTable = null;
-			while (captionIt.hasNext()) {
-				Element next = captionIt.next();
-				if (next.text().equals("Termine")) {
-					System.out.println(next.parent().html());
-					DateTable = next.parent().select("tr").iterator();
-				} else if (next.text().contains("Material")) {
-
-					materialTable = next.parent().select("tr").iterator();
+				TextView SingleEventTitle = (TextView) findViewById(R.id.singleevent_title);
+				SingleEventTitle.setText(Title);
+				Elements Deltarows = doc.select("table[courseid]").first()
+						.select("tr");
+				Element rows;
+				if (Deltarows.size() == 1) {
+					rows = Deltarows.get(0).select("td").first();
+				} else {
+					rows = Deltarows.get(1).select("td").first();
 				}
-			}
-			ArrayList<String> eventNumber = new ArrayList<String>();
-			ArrayList<String> eventDate = new ArrayList<String>();
-			ArrayList<String> eventTime = new ArrayList<String>();
 
-			ArrayList<String> eventRoom = new ArrayList<String>();
-			ArrayList<String> eventInstructor = new ArrayList<String>();
+				Elements Paragraphs = rows.select("p");
+				Iterator<Element> PaIt = Paragraphs.iterator();
+				ArrayList<String> titles = new ArrayList<String>();
+				ArrayList<String> values = new ArrayList<String>();
 
-			while (DateTable.hasNext()) {
-				Element next = DateTable.next();
-				Elements cols = next.select("td");
-				eventNumber.add(cols.get(0).text());
-				eventDate.add(cols.get(1).text());
-				eventTime.add(cols.get(2).text() + "-" + cols.get(3).text());
-				eventRoom.add(cols.get(4).text());
-				eventInstructor.add(cols.get(5).text());
-			}
+				while (PaIt.hasNext()) {
 
-			DateAppointmentAdapter = new AppointmentAdapter(eventDate,
-					eventTime, eventNumber, eventRoom, eventInstructor);
+					Element next = PaIt.next();
+					String[] information = crop(next.html());
+					titles.add(information[0]);
+					values.add(information[1]);
 
-			int ct = 0;
-			ArrayList<String> materialNumber = new ArrayList<String>();
-			ArrayList<String> materialName = new ArrayList<String>();
-			ArrayList<String> materialDesc = new ArrayList<String>();
-			materialLink = new ArrayList<String>();
-			ArrayList<String> materialFile = new ArrayList<String>();
-			if (materialTable != null) {
-				while (materialTable.hasNext()) {
-					Element next = materialTable.next();
+				}
 
-					if (next.select("td").size() > 1) {
-						ct++;
-						System.out.println(ct + "  " + (ct % 3));
-						int mod = (ct % 3);
-						switch (mod) {
-						case 1:
-							materialNumber.add(next.select("td").get(0).text());
-							materialName.add(next.select("td").get(1).text());
+				PropertyValueAdapter = new SingleEventAdapter(titles, values);
+				setListAdapter(PropertyValueAdapter);
 
-							break;
-						case 2:
-							materialDesc.add(next.select("td").get(1).text());
-							break;
-						case 0:
-							materialLink.add(next.select("td").get(1)
-									.select("a").attr("href"));
-							materialFile.add(next.select("td").get(1)
-									.select("a").text());
-							break;
+				// Termin-Selektor:
+				// Terminselektor
+
+				Iterator<Element> captionIt = doc.select("caption").iterator();
+				Iterator<Element> DateTable = null;
+				Iterator<Element> materialTable = null;
+				while (captionIt.hasNext()) {
+					Element next = captionIt.next();
+					if (next.text().equals("Termine")) {
+						System.out.println(next.parent().html());
+						DateTable = next.parent().select("tr").iterator();
+					} else if (next.text().contains("Material")) {
+
+						materialTable = next.parent().select("tr").iterator();
+					}
+				}
+				ArrayList<String> eventNumber = new ArrayList<String>();
+				ArrayList<String> eventDate = new ArrayList<String>();
+				ArrayList<String> eventTime = new ArrayList<String>();
+
+				ArrayList<String> eventRoom = new ArrayList<String>();
+				ArrayList<String> eventInstructor = new ArrayList<String>();
+
+				while (DateTable.hasNext()) {
+					Element next = DateTable.next();
+					Elements cols = next.select("td");
+					eventNumber.add(cols.get(0).text());
+					eventDate.add(cols.get(1).text());
+					eventTime.add(cols.get(2).text() + "-" + cols.get(3).text());
+					eventRoom.add(cols.get(4).text());
+					eventInstructor.add(cols.get(5).text());
+				}
+
+				DateAppointmentAdapter = new AppointmentAdapter(eventDate,
+						eventTime, eventNumber, eventRoom, eventInstructor);
+
+				int ct = 0;
+				ArrayList<String> materialNumber = new ArrayList<String>();
+				ArrayList<String> materialName = new ArrayList<String>();
+				ArrayList<String> materialDesc = new ArrayList<String>();
+				materialLink = new ArrayList<String>();
+				ArrayList<String> materialFile = new ArrayList<String>();
+				if (materialTable != null) {
+					while (materialTable.hasNext()) {
+						Element next = materialTable.next();
+
+						if (next.select("td").size() > 1) {
+							ct++;
+							System.out.println(ct + "  " + (ct % 3));
+							int mod = (ct % 3);
+							switch (mod) {
+							case 1:
+								materialNumber.add(next.select("td").get(0).text());
+								materialName.add(next.select("td").get(1).text());
+
+								break;
+							case 2:
+								materialDesc.add(next.select("td").get(1).text());
+								break;
+							case 0:
+								materialLink.add(next.select("td").get(1)
+										.select("a").attr("href"));
+								materialFile.add(next.select("td").get(1)
+										.select("a").text());
+								break;
+							}
 						}
 					}
 				}
+
+				if (ct > 2) {
+					FileAdapter = new AppointmentAdapter(materialNumber,
+							materialFile, null, materialName, materialDesc);
+					thereAreFiles = true;
+				} else
+					FileAdapter = new ArrayAdapter<String>(this,
+							android.R.layout.simple_list_item_1,
+							new String[] { "Kein Material" });
+
+			} else {
+				String nextlink = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+						+ doc.select("div.detailout").select("a").attr("href");
+				SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
+						this);
+				RequestObject thisRequest = new RequestObject(nextlink,
+						localCookieManager, RequestObject.METHOD_GET, "");
+				PREPCall = false;
+				callOverviewBrowser.execute(thisRequest);
 			}
-
-			if (ct > 2) {
-				FileAdapter = new AppointmentAdapter(materialNumber,
-						materialFile, null, materialName, materialDesc);
-				thereAreFiles = true;
-			} else
-				FileAdapter = new ArrayAdapter<String>(this,
-						android.R.layout.simple_list_item_1,
-						new String[] { "Kein Material" });
-
-		} else {
-			String nextlink = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-					+ doc.select("div.detailout").select("a").attr("href");
-			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
-					this);
-			RequestObject thisRequest = new RequestObject(nextlink,
-					localCookieManager, RequestObject.METHOD_GET, "");
-			PREPCall = false;
-			callOverviewBrowser.execute(thisRequest);
 		}
+		
 
 	}
 

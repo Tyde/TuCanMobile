@@ -59,17 +59,24 @@ public class SingleMessage extends SimpleWebActivity {
 			startActivity(BackToLoginIntent);
 		}
 		else {
-			Elements TableRows = doc.select("table.tb").select("tr");
-			TextView authorTextView = (TextView) findViewById(R.id.message_Author);
-			TextView dateTextView = (TextView) findViewById(R.id.message_Date);
-			TextView titleTextView = (TextView) findViewById(R.id.message_title);
-			TextView textTextView = (TextView) findViewById(R.id.message_text);
-			
-			authorTextView	.setText(TableRows.get(2).select("td").get(1).text());
-			dateTextView	.setText(TableRows.get(3).select("td").get(1).text());
-			titleTextView	.setText(TableRows.get(4).select("td").get(1).text());
-			textTextView	.setText(TableRows.get(5).select("td").get(1).html().replaceAll("<br />", "\n"));
+			if(doc.select("span.notLoggedText").text().length()>0){
+				Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
+				startActivity(BackToLoginIntent);
+			}
+			else {
+				Elements TableRows = doc.select("table.tb").select("tr");
+				TextView authorTextView = (TextView) findViewById(R.id.message_Author);
+				TextView dateTextView = (TextView) findViewById(R.id.message_Date);
+				TextView titleTextView = (TextView) findViewById(R.id.message_title);
+				TextView textTextView = (TextView) findViewById(R.id.message_text);
+				
+				authorTextView	.setText(TableRows.get(2).select("td").get(1).text());
+				dateTextView	.setText(TableRows.get(3).select("td").get(1).text());
+				titleTextView	.setText(TableRows.get(4).select("td").get(1).text());
+				textTextView	.setText(TableRows.get(5).select("td").get(1).html().replaceAll("<br />", "\n"));
+			}
 		}
+		
 		
 		
 

@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
+import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
@@ -69,79 +70,86 @@ public class Schedule extends SimpleWebListActivity {
 	public void onPostExecute(AnswerObject result) {
 		sendHTMLatBug(result.getHTML());
 		Document doc = Jsoup.parse(result.getHTML());
-		Iterator<Element> schedDays=doc.select("div.tbMonthDay").iterator();
-		int Month = java.util.Calendar.getInstance().get(java.util.Calendar.MONTH); 
-		int Day = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_MONTH); 
-		if(mode==0) {
-			eventDay = new ArrayList<String>();
-			eventTime = new ArrayList<String>();
-			eventRoom = new ArrayList<String>();
-			eventName = new ArrayList<String>();
-			eventLink = new ArrayList<String>();
-			firstEventofDay = new ArrayList<Boolean>();
-			String nextLink = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST + doc.select("a[name=skipForward_btn]").attr("href");
-			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
-					this);
-			RequestObject thisRequest = new RequestObject(nextLink,
-					localCookieManager, RequestObject.METHOD_GET, "");
-			callOverviewBrowser.execute(thisRequest);
-			
-		}	
-		if(mode==1)
-			Month++;
-		while(schedDays.hasNext()){
-			Element next = schedDays.next();
-			String monthday=next.attr("title");
-			Iterator<Element> dayEvents = next.select("div.appMonth").iterator();
-			if(dayEvents!= null){
-				int i=0;
-				while(dayEvents.hasNext()){
-					
-					
-					
-					Element nextEvent = dayEvents.next();
-					if(Integer.parseInt(monthday.trim()) >= Day || mode==1){
-						String[] LinktitleArgument = nextEvent.select("a").attr("title").split(" / ");
+		if(doc.select("span.notLoggedText").text().length()>0){
+			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
+			startActivity(BackToLoginIntent);
+		}
+		else {
+			Iterator<Element> schedDays=doc.select("div.tbMonthDay").iterator();
+			int Month = java.util.Calendar.getInstance().get(java.util.Calendar.MONTH); 
+			int Day = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_MONTH); 
+			if(mode==0) {
+				eventDay = new ArrayList<String>();
+				eventTime = new ArrayList<String>();
+				eventRoom = new ArrayList<String>();
+				eventName = new ArrayList<String>();
+				eventLink = new ArrayList<String>();
+				firstEventofDay = new ArrayList<Boolean>();
+				String nextLink = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST + doc.select("a[name=skipForward_btn]").attr("href");
+				SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
+						this);
+				RequestObject thisRequest = new RequestObject(nextLink,
+						localCookieManager, RequestObject.METHOD_GET, "");
+				callOverviewBrowser.execute(thisRequest);
+				
+			}	
+			if(mode==1)
+				Month++;
+			while(schedDays.hasNext()){
+				Element next = schedDays.next();
+				String monthday=next.attr("title");
+				Iterator<Element> dayEvents = next.select("div.appMonth").iterator();
+				if(dayEvents!= null){
+					int i=0;
+					while(dayEvents.hasNext()){
 						
-							if(i==0){
-								firstEventofDay.add(true);
-							}
-							else {
-								firstEventofDay.add(false);
-							}
-							i++;
-							if(Integer.parseInt(monthday.trim()) == Day && mode==0) {
-								eventDay.add("Heute");
-							}
-							else if(Integer.parseInt(monthday.trim()) == (Day+1) && mode==0) {
-								eventDay.add("Morgen");
-							}
-							else {
-								eventDay.add(monthday + "." + (Month+1));
-							}
-							
-							
-							
-							eventTime.add(LinktitleArgument[0].trim());
-							eventRoom.add(LinktitleArgument[1].trim());
-							eventName.add(LinktitleArgument[2].trim());
-							eventLink.add(nextEvent.select("a").attr("href"));
 						
-					
+						
+						Element nextEvent = dayEvents.next();
+						if(Integer.parseInt(monthday.trim()) >= Day || mode==1){
+							String[] LinktitleArgument = nextEvent.select("a").attr("title").split(" / ");
+							
+								if(i==0){
+									firstEventofDay.add(true);
+								}
+								else {
+									firstEventofDay.add(false);
+								}
+								i++;
+								if(Integer.parseInt(monthday.trim()) == Day && mode==0) {
+									eventDay.add("Heute");
+								}
+								else if(Integer.parseInt(monthday.trim()) == (Day+1) && mode==0) {
+									eventDay.add("Morgen");
+								}
+								else {
+									eventDay.add(monthday + "." + (Month+1));
+								}
+								
+								
+								
+								eventTime.add(LinktitleArgument[0].trim());
+								eventRoom.add(LinktitleArgument[1].trim());
+								eventName.add(LinktitleArgument[2].trim());
+								eventLink.add(nextEvent.select("a").attr("href"));
+							
+						
+						}
 					}
 				}
 			}
+			
+			
+			if(mode==1)
+			{
+				AppointmentAdapter ExternAdapter = new AppointmentAdapter(eventDay,eventTime,firstEventofDay,eventRoom,eventName);
+				setListAdapter(ExternAdapter);
+			}
+			else {
+				mode=1;
+			}
 		}
 		
-		
-		if(mode==1)
-		{
-			AppointmentAdapter ExternAdapter = new AppointmentAdapter(eventDay,eventTime,firstEventofDay,eventRoom,eventName);
-			setListAdapter(ExternAdapter);
-		}
-		else {
-			mode=1;
-		}
 		
 	
 
