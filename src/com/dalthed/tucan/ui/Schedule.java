@@ -99,10 +99,9 @@ public class Schedule extends SimpleWebListActivity {
 					
 					
 					Element nextEvent = dayEvents.next();
-					if(Integer.parseInt(monthday.trim()) > Day || mode==1){
-						String[] LinktitleArgument = nextEvent.select("a").attr("title").split("/");
-						if(LinktitleArgument.length>4)
-						{
+					if(Integer.parseInt(monthday.trim()) >= Day || mode==1){
+						String[] LinktitleArgument = nextEvent.select("a").attr("title").split(" / ");
+						
 							if(i==0){
 								firstEventofDay.add(true);
 							}
@@ -123,10 +122,10 @@ public class Schedule extends SimpleWebListActivity {
 							
 							
 							eventTime.add(LinktitleArgument[0].trim());
-							eventRoom.add(LinktitleArgument[1].trim() + "/" + LinktitleArgument[2].trim());
-							eventName.add(LinktitleArgument[3].trim());
+							eventRoom.add(LinktitleArgument[1].trim());
+							eventName.add(LinktitleArgument[2].trim());
 							eventLink.add(nextEvent.select("a").attr("href"));
-						}
+						
 					
 					}
 				}
