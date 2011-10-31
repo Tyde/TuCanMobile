@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 
+import org.acra.ErrorReporter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -22,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bugsense.trace.BugSense;
 import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
@@ -178,17 +180,22 @@ public class MainMenu extends SimpleWebActivity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			ErrorReporter.getInstance().putCustomData("html", doc.html());
 			// Tabelle mit den Terminen finden und Durchlaufen
 			Element EventTable = doc.select("table.nb").first();
+			
 			String[] Events;
 			String[] Times;
+			
 			if(EventTable==null){
 				Events = new String[1];
 				Times = new String[1];
 				Events[0] = "Keine Heutigen Veranstaltungen";
 				Times[0] = "";
-			}
+			}				
 			else  {
+				
+				
 				if (EventTable.select("tr.tbdata").select("td").size()==5) {
 					Events = new String[1];
 					Times = new String[1];
@@ -196,6 +203,7 @@ public class MainMenu extends SimpleWebActivity {
 					Times[0] = "";
 					noeventstoday = true;
 				} else {
+
 					Elements EventRows = EventTable.select("tr.tbdata");
 					Iterator<Element> RowIt = EventRows.iterator();
 					Events = new String[EventRows.size()];

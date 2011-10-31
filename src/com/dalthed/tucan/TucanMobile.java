@@ -4,12 +4,17 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.acra.*;
+import org.acra.annotation.*;
+
 import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+//@ReportsCrashes(formKey = "dGxJeFNVZk5YQXRmaXV6WVZfVHYzdWc6MQ")
+@ReportsCrashes(formKey="dGxJeFNVZk5YQXRmaXV6WVZfVHYzdWc6MQ")
 public class TucanMobile extends Application {
 	private static Context Appcontext;
 	public final static String TUCAN_HOST = "www.tucan.tu-darmstadt.de";
@@ -17,6 +22,8 @@ public class TucanMobile extends Application {
 
 	@Override
 	public void onCreate() {
+		ACRA.init(this);
+		super.onCreate();
 		TucanMobile.Appcontext = getApplicationContext();
 	}
 

@@ -10,6 +10,7 @@ import java.util.zip.GZIPInputStream;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import android.os.Build;
 import android.util.Log;
 /**
  * BrowseMethods implementiert wichtige Methoden, um Webseiten angepasst zu Laden
@@ -38,6 +39,7 @@ public class BrowseMethods {
 		 "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:7.0.1) Gecko/20100101 Firefox/7.0.1");
 		HTTPConnection.setInstanceFollowRedirects(false);
 		if (myCookies.domain_exists(domain)) {
+			Log.i(LOG_TAG, "Cookie gesetzt:" +myCookies.getCookieHTTPString(domain));
 			HTTPConnection.setRequestProperty("Cookie",
 					myCookies.getCookieHTTPString(domain));
 		}
@@ -50,7 +52,9 @@ public class BrowseMethods {
 	public AnswerObject browse(RequestObject requestInfo) {
 		String redirectURL = "";
 		String alllines = "";
-
+		if (Integer.parseInt(Build.VERSION.SDK) < 8) {
+	        System.setProperty("http.keepAlive", "false");
+	    }
 		try {
 			URL realURL = requestInfo.getmyURL();
 			myCookies = requestInfo.getCookies();
@@ -77,7 +81,7 @@ public class BrowseMethods {
 			
 			if(iwantthereader==false){
 				
-				BufferedReader bin = new BufferedReader(isr);
+				BufferedReader bin = new BufferedReader(isr,8*1024);
 				for (int n = 0;; n++) {
 					String headerValue = HTTPConnection.getHeaderField(n);
 					String headerName = HTTPConnection.getHeaderFieldKey(n);
@@ -106,7 +110,6 @@ public class BrowseMethods {
 				}
 				int contentlength = HTTPConnection.getContentLength();
 				Log.i(LOG_TAG, contentlength + "...");
-
 				StringBuilder inputBuilder = new StringBuilder();
 				String inputLine;
 
