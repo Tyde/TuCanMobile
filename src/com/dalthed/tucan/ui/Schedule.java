@@ -67,6 +67,7 @@ public class Schedule extends SimpleWebListActivity {
 	
 	@Override
 	public void onPostExecute(AnswerObject result) {
+		sendHTMLatBug(result.getHTML());
 		Document doc = Jsoup.parse(result.getHTML());
 		Iterator<Element> schedDays=doc.select("div.tbMonthDay").iterator();
 		int Month = java.util.Calendar.getInstance().get(java.util.Calendar.MONTH); 

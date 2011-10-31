@@ -166,6 +166,7 @@ public class MainMenu extends SimpleWebActivity {
 	@Override
 	public void onPostExecute(AnswerObject result) {
 		// HTML auslesen
+		sendHTMLatBug(result.getHTML());
 		Document doc = Jsoup.parse(result.getHTML());
 		if(doc.select("span.notLoggedText").text().length()>0){
 			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
@@ -180,7 +181,7 @@ public class MainMenu extends SimpleWebActivity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			ErrorReporter.getInstance().putCustomData("html", doc.html());
+			
 			// Tabelle mit den Terminen finden und Durchlaufen
 			Element EventTable = doc.select("table.nb").first();
 			

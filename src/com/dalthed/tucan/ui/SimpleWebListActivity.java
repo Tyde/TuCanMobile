@@ -1,5 +1,7 @@
 package com.dalthed.tucan.ui;
 
+import org.acra.ErrorReporter;
+
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.preferences.MainPreferences;
@@ -25,6 +27,10 @@ public abstract class SimpleWebListActivity extends ListActivity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
+	public void sendHTMLatBug(String html){
+		ErrorReporter.getInstance().putCustomData("html", html);
+	}
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {

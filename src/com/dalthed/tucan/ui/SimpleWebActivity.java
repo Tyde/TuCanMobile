@@ -1,5 +1,7 @@
 package com.dalthed.tucan.ui;
 
+import org.acra.ErrorReporter;
+
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.preferences.MainPreferences;
@@ -12,6 +14,9 @@ import android.view.MenuItem;
 public abstract class SimpleWebActivity extends Activity {
 	public abstract void onPostExecute(AnswerObject result);
 
+	public void sendHTMLatBug(String html){
+		ErrorReporter.getInstance().putCustomData("html", html);
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.loginmenu, menu);

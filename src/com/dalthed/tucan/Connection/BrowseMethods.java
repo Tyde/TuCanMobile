@@ -52,7 +52,7 @@ public class BrowseMethods {
 	public AnswerObject browse(RequestObject requestInfo) {
 		String redirectURL = "";
 		String alllines = "";
-		if (Integer.parseInt(Build.VERSION.SDK) < 8) {
+		if (Integer.parseInt(Build.VERSION.SDK) < 9) {
 	        System.setProperty("http.keepAlive", "false");
 	    }
 		try {
