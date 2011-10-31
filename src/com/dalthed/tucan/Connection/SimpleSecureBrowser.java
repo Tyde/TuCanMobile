@@ -66,7 +66,8 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 			dialog.setTitle(outerCallingListActivity.getResources().getString(R.string.ui_calc));
 			outerCallingListActivity.onPostExecute(result);
 		}
-		dialog.dismiss();
+		if(dialog.isShowing())
+			dialog.dismiss();
 	}
 	
 

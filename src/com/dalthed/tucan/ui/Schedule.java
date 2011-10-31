@@ -100,29 +100,33 @@ public class Schedule extends SimpleWebListActivity {
 					
 					Element nextEvent = dayEvents.next();
 					if(Integer.parseInt(monthday.trim()) > Day || mode==1){
-						if(i==0){
-							firstEventofDay.add(true);
-						}
-						else {
-							firstEventofDay.add(false);
-						}
-						i++;
-						if(Integer.parseInt(monthday.trim()) == Day && mode==0) {
-							eventDay.add("Heute");
-						}
-						else if(Integer.parseInt(monthday.trim()) == (Day+1) && mode==0) {
-							eventDay.add("Morgen");
-						}
-						else {
-							eventDay.add(monthday + "." + (Month+1));
-						}
-						
-						
 						String[] LinktitleArgument = nextEvent.select("a").attr("title").split("/");
-						eventTime.add(LinktitleArgument[0].trim());
-						eventRoom.add(LinktitleArgument[1].trim() + "/" + LinktitleArgument[2].trim());
-						eventName.add(LinktitleArgument[3].trim());
-						eventLink.add(nextEvent.select("a").attr("href"));
+						if(LinktitleArgument.length>4)
+						{
+							if(i==0){
+								firstEventofDay.add(true);
+							}
+							else {
+								firstEventofDay.add(false);
+							}
+							i++;
+							if(Integer.parseInt(monthday.trim()) == Day && mode==0) {
+								eventDay.add("Heute");
+							}
+							else if(Integer.parseInt(monthday.trim()) == (Day+1) && mode==0) {
+								eventDay.add("Morgen");
+							}
+							else {
+								eventDay.add(monthday + "." + (Month+1));
+							}
+							
+							
+							
+							eventTime.add(LinktitleArgument[0].trim());
+							eventRoom.add(LinktitleArgument[1].trim() + "/" + LinktitleArgument[2].trim());
+							eventName.add(LinktitleArgument[3].trim());
+							eventLink.add(nextEvent.select("a").attr("href"));
+						}
 					
 					}
 				}
