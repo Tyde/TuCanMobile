@@ -51,12 +51,12 @@ public class VV_Events extends SimpleWebListActivity {
 			localCookieManager = new CookieManager();
 			localCookieManager.generateManagerfromHTTPString(
 					URLtoCall.getHost(), CookieHTTPString);
-			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
+			callResultBrowser = new SimpleSecureBrowser(
 					this);
 			RequestObject thisRequest = new RequestObject(URLStringtoCall,
 					localCookieManager, RequestObject.METHOD_GET, "");
 
-			callOverviewBrowser.execute(thisRequest);
+			callResultBrowser.execute(thisRequest);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			Log.e(LOG_TAG, e.getMessage());
@@ -117,6 +117,7 @@ public class VV_Events extends SimpleWebListActivity {
 		}
 		else {
 			Elements tbdata = doc.select("tr.tbdata");
+			sendHTMLatBug(tbdata.html());
 			String[] Eventnames = new String[tbdata.size()];
 			String[] Eventdozent = new String[tbdata.size()];
 			String[] Eventtype = new String[tbdata.size()];

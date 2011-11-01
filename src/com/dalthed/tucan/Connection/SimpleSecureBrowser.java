@@ -6,7 +6,10 @@ import com.dalthed.tucan.ui.SimpleWebActivity;
 import com.dalthed.tucan.ui.SimpleWebListActivity;
 
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 
 import android.os.AsyncTask;
 /**
@@ -17,9 +20,10 @@ import android.os.AsyncTask;
  *
  */
 public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, AnswerObject> {
-	protected SimpleWebListActivity outerCallingListActivity;
-	protected SimpleWebActivity outerCallingActivity;
-	ProgressDialog dialog;
+	public SimpleWebListActivity outerCallingListActivity;
+	public SimpleWebActivity outerCallingActivity;
+	public ProgressDialog dialog;
+	Activity parentActivityHandler;
 	
 	/**
 	 * Die Activity muss übergeben werden, damit der Browser die Methode onPostExecute aufrufen kann
@@ -46,18 +50,25 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 
 	@Override
 	protected void onPreExecute() {
+		
 		if(outerCallingListActivity==null){
-			dialog = ProgressDialog.show(outerCallingActivity,"",
-					outerCallingActivity.getResources().getString(R.string.ui_load_data),true);
+			parentActivityHandler = outerCallingActivity;
 		}
 		else {
-			dialog = ProgressDialog.show(outerCallingListActivity,"",
-					outerCallingListActivity.getResources().getString(R.string.ui_load_data),true);
+			
+			parentActivityHandler = outerCallingListActivity;
 		}
+		
+		parentActivityHandler.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
+		dialog = ProgressDialog.show(parentActivityHandler,"",
+				parentActivityHandler.getResources().getString(R.string.ui_load_data),true);
+		
 	}
 
 	@Override
 	protected void onPostExecute(AnswerObject result) {
+		
 		if(outerCallingListActivity==null){
 			dialog.setTitle(outerCallingActivity.getResources().getString(R.string.ui_calc));
 			outerCallingActivity.onPostExecute(result);
@@ -66,8 +77,11 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 			dialog.setTitle(outerCallingListActivity.getResources().getString(R.string.ui_calc));
 			outerCallingListActivity.onPostExecute(result);
 		}
-		if(dialog.isShowing())
+		if(dialog.isShowing() && dialog!=null)
 			dialog.dismiss();
+		
+		
+		
 	}
 	
 

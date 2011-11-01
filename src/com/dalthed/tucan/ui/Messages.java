@@ -51,12 +51,12 @@ public class Messages extends SimpleWebListActivity {
 			localCookieManager = new CookieManager();
 			localCookieManager.generateManagerfromHTTPString(
 					URLtoCall.getHost(), CookieHTTPString);
-			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
+			callResultBrowser = new SimpleSecureBrowser(
 					this);
 			RequestObject thisRequest = new RequestObject(URLStringtoCall,
 					localCookieManager, RequestObject.METHOD_GET, "");
 
-			callOverviewBrowser.execute(thisRequest);
+			callResultBrowser.execute(thisRequest);
 		} catch (MalformedURLException e) {
 			Log.e(LOG_TAG, e.getMessage());
 		}

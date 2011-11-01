@@ -4,16 +4,21 @@ import org.acra.ErrorReporter;
 
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.Connection.AnswerObject;
+import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.preferences.MainPreferences;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask.Status;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public abstract class SimpleWebActivity extends Activity {
+	public SimpleSecureBrowser callResultBrowser;
+	
 	public abstract void onPostExecute(AnswerObject result);
-
+	
+	
 	public void sendHTMLatBug(String html){
 		ErrorReporter.getInstance().putCustomData("html", html);
 	}
@@ -39,4 +44,14 @@ public abstract class SimpleWebActivity extends Activity {
 		}
 
 	}
+
+	@Override
+	public Object onRetainNonConfigurationInstance() {
+		if(callResultBrowser.getStatus() != Status.FINISHED && callResultBrowser!=null){
+			callResultBrowser.outerCallingActivity=this;
+		}
+		return super.onRetainNonConfigurationInstance();
+	}
+	
+	
 }

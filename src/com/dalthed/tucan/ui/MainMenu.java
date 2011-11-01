@@ -62,12 +62,12 @@ public class MainMenu extends SimpleWebActivity {
 			localCookieManager = new CookieManager();
 			localCookieManager.generateManagerfromHTTPString(
 					lastCalledURL.getHost(), CookieHTTPString);
-			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
+			callResultBrowser = new SimpleSecureBrowser(
 					this);
 			RequestObject thisRequest = new RequestObject(lastCalledURLString,
 					localCookieManager, RequestObject.METHOD_GET, "");
 
-			callOverviewBrowser.execute(thisRequest);
+			callResultBrowser.execute(thisRequest);
 		} catch (MalformedURLException e) {
 			Log.e(LOG_TAG, e.getMessage());
 		}

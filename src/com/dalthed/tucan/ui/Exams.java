@@ -65,12 +65,12 @@ public class Exams extends SimpleWebListActivity {
 			localCookieManager = new CookieManager();
 			localCookieManager.generateManagerfromHTTPString(
 					URLtoCall.getHost(), CookieHTTPString);
-			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
+			callResultBrowser = new SimpleSecureBrowser(
 					this);
 			RequestObject thisRequest = new RequestObject(URLStringtoCall,
 					localCookieManager, RequestObject.METHOD_GET, "");
 
-			callOverviewBrowser.execute(thisRequest);
+			callResultBrowser.execute(thisRequest);
 		} catch (MalformedURLException e) {
 			Log.e(LOG_TAG, e.getMessage());
 		}
@@ -209,6 +209,7 @@ public class Exams extends SimpleWebListActivity {
 	@SuppressWarnings("unchecked")
 	public void onPostExecute(AnswerObject result) {
 		Document doc = Jsoup.parse(result.getHTML());
+		sendHTMLatBug(result.getHTML());
 		if(doc.select("span.notLoggedText").text().length()>0){
 			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
 			startActivity(BackToLoginIntent);
@@ -260,7 +261,7 @@ public class Exams extends SimpleWebListActivity {
 					while(ExamRowIterator.hasNext()){
 						Element next = ExamRowIterator.next();
 						Elements ExamCols = next.select("td");
-						if(ExamCols.size()>0){
+						if(ExamCols.size()>1){
 							ExamName.add(ExamCols.get(1).text());
 							ExamDate.add(ExamCols.get(3).text());
 							ExamState.add(ExamCols.get(4).text());

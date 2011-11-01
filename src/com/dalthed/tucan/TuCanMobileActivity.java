@@ -29,6 +29,8 @@ import com.dalthed.tucan.ui.SimpleWebActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -58,6 +60,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         BugSenseHandler.setup(this,"ed5c1682");
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         
         
         

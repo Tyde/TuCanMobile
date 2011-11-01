@@ -4,10 +4,12 @@ import org.acra.ErrorReporter;
 
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.Connection.AnswerObject;
+import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.preferences.MainPreferences;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.os.AsyncTask.Status;
 import android.view.Menu;
 import android.view.MenuItem;
 /**
@@ -16,6 +18,7 @@ import android.view.MenuItem;
  *
  */
 public abstract class SimpleWebListActivity extends ListActivity {
+	public SimpleSecureBrowser callResultBrowser;
 	/**
 	 * Wird aufgerufen, wenn SimpleSecureBrowser fertig ist.
 	 * @param result
@@ -46,5 +49,11 @@ public abstract class SimpleWebListActivity extends ListActivity {
 			return super.onOptionsItemSelected(item);
 		}
 
+	}
+	public Object onRetainNonConfigurationInstance() {
+		if(callResultBrowser!=null){
+			callResultBrowser.dialog.dismiss();
+		}
+		return super.onRetainNonConfigurationInstance();
 	}
 }

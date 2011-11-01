@@ -5,7 +5,7 @@
 
     <!-- Login -->
     <string name="login_tuid">TU-ID:</string>
-    <string name="login_pw">Password:</string>
+    <string name="login_pw">Passwort:</string>
     <string name="login_send">Anmelden</string>
     <string name="login_stay_logged">Passwort merken</string>
     <string name="loginmenu_preferences">Einstellungen</string>
