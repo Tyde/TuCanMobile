@@ -60,6 +60,7 @@ public class SingleMessage extends SimpleWebActivity {
 	@Override
 	public void onPostExecute(AnswerObject result) {
 		Document doc = Jsoup.parse(result.getHTML());
+		sendHTMLatBug(doc.html());
 		if(doc.select("span.notLoggedText").text().length()>0){
 			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
 			startActivity(BackToLoginIntent);

@@ -118,6 +118,7 @@ public class Events extends SimpleWebListActivity {
 					TuCanMobileActivity.class);
 			startActivity(BackToLoginIntent);
 		} else {
+			sendHTMLatBug(doc.html());
 			if (mode == 0) {
 				Elements links = doc.select("li#link000273").select("li");
 

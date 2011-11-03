@@ -10,6 +10,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -252,17 +255,32 @@ public class MainMenu extends SimpleWebActivity {
 			Element ArchivLink=LinkstoOuterWorld.get(1).select("a").first();
 
 			menu_link_vv = lcURL.getProtocol() + "://" + lcURL.getHost()
-					+ doc.select("li[title=VV]").select("a").attr("href");
+					+ doc.select("li#link000326").select("a").attr("href");
 			menu_link_ex = lcURL.getProtocol() + "://" + lcURL.getHost()
-					+ doc.select("li[title=Prüfungen]").select("a").attr("href");
+					+ doc.select("li#link000280").select("a").attr("href");
 			menu_link_msg = lcURL.getProtocol() + "://" + lcURL.getHost()
 					+ ArchivLink.attr("href");
 			menu_link_export = lcURL.getProtocol() + "://" + lcURL.getHost()
-					+doc.select("li#link000272").select("a").attr("href");
+					+ doc.select("li#link000272").select("a").attr("href");
 			menu_link_month = lcURL.getProtocol() + "://" + lcURL.getHost()
-					+doc.select("li#link000271").select("a").attr("href");
-			
-			Log.i(LOG_TAG, menu_link_export);
+					+ doc.select("li#link000271").select("a").attr("href");
+			if(doc.select("li#link000326").select("a").attr("href").equals("")) {
+				Dialog wronglanguageDialog = new AlertDialog.Builder(this)
+				.setTitle("")
+				.setMessage(R.string.general_not_supported_lang)
+				.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				})
+				.create();
+				wronglanguageDialog.show();
+				
+				
+				
+			}
 			usertextview.setText(UserName);
 			ListView EventList = (ListView) findViewById(R.id.mm_eventList);
 			EventList.setAdapter(new EventAdapter(Events, Times));
