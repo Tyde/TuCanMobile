@@ -28,6 +28,7 @@ public class TucanMobile extends Application {
 		
 		
 		ACRA.init(this);
+		
 		super.onCreate();
 		TucanMobile.Appcontext = getApplicationContext();
 	}

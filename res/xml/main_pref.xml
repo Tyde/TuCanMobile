@@ -4,12 +4,14 @@
 	<PreferenceCategory android:title="@string/settings_username">
 		<EditTextPreference android:key="tuid"
 			android:title="@string/settings_tuid" android:defaultValue="" />
-		<EditTextPreference 
-			android:key="pw"
-			android:title="@string/settings_pw"
-			android:summary="Zusammenfassung"
+		<EditTextPreference android:key="pw"
+			android:title="@string/settings_pw" android:summary=""
 			android:inputType="textPassword" />
 
+		<CheckBoxPreference android:key="acra.disable"
+			android:title="@string/pref_disable_acra" android:summaryOn="@string/pref_acra_disabled"
+			android:summaryOff="@string/pref_acra_enabled" android:defaultValue="false" />
+
 	</PreferenceCategory>
-	
+
 </PreferenceScreen>
