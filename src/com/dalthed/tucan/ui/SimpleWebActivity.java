@@ -10,6 +10,7 @@ import com.dalthed.tucan.preferences.MainPreferences;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask.Status;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -19,6 +20,13 @@ public abstract class SimpleWebActivity extends Activity {
 	public abstract void onPostExecute(AnswerObject result);
 	
 	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		
+		super.onCreate(savedInstanceState);
+	}
+
+
 	public void sendHTMLatBug(String html){
 		ErrorReporter.getInstance().putCustomData("html", html);
 	}
@@ -47,10 +55,7 @@ public abstract class SimpleWebActivity extends Activity {
 
 	@Override
 	public Object onRetainNonConfigurationInstance() {
-		if(callResultBrowser.getStatus() != Status.FINISHED && callResultBrowser!=null){
-			callResultBrowser.outerCallingActivity=this;
-		}
-		return super.onRetainNonConfigurationInstance();
+		return callResultBrowser;
 	}
 	
 	

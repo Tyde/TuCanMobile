@@ -12,6 +12,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -60,6 +61,11 @@ public class Messages extends SimpleWebListActivity {
 		} catch (MalformedURLException e) {
 			Log.e(LOG_TAG, e.getMessage());
 		}
+	}
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		setContentView(R.layout.messages);
 	}
 
 	class MessageAdapter extends ArrayAdapter<String>{

@@ -11,6 +11,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -77,6 +78,12 @@ public class VV extends SimpleWebListActivity {
 		callOverviewBrowser.execute(thisRequest);
 
 		// Webhandling End
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		setContentView(R.layout.vv);
 	}
 
 	public void callsetListAdapter(ArrayList<String> Elements) {

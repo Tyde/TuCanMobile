@@ -55,6 +55,8 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 	private EditText usrnameField;
 	private EditText pwdField;
 	String SessionArgument="";
+	
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +99,11 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 		img.requestFocus();
         
     }
+    @Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		setContentView(R.layout.main);
+	}
     public void onClickSendLogin (final View sfNormal) {
     	HTTPSBrowser newBrowser = new HTTPSBrowser();
     	

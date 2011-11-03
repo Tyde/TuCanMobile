@@ -22,6 +22,7 @@ import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -61,6 +62,12 @@ public class VV_Events extends SimpleWebListActivity {
 			// TODO Auto-generated catch block
 			Log.e(LOG_TAG, e.getMessage());
 		}
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		setContentView(R.layout.vv_events);
 	}
 
 	class EventOverviewAdapter extends ArrayAdapter<String> {

@@ -12,6 +12,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -54,6 +55,8 @@ public class Exams extends SimpleWebListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.exams);
 		BugSenseHandler.setup(this,"ed5c1682");
+		
+		
 		// Webhandling Start
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		URLStringtoCall = getIntent().getExtras().getString("URL");
@@ -75,6 +78,11 @@ public class Exams extends SimpleWebListActivity {
 			Log.e(LOG_TAG, e.getMessage());
 		}
 		// Webhandling End
+	}
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		setContentView(R.layout.exams);
 	}
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);

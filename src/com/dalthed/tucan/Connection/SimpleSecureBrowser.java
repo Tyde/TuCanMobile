@@ -24,7 +24,7 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 	public SimpleWebActivity outerCallingActivity;
 	public ProgressDialog dialog;
 	Activity parentActivityHandler;
-	
+	boolean finished = false;
 	/**
 	 * Die Activity muss übergeben werden, damit der Browser die Methode onPostExecute aufrufen kann
 	 * @param callingActivity
@@ -59,7 +59,7 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 			parentActivityHandler = outerCallingListActivity;
 		}
 		
-		parentActivityHandler.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		//parentActivityHandler.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
 		dialog = ProgressDialog.show(parentActivityHandler,"",
 				parentActivityHandler.getResources().getString(R.string.ui_load_data),true);

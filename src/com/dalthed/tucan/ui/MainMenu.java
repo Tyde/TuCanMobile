@@ -11,6 +11,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -32,6 +33,7 @@ import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
+import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 public class MainMenu extends SimpleWebActivity {
 
@@ -46,12 +48,15 @@ public class MainMenu extends SimpleWebActivity {
 	String SessionArgument="";
 	private boolean noeventstoday=false;
 	private String[] today_event_links;
+	public GoogleAnalyticsTracker mAnalyticsTracker;
 
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
+		mAnalyticsTracker = GoogleAnalyticsTracker.getInstance();
+		mAnalyticsTracker.startNewSession("UA-2729322-5", this);
 		BugSenseHandler.setup(this,"ed5c1682");
 		// Webhandling Start
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
@@ -136,6 +141,11 @@ public class MainMenu extends SimpleWebActivity {
 		});
 
 	}
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		setContentView(R.layout.main_menu);
+	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -197,7 +207,7 @@ public class MainMenu extends SimpleWebActivity {
 			else  {
 				
 				
-				if (EventTable.select("tr.tbdata").select("td").size()==5) {
+				if (EventTable.select("tr.tbdata").first().select("td").size()==5) {
 					Events = new String[1];
 					Times = new String[1];
 					Events[0] = "Keine Heutigen Veranstaltungen";
@@ -223,8 +233,10 @@ public class MainMenu extends SimpleWebActivity {
 								.select("td[headers=bis]").select("a").first().text();
 						Times[i] = EventTimeString + "-" + EventTimeEndString;
 						Events[i] = EventString;
+						
 						i++;
 					}
+					
 				}
 			}
 

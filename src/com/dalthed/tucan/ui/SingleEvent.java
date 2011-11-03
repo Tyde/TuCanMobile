@@ -11,6 +11,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -79,6 +80,12 @@ public class SingleEvent extends SimpleWebListActivity {
 
 	}
 
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		setContentView(R.layout.singleevent);
+	}
+	
 	class SingleEventAdapter extends ArrayAdapter<String> {
 		ArrayList<String> values;
 
