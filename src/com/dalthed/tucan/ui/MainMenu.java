@@ -228,9 +228,9 @@ public class MainMenu extends SimpleWebActivity {
 						today_event_links[i]=currentElement.select("td[headers=Name]")
 								.select("a").first().attr("href");
 						String EventTimeString = currentElement
-								.select("td[headers=von]").select("a").first().text();
+								.select("td").get(2).select("a").first().text();
 						String EventTimeEndString = currentElement
-								.select("td[headers=bis]").select("a").first().text();
+								.select("td").get(3).select("a").first().text();
 						Times[i] = EventTimeString + "-" + EventTimeEndString;
 						Events[i] = EventString;
 						
