@@ -247,6 +247,11 @@ public class SingleEvent extends SimpleWebListActivity {
 								break;
 							case 2:
 								materialDesc.add(next.select("td").get(1).text());
+								if(next.attr("class").equals("tbdata_nob")){
+									ct++;
+									materialLink.add("");
+									materialFile.add("");
+								}
 								break;
 							case 0:
 								materialLink.add(next.select("td").get(1)
@@ -297,14 +302,17 @@ public class SingleEvent extends SimpleWebListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		if (mode == 1 && thereAreFiles) {
-			String url = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-					+ materialLink.get(position);
-			Log.i(LOG_TAG, url);
-			Uri mUri = Uri.parse(url);
-			Intent DownloadFile = new Intent(Intent.ACTION_VIEW, mUri);
+		if (mode == 1 && thereAreFiles ) {
+			if(!materialLink.get(position).equals("")){
+				String url = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+						+ materialLink.get(position);
+				Log.i(LOG_TAG, url);
+				Uri mUri = Uri.parse(url);
+				Intent DownloadFile = new Intent(Intent.ACTION_VIEW, mUri);
 
-			startActivity(DownloadFile);
+				startActivity(DownloadFile);
+			}
+			
 		}
 	}
 
