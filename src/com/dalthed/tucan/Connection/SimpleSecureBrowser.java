@@ -2,6 +2,7 @@ package com.dalthed.tucan.Connection;
 
 import com.dalthed.tucan.R;
 
+import com.dalthed.tucan.ui.FragmentWebActivity;
 import com.dalthed.tucan.ui.SimpleWebActivity;
 import com.dalthed.tucan.ui.SimpleWebListActivity;
 
@@ -22,21 +23,28 @@ import android.os.AsyncTask;
 public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, AnswerObject> {
 	public SimpleWebListActivity outerCallingListActivity;
 	public SimpleWebActivity outerCallingActivity;
+	public FragmentWebActivity outerCallingFragmentActivity;
 	public ProgressDialog dialog;
-	Activity parentActivityHandler;
+	
 	boolean finished = false;
 	/**
 	 * Die Activity muss übergeben werden, damit der Browser die Methode onPostExecute aufrufen kann
 	 * @param callingActivity
 	 */
 	public SimpleSecureBrowser (SimpleWebListActivity callingActivity) {
-		super();
 		outerCallingListActivity=callingActivity;
+		outerCallingFragmentActivity=null;
 		outerCallingActivity=null;
 	}
 	
+	public SimpleSecureBrowser (FragmentWebActivity callingActivity) {
+		outerCallingListActivity=null;
+		outerCallingFragmentActivity=callingActivity;
+		outerCallingActivity=null;
+	}
 	public SimpleSecureBrowser (SimpleWebActivity callingActivity) {
 		outerCallingListActivity=null;
+		outerCallingFragmentActivity=null;
 		outerCallingActivity=callingActivity;
 	}
 	@Override
@@ -51,32 +59,46 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 	@Override
 	protected void onPreExecute() {
 		
-		if(outerCallingListActivity==null){
-			parentActivityHandler = outerCallingActivity;
-		}
-		else {
-			
-			parentActivityHandler = outerCallingListActivity;
-		}
+		Activity parentActivityHandler = getparentActivityHandler();
 		
 		//parentActivityHandler.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		
 		dialog = ProgressDialog.show(parentActivityHandler,"",
-				parentActivityHandler.getResources().getString(R.string.ui_load_data),true);
+					//parentActivityHandler.getResources().getString(R.string.ui_load_data),true);
+				"Lade",true);
 		
+	}
+	private Activity getparentActivityHandler() {
+		Activity parentActivityHandler;
+		if(outerCallingListActivity==null && outerCallingFragmentActivity== null){
+			parentActivityHandler = outerCallingActivity;
+		}
+		else if(outerCallingFragmentActivity == null) {
+			
+			parentActivityHandler = outerCallingListActivity;
+		}
+		else {
+			parentActivityHandler = outerCallingFragmentActivity;
+		}
+		return parentActivityHandler;
 	}
 
 	@Override
 	protected void onPostExecute(AnswerObject result) {
 		
-		if(outerCallingListActivity==null){
-			dialog.setTitle(outerCallingActivity.getResources().getString(R.string.ui_calc));
+		Activity parentActivityHandler = getparentActivityHandler();
+		dialog.setTitle(parentActivityHandler.getResources().getString(R.string.ui_calc));
+		if(outerCallingListActivity==null && outerCallingFragmentActivity== null){
 			outerCallingActivity.onPostExecute(result);
 		}
-		else {
-			dialog.setTitle(outerCallingListActivity.getResources().getString(R.string.ui_calc));
+		else if(outerCallingFragmentActivity == null) {
+			
 			outerCallingListActivity.onPostExecute(result);
 		}
+		else {
+			outerCallingFragmentActivity.onPostExecute(result);
+		}
+		
 		if(dialog.isShowing() && dialog!=null)
 			dialog.dismiss();
 		

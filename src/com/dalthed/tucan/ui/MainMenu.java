@@ -236,7 +236,6 @@ public class MainMenu extends SimpleWebActivity {
 								.select("td").get(3).select("a").first().text();
 						Times[i] = EventTimeString + "-" + EventTimeEndString;
 						Events[i] = EventString;
-						
 						i++;
 					}
 					
@@ -290,7 +289,7 @@ public class MainMenu extends SimpleWebActivity {
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
 					if(noeventstoday==false){
-						Intent StartSingleEventIntent = new Intent(MainMenu.this, SingleEvent.class);
+						Intent StartSingleEventIntent = new Intent(MainMenu.this, FragmentSingleEvent.class);
 						StartSingleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+today_event_links[position]);
 						StartSingleEventIntent.putExtra("Cookie", localCookieManager
 								.getCookieHTTPString(TucanMobile.TUCAN_HOST));

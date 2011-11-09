@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dalthed.tucan"
-    android:versionCode="15"
-    android:versionName="0.1.4" >
+    android:versionCode="17"
+    android:versionName="0.1.5_debug" >
 
     <uses-sdk android:minSdkVersion="4" />
 
@@ -57,6 +57,16 @@
             android:name=".ui.SingleEvent"
             android:theme="@android:style/Theme.Light.NoTitleBar"
             android:configChanges="keyboardHidden|orientation"></activity>
+        
+         <activity android:label="Veranstaltung"
+            android:name=".ui.FragmentSingleEvent"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation"></activity>
+        
+        <activity android:label="Veranstaltungsanmeldung"
+            android:name=".ui.ApplyEvent"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation"></activity>
             
         <!-- Prüfungen -->
 
@@ -92,10 +102,10 @@
         </activity>
 
         <!-- Einstellungen -->
-
         <activity
-            android:label="Einstellungen"
-            android:name=".preferences.MainPreferences" >
+            android:label="Sicherheitseinstellungen"
+            android:name=".preferences.MainPreferences" 
+             >
         </activity>
     </application>
 

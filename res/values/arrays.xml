@@ -11,8 +11,8 @@
        
     <string-array name="singleevent_options">
         <item>Informationen</item>
-        <item>Materialien</item>
-        <item>Termine</item>      
+        <item>Termine</item>   
+        <item>Materialien</item>   
         <!-- <item>Kleingruppen</item>-->   
     </string-array>
 </resources>

@@ -31,7 +31,12 @@ import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
-
+/**
+ * Anzeige eines einzelnen Events.
+ * @author Tyde
+ *
+ */
+@Deprecated
 public class SingleEvent extends SimpleWebListActivity {
 
 	private CookieManager localCookieManager;

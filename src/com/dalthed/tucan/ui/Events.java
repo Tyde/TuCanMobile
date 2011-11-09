@@ -10,7 +10,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -33,7 +32,6 @@ import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 
-
 public class Events extends SimpleWebListActivity {
 
 	private CookieManager localCookieManager;
@@ -44,13 +42,14 @@ public class Events extends SimpleWebListActivity {
 	private ArrayAdapter<String> ListAdapter;
 	private ArrayList<String> SemesterOptionName;
 	private ArrayList<String> SemesterOptionValue;
-	private int SemesterOptionSelected=0;
-	private ArrayList<String> eventLink ;
+	private int SemesterOptionSelected = 0;
+	private ArrayList<String> eventLink, applyLink;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.events);
-		BugSenseHandler.setup(this,"ed5c1682");
+		BugSenseHandler.setup(this, "ed5c1682");
 
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		URLStringtoCall = getIntent().getExtras().getString("URL");
@@ -61,8 +60,7 @@ public class Events extends SimpleWebListActivity {
 			localCookieManager = new CookieManager();
 			localCookieManager.generateManagerfromHTTPString(
 					URLtoCall.getHost(), CookieHTTPString);
-			callResultBrowser = new SimpleSecureBrowser(
-					this);
+			callResultBrowser = new SimpleSecureBrowser(this);
 			RequestObject thisRequest = new RequestObject(URLStringtoCall,
 					localCookieManager, RequestObject.METHOD_GET, "");
 
@@ -77,12 +75,14 @@ public class Events extends SimpleWebListActivity {
 		super.onConfigurationChanged(newConfig);
 		setContentView(R.layout.events);
 	}
+
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
+		SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
+				this);
+		RequestObject thisRequest;
 		if (mode == 0) {
-			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
-					this);
-			RequestObject thisRequest;
+			
 			switch (position) {
 			case 0:
 				mode = 10;
@@ -98,15 +98,30 @@ public class Events extends SimpleWebListActivity {
 						localCookieManager, RequestObject.METHOD_GET, "");
 				callOverviewBrowser.execute(thisRequest);
 				break;
+			case 2:
+				mode = 2;
+				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT
+						+ TucanMobile.TUCAN_HOST + eventLinks.get(2),
+						localCookieManager, RequestObject.METHOD_GET, "");
+				callOverviewBrowser.execute(thisRequest);
+				break;
 			}
-		}
-		else if(mode==1) {
-			Intent StartSingleEventIntent = new Intent(Events.this, SingleEvent.class);
-			StartSingleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+eventLink.get(position));
+
+		} else if (mode == 1) {
+			Intent StartSingleEventIntent = new Intent(Events.this,
+					FragmentSingleEvent.class);
+			StartSingleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT
+					+ TucanMobile.TUCAN_HOST + eventLink.get(position));
 			StartSingleEventIntent.putExtra("Cookie", localCookieManager
 					.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-			//StartSingleEventIntent.putExtra("UserName", UserName);
+			// StartSingleEventIntent.putExtra("UserName", UserName);
 			startActivity(StartSingleEventIntent);
+		} else if (mode == 2) {
+			
+			thisRequest = new RequestObject(TucanMobile.TUCAN_PROT
+					+ TucanMobile.TUCAN_HOST + applyLink.get(position),
+					localCookieManager, RequestObject.METHOD_GET, "");
+			callOverviewBrowser.execute(thisRequest);
 		}
 	}
 
@@ -128,7 +143,8 @@ public class Events extends SimpleWebListActivity {
 				while (linkIt.hasNext()) {
 					Element next = linkIt.next();
 					String id = next.id();
-					if (id.equals("link000275") || id.equals("link000274")) {
+					if (id.equals("link000275") || id.equals("link000274")
+							|| id.equals("link000311")) {
 
 						eventLinks.add(next.select("a").attr("href"));
 						eventNames.add(next.select("a").text());
@@ -140,8 +156,29 @@ public class Events extends SimpleWebListActivity {
 				ListAdapter = new ArrayAdapter<String>(this,
 						android.R.layout.simple_list_item_1, eventNameBuffer);
 				setListAdapter(ListAdapter);
+			} else if (mode == 2) {
+				if(doc.select("table.tbcoursestatus")==null) {
+					Elements ListElements = doc.select("div#contentSpacer_IE")
+							.first().select("ul").first().select("li");
+					Iterator<Element> ListIterator = ListElements.iterator();
+					applyLink 					= new ArrayList<String>();
+					ArrayList<String> applyName = new ArrayList<String>();
+					while (ListIterator.hasNext()) {
+						Element next = ListIterator.next();
+						//Log.i(LOG_TAG,next.select("a").attr("href"));
+						applyLink.add(next.select("a").attr("href"));
+						applyName.add(next.text());
+					}
+					ListAdapter = new ArrayAdapter<String>(this,
+							android.R.layout.simple_list_item_1, applyName);
+					setListAdapter(ListAdapter);
+				}
+				else {
+					//TODO : Call importand Intent
+				}
+				
 			} else {
-				eventLink= new ArrayList<String>();
+				eventLink = new ArrayList<String>();
 				if (mode == 10) {
 					ArrayList<String> eventName = new ArrayList<String>();
 					ArrayList<String> eventHead = new ArrayList<String>();
@@ -156,16 +193,17 @@ public class Events extends SimpleWebListActivity {
 							eventName.add(ExamCols.get(2).text());
 							eventHead.add(ExamCols.get(3).text());
 							eventCredits.add(ExamCols.get(4).text());
-							eventLink.add(ExamCols.get(2).select("a").attr("href"));
-							Log.i(LOG_TAG,"Link"+ExamCols.get(2).select("a").attr("href"));
+							eventLink.add(ExamCols.get(2).select("a")
+									.attr("href"));
+							Log.i(LOG_TAG, "Link"
+									+ ExamCols.get(2).select("a").attr("href"));
 						}
 					}
 					ListAdapter.clear();
 					ListAdapter = new ModuleAdapter(eventName, eventCredits,
 							eventHead);
 					setListAdapter(ListAdapter);
-				}
-				else if(mode==1){
+				} else if (mode == 1) {
 					ArrayList<String> eventName = new ArrayList<String>();
 					ArrayList<String> eventHead = new ArrayList<String>();
 					ArrayList<String> eventTime = new ArrayList<String>();
@@ -177,8 +215,10 @@ public class Events extends SimpleWebListActivity {
 						Elements ExamCols = next.select("td");
 						if (ExamCols.size() > 0) {
 							eventName.add(ExamCols.get(2).text());
-							eventLink.add(ExamCols.get(2).select("a").attr("href"));
-							Log.i(LOG_TAG,"Link"+ExamCols.get(2).select("a").attr("href"));
+							eventLink.add(ExamCols.get(2).select("a")
+									.attr("href"));
+							Log.i(LOG_TAG, "Link"
+									+ ExamCols.get(2).select("a").attr("href"));
 							eventHead.add(ExamCols.get(3).text());
 							eventTime.add(ExamCols.get(4).text());
 						}
@@ -190,27 +230,31 @@ public class Events extends SimpleWebListActivity {
 				}
 				SemesterOptionName = new ArrayList<String>();
 				SemesterOptionValue = new ArrayList<String>();
-				
-				Iterator<Element> SemesterOptionIterator = doc.select("option").iterator();
-				int i=0;
-				while(SemesterOptionIterator.hasNext()){
+
+				Iterator<Element> SemesterOptionIterator = doc.select("option")
+						.iterator();
+				int i = 0;
+				while (SemesterOptionIterator.hasNext()) {
 					Element next = SemesterOptionIterator.next();
 					SemesterOptionName.add(next.text());
 					SemesterOptionValue.add(next.attr("value"));
-					if(next.hasAttr("selected")) {
-						Log.i(LOG_TAG,next.text() + " is selected, has val "+i);
-						SemesterOptionSelected=i;
+					if (next.hasAttr("selected")) {
+						Log.i(LOG_TAG, next.text() + " is selected, has val "
+								+ i);
+						SemesterOptionSelected = i;
 					}
 					i++;
 				}
-				ArrayAdapter<String> SpinnerAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, SemesterOptionName);
-				
-				
+				ArrayAdapter<String> SpinnerAdapter = new ArrayAdapter<String>(
+						this, android.R.layout.simple_spinner_item,
+						SemesterOptionName);
+
 				Spinner semesterSpinner = (Spinner) findViewById(R.id.exam_semester_spinner);
 				semesterSpinner.setVisibility(View.VISIBLE);
 				semesterSpinner.setAdapter(SpinnerAdapter);
 				semesterSpinner.setSelection(SemesterOptionSelected);
-				semesterSpinner.setOnItemSelectedListener(new OnItemSelectedListener());
+				semesterSpinner
+						.setOnItemSelectedListener(new OnItemSelectedListener());
 			}
 		}
 	}
@@ -242,58 +286,67 @@ public class Events extends SimpleWebListActivity {
 		}
 
 	}
-	public class OnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
+
+	public class OnItemSelectedListener implements
+			android.widget.AdapterView.OnItemSelectedListener {
 		int hitcount = 0;
+
 		@Override
 		public void onItemSelected(AdapterView<?> parent, View view,
 				int position, long id) {
-			if(hitcount==0){
-				
-			}
-			else {
-				if(mode==10){
-					RequestObject thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+
-							TucanMobile.TUCAN_HOST+eventLinks.get(0)+"-N"+SemesterOptionValue.get(position),
+			if (hitcount == 0) {
+
+			} else {
+				if (mode == 10) {
+					RequestObject thisRequest = new RequestObject(
+							TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+									+ eventLinks.get(0) + "-N"
+									+ SemesterOptionValue.get(position),
 							localCookieManager, RequestObject.METHOD_GET, "");
-					SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(Events.this);
+					SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
+							Events.this);
 					callOverviewBrowser.execute(thisRequest);
-				}
-				else if(mode==1){
-					RequestObject thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+
-							TucanMobile.TUCAN_HOST+eventLinks.get(1)+"-N"+SemesterOptionValue.get(position),
+				} else if (mode == 1) {
+					RequestObject thisRequest = new RequestObject(
+							TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+									+ eventLinks.get(1) + "-N"
+									+ SemesterOptionValue.get(position),
 							localCookieManager, RequestObject.METHOD_GET, "");
-					SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(Events.this);
+					SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
+							Events.this);
 					callOverviewBrowser.execute(thisRequest);
 				}
 			}
 			hitcount++;
 		}
+
 		@Override
 		public void onNothingSelected(AdapterView<?> parent) {
 			// TODO Auto-generated method stub
-			
+
 		}
 	}
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0 && mode!=0) {
-			
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0
+				&& mode != 0) {
+
 			@SuppressWarnings("unchecked")
 			ArrayList<String> eventNameBuffer = (ArrayList<String>) eventNames
 					.clone();
 			ListAdapter = new ArrayAdapter<String>(this,
 					android.R.layout.simple_list_item_1, eventNameBuffer);
-			//Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
+			// Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
 			setListAdapter(ListAdapter);
-			mode=0;			
+			mode = 0;
 			Spinner semesterSpinner = (Spinner) findViewById(R.id.exam_semester_spinner);
 			semesterSpinner.setVisibility(View.GONE);
 			return true;
-		}
-		else {
+		} else {
 			return super.onKeyDown(keyCode, event);
 		}
-		
+
 	}
 
 }

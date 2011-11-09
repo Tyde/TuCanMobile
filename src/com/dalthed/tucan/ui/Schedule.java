@@ -163,7 +163,7 @@ public class Schedule extends SimpleWebListActivity {
 	
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		Intent singleEventIntent = new Intent(Schedule.this,SingleEvent.class);
+		Intent singleEventIntent = new Intent(Schedule.this,FragmentSingleEvent.class);
 		singleEventIntent.putExtra("PREPLink", true);
 		singleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+eventLink.get(position));
 		singleEventIntent.putExtra("Cookie", localCookieManager

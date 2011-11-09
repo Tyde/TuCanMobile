@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/linearLayout1_ref"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/activityheader" />
+
+    <TextView
+        android:id="@+id/events_title"
+        style="@style/tucan_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="@string/events_title" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/singleevent_title"
+        style="@style/event_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:text="" >
+    </TextView>
+    
+    <com.viewpagerindicator.TitlePageIndicator
+        android:id="@+id/titles"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFDDDDDD"
+        android:padding="10dip" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/multipager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+</LinearLayout>

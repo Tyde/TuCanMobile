@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">TuCanMobile</string>
+
+	<!-- Login -->
+	<string name="login_tuid">TU-ID:</string>
+	<string name="login_pw">Password:</string>
+	<string name="login_send">Login</string>
+	<string name="login_stay_logged">Remember Password</string>
+	<string name="loginmenu_preferences">Settings</string>
+	<string name="loginmenu_close">Close</string>
+
+	<!-- Hauptmenü -->
+	<string name="mm_events_title">Today`s Evens:</string>
+
+	<!-- Vorlesungsverzeichnis -->
+	<string name="mmenu_vv">Course Catalogue//</string>
+
+	<!-- Prüfungen -->
+	<string name="exams_title">Examinations//</string>
+
+	<!-- Veranstaltungen -->
+	<string name="events_title">Courses//</string>
+
+	<!-- Nachrichten -->
+	<string name="messages_title">Messages//</string>
+
+	<!-- Stundenplan -->
+	<string name="schedule_title">Schedule//</string>
+
+	<!-- UI Dynamic -->
+	<string name="ui_login">Logging in...</string>
+	<string name="ui_load_data">Loading Data...</string>
+	<string name="ui_calc">Calculating...</string>
+
+	<!-- Preferences -->
+	<string name="settings_username">TU-ID and Password:</string>
+	<string name="settings_tuid">TU-ID:</string>
+	<string name="settings_pw">Password:</string>
+
+	<!-- Wrong Language -->
+
+	<string name="general_not_supported_lang">We are sorry to inform you, that this App does
+		currently not support usage, when the TuCan Website is set to English.
+		To use this App, please change back into German. English support will
+		be added in the future.</string>
+</resources>

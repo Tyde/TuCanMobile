@@ -12,20 +12,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import com.bugsense.trace.BugSenseHandler;
-import com.dalthed.tucan.Connection.AnswerObject;
-import com.dalthed.tucan.Connection.BrowseMethods;
-import com.dalthed.tucan.Connection.CookieManager;
-import com.dalthed.tucan.Connection.SimpleSecureBrowser;
-
-
-import com.dalthed.tucan.Connection.RequestObject;
-import com.dalthed.tucan.preferences.MainPreferences;
-import com.dalthed.tucan.ui.MainMenu;
-import com.dalthed.tucan.ui.ProgressBarDialogFactory;
-import com.dalthed.tucan.ui.SimpleWebActivity;
-
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -33,17 +19,23 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-
 import android.widget.Toast;
+
+import com.bugsense.trace.BugSenseHandler;
+import com.dalthed.tucan.Connection.AnswerObject;
+import com.dalthed.tucan.Connection.BrowseMethods;
+import com.dalthed.tucan.Connection.CookieManager;
+import com.dalthed.tucan.Connection.RequestObject;
+import com.dalthed.tucan.Connection.SimpleSecureBrowser;
+import com.dalthed.tucan.preferences.MainPreferences;
+import com.dalthed.tucan.ui.MainMenu;
+import com.dalthed.tucan.ui.ProgressBarDialogFactory;
+import com.dalthed.tucan.ui.SimpleWebActivity;
 
 
 
