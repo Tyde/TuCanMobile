@@ -1,16 +1,8 @@
 package com.dalthed.tucan.ui;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import android.os.Bundle;
-import android.util.Log;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.Connection.AnswerObject;
-import com.dalthed.tucan.Connection.CookieManager;
-import com.dalthed.tucan.Connection.RequestObject;
-import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 
 public class ApplyEvent extends SimpleWebListActivity {
 

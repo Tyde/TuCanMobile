@@ -1,14 +1,8 @@
 package com.dalthed.tucan.ui;
 
-
-
-
-
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import org.jsoup.Jsoup;
@@ -17,20 +11,16 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.content.Intent;
-import android.location.GpsStatus.Listener;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -57,43 +47,43 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 	protected String[] mTitles;
 	ArrayList<String> materialLink;
 
-	
 	int mode = 0;
 	boolean thereAreFiles = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_singleevent);
-		
-		
+
+		// Wichtige Infos aus dem Intent holen
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		URLStringtoCall = getIntent().getExtras().getString("URL");
 		PREPCall = getIntent().getExtras().getBoolean("PREPLink");
 		URL URLtoCall;
-		
-		mTitles =  getResources()
-				.getStringArray(R.array.singleevent_options);
-		mPageAdapter = new PagerAdapter(getSupportFragmentManager(),mTitles);
+
+		// FragmentTitel laden
+		mTitles = getResources().getStringArray(R.array.singleevent_options);
+
+		// PagerAdapter an ViewPager anbinden
+		mPageAdapter = new PagerAdapter(getSupportFragmentManager(), mTitles);
 		mPager = (ViewPager) findViewById(R.id.multipager);
 		mPager.setAdapter(mPageAdapter);
-		
+
+		// TitlePageIndicator befüllen
 		TitlePageIndicator titleIndicator = (TitlePageIndicator) findViewById(R.id.titles);
 		titleIndicator.setViewPager(mPager);
 		titleIndicator.setTextSize(20);
 		titleIndicator.setTextColor(0x33333333);
 		titleIndicator.setSelectedColor(0xFF000000);
 		titleIndicator.setSelectedBold(false);
-		
-		
-		
-		
+
 		try {
+			// Seite aufrufen..
 			URLtoCall = new URL(URLStringtoCall);
 			localCookieManager = new CookieManager();
 			localCookieManager.generateManagerfromHTTPString(
 					URLtoCall.getHost(), CookieHTTPString);
-			callResultBrowser = new SimpleSecureBrowser(
-					this);
+			callResultBrowser = new SimpleSecureBrowser(this);
 			RequestObject thisRequest = new RequestObject(URLStringtoCall,
 					localCookieManager, RequestObject.METHOD_GET, "");
 
@@ -102,147 +92,161 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 			Log.e(LOG_TAG, e.getMessage());
 		}
 	}
-	
-	public static class PagerAdapter extends FragmentPagerAdapter implements TitleProvider {
+
+	/**
+	 * PagerAdapter für PageViewer
+	 * 
+	 * @author Tyde
+	 * 
+	 */
+	public static class PagerAdapter extends FragmentPagerAdapter implements
+			TitleProvider {
 		private String[] mtitles;
 		private ArrayList<ArrayAdapter<String>> adapterList;
 		FragmentManager fm;
 		public OnItemClickListener clicklistener;
 		public ArrayList<String> fileList;
-		public PagerAdapter(FragmentManager fm,String[] titles) {
-			
+
+		public PagerAdapter(FragmentManager fm, String[] titles) {
 			super(fm);
 			this.fm = fm;
-			this.mtitles=titles;
+			this.mtitles = titles;
 			this.adapterList = new ArrayList<ArrayAdapter<String>>();
-			
 		}
-		
+
 		@Override
 		public ListFragment getItem(int position) {
-			
-			ArrayListFragment newFragment = ArrayListFragment.newInstance(position);
-			
-		
+			ArrayListFragment newFragment = ArrayListFragment
+					.newInstance(position);
+
 			return (ListFragment) newFragment;
 		}
-		
+		/**
+		 * Initialisiertes ListFragment abrufen
+		 * @param position x-Position des Fragments
+		 * @return ListFragment der position
+		 */
 		public ArrayListFragment getInitializedItem(int position) {
-			ArrayListFragment fragment = (ArrayListFragment) fm.findFragmentByTag("android:switcher:"+R.id.multipager+":"+position);
+			ArrayListFragment fragment = (ArrayListFragment) fm
+					.findFragmentByTag("android:switcher:" + R.id.multipager
+							+ ":" + position);
 			return (ArrayListFragment) fragment;
-			
-			
+
 		}
-		public void setAdapter (ArrayAdapter<String> adapter){
+		
+		/**
+		 * Speichert den entsprechenden ArrayAdapter in einer Liste des PagerAdapters
+		 * @param adapter der zu speichernde Adapter
+		 */
+		public void setAdapter(ArrayAdapter<String> adapter) {
 			adapterList.add(adapter);
-			Log.i(LOG_TAG, adapter.toString() + " added.");
 		}
-			
+
 		@Override
 		public void finishUpdate(View container) {
 			super.finishUpdate(container);
 			/*
-			 * Liste wird eingebaut, wenn geupdated wird und die Liste noch leer ist
+			 * Liste wird eingebaut, wenn geupdated wird und die Liste noch leer
+			 * ist
 			 */
-			for(int ii=0;ii<=2;ii++){
-				if(getInitializedItem(ii)!=null && adapterList.size()>ii){
-					if(getInitializedItem(ii).getListAdapter()==null)
-						getInitializedItem(ii).setListAdapter(adapterList.get(ii));
-					if(ii==2 && fileList!=null){
+			for (int ii = 0; ii <= 2; ii++) {
+				if (getInitializedItem(ii) != null && adapterList.size() > ii) {
+					if (getInitializedItem(ii).getListAdapter() == null)
+						getInitializedItem(ii).setListAdapter(
+								adapterList.get(ii));
+					if (ii == 2 && fileList != null) {
 						getInitializedItem(ii).setFilelinks(fileList);
 					}
 				}
-				
+
 			}
-			
-			
+
 		}
-		
 
 		@Override
 		public int getCount() {
 			return NUM_ITEMS;
 		}
-		
-		
 
-		
 		public String getTitle(int position) {
-			
+
 			return mtitles[position];
 		}
 	}
-	
+
 	public static class ArrayListFragment extends ListFragment {
 		int mNum;
 		private boolean thereAreFiles;
 		private ArrayList<String> materialLink;
+
 		static ArrayListFragment newInstance(int num) {
 			ArrayListFragment f = new ArrayListFragment();
-			
+
 			Bundle args = new Bundle();
 			args.putInt("num", num);
-			
+
 			f.setArguments(args);
 			return f;
 		}
+
 		public int myid;
+
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View v = inflater.inflate(R.layout.fragment_pager_list, container, false);
-			myid=this.getId();
-			Log.i(LOG_TAG,this.getTag());
+			View v = inflater.inflate(R.layout.fragment_pager_list, container,
+					false);
+			myid = this.getId();
 			return v;
-			
+
 		}
 
 		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState);
-			//setListAdapter(new ArrayAdapter<String>(getActivity(),
-			///		android.R.layout.simple_list_item_1, new String[] {"Halllo","test","meg"}));
-			
 		}
+
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			mNum = getArguments() != null ? getArguments().getInt("num") : 1;
 		}
 
-		public void setFilelinks ( ArrayList<String> fileList) {
+		public void setFilelinks(ArrayList<String> fileList) {
 			thereAreFiles = true;
 			materialLink = fileList;
 		}
-		
+
 		@Override
 		public void onListItemClick(ListView l, View v, int position, long id) {
 			if (thereAreFiles) {
-				if(!materialLink.get(position).equals("")){
-					String url = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+				if (!materialLink.get(position).equals("")) {
+					String url = TucanMobile.TUCAN_PROT
+							+ TucanMobile.TUCAN_HOST
 							+ materialLink.get(position);
-					Log.i(LOG_TAG, url);
+
 					Uri mUri = Uri.parse(url);
 					Intent DownloadFile = new Intent(Intent.ACTION_VIEW, mUri);
 
 					startActivity(DownloadFile);
 				}
-				
+
 			}
 		}
 
-		
 	}
+
 	@Override
 	public void onPostExecute(AnswerObject result) {
+
 		Document doc = Jsoup.parse(result.getHTML());
 		sendHTMLatBug(doc.html());
-		if(doc.select("span.notLoggedText").text().length()>0){
-			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
+		if (doc.select("span.notLoggedText").text().length() > 0) {
+			Intent BackToLoginIntent = new Intent(this,
+					TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);
-		}
-		else {
+		} else {
 			if (PREPCall == false) {
 				String Title = doc.select("h1").text();
 
@@ -272,7 +276,6 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 				}
 
 				mPageAdapter.setAdapter(new SingleEventAdapter(titles, values));
-				
 
 				// Termin-Selektor:
 				// Terminselektor
@@ -283,7 +286,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 				while (captionIt.hasNext()) {
 					Element next = captionIt.next();
 					if (next.text().equals("Termine")) {
-						System.out.println(next.parent().html());
+
 						DateTable = next.parent().select("tr").iterator();
 					} else if (next.text().contains("Material")) {
 
@@ -300,20 +303,19 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 				while (DateTable.hasNext()) {
 					Element next = DateTable.next();
 					Elements cols = next.select("td");
-					if(cols.size()>2){
+					if (cols.size() > 2) {
 						eventNumber.add(cols.get(0).text());
 						eventDate.add(cols.get(1).text());
-						eventTime.add(cols.get(2).text() + "-" + cols.get(3).text());
+						eventTime.add(cols.get(2).text() + "-"
+								+ cols.get(3).text());
 						eventRoom.add(cols.get(4).text());
 						eventInstructor.add(cols.get(5).text());
 					}
-					
+
 				}
 				mPageAdapter.setAdapter(new AppointmentAdapter(eventDate,
 						eventTime, eventNumber, eventRoom, eventInstructor));
-				
-				
-				
+
 				int ct = 0;
 				ArrayList<String> materialNumber = new ArrayList<String>();
 				ArrayList<String> materialName = new ArrayList<String>();
@@ -326,35 +328,34 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 
 						if (next.select("td").size() > 1) {
 							ct++;
-							System.out.println(ct + "  " + (ct % 3));
+
 							int mod = (ct % 3);
 							switch (mod) {
 							case 1:
-								materialNumber.add(next.select("td").get(0).text());
-								materialName.add(next.select("td").get(1).text());
+								materialNumber.add(next.select("td").get(0)
+										.text());
+								materialName.add(next.select("td").get(1)
+										.text());
 
 								break;
 							case 2:
-								materialDesc.add(next.select("td").get(1).text());
-								/*if(next.attr("class").equals("tbdata_nob")){
-									ct++;
-									materialLink.add("");
-									materialFile.add("");
-								}*/
+								materialDesc.add(next.select("td").get(1)
+										.text());
 								break;
 							case 0:
-								if(next.attr("class").equals("tbdata_stretch")){
+								if (next.attr("class").equals("tbdata_stretch")) {
 									materialLink.add(next.select("td").get(1)
 											.select("a").attr("href"));
 									materialFile.add(next.select("td").get(1)
 											.select("a").text());
-								}
-								else {
-									materialNumber.add(next.select("td").get(0).text());
-									materialName.add(next.select("td").get(1).text());
+								} else {
+									materialNumber.add(next.select("td").get(0)
+											.text());
+									materialName.add(next.select("td").get(1)
+											.text());
 									ct++;
 								}
-								
+
 								break;
 							}
 						}
@@ -362,37 +363,33 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 				}
 
 				if (ct > 2) {
-					mPageAdapter.setAdapter(new AppointmentAdapter(materialNumber,
-							materialFile, null, materialName, materialDesc));
+					mPageAdapter.setAdapter(new AppointmentAdapter(
+							materialNumber, materialFile, null, materialName,
+							materialDesc));
 					thereAreFiles = true;
-					
-					mPageAdapter.fileList=materialLink;
+
+					mPageAdapter.fileList = materialLink;
 				} else
 					mPageAdapter.setAdapter(new ArrayAdapter<String>(this,
 							android.R.layout.simple_list_item_1,
 							new String[] { "Kein Material" }));
-				
-				
-				
+
 				mPageAdapter.finishUpdate(mPager);
-				
 
 			} else {
-				String nextlink = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+				String nextlink = TucanMobile.TUCAN_PROT
+						+ TucanMobile.TUCAN_HOST
 						+ doc.select("div.detailout").select("a").attr("href");
 				SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
-						 this);
+						this);
 				RequestObject thisRequest = new RequestObject(nextlink,
 						localCookieManager, RequestObject.METHOD_GET, "");
 				PREPCall = false;
 				callOverviewBrowser.execute(thisRequest);
 			}
 		}
-		
 
 	}
-	
-	
 
 	private static String[] crop(String startstring) {
 		if (startstring.length() > 0) {
@@ -404,7 +401,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 
 		}
 	}
-	
+
 	class SingleEventAdapter extends ArrayAdapter<String> {
 		ArrayList<String> values;
 
