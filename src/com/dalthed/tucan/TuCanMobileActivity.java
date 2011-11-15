@@ -69,7 +69,12 @@ public class TuCanMobileActivity extends SimpleWebActivity {
         //https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=MLSSTART&ARGUMENTS=
 		String settCookie=einstellungen.getString("Cookie", null);
 		String settArg=einstellungen.getString("Session", null);
-		if(settCookie!=null && settArg!=null){
+		Boolean failedSession = false;
+		if(getIntent()!=null && getIntent().getExtras()!=null){
+			failedSession = getIntent().getExtras().getBoolean("lostSession");
+		}
+		
+		if(settCookie!=null && settArg!=null && failedSession!=true){
 			//taking the fast Road
 			CheckBox remember = (CheckBox) findViewById(R.id.checkBox1);
 			remember.setChecked(true);

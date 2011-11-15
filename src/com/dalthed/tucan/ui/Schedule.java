@@ -78,6 +78,7 @@ public class Schedule extends SimpleWebListActivity {
 		Document doc = Jsoup.parse(result.getHTML());
 		if(doc.select("span.notLoggedText").text().length()>0){
 			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
+			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);
 		}
 		else {

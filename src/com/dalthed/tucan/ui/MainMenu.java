@@ -183,6 +183,7 @@ public class MainMenu extends SimpleWebActivity {
 		Document doc = Jsoup.parse(result.getHTML());
 		if(doc.select("span.notLoggedText").text().length()>0 || result.getHTML().equals("")){
 			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
+			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);
 		}
 		else {
