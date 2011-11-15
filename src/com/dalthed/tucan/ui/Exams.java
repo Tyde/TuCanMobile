@@ -289,7 +289,7 @@ public class Exams extends SimpleWebListActivity {
 						Element next = ExamResultRowIterator.next();
 						Elements ExamResultCols = next.select("td");
 						Log.i(LOG_TAG,"Größe Cols:"+ExamResultCols.size());
-						if(ExamResultCols.size()>0){
+						if(ExamResultCols.size()>1){
 							ResultName.add(ExamResultCols.get(1).text());
 							ResultCredits.add(ExamResultCols.get(4).text());
 							ResultGrade.add(ExamResultCols.get(2).text());

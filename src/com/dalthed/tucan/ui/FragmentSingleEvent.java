@@ -17,6 +17,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.content.Intent;
+import android.location.GpsStatus.Listener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -28,6 +30,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -103,7 +107,8 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 		private String[] mtitles;
 		private ArrayList<ArrayAdapter<String>> adapterList;
 		FragmentManager fm;
-		
+		public OnItemClickListener clicklistener;
+		public ArrayList<String> fileList;
 		public PagerAdapter(FragmentManager fm,String[] titles) {
 			
 			super(fm);
@@ -122,9 +127,9 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 			return (ListFragment) newFragment;
 		}
 		
-		public ListFragment getInitializedItem(int position) {
+		public ArrayListFragment getInitializedItem(int position) {
 			ArrayListFragment fragment = (ArrayListFragment) fm.findFragmentByTag("android:switcher:"+R.id.multipager+":"+position);
-			return (ListFragment) fragment;
+			return (ArrayListFragment) fragment;
 			
 			
 		}
@@ -143,7 +148,11 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 				if(getInitializedItem(ii)!=null && adapterList.size()>ii){
 					if(getInitializedItem(ii).getListAdapter()==null)
 						getInitializedItem(ii).setListAdapter(adapterList.get(ii));
+					if(ii==2 && fileList!=null){
+						getInitializedItem(ii).setFilelinks(fileList);
+					}
 				}
+				
 			}
 			
 			
@@ -166,7 +175,8 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 	
 	public static class ArrayListFragment extends ListFragment {
 		int mNum;
-		
+		private boolean thereAreFiles;
+		private ArrayList<String> materialLink;
 		static ArrayListFragment newInstance(int num) {
 			ArrayListFragment f = new ArrayListFragment();
 			
@@ -200,10 +210,28 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 			mNum = getArguments() != null ? getArguments().getInt("num") : 1;
 		}
 
+		public void setFilelinks ( ArrayList<String> fileList) {
+			thereAreFiles = true;
+			materialLink = fileList;
+		}
+		
 		@Override
 		public void onListItemClick(ListView l, View v, int position, long id) {
-			Log.i("Lineal","Item clicked: "+id);
+			if (thereAreFiles) {
+				if(!materialLink.get(position).equals("")){
+					String url = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+							+ materialLink.get(position);
+					Log.i(LOG_TAG, url);
+					Uri mUri = Uri.parse(url);
+					Intent DownloadFile = new Intent(Intent.ACTION_VIEW, mUri);
+
+					startActivity(DownloadFile);
+				}
+				
+			}
 		}
+
+		
 	}
 	@Override
 	public void onPostExecute(AnswerObject result) {
@@ -271,11 +299,14 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 				while (DateTable.hasNext()) {
 					Element next = DateTable.next();
 					Elements cols = next.select("td");
-					eventNumber.add(cols.get(0).text());
-					eventDate.add(cols.get(1).text());
-					eventTime.add(cols.get(2).text() + "-" + cols.get(3).text());
-					eventRoom.add(cols.get(4).text());
-					eventInstructor.add(cols.get(5).text());
+					if(cols.size()>2){
+						eventNumber.add(cols.get(0).text());
+						eventDate.add(cols.get(1).text());
+						eventTime.add(cols.get(2).text() + "-" + cols.get(3).text());
+						eventRoom.add(cols.get(4).text());
+						eventInstructor.add(cols.get(5).text());
+					}
+					
 				}
 				mPageAdapter.setAdapter(new AppointmentAdapter(eventDate,
 						eventTime, eventNumber, eventRoom, eventInstructor));
@@ -325,6 +356,8 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 					mPageAdapter.setAdapter(new AppointmentAdapter(materialNumber,
 							materialFile, null, materialName, materialDesc));
 					thereAreFiles = true;
+					
+					mPageAdapter.fileList=materialLink;
 				} else
 					mPageAdapter.setAdapter(new ArrayAdapter<String>(this,
 							android.R.layout.simple_list_item_1,
@@ -332,7 +365,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 				
 				
 				
-				
+				mPageAdapter.finishUpdate(mPager);
 				
 
 			} else {

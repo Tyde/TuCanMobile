@@ -181,7 +181,7 @@ public class MainMenu extends SimpleWebActivity {
 		// HTML auslesen
 		sendHTMLatBug(result.getHTML());
 		Document doc = Jsoup.parse(result.getHTML());
-		if(doc.select("span.notLoggedText").text().length()>0){
+		if(doc.select("span.notLoggedText").text().length()>0 || result.getHTML().equals("")){
 			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
 			startActivity(BackToLoginIntent);
 		}
@@ -241,7 +241,7 @@ public class MainMenu extends SimpleWebActivity {
 					
 				}
 			}
-
+			
 			UserName = doc.select("span#loginDataName").text().split(":")[1];
 			TextView usertextview = (TextView) findViewById(R.id.mm_username);
 			URL lcURL = null;
