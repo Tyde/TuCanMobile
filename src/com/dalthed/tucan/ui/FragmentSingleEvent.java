@@ -335,17 +335,25 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 								break;
 							case 2:
 								materialDesc.add(next.select("td").get(1).text());
-								if(next.attr("class").equals("tbdata_nob")){
+								/*if(next.attr("class").equals("tbdata_nob")){
 									ct++;
 									materialLink.add("");
 									materialFile.add("");
-								}
+								}*/
 								break;
 							case 0:
-								materialLink.add(next.select("td").get(1)
-										.select("a").attr("href"));
-								materialFile.add(next.select("td").get(1)
-										.select("a").text());
+								if(next.attr("class").equals("tbdata_stretch")){
+									materialLink.add(next.select("td").get(1)
+											.select("a").attr("href"));
+									materialFile.add(next.select("td").get(1)
+											.select("a").text());
+								}
+								else {
+									materialNumber.add(next.select("td").get(0).text());
+									materialName.add(next.select("td").get(1).text());
+									ct++;
+								}
+								
 								break;
 							}
 						}
