@@ -147,8 +147,8 @@ public class Events extends SimpleWebListActivity {
 					Element next = linkIt.next();
 					String id = next.id();
 					if (id.equals("link000275") || id.equals("link000274")
-							|| id.equals("link000311")) {
-
+							) {
+//						/|| id.equals("link000311")
 						eventLinks.add(next.select("a").attr("href"));
 						eventNames.add(next.select("a").text());
 					}
