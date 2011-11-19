@@ -299,23 +299,33 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 
 				ArrayList<String> eventRoom = new ArrayList<String>();
 				ArrayList<String> eventInstructor = new ArrayList<String>();
-
-				while (DateTable.hasNext()) {
-					Element next = DateTable.next();
-					Elements cols = next.select("td");
-					if (cols.size() > 2) {
-						eventNumber.add(cols.get(0).text());
-						eventDate.add(cols.get(1).text());
-						eventTime.add(cols.get(2).text() + "-"
-								+ cols.get(3).text());
-						eventRoom.add(cols.get(4).text());
-						eventInstructor.add(cols.get(5).text());
+				if(DateTable!=null){
+					while (DateTable.hasNext()) {
+						Element next = DateTable.next();
+						Elements cols = next.select("td");
+						if (cols.size() > 5) {
+							eventNumber.add(cols.get(0).text());
+							eventDate.add(cols.get(1).text());
+							eventTime.add(cols.get(2).text() + "-"
+									+ cols.get(3).text());
+							eventRoom.add(cols.get(4).text());
+							eventInstructor.add(cols.get(5).text());
+						}
+	
 					}
+					
 
+				}
+				else {
+					eventDate.add("");
+					eventTime.add("");
+					eventNumber.add("");
+					eventRoom.add("Keine Daten vorhanden");
+					eventInstructor.add("");
 				}
 				mPageAdapter.setAdapter(new AppointmentAdapter(eventDate,
 						eventTime, eventNumber, eventRoom, eventInstructor));
-
+				
 				int ct = 0;
 				ArrayList<String> materialNumber = new ArrayList<String>();
 				ArrayList<String> materialName = new ArrayList<String>();
