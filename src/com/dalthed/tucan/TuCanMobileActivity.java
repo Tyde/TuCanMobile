@@ -54,7 +54,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         BugSenseHandler.setup(this,"ed5c1682");
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        //this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         
         
         

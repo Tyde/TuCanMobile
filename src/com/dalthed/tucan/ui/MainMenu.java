@@ -207,6 +207,7 @@ public class MainMenu extends SimpleWebActivity {
 				Times = new String[1];
 				Events[0] = "Keine Heutigen Veranstaltungen";
 				Times[0] = "";
+				noeventstoday = true;
 			}				
 			else  {
 				
