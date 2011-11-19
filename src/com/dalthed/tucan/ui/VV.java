@@ -38,6 +38,7 @@ public class VV extends SimpleWebListActivity {
 	String[] Listlinks;
 	String myHTML;
 	ArrayAdapter<String> ListAdapter = null;
+	boolean haslinkstoclick = false;
 	private static final String LOG_TAG = "TuCanMobile";
 
 	@Override
@@ -72,12 +73,15 @@ public class VV extends SimpleWebListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		// Webhandling Start
-		SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(this);
-		RequestObject thisRequest = new RequestObject(TucanMobile.TUCAN_PROT
-				+ TucanMobile.TUCAN_HOST + Listlinks[position],
-				localCookieManager, RequestObject.METHOD_GET, "");
+		if(haslinkstoclick==true){
+			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(this);
+			RequestObject thisRequest = new RequestObject(TucanMobile.TUCAN_PROT
+					+ TucanMobile.TUCAN_HOST + Listlinks[position],
+					localCookieManager, RequestObject.METHOD_GET, "");
 
-		callOverviewBrowser.execute(thisRequest);
+			callOverviewBrowser.execute(thisRequest);
+		}
+		
 
 		// Webhandling End
 	}
@@ -123,6 +127,7 @@ public class VV extends SimpleWebListActivity {
 					ArrayList<String> noEvents = new ArrayList<String>();
 					noEvents.add("Es wurden keine Veranstaltungen gefunden.");
 					callsetListAdapter(noEvents);
+					haslinkstoclick=false;
 				}
 				else {
 					Elements ulList = doc.select("ul#auditRegistration_list").first()
@@ -139,6 +144,7 @@ public class VV extends SimpleWebListActivity {
 						Log.i(LOG_TAG, "Bin bei " + i);
 						i++;
 					}
+					haslinkstoclick=true;
 					callsetListAdapter(AllListElementStrings);
 				}
 				
