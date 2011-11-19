@@ -50,7 +50,6 @@ public class Events extends SimpleWebListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.events);
 		BugSenseHandler.setup(this, "ed5c1682");
-
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		URLStringtoCall = getIntent().getExtras().getString("URL");
 		URL URLtoCall;
@@ -81,10 +80,12 @@ public class Events extends SimpleWebListActivity {
 		SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
 				this);
 		RequestObject thisRequest;
+		Log.i(LOG_TAG,"Modus:"+mode);
 		if (mode == 0) {
 			
 			switch (position) {
 			case 0:
+				
 				mode = 10;
 				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT
 						+ TucanMobile.TUCAN_HOST + eventLinks.get(0),
@@ -135,6 +136,7 @@ public class Events extends SimpleWebListActivity {
 			startActivity(BackToLoginIntent);
 		} else {
 			sendHTMLatBug(doc.html());
+			Log.i(LOG_TAG, "Modus after select:" + mode);
 			if (mode == 0) {
 				Elements links = doc.select("li#link000273").select("li");
 
@@ -158,6 +160,7 @@ public class Events extends SimpleWebListActivity {
 						android.R.layout.simple_list_item_1, eventNameBuffer);
 				setListAdapter(ListAdapter);
 			} else if (mode == 2) {
+					
 				if(doc.select("table.tbcoursestatus")==null) {
 					Elements ListElements = doc.select("div#contentSpacer_IE")
 							.first().select("ul").first().select("li");
@@ -175,6 +178,7 @@ public class Events extends SimpleWebListActivity {
 					setListAdapter(ListAdapter);
 				}
 				else {
+					Log.i(LOG_TAG,doc.select("table.tbcoursestatus").html());
 					//TODO : Call importand Intent
 				}
 				
