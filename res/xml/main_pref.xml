@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<PreferenceCategory android:title="@string/settings_username">
-		<EditTextPreference android:key="tuid"
+	<PreferenceCategory android:title="@string/settings_general">
+		<!-- <EditTextPreference android:key="tuid"
 			android:title="@string/settings_tuid" android:defaultValue="" />
 		<EditTextPreference android:key="pw"
 			android:title="@string/settings_pw" android:summary=""
-			android:inputType="textPassword" />
+			android:inputType="textPassword" /> -->
 
 		<CheckBoxPreference android:key="acra.disable"
 			android:title="@string/pref_disable_acra" android:summaryOn="@string/pref_acra_disabled"
 			android:summaryOff="@string/pref_acra_enabled" android:defaultValue="false" />
+			
+		<Preference android:title="Logout" android:key="logout"></Preference>
 
 	</PreferenceCategory>
 

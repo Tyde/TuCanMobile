@@ -4,7 +4,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 
-import org.acra.ErrorReporter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -27,7 +26,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bugsense.trace.BugSense;
 import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
@@ -45,7 +43,7 @@ public class MainMenu extends SimpleWebActivity {
 	private String menu_link_vv = "";
 	private String menu_link_ex = "";
 	private String menu_link_msg = "";
-	private String menu_link_export = "";
+	
 	private String menu_link_month = "";
 	private String UserName = "";
 	String SessionArgument="";
@@ -191,6 +189,9 @@ public class MainMenu extends SimpleWebActivity {
 	public void onPostExecute(AnswerObject result) {
 		// HTML auslesen
 		sendHTMLatBug(result.getHTML());
+		
+	
+		
 		Document doc = Jsoup.parse(result.getHTML());
 		if(doc.select("span.notLoggedText").text().length()>0 || result.getHTML().equals("")){
 			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
@@ -203,7 +204,7 @@ public class MainMenu extends SimpleWebActivity {
 				URL lcURL = new URL (lcURLString);
 				SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1].split(",")[0];
 			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
+			
 				e.printStackTrace();
 			}
 			
@@ -272,8 +273,8 @@ public class MainMenu extends SimpleWebActivity {
 					+ doc.select("li#link000280").select("a").attr("href");
 			menu_link_msg = lcURL.getProtocol() + "://" + lcURL.getHost()
 					+ ArchivLink.attr("href");
-			menu_link_export = lcURL.getProtocol() + "://" + lcURL.getHost()
-					+ doc.select("li#link000272").select("a").attr("href");
+			/*menu_link_export = lcURL.getProtocol() + "://" + lcURL.getHost()
+					+ doc.select("li#link000272").select("a").attr("href");*/
 			menu_link_month = lcURL.getProtocol() + "://" + lcURL.getHost()
 					+ doc.select("li#link000271").select("a").attr("href");
 			if(doc.select("li#link000326").select("a").attr("href").equals("")) {

@@ -2,16 +2,15 @@ package com.dalthed.tucan.ui;
 
 import org.acra.ErrorReporter;
 
+import android.app.ListActivity;
+import android.content.Intent;
+import android.view.Menu;
+import android.view.MenuItem;
+
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.preferences.MainPreferences;
-
-import android.app.ListActivity;
-import android.content.Intent;
-import android.os.AsyncTask.Status;
-import android.view.Menu;
-import android.view.MenuItem;
 /**
  * SimpleWebListActivity notwendig für SimpleSecureBrowser
  * @author Tyde

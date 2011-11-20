@@ -36,7 +36,7 @@
     <string name="ui_calc">Berechne...</string>
 
     <!-- Preferences -->
-    <string name="settings_username">TU-ID und Passwort:</string>
+    <string name="settings_general">Haupteinstellungen:</string>
     <string name="settings_tuid">TU-ID:</string>
     <string name="settings_pw">Passwort:</string>
 

@@ -16,12 +16,13 @@ import android.widget.Toast;
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 @ReportsCrashes(formKey = "dGxJeFNVZk5YQXRmaXV6WVZfVHYzdWc6MQ")
-//@ReportsCrashes(formUri = "http://www.bugsense.com/api/acra?api_key=e4716a98", formKey="dGxJeFNVZk5YQXRmaXV6WVZfVHYzdWc6MQ")
+//@ReportsCrashes(formUri = "http://www.bugsense.com/api/acra?api_key=f08ba688", formKey="")
 public class TucanMobile extends Application {
 	private static Context Appcontext;
 	public final static String TUCAN_HOST = "www.tucan.tu-darmstadt.de";
 	public final static String TUCAN_PROT = "https://";
 	public GoogleAnalyticsTracker mAnalyticsTracker;
+	
 
 	@Override
 	public void onCreate() {

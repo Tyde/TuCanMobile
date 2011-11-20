@@ -5,8 +5,6 @@ package com.dalthed.tucan;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,10 +13,10 @@ import org.jsoup.nodes.Element;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -58,23 +56,37 @@ public class TuCanMobileActivity extends SimpleWebActivity {
         
         
         
-        final SharedPreferences einstellungen = MainPreferences.getSettings(this);
-        String tuid= einstellungen.getString("tuid","");
-        String pw = einstellungen.getString("pw", "");
+        final SharedPreferences altPrefs = getSharedPreferences("LOGIN", MODE_PRIVATE);
+        String alttuid = altPrefs.getString("tuid", "");
+        String altpw = altPrefs.getString("tuid", "");
         
+       
+        String tuid="";
+        String pw ="";
+        
+        if(!alttuid.equals("")){
+        	tuid=alttuid;
+        	pw=altpw;
+        	
+			
+        }
         usrnameField 	= 	(EditText) findViewById(R.id.login_usrname);
 		pwdField		=	(EditText) findViewById(R.id.login_pw);
 		usrnameField.setText(tuid);
 		pwdField.setText(pw);
         //https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=MLSSTART&ARGUMENTS=
-		String settCookie=einstellungen.getString("Cookie", null);
-		String settArg=einstellungen.getString("Session", null);
+		
+		String settCookie=altPrefs.getString("Cookie", null);
+		String settArg=altPrefs.getString("Session", null);
 		Boolean failedSession = false;
+		Boolean loggedout = false;
 		if(getIntent()!=null && getIntent().getExtras()!=null){
 			failedSession = getIntent().getExtras().getBoolean("lostSession");
+			if(getIntent().getExtras().getBoolean("loggedout"))
+				loggedout=true;
 		}
 		
-		if(settCookie!=null && settArg!=null && failedSession!=true){
+		if(settCookie!=null && !settCookie.equals("") && settArg!=null && failedSession!=true && !loggedout){
 			//taking the fast Road
 			CheckBox remember = (CheckBox) findViewById(R.id.checkBox1);
 			remember.setChecked(true);
@@ -202,10 +214,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
     		dialog.setMessage(getResources().getString(R.string.ui_calc));
     		
     		
-    		//TODO: Update to JSoup
-    		Pattern findUser = Pattern.compile("<span\\s+class=\"loginDataName\"\\s+id=\"loginDataName\"><b>Name<span\\s+class=\"colon\">:</span>\\s+</b>(.*?)</span>");
-    		Matcher findUsermatcher = findUser.matcher(result.getHTML());
-    		boolean found=false;
+    		
     		String User="";
     		
     		Document doc = Jsoup.parse(result.getHTML());
@@ -230,18 +239,24 @@ public class TuCanMobileActivity extends SimpleWebActivity {
     			if(remember.isChecked()){
     				final SharedPreferences einstellungen = MainPreferences.getSettings(TuCanMobileActivity.this);
     				SharedPreferences.Editor editor = einstellungen.edit();
-    				editor.putString("tuid", usrnameField.getText().toString());
-    				editor.putString("pw", pwdField.getText().toString());
-    				editor.putString("Cookie", result.getCookieManager().getCookieHTTPString(TucanMobile.TUCAN_HOST));
-    				Log.i(LOG_TAG,SessionArgument);
-    				editor.putString("Session", SessionArgument);
+    				editor.putString("tuid", "");
+    				editor.putString("pw", "");
+    				editor.putString("Cookie", "");
+    				editor.putString("Session", "");
     				editor.commit();
     				
+    				final SharedPreferences altPrefs = getSharedPreferences("LOGIN", MODE_PRIVATE);
+    				SharedPreferences.Editor edit = altPrefs.edit();
+    				edit.putString("tuid", usrnameField.getText().toString());
+    				edit.putString("pw", pwdField.getText().toString());
+    				edit.putString("Cookie", result.getCookieManager().getCookieHTTPString(TucanMobile.TUCAN_HOST));
+    				edit.putString("Session", SessionArgument);
+    				edit.commit();
     			}
         		final Intent i = new Intent(TuCanMobileActivity.this,MainMenu.class);
         		i.putExtra("Cookie", result.getCookieManager().getCookieHTTPString("www.tucan.tu-darmstadt.de"));
         		i.putExtra("source", result.getHTML());
-        		
+        		i.putExtra("username", User);
         		i.putExtra("URL", result.getLastCalledURL());
         		startActivity(i);
     		}

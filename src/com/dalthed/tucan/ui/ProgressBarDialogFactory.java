@@ -1,7 +1,5 @@
 package com.dalthed.tucan.ui;
 
-import com.dalthed.tucan.TuCanMobileActivity;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 

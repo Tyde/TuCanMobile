@@ -2,17 +2,16 @@ package com.dalthed.tucan.ui;
 
 import org.acra.ErrorReporter;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.preferences.MainPreferences;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.os.AsyncTask.Status;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 public abstract class SimpleWebActivity extends Activity {
 	public SimpleSecureBrowser callResultBrowser;
