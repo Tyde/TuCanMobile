@@ -64,21 +64,32 @@ public class MainMenu extends SimpleWebActivity {
 		// Webhandling Start
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		String lastCalledURLString = getIntent().getExtras().getString("URL");
+		String source = getIntent().getExtras().getString("source");
+		//Log.i(LOG_TAG,"Qsource);
 		URL lastCalledURL;
-		try {
-			lastCalledURL = new URL(lastCalledURLString);
+		if(source==null || source.equals("")){
+			try {
+				lastCalledURL = new URL(lastCalledURLString);
+				localCookieManager = new CookieManager();
+				localCookieManager.generateManagerfromHTTPString(
+						lastCalledURL.getHost(), CookieHTTPString);
+				callResultBrowser = new SimpleSecureBrowser(
+						this);
+				RequestObject thisRequest = new RequestObject(lastCalledURLString,
+						localCookieManager, RequestObject.METHOD_GET, "");
+
+				callResultBrowser.execute(thisRequest);
+			} catch (MalformedURLException e) {
+				Log.e(LOG_TAG, e.getMessage());
+			}
+		}
+		else {
 			localCookieManager = new CookieManager();
 			localCookieManager.generateManagerfromHTTPString(
-					lastCalledURL.getHost(), CookieHTTPString);
-			callResultBrowser = new SimpleSecureBrowser(
-					this);
-			RequestObject thisRequest = new RequestObject(lastCalledURLString,
-					localCookieManager, RequestObject.METHOD_GET, "");
-
-			callResultBrowser.execute(thisRequest);
-		} catch (MalformedURLException e) {
-			Log.e(LOG_TAG, e.getMessage());
+					TucanMobile.TUCAN_HOST, CookieHTTPString);
+			onPostExecute(new AnswerObject(source, "", localCookieManager, lastCalledURLString));
 		}
+		
 		// Webhandling End
 
 		ListView MenuList = (ListView) findViewById(R.id.mm_menuList);

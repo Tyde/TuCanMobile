@@ -359,6 +359,8 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 									materialFile.add(next.select("td").get(1)
 											.select("a").text());
 								} else {
+									materialLink.add("");
+									materialFile.add("");
 									materialNumber.add(next.select("td").get(0)
 											.text());
 									materialName.add(next.select("td").get(1)

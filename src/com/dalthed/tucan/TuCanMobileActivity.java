@@ -240,6 +240,8 @@ public class TuCanMobileActivity extends SimpleWebActivity {
     			}
         		final Intent i = new Intent(TuCanMobileActivity.this,MainMenu.class);
         		i.putExtra("Cookie", result.getCookieManager().getCookieHTTPString("www.tucan.tu-darmstadt.de"));
+        		i.putExtra("source", result.getHTML());
+        		
         		i.putExtra("URL", result.getLastCalledURL());
         		startActivity(i);
     		}
@@ -298,6 +300,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 			if(!UserName.equals("")){
 				final Intent i = new Intent(TuCanMobileActivity.this,MainMenu.class);
 	    		i.putExtra("Cookie", result.getCookieManager().getCookieHTTPString("www.tucan.tu-darmstadt.de"));
+	    		i.putExtra("source", result.getHTML());
 	    		i.putExtra("URL", result.getLastCalledURL());
 	    		startActivity(i);
 			}
