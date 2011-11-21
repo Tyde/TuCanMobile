@@ -113,6 +113,16 @@ public class VV extends SimpleWebListActivity {
 		else {
 			Elements tbdata = doc.select("tr.tbdata");
 			sendHTMLatBug(doc.html());
+			
+			/*
+			 * Crash for Bug Reporting
+			 */
+			if(TucanMobile.CRASH){
+				String crasher = "";
+				crasher.charAt(48);
+			}
+			
+			
 			if (tbdata.size() > 0) {
 				Log.i(LOG_TAG, "In Event-Table angekomen");
 				Intent EventStartIntent = new Intent(VV.this, VV_Events.class);
