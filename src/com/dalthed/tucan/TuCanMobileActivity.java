@@ -58,7 +58,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
         
         final SharedPreferences altPrefs = getSharedPreferences("LOGIN", MODE_PRIVATE);
         String alttuid = altPrefs.getString("tuid", "");
-        String altpw = altPrefs.getString("tuid", "");
+        String altpw = altPrefs.getString("pw", "");
         
        
         String tuid="";
@@ -131,6 +131,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 			//vordefinierte Post-Data
 			//TODO: Dynamisch <input 's auslesen [evtl]
 			String postdata= "usrname="+URLEncoder.encode(usrname,"UTF-8")+"&pass="+URLEncoder.encode(pwd,"UTF-8")+"&APPNAME=CampusNet&PRGNAME=LOGINCHECK&ARGUMENTS=clino%2Cusrname%2Cpass%2Cmenuno%2Cpersno%2Cbrowser%2Cplatform&clino=000000000000001&menuno=000344&persno=00000000&browser=&platform=";
+			Log.i(LOG_TAG, postdata);
 			//AnmeldeRequest Senden
 			thisRequest[1] = new RequestObject("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi", RequestObject.METHOD_POST, postdata);
 			//Restliche Requests werden aus der Antwort ausgelesen..
@@ -180,7 +181,8 @@ public class TuCanMobileActivity extends SimpleWebActivity {
     			if(requestInfo[i]!= null){
     				BrowseMethods Browser=new BrowseMethods();
     				//Requests letztendlich abschicken
-    				answer=Browser.browse(requestInfo[i]);      				
+    				answer=Browser.browse(requestInfo[i]);      	
+    				Log.i(LOG_TAG, "Redirect:"+answer.getRedirectURLString());
     			}
     			else{
     				break;
@@ -203,6 +205,8 @@ public class TuCanMobileActivity extends SimpleWebActivity {
     				Log.i(LOG_TAG,"Zu viele Redirects");
     			}
     			publishProgress(new Integer[]{i,requestInfo.length});
+    			TucanMobile.generateNoteOnSD("html"+i+".htm", answer.getHTML(), TuCanMobileActivity.this);
+    			Log.i(LOG_TAG,answer.getHTML());
     		}
     		
     		return  answer;
@@ -219,11 +223,17 @@ public class TuCanMobileActivity extends SimpleWebActivity {
     		
     		Document doc = Jsoup.parse(result.getHTML());
     		Element UserSpan = doc.select("span#loginDataName").first();
-    		if(UserSpan==null){
+    		if(doc.select("div#zentrale_spalte").first()!=null){
+    			dialog.dismiss();
+    			Toast wrongLoginNotif = Toast.makeText(TuCanMobileActivity.this, "TuCan ist in Wartung und deswegen nicht erreichbar...", Toast.LENGTH_LONG);
+    			wrongLoginNotif.show();
+    		}
+    		else if(UserSpan==null){
     			dialog.dismiss();
     			Toast wrongLoginNotif = Toast.makeText(TuCanMobileActivity.this, "Login fehlerhaft", Toast.LENGTH_LONG);
     			wrongLoginNotif.show();
     		}
+    		
     		else {
     			dialog.dismiss();
     			String lcURLString=result.getLastCalledURL();

@@ -14,6 +14,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -23,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -317,5 +319,29 @@ public class MainMenu extends SimpleWebActivity {
 		
 
 	}
+	
+	/*
+	public class LocationRequester extends AsyncTask<RequestObject, Integer, AnswerObject>{
+		
+		ProgressBar progressView;
+		@Override
+		protected void onPreExecute() {
+			progressView = (ProgressBar) findViewById(R.id.mm_progress);
+			progressView.setVisibility(View.VISIBLE);
+			super.onPreExecute();
+		}
 
+		@Override
+		protected void onPostExecute(AnswerObject result) {
+			progressView.setVisibility(View.GONE);
+			super.onPostExecute(result);
+		}
+
+		@Override
+		protected AnswerObject doInBackground(RequestObject... params) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+	}*/
 }

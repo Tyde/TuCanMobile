@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 @ReportsCrashes(formKey = "dGxJeFNVZk5YQXRmaXV6WVZfVHYzdWc6MQ")
+
 //@ReportsCrashes(formUri = "http://www.bugsense.com/api/acra?api_key=f08ba688", formKey="")
 public class TucanMobile extends Application {
 	private static Context Appcontext;
@@ -50,7 +51,7 @@ public class TucanMobile extends Application {
 			writer.append(sBody);
 			writer.flush();
 			writer.close();
-			Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
+			//Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
 		} catch (IOException e) {
 			e.printStackTrace();
 			String importError = e.getMessage();
