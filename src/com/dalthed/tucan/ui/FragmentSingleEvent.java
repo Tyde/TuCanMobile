@@ -332,6 +332,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 				ArrayList<String> materialDesc = new ArrayList<String>();
 				materialLink = new ArrayList<String>();
 				ArrayList<String> materialFile = new ArrayList<String>();
+				int mod =0;
 				if (materialTable != null) {
 					while (materialTable.hasNext()) {
 						Element next = materialTable.next();
@@ -339,7 +340,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 						if (next.select("td").size() > 1) {
 							ct++;
 
-							int mod = (ct % 3);
+							mod = (ct % 3);
 							switch (mod) {
 							case 1:
 								materialNumber.add(next.select("td").get(0)
@@ -359,8 +360,6 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 									materialFile.add(next.select("td").get(1)
 											.select("a").text());
 								} else {
-									materialLink.add("");
-									materialFile.add("");
 									materialNumber.add(next.select("td").get(0)
 											.text());
 									materialName.add(next.select("td").get(1)
@@ -373,7 +372,10 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 						}
 					}
 				}
-
+				if(mod == 2){
+					materialLink.add("");
+					materialFile.add("");
+				}
 				if (ct > 2) {
 					mPageAdapter.setAdapter(new AppointmentAdapter(
 							materialNumber, materialFile, null, materialName,
