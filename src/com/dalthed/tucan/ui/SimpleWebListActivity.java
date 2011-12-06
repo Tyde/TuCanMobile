@@ -4,10 +4,12 @@ import org.acra.ErrorReporter;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.dalthed.tucan.R;
+import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.preferences.MainPreferences;
@@ -18,6 +20,15 @@ import com.dalthed.tucan.preferences.MainPreferences;
  */
 public abstract class SimpleWebListActivity extends ListActivity {
 	public SimpleSecureBrowser callResultBrowser;
+	protected Boolean HTTPS=true;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		if(TucanMobile.DEBUG && getIntent().hasExtra("HTTPS")){
+			HTTPS=getIntent().getExtras().getBoolean("HTTPS");
+		}
+		super.onCreate(savedInstanceState);
+	}
 	/**
 	 * Wird aufgerufen, wenn SimpleSecureBrowser fertig ist.
 	 * @param result

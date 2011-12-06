@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dalthed.tucan"
     android:versionCode="21"
-    android:versionName="0.1.5_1" >
+    android:versionName="0.1.5_2_debug" >
 
     <uses-sdk android:minSdkVersion="4" />
 
@@ -13,7 +13,7 @@
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:name="com.dalthed.tucan.TucanMobile" android:debuggable="false">
+        android:name=".TucanMobile" android:debuggable="false">
         <activity
             android:label="@string/app_name"
             android:name=".TuCanMobileActivity"
@@ -100,13 +100,21 @@
             android:theme="@android:style/Theme.Light.NoTitleBar" 
             android:configChanges="keyboardHidden|orientation">
         </activity>
-
+		 <activity
+            android:label="ACRA"
+            android:name=".acraload.LoadAcraResults"
+           
+            android:configChanges="keyboardHidden|orientation">
+        </activity>
         <!-- Einstellungen -->
         <activity
             android:label="Sicherheitseinstellungen"
             android:name=".preferences.MainPreferences" 
              >
         </activity>
+        
+        
+       
     </application>
 
 </manifest>

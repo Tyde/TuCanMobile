@@ -122,7 +122,6 @@ public class Exams extends SimpleWebListActivity {
 	}
 	public class OnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
 		int hitcount = 0;
-		@Override
 		public void onItemSelected(AdapterView<?> parent, View view,
 				int position, long id) {
 			if(hitcount==0){
@@ -159,7 +158,6 @@ public class Exams extends SimpleWebListActivity {
 			
 		}
 
-		@Override
 		public void onNothingSelected(AdapterView<?> parent) {
 			//Passiert einfach mal nicht!!
 			

@@ -79,11 +79,16 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 
 		try {
 			// Seite aufrufen..
+			callResultBrowser = new SimpleSecureBrowser(this);
+			if(TucanMobile.DEBUG){
+				callResultBrowser.HTTPS=this.HTTPS;
+			}
 			URLtoCall = new URL(URLStringtoCall);
+			
 			localCookieManager = new CookieManager();
 			localCookieManager.generateManagerfromHTTPString(
 					URLtoCall.getHost(), CookieHTTPString);
-			callResultBrowser = new SimpleSecureBrowser(this);
+			
 			RequestObject thisRequest = new RequestObject(URLStringtoCall,
 					localCookieManager, RequestObject.METHOD_GET, "");
 

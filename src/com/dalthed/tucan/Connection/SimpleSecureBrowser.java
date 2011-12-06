@@ -25,7 +25,7 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 	public SimpleWebActivity outerCallingActivity;
 	public FragmentWebActivity outerCallingFragmentActivity;
 	public ProgressDialog dialog;
-	
+	public boolean HTTPS=true;
 	boolean finished = false;
 	/**
 	 * Die Activity muss übergeben werden, damit der Browser die Methode onPostExecute aufrufen kann
@@ -52,6 +52,7 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 		AnswerObject answer = new AnswerObject("", "", null,null);
 		RequestObject significantRequest = requestInfo[0];
 		BrowseMethods Browser=new BrowseMethods();
+		Browser.HTTPS=this.HTTPS;
 		answer=Browser.browse(significantRequest); 
 		return answer;
 	}

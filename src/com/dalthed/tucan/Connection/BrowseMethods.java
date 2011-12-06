@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
@@ -18,12 +19,13 @@ import android.util.Log;
  *
  */
 public class BrowseMethods {
-	private HttpsURLConnection HTTPConnection;
+	private HttpURLConnection HTTPConnection;
 	private CookieManager myCookies;
 	public boolean iwantthereader=false;
 	public InputStream in;
 	public InputStreamReader isr;
 	private static final String LOG_TAG = "TuCanMobile";
+	public boolean HTTPS = true;
 	/**
 	 * setImportantHeaders setzt Header für den HTTP-Request
 	 * @param RequestMethod RequestObject.METHOD_POST oder RequestObject.METHOD_GET
@@ -60,7 +62,13 @@ public class BrowseMethods {
 			myCookies = requestInfo.getCookies();
 			String RequestMethod = requestInfo.getMethod();
 			String postdata = requestInfo.getPostData();
-			HTTPConnection = (HttpsURLConnection) realURL.openConnection();
+			if(HTTPS==true){
+				HTTPConnection = (HttpsURLConnection) realURL.openConnection();
+			}
+			else {
+				HTTPConnection = (HttpURLConnection) realURL.openConnection();
+			}
+			
 			Log.i(LOG_TAG, "Started Connection with: " + realURL.toString());
 			HTTPConnection.setDoOutput(true);
 

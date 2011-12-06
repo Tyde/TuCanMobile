@@ -296,7 +296,6 @@ public class Events extends SimpleWebListActivity {
 			android.widget.AdapterView.OnItemSelectedListener {
 		int hitcount = 0;
 
-		@Override
 		public void onItemSelected(AdapterView<?> parent, View view,
 				int position, long id) {
 			if (hitcount == 0) {
@@ -325,7 +324,6 @@ public class Events extends SimpleWebListActivity {
 			hitcount++;
 		}
 
-		@Override
 		public void onNothingSelected(AdapterView<?> parent) {
 			// TODO Auto-generated method stub
 

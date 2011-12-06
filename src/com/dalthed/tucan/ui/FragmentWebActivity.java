@@ -3,6 +3,7 @@ package com.dalthed.tucan.ui;
 import org.acra.ErrorReporter;
 
 import com.dalthed.tucan.R;
+import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.preferences.MainPreferences;
@@ -15,13 +16,15 @@ import android.view.MenuItem;
 
 public abstract class FragmentWebActivity extends FragmentActivity {
 	public SimpleSecureBrowser callResultBrowser;
-	
+	protected Boolean HTTPS=true;
 	public abstract void onPostExecute(AnswerObject result);
 	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+		if(TucanMobile.DEBUG && getIntent().hasExtra("HTTPS")){
+			HTTPS=getIntent().getExtras().getBoolean("HTTPS");
+		}
 		super.onCreate(savedInstanceState);
 	}
 
