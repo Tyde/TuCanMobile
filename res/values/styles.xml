@@ -48,4 +48,9 @@
   <style name="schedule_daytitlebartext">
       <item name="android:textColor">@color/tucan_grey</item>
   </style>
+  
+      
+      <style name="register_module">
+          <item name="android:background">@color/tucan_grey</item>
+       </style>
 </resources>

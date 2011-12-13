@@ -11,6 +11,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
@@ -113,6 +114,14 @@ public class Exams extends SimpleWebListActivity {
 				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+examLinks.get(3),
 						localCookieManager, RequestObject.METHOD_GET, "");
 				callOverviewBrowser.execute(thisRequest);
+				break;
+			case 4:
+				Intent callRegisterExams = new Intent(this, RegisterExams.class);
+				callRegisterExams.putExtra("URL", examLinks.get(4));
+				callRegisterExams.putExtra("Cookie", localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+				callRegisterExams.putExtra("UserName", UserName);
+				startActivity(callRegisterExams);
+				//TODO: Call RegisterEvents
 			default:
 				break;
 			}
@@ -243,10 +252,12 @@ public class Exams extends SimpleWebListActivity {
 							examNames.add(name);
 						}
 					}
-
+					
 					// Log.i(LOG_TAG,next.toString()+"Hakki");
 				}
-				
+				String SessionArgument = result.getLastCalledURL().split("ARGUMENTS=")[1].split(",")[0];
+				examLinks.add("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=EXAMREGISTRATION&ARGUMENTS="+SessionArgument+",-N000318,");
+				examNames.add("Anmeldung zu Prüfungen");
 				examNameBuffer=(ArrayList<String>) examNames.clone();
 				ListAdapter = new ArrayAdapter<String>(this,
 						android.R.layout.simple_list_item_1, examNameBuffer);

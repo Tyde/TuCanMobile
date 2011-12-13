@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/registerexam_row_ismodule"
+        style="@style/register_module"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <FrameLayout
+            android:layout_width="6dip"
+            android:layout_height="fill_parent"
+            android:background="@color/triadic_blue" >
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/registerexam_row_module_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip"
+            android:text="Deterministische Signale und Systeme"
+            android:textSize="20dip" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/registerexam_row_isevent"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/registerexam_row_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="11.12.2011"
+                android:textSize="19dip" />
+
+            <TextView
+                android:id="@+id/registerexam_row_selection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="Ausgewählt"
+                android:textSize="19dip" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/registerexam_row_examName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fachprüfung 1.Termin"
+                android:textSize="20dip"  />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
