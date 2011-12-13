@@ -345,39 +345,37 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 						if (next.select("td").size() > 1) {
 							ct++;
 
-							mod = (ct % 3);
-							switch (mod) {
-							case 1:
+							if(next.select("td").get(0).text().matches("[0-9]+")){
+								//First line
+								
 								materialNumber.add(next.select("td").get(0)
 										.text());
 								materialName.add(next.select("td").get(1)
 										.text());
-
-								break;
-							case 2:
+								if(mod==2){
+									materialLink.add("");
+									materialFile.add("");
+								}
+								mod=1;
+							}
+							else if(mod==1){
+								
 								materialDesc.add(next.select("td").get(1)
 										.text());
-								break;
-							case 0:
-								if (next.attr("class").equals("tbdata_stretch")) {
-									materialLink.add(next.select("td").get(1)
-											.select("a").attr("href"));
-									materialFile.add(next.select("td").get(1)
-											.select("a").text());
-								} else {
-									materialNumber.add(next.select("td").get(0)
-											.text());
-									materialName.add(next.select("td").get(1)
-											.text());
-									ct++;
-								}
-
-								break;
+								mod=2;
+							}
+							else if(mod==2){
+								
+								materialLink.add(next.select("td").get(1)
+										.select("a").attr("href"));
+								materialFile.add(next.select("td").get(1)
+										.select("a").text());
+								mod=0;
 							}
 						}
 					}
 				}
-				if(mod == 2){
+				if(mod == 1){
 					materialLink.add("");
 					materialFile.add("");
 				}
