@@ -103,6 +103,7 @@ public class Messages extends SimpleWebListActivity {
 	@Override
 	public void onPostExecute(AnswerObject result) {
 		Document doc = Jsoup.parse(result.getHTML());
+		sendHTMLatBug(result.getHTML());
 		if(doc.select("span.notLoggedText").text().length()>0){
 			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
