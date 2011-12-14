@@ -261,6 +261,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 			if (PREPCall == false) {
 				if (!doc.select("form[name=moduleform]").isEmpty()) {
 					Intent goToModule = new Intent(this, Module.class);
+					
 					goToModule.putExtra("Cookie", localCookieManager
 							.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 					goToModule.putExtra("URL", "HTML");
