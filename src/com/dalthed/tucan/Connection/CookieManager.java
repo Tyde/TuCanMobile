@@ -37,6 +37,9 @@ public class CookieManager {
 	
 	@SuppressWarnings("rawtypes")
 	public String getCookieHTTPString(String domain) {
+		if(!Cookies.containsKey(domain))
+			return null;
+		
 		String[] HTTPString = new String[Cookies.get(domain).size()];
 		Iterator it= Cookies.get(domain).entrySet().iterator();
 		int i=0;

@@ -73,6 +73,12 @@
             android:name=".ui.ApplyEvent"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
+        <activity
+            android:configChanges="keyboardHidden|orientation"
+            android:label="Module"
+            android:name=".ui.Module"
+            android:theme="@android:style/Theme.Light.NoTitleBar" >
+        </activity>
 
         <!-- Prüfungen -->
 

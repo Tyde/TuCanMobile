@@ -80,15 +80,15 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 		try {
 			// Seite aufrufen..
 			callResultBrowser = new SimpleSecureBrowser(this);
-			if(TucanMobile.DEBUG){
-				callResultBrowser.HTTPS=this.HTTPS;
+			if (TucanMobile.DEBUG) {
+				callResultBrowser.HTTPS = this.HTTPS;
 			}
 			URLtoCall = new URL(URLStringtoCall);
-			
+
 			localCookieManager = new CookieManager();
 			localCookieManager.generateManagerfromHTTPString(
 					URLtoCall.getHost(), CookieHTTPString);
-			
+
 			RequestObject thisRequest = new RequestObject(URLStringtoCall,
 					localCookieManager, RequestObject.METHOD_GET, "");
 
@@ -126,9 +126,12 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 
 			return (ListFragment) newFragment;
 		}
+
 		/**
 		 * Initialisiertes ListFragment abrufen
-		 * @param position x-Position des Fragments
+		 * 
+		 * @param position
+		 *            x-Position des Fragments
 		 * @return ListFragment der position
 		 */
 		public ArrayListFragment getInitializedItem(int position) {
@@ -138,10 +141,13 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 			return (ArrayListFragment) fragment;
 
 		}
-		
+
 		/**
-		 * Speichert den entsprechenden ArrayAdapter in einer Liste des PagerAdapters
-		 * @param adapter der zu speichernde Adapter
+		 * Speichert den entsprechenden ArrayAdapter in einer Liste des
+		 * PagerAdapters
+		 * 
+		 * @param adapter
+		 *            der zu speichernde Adapter
 		 */
 		public void setAdapter(ArrayAdapter<String> adapter) {
 			adapterList.add(adapter);
@@ -253,6 +259,15 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 			startActivity(BackToLoginIntent);
 		} else {
 			if (PREPCall == false) {
+				if (!doc.select("form[name=moduleform]").isEmpty()) {
+					Intent goToModule = new Intent(this, Module.class);
+					goToModule.putExtra("Cookie", localCookieManager
+							.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+					goToModule.putExtra("URL", "HTML");
+					goToModule.putExtra("HTML", result.getHTML());
+					startActivity(goToModule);
+					return;
+				}
 				String Title = doc.select("h1").text();
 
 				TextView SingleEventTitle = (TextView) findViewById(R.id.singleevent_title);
@@ -304,7 +319,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 
 				ArrayList<String> eventRoom = new ArrayList<String>();
 				ArrayList<String> eventInstructor = new ArrayList<String>();
-				if(DateTable!=null){
+				if (DateTable != null) {
 					while (DateTable.hasNext()) {
 						Element next = DateTable.next();
 						Elements cols = next.select("td");
@@ -316,12 +331,10 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 							eventRoom.add(cols.get(4).text());
 							eventInstructor.add(cols.get(5).text());
 						}
-	
-					}
-					
 
-				}
-				else {
+					}
+
+				} else {
 					eventDate.add("");
 					eventTime.add("");
 					eventNumber.add("");
@@ -330,14 +343,14 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 				}
 				mPageAdapter.setAdapter(new AppointmentAdapter(eventDate,
 						eventTime, eventNumber, eventRoom, eventInstructor));
-				
+
 				int ct = 0;
 				ArrayList<String> materialNumber = new ArrayList<String>();
 				ArrayList<String> materialName = new ArrayList<String>();
 				ArrayList<String> materialDesc = new ArrayList<String>();
 				materialLink = new ArrayList<String>();
 				ArrayList<String> materialFile = new ArrayList<String>();
-				int mod =0;
+				int mod = 0;
 				if (materialTable != null) {
 					while (materialTable.hasNext()) {
 						Element next = materialTable.next();
@@ -345,37 +358,45 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 						if (next.select("td").size() > 1) {
 							ct++;
 
-							if(next.select("td").get(0).text().matches("[0-9]+")){
-								//First line
-								
+							if (next.select("td").get(0).text()
+									.matches("[0-9]+")) {
+								// First line
+
 								materialNumber.add(next.select("td").get(0)
 										.text());
 								materialName.add(next.select("td").get(1)
 										.text());
-								if(mod==2){
+								if (mod == 1) {
+									materialDesc.add("");
+									mod = 2;
+								}
+								if (mod == 2) {
 									materialLink.add("");
 									materialFile.add("");
 								}
-								mod=1;
-							}
-							else if(mod==1){
-								
+
+								mod = 1;
+							} else if (mod == 1) {
+
 								materialDesc.add(next.select("td").get(1)
 										.text());
-								mod=2;
-							}
-							else if(mod==2){
-								
+								mod = 2;
+							} else if (mod == 2) {
+
 								materialLink.add(next.select("td").get(1)
 										.select("a").attr("href"));
 								materialFile.add(next.select("td").get(1)
 										.select("a").text());
-								mod=0;
+								mod = 0;
 							}
 						}
 					}
 				}
-				if(mod == 1){
+				if (mod == 1) {
+					materialDesc.add("");
+					mod = 2;
+				}
+				if (mod == 2) {
 					materialLink.add("");
 					materialFile.add("");
 				}
