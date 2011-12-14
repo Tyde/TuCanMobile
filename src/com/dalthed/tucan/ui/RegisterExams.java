@@ -13,6 +13,7 @@ import org.jsoup.select.Elements;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
+import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
@@ -75,95 +77,105 @@ public class RegisterExams extends SimpleWebListActivity {
 	public void onPostExecute(AnswerObject result) {
 
 		Document doc = Jsoup.parse(result.getHTML());
-		if (mode == 0) {
-			Element significantTable = doc.select("table.nb").select("tbody")
-					.first();
+		
+		sendHTMLatBug(result.getHTML());
+		if(doc.select("span.notLoggedText").text().length()>0){
+			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
+			BackToLoginIntent.putExtra("lostSession", true);
+			startActivity(BackToLoginIntent);
+		}
+		else {
+			if (mode == 0) {
+				Element significantTable = doc.select("table.nb").select("tbody")
+						.first();
 
-			Iterator<Element> rows = significantTable.select("tr").iterator();
-			eventisModule = new ArrayList<Boolean>();
-			eventName = new ArrayList<String>();
-			examDate = new ArrayList<String>();
-			registerLink = new ArrayList<String>();
-			examSelection = new ArrayList<Integer>();
-			while (rows.hasNext()) {
-				Element next = rows.next();
+				Iterator<Element> rows = significantTable.select("tr").iterator();
+				eventisModule = new ArrayList<Boolean>();
+				eventName = new ArrayList<String>();
+				examDate = new ArrayList<String>();
+				registerLink = new ArrayList<String>();
+				examSelection = new ArrayList<Integer>();
+				while (rows.hasNext()) {
+					Element next = rows.next();
 
-				if (next.hasClass("level02")) {
-					eventisModule.add(true);
-					eventName.add(next.select("td").get(1).text());
-					examDate.add("");
-					examSelection.add(-1);
-					registerLink.add("");
-				} else {
-					eventisModule.add(false);
-					Elements cols = next.select("td");
-					eventName.add(cols.get(2).text());
-					examDate.add(cols.get(3).text());
-					// Wenn keine Anmeldung/Abmeldung möglich ist
-					if (cols.get(4).select("a").isEmpty()) {
-						if (cols.get(4).text().equals("Ausgewählt"))
-							examSelection.add(1);
-						else
-							examSelection.add(0);
-
+					if (next.hasClass("level02")) {
+						eventisModule.add(true);
+						eventName.add(next.select("td").get(1).text());
+						examDate.add("");
+						examSelection.add(-1);
 						registerLink.add("");
 					} else {
-						// Anmeldung/Abmeldung möglich
-						if (cols.get(4).select("a").text().equals("Anmelden"))
-							examSelection.add(2);
-						else
-							examSelection.add(3);
-						registerLink.add(cols.get(4).select("a").attr("href"));
+						eventisModule.add(false);
+						Elements cols = next.select("td");
+						eventName.add(cols.get(2).text());
+						examDate.add(cols.get(3).text());
+						// Wenn keine Anmeldung/Abmeldung möglich ist
+						if (cols.get(4).select("a").isEmpty()) {
+							if (cols.get(4).text().equals("Ausgewählt"))
+								examSelection.add(1);
+							else
+								examSelection.add(0);
+
+							registerLink.add("");
+						} else {
+							// Anmeldung/Abmeldung möglich
+							if (cols.get(4).select("a").text().equals("Anmelden"))
+								examSelection.add(2);
+							else
+								examSelection.add(3);
+							registerLink.add(cols.get(4).select("a").attr("href"));
+						}
+
 					}
 
+					// System.out.println();
 				}
-
-				// System.out.println();
-			}
-			if(justGetimportant){
-				//TODO: Only get a selection
-				
-			}
-			RegisterExamAdapter nextAdapter = new RegisterExamAdapter(
-					eventisModule, eventName, examDate, examSelection);
-			setListAdapter(nextAdapter);
-		} else if (mode == 1) {
-			mode = 3;
-			Element form = doc.select("form[name=registrationdetailsform]").first();
-			Elements cols = form.select("table.tb750").first().select("tr").last().select("td");
-			Iterator<Element> iterateForms = form.select("input").iterator();
-			ArrayList<String> formName = new ArrayList<String>();
-			ArrayList<String> formValue = new ArrayList<String>();
-			postString = "";
-			int ct=0;
-			while(iterateForms.hasNext()){
-				Element next = iterateForms.next();
-				formName.add(next.attr("name"));
-				formValue.add(next.attr("value"));
-				if(ct>0){
-					postString+="&";
+				if(justGetimportant){
+					//TODO: Only get a selection
+					
 				}
-				ct++;
-				postString+=next.attr("name")+"="+next.attr("value");
-			}
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage("An/Abmelden zu:" + cols.get(1).text() + "\n" + cols.get(6).text())
-					.setCancelable(true)
-					.setPositiveButton("Ja",MyYesClickListener)
-					.setNegativeButton("Nein", null);
-			AlertDialog alert = builder.create();
-			alert.show();
-		} else if (mode == 3){
-			Element form = doc.select("form[name=registrationdetailsform]").first();
-			String resultText = form.select("span.note").first().text();
-			Toast.makeText(this, resultText, Toast.LENGTH_LONG).show();
-			mode=0;
-			callResultBrowser = new SimpleSecureBrowser(this);
-			RequestObject thisRequest = new RequestObject(URLStringtoCall,
-					localCookieManager, RequestObject.METHOD_GET, "");
+				RegisterExamAdapter nextAdapter = new RegisterExamAdapter(
+						eventisModule, eventName, examDate, examSelection);
+				setListAdapter(nextAdapter);
+			} else if (mode == 1) {
+				mode = 3;
+				Element form = doc.select("form[name=registrationdetailsform]").first();
+				Elements cols = form.select("table.tb750").first().select("tr").last().select("td");
+				Iterator<Element> iterateForms = form.select("input").iterator();
+				ArrayList<String> formName = new ArrayList<String>();
+				ArrayList<String> formValue = new ArrayList<String>();
+				postString = "";
+				int ct=0;
+				while(iterateForms.hasNext()){
+					Element next = iterateForms.next();
+					formName.add(next.attr("name"));
+					formValue.add(next.attr("value"));
+					if(ct>0){
+						postString+="&";
+					}
+					ct++;
+					postString+=next.attr("name")+"="+next.attr("value");
+				}
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setMessage("An/Abmelden zu:" + cols.get(1).text() + "\n" + cols.get(6).text())
+						.setCancelable(true)
+						.setPositiveButton("Ja",MyYesClickListener)
+						.setNegativeButton("Nein", null);
+				AlertDialog alert = builder.create();
+				alert.show();
+			} else if (mode == 3){
+				Element form = doc.select("form[name=registrationdetailsform]").first();
+				String resultText = form.select("span.note").first().text();
+				Toast.makeText(this, resultText, Toast.LENGTH_LONG).show();
+				mode=0;
+				callResultBrowser = new SimpleSecureBrowser(this);
+				RequestObject thisRequest = new RequestObject(URLStringtoCall,
+						localCookieManager, RequestObject.METHOD_GET, "");
 
-			callResultBrowser.execute(thisRequest);
+				callResultBrowser.execute(thisRequest);
+			}
 		}
+		
 
 	}
 	

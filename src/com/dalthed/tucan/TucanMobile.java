@@ -25,7 +25,7 @@ public class TucanMobile extends Application {
 	public final static String TUCAN_PROT = "https://";
 	public GoogleAnalyticsTracker mAnalyticsTracker;
 	public final static Boolean CRASH = false;
-	public final static Boolean DEBUG = true;
+	public final static Boolean DEBUG = false;
 
 	@Override
 	public void onCreate() {
