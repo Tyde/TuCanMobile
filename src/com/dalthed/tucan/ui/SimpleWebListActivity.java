@@ -5,6 +5,8 @@ import org.acra.ErrorReporter;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -13,37 +15,42 @@ import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.preferences.MainPreferences;
+
 /**
  * SimpleWebListActivity notwendig für SimpleSecureBrowser
+ * 
  * @author Tyde
- *
+ * 
  */
 public abstract class SimpleWebListActivity extends ListActivity {
 	public SimpleSecureBrowser callResultBrowser;
-	protected Boolean HTTPS=true;
-	
+	protected Boolean HTTPS = true;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		if(TucanMobile.DEBUG && getIntent().hasExtra("HTTPS")){
-			HTTPS=getIntent().getExtras().getBoolean("HTTPS");
+		if (TucanMobile.DEBUG && getIntent().hasExtra("HTTPS")) {
+			HTTPS = getIntent().getExtras().getBoolean("HTTPS");
 		}
 		super.onCreate(savedInstanceState);
 	}
+
 	/**
 	 * Wird aufgerufen, wenn SimpleSecureBrowser fertig ist.
+	 * 
 	 * @param result
 	 */
-	public abstract void onPostExecute(AnswerObject result) ;
+	public abstract void onPostExecute(AnswerObject result);
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.loginmenu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	public void sendHTMLatBug(String html){
+	public void sendHTMLatBug(String html) {
 		ErrorReporter.getInstance().putCustomData("html", html);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -60,10 +67,12 @@ public abstract class SimpleWebListActivity extends ListActivity {
 		}
 
 	}
+
 	public Object onRetainNonConfigurationInstance() {
-		if(callResultBrowser!=null){
+		if (callResultBrowser != null) {
 			callResultBrowser.dialog.dismiss();
 		}
 		return super.onRetainNonConfigurationInstance();
 	}
+	
 }

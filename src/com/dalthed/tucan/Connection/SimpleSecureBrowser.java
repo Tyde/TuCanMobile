@@ -9,6 +9,7 @@ import com.dalthed.tucan.ui.SimpleWebListActivity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 
@@ -27,6 +28,8 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 	public ProgressDialog dialog;
 	public boolean HTTPS=true;
 	boolean finished = false;
+	
+	
 	/**
 	 * Die Activity muss übergeben werden, damit der Browser die Methode onPostExecute aufrufen kann
 	 * @param callingActivity
@@ -35,6 +38,7 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 		outerCallingListActivity=callingActivity;
 		outerCallingFragmentActivity=null;
 		outerCallingActivity=null;
+		
 	}
 	
 	public SimpleSecureBrowser (FragmentWebActivity callingActivity) {
@@ -67,6 +71,15 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 		dialog = ProgressDialog.show(parentActivityHandler,"",
 					//parentActivityHandler.getResources().getString(R.string.ui_load_data),true);
 				"Lade",true);
+		dialog.setCancelable(true);
+		dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+			
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				cancel(true);
+				
+			}
+		});
 		
 	}
 	private Activity getparentActivityHandler() {
