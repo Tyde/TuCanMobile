@@ -72,6 +72,8 @@ public class BrowseMethods {
 			Log.i(LOG_TAG, "Started Connection with: " + realURL.toString());
 			if(RequestMethod == "POST")
 				HTTPConnection.setDoOutput(true);
+			
+			
 
 			setImportantHeaders(RequestMethod, realURL.getHost());
 			if (RequestMethod == "POST") {
