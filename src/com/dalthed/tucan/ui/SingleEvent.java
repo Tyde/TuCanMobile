@@ -325,7 +325,7 @@ public class SingleEvent extends SimpleWebListActivity {
 	public class OnItemSelectedListener implements
 			android.widget.AdapterView.OnItemSelectedListener {
 
-		@Override
+		
 		public void onItemSelected(AdapterView<?> parent, View view,
 				int position, long id) {
 			switch (position) {
@@ -346,7 +346,7 @@ public class SingleEvent extends SimpleWebListActivity {
 			}
 		}
 
-		@Override
+		
 		public void onNothingSelected(AdapterView<?> parent) {
 			// TODO Auto-generated method stub
 

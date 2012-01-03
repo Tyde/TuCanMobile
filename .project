@@ -3,6 +3,7 @@
 	<name>TuCanMobile</name>
 	<comment></comment>
 	<projects>
+		<project>ViewPagerIndicator</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

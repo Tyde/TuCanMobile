@@ -98,7 +98,6 @@ public class MainMenu extends SimpleWebActivity {
 				android.R.layout.simple_list_item_1, getResources()
 						.getStringArray(R.array.mainmenu_options)));
 		MenuList.setOnItemClickListener(new OnItemClickListener() {
-			@Override
 			public void onItemClick(AdapterView arg0, View arg1, int position,
 					long arg3) {
 				switch (position) {
@@ -285,7 +284,6 @@ public class MainMenu extends SimpleWebActivity {
 				.setMessage(R.string.general_not_supported_lang)
 				.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
 					
-					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						finish();
 					}
@@ -301,7 +299,6 @@ public class MainMenu extends SimpleWebActivity {
 			EventList.setAdapter(new EventAdapter(Events, Times));
 			EventList.setOnItemClickListener(new OnItemClickListener() {
 
-				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
 					if(noeventstoday==false){

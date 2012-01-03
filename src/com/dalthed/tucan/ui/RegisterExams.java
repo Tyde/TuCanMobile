@@ -181,7 +181,7 @@ public class RegisterExams extends SimpleWebListActivity {
 	
 	DialogInterface.OnClickListener MyYesClickListener = new DialogInterface.OnClickListener() {
 
-		@Override
+		
 		public void onClick(DialogInterface dialog,
 				int which) {
 			SimpleSecureBrowser finalizeRegister = new SimpleSecureBrowser(RegisterExams.this);

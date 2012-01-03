@@ -74,7 +74,7 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 		dialog.setCancelable(true);
 		dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 			
-			@Override
+			
 			public void onCancel(DialogInterface dialog) {
 				cancel(true);
 				
