@@ -10,7 +10,7 @@
         style="@style/mm_events_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dasisteinganz langer text zum testen von Newline" 
+
         android:layout_marginRight="80dip">
     </TextView>
 
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:text="09:50-11:30" >
+ >
     </TextView>
 
 </FrameLayout>

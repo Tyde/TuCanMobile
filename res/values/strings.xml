@@ -48,4 +48,9 @@
     <string name="pref_acra_disabled">Dieser kann private Daten wie den Namen und Inhalte der Seite beinhalten. Durch das abschalten können Fehler nicht genau analysiert werden und somit wohl auch nicht behoben werden.</string>
     <string name="pref_acra_enabled">Dieser kann private Daten wie den Namen und Inhalte der Seite beinhalten. Durch das abschalten können Fehler nicht genau analysiert werden und somit wohl auch nicht behoben werden.</string>
 
+    <!-- Image Content Description -->
+    <string name="img_content_logo">Logo</string>
+    
+    <!-- DEBUG -->
+    <string name="debug_title">DEBUG</string>
 </resources>

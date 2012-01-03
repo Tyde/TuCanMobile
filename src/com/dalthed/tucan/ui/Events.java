@@ -77,15 +77,14 @@ public class Events extends SimpleWebListActivity {
 
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
-				this);
+		SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(this);
 		RequestObject thisRequest;
-		Log.i(LOG_TAG,"Modus:"+mode);
+		Log.i(LOG_TAG, "Modus:" + mode);
 		if (mode == 0) {
-			
+			// Modus overview
 			switch (position) {
 			case 0:
-				
+				// Klick auf Module
 				mode = 10;
 				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT
 						+ TucanMobile.TUCAN_HOST + eventLinks.get(0),
@@ -93,6 +92,7 @@ public class Events extends SimpleWebListActivity {
 				callOverviewBrowser.execute(thisRequest);
 				break;
 			case 1:
+				// Klick auf Veranstaltungen
 				mode = 1;
 				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT
 						+ TucanMobile.TUCAN_HOST + eventLinks.get(1),
@@ -100,6 +100,7 @@ public class Events extends SimpleWebListActivity {
 				callOverviewBrowser.execute(thisRequest);
 				break;
 			case 2:
+				// Klick auf Anmeldung
 				mode = 2;
 				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT
 						+ TucanMobile.TUCAN_HOST + eventLinks.get(2),
@@ -111,33 +112,50 @@ public class Events extends SimpleWebListActivity {
 		} else if (mode == 1) {
 			Intent StartSingleEventIntent = new Intent(Events.this,
 					FragmentSingleEvent.class);
-			StartSingleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT
-					+ TucanMobile.TUCAN_HOST + eventLink.get(position));
-			StartSingleEventIntent.putExtra("Cookie", localCookieManager
-					.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+			StartSingleEventIntent.putExtra(
+					TucanMobile.EXTRA_URL,
+					TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+							+ eventLink.get(position));
+			StartSingleEventIntent.putExtra(TucanMobile.EXTRA_COOKIE,
+					localCookieManager
+							.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 			// StartSingleEventIntent.putExtra("UserName", UserName);
 			startActivity(StartSingleEventIntent);
 		} else if (mode == 2) {
-			
+
 			thisRequest = new RequestObject(TucanMobile.TUCAN_PROT
 					+ TucanMobile.TUCAN_HOST + applyLink.get(position),
 					localCookieManager, RequestObject.METHOD_GET, "");
 			callOverviewBrowser.execute(thisRequest);
+		} else if (mode == 10) {
+			Intent StartModuleIntent = new Intent(Events.this, Module.class);
+			StartModuleIntent.putExtra(
+					TucanMobile.EXTRA_URL,
+					TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+							+ eventLink.get(position));
+			StartModuleIntent.putExtra(TucanMobile.EXTRA_COOKIE,
+					localCookieManager
+							.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+			startActivity(StartModuleIntent);
 		}
 	}
 
 	@Override
 	public void onPostExecute(AnswerObject result) {
+		// HTML Parsen
 		Document doc = Jsoup.parse(result.getHTML());
 		if (doc.select("span.notLoggedText").text().length() > 0) {
+			// Check for logged out
 			Intent BackToLoginIntent = new Intent(this,
 					TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);
 		} else {
+			// When bug exists: send HTML to resolve Bug
 			sendHTMLatBug(doc.html());
-			Log.i(LOG_TAG, "Modus after select:" + mode);
+
 			if (mode == 0) {
+				// LinkGruppe Veranstaltungen finden und durchlaufen
 				Elements links = doc.select("li#link000273").select("li");
 
 				Iterator<Element> linkIt = links.iterator();
@@ -146,45 +164,48 @@ public class Events extends SimpleWebListActivity {
 				while (linkIt.hasNext()) {
 					Element next = linkIt.next();
 					String id = next.id();
-					if (id.equals("link000275") || id.equals("link000274")
-							) {
-//						/|| id.equals("link000311")
+					// Links Veranstaltugen und Module finden und aufnehmen
+					if (id.equals("link000275") || id.equals("link000274")) {
+						// /|| id.equals("link000311")
 						eventLinks.add(next.select("a").attr("href"));
 						eventNames.add(next.select("a").text());
 					}
 				}
+				// ArrayList kopieren um Links nicht neu laden zu müssen
 				@SuppressWarnings("unchecked")
 				ArrayList<String> eventNameBuffer = (ArrayList<String>) eventNames
 						.clone();
+				// Adapter erstellen und einsetzen
 				ListAdapter = new ArrayAdapter<String>(this,
 						android.R.layout.simple_list_item_1, eventNameBuffer);
 				setListAdapter(ListAdapter);
 			} else if (mode == 2) {
-					
-				if(doc.select("table.tbcoursestatus")==null) {
+				// Modus Anmeldung
+				if (doc.select("table.tbcoursestatus") == null) {
 					Elements ListElements = doc.select("div#contentSpacer_IE")
 							.first().select("ul").first().select("li");
 					Iterator<Element> ListIterator = ListElements.iterator();
-					applyLink 					= new ArrayList<String>();
+					applyLink = new ArrayList<String>();
 					ArrayList<String> applyName = new ArrayList<String>();
 					while (ListIterator.hasNext()) {
 						Element next = ListIterator.next();
-						//Log.i(LOG_TAG,next.select("a").attr("href"));
+						// Log.i(LOG_TAG,next.select("a").attr("href"));
 						applyLink.add(next.select("a").attr("href"));
 						applyName.add(next.text());
 					}
 					ListAdapter = new ArrayAdapter<String>(this,
 							android.R.layout.simple_list_item_1, applyName);
 					setListAdapter(ListAdapter);
+				} else {
+					Log.i(LOG_TAG, doc.select("table.tbcoursestatus").html());
+					// TODO : Call importand Intent
 				}
-				else {
-					Log.i(LOG_TAG,doc.select("table.tbcoursestatus").html());
-					//TODO : Call importand Intent
-				}
-				
+
 			} else {
+
 				eventLink = new ArrayList<String>();
 				if (mode == 10) {
+					// Modus Module
 					ArrayList<String> eventName = new ArrayList<String>();
 					ArrayList<String> eventHead = new ArrayList<String>();
 					ArrayList<String> eventCredits = new ArrayList<String>();
@@ -209,6 +230,7 @@ public class Events extends SimpleWebListActivity {
 							eventHead);
 					setListAdapter(ListAdapter);
 				} else if (mode == 1) {
+					// Modus Veranstaltungen
 					ArrayList<String> eventName = new ArrayList<String>();
 					ArrayList<String> eventHead = new ArrayList<String>();
 					ArrayList<String> eventTime = new ArrayList<String>();

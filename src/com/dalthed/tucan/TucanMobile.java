@@ -23,9 +23,12 @@ public class TucanMobile extends Application {
 	private static Context Appcontext;
 	public final static String TUCAN_HOST = "www.tucan.tu-darmstadt.de";
 	public final static String TUCAN_PROT = "https://";
+	public final static String EXTRA_COOKIE = "Cookie";
+	public final static String EXTRA_URL = "URL";
+	public final static String EXTRA_USERNAME = "UserName";
 	public GoogleAnalyticsTracker mAnalyticsTracker;
 	public final static Boolean CRASH = false;
-	public final static Boolean DEBUG = false;
+	public final static Boolean DEBUG = true;
 
 	@Override
 	public void onCreate() {

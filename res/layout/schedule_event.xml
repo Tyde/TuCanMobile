@@ -18,7 +18,7 @@
             style="@style/schedule_daytitlebartext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            />
         <FrameLayout 
             android:background="@color/triadic_light"
             android:layout_height="2dip"
@@ -34,14 +34,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:text="Room" />
+            />
 
         <TextView
             android:id="@+id/schedule_event_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="Time" />
+             />
     </RelativeLayout>
 
     <RelativeLayout
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:gravity="right"
-            android:text="Name" />
+            />
     </RelativeLayout>
 
   

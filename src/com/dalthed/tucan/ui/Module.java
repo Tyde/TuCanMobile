@@ -1,14 +1,16 @@
 package com.dalthed.tucan.ui;
 
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
@@ -23,7 +25,7 @@ public class Module extends SimpleWebListActivity {
 	private CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
 	private String URLStringtoCall;
-	private int mode = 0;
+	private ArrayList<String> eventLinks;
 	
 	
 	@Override
@@ -60,13 +62,29 @@ public class Module extends SimpleWebListActivity {
 
 
 	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		Intent StartSingleEventIntent = new Intent(Module.this,
+				FragmentSingleEvent.class);
+		StartSingleEventIntent.putExtra(
+				TucanMobile.EXTRA_URL,
+				TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+						+ eventLinks.get(position));
+		StartSingleEventIntent.putExtra(TucanMobile.EXTRA_COOKIE,
+				localCookieManager
+						.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+		
+		startActivity(StartSingleEventIntent);
+	}
+
+
+	@Override
 	public void onPostExecute(AnswerObject result) {
 		Document doc = Jsoup.parse(result.getHTML());
 		String title = doc.select("h1").text();
 		Elements events = doc.select("a[name=eventLink]");
 		//System.out.println(events);
 		ArrayList<String> eventNames = new ArrayList<String>();
-		ArrayList<String> eventLinks = new ArrayList<String>();
+						  eventLinks = new ArrayList<String>();
 		if(events.size()%3==0){
 			for (int i = 0; i < events.size(); i += 3) {
 				eventNames.add(events.get(i).text()+" "+events.get(i+1).text()+" "+events.get(i+2).text());

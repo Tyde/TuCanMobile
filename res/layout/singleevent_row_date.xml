@@ -13,14 +13,12 @@
             android:id="@+id/singleevent_row_date_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date" 
             android:layout_alignParentLeft="true"/>
 
         <TextView
             android:id="@+id/singleevent_row_date_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Time"
             android:layout_alignParentRight="true" />
 
     </RelativeLayout>
@@ -32,7 +30,7 @@
             android:id="@+id/singleevent_row_date_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="#" 
+          
             android:layout_alignParentLeft="true"/>
 
         <TextView
@@ -40,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="Room"
+       
             style="@style/mm_events_title"
             android:layout_alignParentRight="true" />
 
@@ -49,7 +47,7 @@
             android:id="@+id/singleevent_row_date_instructor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Instructor" 
+ 
            />
 
 </LinearLayout>

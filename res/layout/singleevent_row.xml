@@ -8,14 +8,14 @@
             style="@style/singleevent_property"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Property: " />
+            />
     <TextView
         	android:layout_marginLeft="30dip"
             android:id="@+id/singleevent_row_value"
             style="@style/singleevent_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Value" />
+            />
     
 
 </LinearLayout>

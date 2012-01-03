@@ -1,41 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" 
-        xmlns:android="http://schemas.android.com/apk/res/android">
-<TableLayout 
-    android:id="@+id/tableLayout1"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    
-    android:stretchColumns="*" >
+    android:orientation="vertical" >
 
-    
-
-
-    <TableRow
-        android:id="@+id/tableRow1"
+    <TableLayout
+        android:id="@+id/tableLayout1"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="5" >
+        android:layout_height="fill_parent"
+        android:stretchColumns="*" >
 
-        <TextView
-            android:id="@+id/row_vv_veranst"
-            style="@style/vv_events_title"
-            android:layout_width="wrap_content"
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4.9"
-            android:text="TextViewafawfawf" />
-    </TableRow>
+            android:weightSum="5" >
 
-    <TableRow
-        android:id="@+id/tableRow3"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-       
+            <TextView
+                android:id="@+id/row_vv_veranst"
+                style="@style/vv_events_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="4.9"
+                 />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
 
             <TextView
                 android:id="@+id/row_vv_type"
@@ -43,23 +37,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="TextView" />
+               />
+        </TableRow>
 
-       
-    </TableRow>
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
 
-    <TableRow
-        android:id="@+id/tableRow2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+            <TextView
+                android:id="@+id/row_vv_dozent"
+                style="@style/mm_events_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+        </TableRow>
+    </TableLayout>
 
-        <TextView
-            android:id="@+id/row_vv_dozent"
-            style="@style/mm_events_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-    </TableRow>
-
-</TableLayout>
 </LinearLayout>

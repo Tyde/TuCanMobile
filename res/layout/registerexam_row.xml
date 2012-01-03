@@ -22,7 +22,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dip"
-            android:text="Deterministische Signale und Systeme"
             android:textSize="20dip" />
     </LinearLayout>
 
@@ -41,7 +40,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:text="Mi, 16. Feb. 2011 11:40-13:20"
                 android:textSize="15dip" />
 
             <TextView
@@ -49,7 +47,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="Ausgewählt"
                 android:textSize="19dip"
                 android:textColor="@color/triadic_blue" />
         </RelativeLayout>
@@ -62,7 +59,6 @@
                 android:id="@+id/registerexam_row_examName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Fachprüfung 1.Termin"
                 android:textSize="20dip"  />
         </RelativeLayout>
 
