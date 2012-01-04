@@ -59,10 +59,14 @@ public class RegisterExams extends SimpleWebListActivity {
 
 		try {
 			URLtoCall = new URL(URLStringtoCall);
+			
 			localCookieManager = new CookieManager();
 			localCookieManager.generateManagerfromHTTPString(
 					URLtoCall.getHost(), CookieHTTPString);
 			callResultBrowser = new SimpleSecureBrowser(this);
+			if (TucanMobile.DEBUG) {
+				callResultBrowser.HTTPS = this.HTTPS;
+			}
 			RequestObject thisRequest = new RequestObject(URLStringtoCall,
 					localCookieManager, RequestObject.METHOD_GET, "");
 
@@ -77,19 +81,20 @@ public class RegisterExams extends SimpleWebListActivity {
 	public void onPostExecute(AnswerObject result) {
 
 		Document doc = Jsoup.parse(result.getHTML());
-		
+
 		sendHTMLatBug(result.getHTML());
-		if(doc.select("span.notLoggedText").text().length()>0){
-			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
+		if (doc.select("span.notLoggedText").text().length() > 0) {
+			Intent BackToLoginIntent = new Intent(this,
+					TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);
-		}
-		else {
+		} else {
 			if (mode == 0) {
-				Element significantTable = doc.select("table.nb").select("tbody")
-						.first();
+				Element significantTable = doc.select("table.nb")
+						.select("tbody").first();
 
-				Iterator<Element> rows = significantTable.select("tr").iterator();
+				Iterator<Element> rows = significantTable.select("tr")
+						.iterator();
 				eventisModule = new ArrayList<Boolean>();
 				eventName = new ArrayList<String>();
 				examDate = new ArrayList<String>();
@@ -104,7 +109,16 @@ public class RegisterExams extends SimpleWebListActivity {
 						examDate.add("");
 						examSelection.add(-1);
 						registerLink.add("");
-					} else {
+					} else if (next.hasClass("level03")) {
+						// NEU
+						eventisModule.add(true);
+						eventName.add(next.select("td").get(0).text());
+						examDate.add("");
+						examSelection.add(-1);
+						registerLink.add("");
+					}
+
+					else {
 						eventisModule.add(false);
 						Elements cols = next.select("td");
 						eventName.add(cols.get(2).text());
@@ -119,55 +133,62 @@ public class RegisterExams extends SimpleWebListActivity {
 							registerLink.add("");
 						} else {
 							// Anmeldung/Abmeldung möglich
-							if (cols.get(4).select("a").text().equals("Anmelden"))
+							if (cols.get(4).select("a").text()
+									.equals("Anmelden"))
 								examSelection.add(2);
 							else
 								examSelection.add(3);
-							registerLink.add(cols.get(4).select("a").attr("href"));
+							registerLink.add(cols.get(4).select("a")
+									.attr("href"));
 						}
 
 					}
 
 					// System.out.println();
 				}
-				if(justGetimportant){
-					//TODO: Only get a selection
-					
+				if (justGetimportant) {
+					// TODO: Only get a selection
+
 				}
 				RegisterExamAdapter nextAdapter = new RegisterExamAdapter(
 						eventisModule, eventName, examDate, examSelection);
 				setListAdapter(nextAdapter);
 			} else if (mode == 1) {
 				mode = 3;
-				Element form = doc.select("form[name=registrationdetailsform]").first();
-				Elements cols = form.select("table.tb750").first().select("tr").last().select("td");
-				Iterator<Element> iterateForms = form.select("input").iterator();
+				Element form = doc.select("form[name=registrationdetailsform]")
+						.first();
+				Elements cols = form.select("table.tb750").first().select("tr")
+						.last().select("td");
+				Iterator<Element> iterateForms = form.select("input")
+						.iterator();
 				ArrayList<String> formName = new ArrayList<String>();
 				ArrayList<String> formValue = new ArrayList<String>();
 				postString = "";
-				int ct=0;
-				while(iterateForms.hasNext()){
+				int ct = 0;
+				while (iterateForms.hasNext()) {
 					Element next = iterateForms.next();
 					formName.add(next.attr("name"));
 					formValue.add(next.attr("value"));
-					if(ct>0){
-						postString+="&";
+					if (ct > 0) {
+						postString += "&";
 					}
 					ct++;
-					postString+=next.attr("name")+"="+next.attr("value");
+					postString += next.attr("name") + "=" + next.attr("value");
 				}
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setMessage("An/Abmelden zu:" + cols.get(1).text() + "\n" + cols.get(6).text())
-						.setCancelable(true)
-						.setPositiveButton("Ja",MyYesClickListener)
+				builder.setMessage(
+						"An/Abmelden zu:" + cols.get(1).text() + "\n"
+								+ cols.get(6).text()).setCancelable(true)
+						.setPositiveButton("Ja", MyYesClickListener)
 						.setNegativeButton("Nein", null);
 				AlertDialog alert = builder.create();
 				alert.show();
-			} else if (mode == 3){
-				Element form = doc.select("form[name=registrationdetailsform]").first();
+			} else if (mode == 3) {
+				Element form = doc.select("form[name=registrationdetailsform]")
+						.first();
 				String resultText = form.select("span.note").first().text();
 				Toast.makeText(this, resultText, Toast.LENGTH_LONG).show();
-				mode=0;
+				mode = 0;
 				callResultBrowser = new SimpleSecureBrowser(this);
 				RequestObject thisRequest = new RequestObject(URLStringtoCall,
 						localCookieManager, RequestObject.METHOD_GET, "");
@@ -175,19 +196,17 @@ public class RegisterExams extends SimpleWebListActivity {
 				callResultBrowser.execute(thisRequest);
 			}
 		}
-		
 
 	}
-	
+
 	DialogInterface.OnClickListener MyYesClickListener = new DialogInterface.OnClickListener() {
 
-		
-		public void onClick(DialogInterface dialog,
-				int which) {
-			SimpleSecureBrowser finalizeRegister = new SimpleSecureBrowser(RegisterExams.this);
+		public void onClick(DialogInterface dialog, int which) {
+			SimpleSecureBrowser finalizeRegister = new SimpleSecureBrowser(
+					RegisterExams.this);
 			RequestObject callstatuschange = new RequestObject(
 					TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-							+ "/scripts/mgrqcgi",localCookieManager,
+							+ "/scripts/mgrqcgi", localCookieManager,
 					RequestObject.METHOD_POST, postString);
 			finalizeRegister.execute(callstatuschange);
 
@@ -202,10 +221,11 @@ public class RegisterExams extends SimpleWebListActivity {
 				mode = 1;
 			else if (examSelection.get(position) == 3)
 				mode = 1;
-			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(this);
+			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
+					this);
 			RequestObject callstatuschange = new RequestObject(
 					TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-							+ registerLink.get(position),localCookieManager,
+							+ registerLink.get(position), localCookieManager,
 					RequestObject.METHOD_GET, "");
 			callOverviewBrowser.execute(callstatuschange);
 		}

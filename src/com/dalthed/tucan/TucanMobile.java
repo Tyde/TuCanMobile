@@ -11,7 +11,6 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
