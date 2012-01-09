@@ -218,9 +218,10 @@ public class Exams extends SimpleWebListActivity {
 
 	@SuppressWarnings("unchecked")
 	public void onPostExecute(AnswerObject result) {
+		
 		Document doc = Jsoup.parse(result.getHTML());
 		sendHTMLatBug(result.getHTML());
-		if(doc.select("span.notLoggedText").text().length()>0){
+		if(result.getHTML().length()<10 || doc.select("span.notLoggedText").text().length()>0){
 			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);

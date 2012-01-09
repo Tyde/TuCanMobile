@@ -123,7 +123,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 		public ListFragment getItem(int position) {
 			ArrayListFragment newFragment = ArrayListFragment
 					.newInstance(position);
-
+			
 			return (ListFragment) newFragment;
 		}
 
@@ -252,7 +252,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 
 		Document doc = Jsoup.parse(result.getHTML());
 		sendHTMLatBug(doc.html());
-		if (doc.select("span.notLoggedText").text().length() > 0) {
+		if (result.getHTML().length()<10 || doc.select("span.notLoggedText").text().length() > 0) {
 			Intent BackToLoginIntent = new Intent(this,
 					TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
