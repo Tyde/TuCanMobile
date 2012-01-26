@@ -8,4 +8,12 @@
     <dimen name="vv_event_title">15dip</dimen>
     <dimen name="mm_event_list">14dip</dimen>
     
+    
+    <!-- New Layout -->
+    <dimen name="main_menu_left_space">13dip</dimen>
+    <dimen name="main_menu_left_blue">11dip</dimen>
+    <dimen name="main_menu_row_height">47dip</dimen>
+    <dimen name="main_menu_row_padding_top">3dip</dimen>
+    <dimen name="main_menu_row_text_size">22dip</dimen>
+    <dimen name="main_menu_row_text_leftPadding">7dip</dimen>
 </resources>

@@ -45,61 +45,64 @@ public class MainMenu extends SimpleWebActivity {
 	private String menu_link_vv = "";
 	private String menu_link_ex = "";
 	private String menu_link_msg = "";
-	
+
 	private String menu_link_month = "";
 	private String UserName = "";
-	String SessionArgument="";
-	private boolean noeventstoday=false;
+	String SessionArgument = "";
+	private boolean noeventstoday = false;
 	private String[] today_event_links;
 	public GoogleAnalyticsTracker mAnalyticsTracker;
 
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
 		mAnalyticsTracker = GoogleAnalyticsTracker.getInstance();
 		mAnalyticsTracker.startNewSession("UA-2729322-5", this);
-		BugSenseHandler.setup(this,"ed5c1682");
+		BugSenseHandler.setup(this, "ed5c1682");
 		// Webhandling Start
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		String lastCalledURLString = getIntent().getExtras().getString("URL");
 		String source = getIntent().getExtras().getString("source");
-		//Log.i(LOG_TAG,"Qsource);
+		// Log.i(LOG_TAG,"Qsource);
 		URL lastCalledURL;
-		if(source==null || source.equals("")){
+		if (source == null || source.equals("")) {
 			try {
 				lastCalledURL = new URL(lastCalledURLString);
 				localCookieManager = new CookieManager();
 				localCookieManager.generateManagerfromHTTPString(
 						lastCalledURL.getHost(), CookieHTTPString);
-				callResultBrowser = new SimpleSecureBrowser(
-						this);
-				RequestObject thisRequest = new RequestObject(lastCalledURLString,
-						localCookieManager, RequestObject.METHOD_GET, "");
+				callResultBrowser = new SimpleSecureBrowser(this);
+				RequestObject thisRequest = new RequestObject(
+						lastCalledURLString, localCookieManager,
+						RequestObject.METHOD_GET, "");
 
 				callResultBrowser.execute(thisRequest);
 			} catch (MalformedURLException e) {
 				Log.e(LOG_TAG, e.getMessage());
 			}
-		}
-		else {
+		} else {
 			localCookieManager = new CookieManager();
 			localCookieManager.generateManagerfromHTTPString(
 					TucanMobile.TUCAN_HOST, CookieHTTPString);
-			onPostExecute(new AnswerObject(source, "", localCookieManager, lastCalledURLString));
+			onPostExecute(new AnswerObject(source, "", localCookieManager,
+					lastCalledURLString));
 		}
-		
+
 		// Webhandling End
 
 		ListView MenuList = (ListView) findViewById(R.id.mm_menuList);
 
-		MenuList.setAdapter(new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, getResources()
-						.getStringArray(R.array.mainmenu_options)));
+		MenuList.setDivider(null);
+		
+		MenuList.setAdapter(new ArrayAdapter<String>(this, R.layout.menu_row,
+				R.id.main_menu_row_textField, getResources().getStringArray(
+						R.array.mainmenu_options)));
+
 		MenuList.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView arg0, View arg1, int position,
+			public void onItemClick(AdapterView arg0, View view, int position,
 					long arg3) {
+				view.findViewById(R.id.main_menu_row_left_blue_strip).setBackgroundColor(R.color.tucan_green);
 				switch (position) {
 				case 0:
 					Intent StartVVIntent = new Intent(MainMenu.this, VV.class);
@@ -154,6 +157,7 @@ public class MainMenu extends SimpleWebActivity {
 		});
 
 	}
+
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
@@ -190,42 +194,40 @@ public class MainMenu extends SimpleWebActivity {
 	public void onPostExecute(AnswerObject result) {
 		// HTML auslesen
 		sendHTMLatBug(result.getHTML());
-		
-	
-		
+
 		Document doc = Jsoup.parse(result.getHTML());
-		if(doc.select("span.notLoggedText").text().length()>0 || result.getHTML().equals("")){
-			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
+		if (doc.select("span.notLoggedText").text().length() > 0
+				|| result.getHTML().equals("")) {
+			Intent BackToLoginIntent = new Intent(this,
+					TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);
-		}
-		else {
-			String lcURLString=result.getLastCalledURL();
+		} else {
+			String lcURLString = result.getLastCalledURL();
 			try {
-				URL lcURL = new URL (lcURLString);
-				SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1].split(",")[0];
+				URL lcURL = new URL(lcURLString);
+				SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1]
+						.split(",")[0];
 			} catch (MalformedURLException e) {
-			
+
 				e.printStackTrace();
 			}
-			
+
 			// Tabelle mit den Terminen finden und Durchlaufen
 			Element EventTable = doc.select("table.nb").first();
-			
+
 			String[] Events;
 			String[] Times;
-			
-			if(EventTable==null){
+
+			if (EventTable == null) {
 				Events = new String[1];
 				Times = new String[1];
 				Events[0] = "Keine Heutigen Veranstaltungen";
 				Times[0] = "";
 				noeventstoday = true;
-			}				
-			else  {
-				
-				
-				if (EventTable.select("tr.tbdata").first().select("td").size()==5) {
+			} else {
+
+				if (EventTable.select("tr.tbdata").first().select("td").size() == 5) {
 					Events = new String[1];
 					Times = new String[1];
 					Events[0] = "Keine Heutigen Veranstaltungen";
@@ -241,22 +243,24 @@ public class MainMenu extends SimpleWebActivity {
 					int i = 0;
 					while (RowIt.hasNext()) {
 						Element currentElement = (Element) RowIt.next();
-						String EventString = currentElement.select("td[headers=Name]")
-								.select("a").first().text();
-						today_event_links[i]=currentElement.select("td[headers=Name]")
-								.select("a").first().attr("href");
-						String EventTimeString = currentElement
-								.select("td").get(2).select("a").first().text();
-						String EventTimeEndString = currentElement
-								.select("td").get(3).select("a").first().text();
+						String EventString = currentElement
+								.select("td[headers=Name]").select("a").first()
+								.text();
+						today_event_links[i] = currentElement
+								.select("td[headers=Name]").select("a").first()
+								.attr("href");
+						String EventTimeString = currentElement.select("td")
+								.get(2).select("a").first().text();
+						String EventTimeEndString = currentElement.select("td")
+								.get(3).select("a").first().text();
 						Times[i] = EventTimeString + "-" + EventTimeEndString;
 						Events[i] = EventString;
 						i++;
 					}
-					
+
 				}
 			}
-			
+
 			UserName = doc.select("span#loginDataName").text().split(":")[1];
 			TextView usertextview = (TextView) findViewById(R.id.mm_username);
 			URL lcURL = null;
@@ -266,7 +270,7 @@ public class MainMenu extends SimpleWebActivity {
 				Log.e(LOG_TAG, "Malformed URL");
 			}
 			Elements LinkstoOuterWorld = doc.select("div.tb");
-			Element ArchivLink=LinkstoOuterWorld.get(1).select("a").first();
+			Element ArchivLink = LinkstoOuterWorld.get(1).select("a").first();
 
 			menu_link_vv = lcURL.getProtocol() + "://" + lcURL.getHost()
 					+ doc.select("li#link000326").select("a").attr("href");
@@ -274,25 +278,26 @@ public class MainMenu extends SimpleWebActivity {
 					+ doc.select("li#link000280").select("a").attr("href");
 			menu_link_msg = lcURL.getProtocol() + "://" + lcURL.getHost()
 					+ ArchivLink.attr("href");
-			/*menu_link_export = lcURL.getProtocol() + "://" + lcURL.getHost()
-					+ doc.select("li#link000272").select("a").attr("href");*/
+			/*
+			 * menu_link_export = lcURL.getProtocol() + "://" + lcURL.getHost()
+			 * + doc.select("li#link000272").select("a").attr("href");
+			 */
 			menu_link_month = lcURL.getProtocol() + "://" + lcURL.getHost()
 					+ doc.select("li#link000271").select("a").attr("href");
-			if(doc.select("li#link000326").select("a").attr("href").equals("")) {
+			if (doc.select("li#link000326").select("a").attr("href").equals("")) {
 				Dialog wronglanguageDialog = new AlertDialog.Builder(this)
-				.setTitle("")
-				.setMessage(R.string.general_not_supported_lang)
-				.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-					
-					public void onClick(DialogInterface dialog, int which) {
-						finish();
-					}
-				})
-				.create();
+						.setTitle("")
+						.setMessage(R.string.general_not_supported_lang)
+						.setPositiveButton("Okay",
+								new DialogInterface.OnClickListener() {
+
+									public void onClick(DialogInterface dialog,
+											int which) {
+										finish();
+									}
+								}).create();
 				wronglanguageDialog.show();
-				
-				
-				
+
 			}
 			usertextview.setText(UserName);
 			ListView EventList = (ListView) findViewById(R.id.mm_eventList);
@@ -301,44 +306,43 @@ public class MainMenu extends SimpleWebActivity {
 
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
-					if(noeventstoday==false){
-						Intent StartSingleEventIntent = new Intent(MainMenu.this, FragmentSingleEvent.class);
-						StartSingleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+today_event_links[position]);
-						StartSingleEventIntent.putExtra("Cookie", localCookieManager
-								.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-						//StartSingleEventIntent.putExtra("UserName", UserName);
+					if (noeventstoday == false) {
+						Intent StartSingleEventIntent = new Intent(
+								MainMenu.this, FragmentSingleEvent.class);
+						StartSingleEventIntent.putExtra("URL",
+								TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+										+ today_event_links[position]);
+						StartSingleEventIntent.putExtra(
+								"Cookie",
+								localCookieManager
+										.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+						// StartSingleEventIntent.putExtra("UserName",
+						// UserName);
 						startActivity(StartSingleEventIntent);
-					}										
+					}
 				}
 			});
-			
+
 		}
-		
 
 	}
-	
+
 	/*
-	public class LocationRequester extends AsyncTask<RequestObject, Integer, AnswerObject>{
-		
-		ProgressBar progressView;
-		@Override
-		protected void onPreExecute() {
-			progressView = (ProgressBar) findViewById(R.id.mm_progress);
-			progressView.setVisibility(View.VISIBLE);
-			super.onPreExecute();
-		}
-
-		@Override
-		protected void onPostExecute(AnswerObject result) {
-			progressView.setVisibility(View.GONE);
-			super.onPostExecute(result);
-		}
-
-		@Override
-		protected AnswerObject doInBackground(RequestObject... params) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-	}*/
+	 * public class LocationRequester extends AsyncTask<RequestObject, Integer,
+	 * AnswerObject>{
+	 * 
+	 * ProgressBar progressView;
+	 * 
+	 * @Override protected void onPreExecute() { progressView = (ProgressBar)
+	 * findViewById(R.id.mm_progress); progressView.setVisibility(View.VISIBLE);
+	 * super.onPreExecute(); }
+	 * 
+	 * @Override protected void onPostExecute(AnswerObject result) {
+	 * progressView.setVisibility(View.GONE); super.onPostExecute(result); }
+	 * 
+	 * @Override protected AnswerObject doInBackground(RequestObject... params)
+	 * { // TODO Auto-generated method stub return null; }
+	 * 
+	 * }
+	 */
 }

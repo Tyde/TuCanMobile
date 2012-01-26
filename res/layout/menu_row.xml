@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/main_menu_row_height"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/main_menu_row_padding_top" >
+
+     
+
+    <!-- <android.widget.Space
+        android:id="@+id/main_menu_row_left_space"
+        android:layout_width="@dimen/main_menu_left_space"
+        android:layout_height="fill_parent" /> -->
+     
+     <FrameLayout
+        android:id="@+id/main_menu_row_left_space"
+        android:layout_width="@dimen/main_menu_left_space"
+        android:layout_height="fill_parent" 
+         >
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/main_menu_row_left_blue_strip"
+        android:layout_width="@dimen/main_menu_left_blue"
+        android:layout_height="fill_parent" 
+        android:background="@drawable/main_menu_selector" >
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/main_menu_row_text_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/menu_bg" >
+
+        <TextView
+            android:id="@+id/main_menu_row_textField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/main_menu_row_text_size"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/main_menu_row_text_leftPadding"
+             />
+
+    </RelativeLayout>
+
+</LinearLayout>
