@@ -39,7 +39,7 @@ public class VV_Events extends SimpleWebListActivity {
 	private String[] Eventlink;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+	
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.vv_events);
 		BugSenseHandler.setup(this,"ed5c1682");
@@ -59,7 +59,7 @@ public class VV_Events extends SimpleWebListActivity {
 
 			callResultBrowser.execute(thisRequest);
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+		
 			Log.e(LOG_TAG, e.getMessage());
 		}
 	}

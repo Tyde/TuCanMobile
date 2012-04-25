@@ -32,7 +32,7 @@ public class ApplyEvent extends SimpleWebListActivity {
 
 	@Override
 	public void onPostExecute(AnswerObject result) {
-		// TODO Auto-generated method stub
+
 
 	}
 

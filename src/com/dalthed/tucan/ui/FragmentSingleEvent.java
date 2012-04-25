@@ -153,9 +153,9 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 			adapterList.add(adapter);
 		}
 
-		@Override
-		public void finishUpdate(View container) {
-			super.finishUpdate(container);
+		
+		public void setPrimaryItem(ViewGroup container, int position,Object object){
+			super.setPrimaryItem(container, position, object);
 			/*
 			 * Liste wird eingebaut, wenn geupdated wird und die Liste noch leer
 			 * ist
@@ -171,7 +171,6 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 				}
 
 			}
-
 		}
 
 		@Override

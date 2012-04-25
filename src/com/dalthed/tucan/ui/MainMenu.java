@@ -14,7 +14,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -24,7 +23,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +34,6 @@ import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
-import com.google.android.apps.analytics.GoogleAnalyticsTracker;
 
 public class MainMenu extends SimpleWebActivity {
 
@@ -51,14 +48,13 @@ public class MainMenu extends SimpleWebActivity {
 	String SessionArgument = "";
 	private boolean noeventstoday = false;
 	private String[] today_event_links;
-	public GoogleAnalyticsTracker mAnalyticsTracker;
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
-		mAnalyticsTracker = GoogleAnalyticsTracker.getInstance();
-		mAnalyticsTracker.startNewSession("UA-2729322-5", this);
+		
 		BugSenseHandler.setup(this, "ed5c1682");
 		// Webhandling Start
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
@@ -100,7 +96,7 @@ public class MainMenu extends SimpleWebActivity {
 						R.array.mainmenu_options)));
 
 		MenuList.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView arg0, View view, int position,
+			public void onItemClick(AdapterView<?> arg0, View view, int position,
 					long arg3) {
 				view.findViewById(R.id.main_menu_row_left_blue_strip).setBackgroundColor(R.color.tucan_green);
 				switch (position) {
@@ -341,7 +337,7 @@ public class MainMenu extends SimpleWebActivity {
 	 * progressView.setVisibility(View.GONE); super.onPostExecute(result); }
 	 * 
 	 * @Override protected AnswerObject doInBackground(RequestObject... params)
-	 * { // TODO Auto-generated method stub return null; }
+	 * {
 	 * 
 	 * }
 	 */

@@ -12,9 +12,11 @@ import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
-import com.google.android.apps.analytics.GoogleAnalyticsTracker;
-
 //@ReportsCrashes(formKey = "dGxJeFNVZk5YQXRmaXV6WVZfVHYzdWc6MQ")
+/**
+ * @author Tyde
+ *
+ */
 @ReportsCrashes(formKey = "", // will not be used
 formUri = "http://daniel-thiem.de/ACRA/insertsql.php")
 //@ReportsCrashes(formUri = "http://www.bugsense.com/api/acra?api_key=f08ba688", formKey="")
@@ -25,9 +27,10 @@ public class TucanMobile extends Application {
 	public final static String EXTRA_COOKIE = "Cookie";
 	public final static String EXTRA_URL = "URL";
 	public final static String EXTRA_USERNAME = "UserName";
-	public GoogleAnalyticsTracker mAnalyticsTracker;
+	
 	public final static Boolean CRASH = false;
 	public final static Boolean DEBUG = true;
+	
 
 	@Override
 	public void onCreate() {

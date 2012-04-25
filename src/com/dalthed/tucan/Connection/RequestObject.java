@@ -21,7 +21,7 @@ public class RequestObject {
 			this.RequestURL=new URL(RequestString);
 			//Log.i(LOG_TAG,"Hier haste die URL:"+RequestString);
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+			
 			Log.e(LOG_TAG,"Malfomed URL");
 		}
 		this.RequestCookies=RequestCookiemanager;

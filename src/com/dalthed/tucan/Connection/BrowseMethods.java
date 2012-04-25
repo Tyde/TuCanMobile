@@ -26,6 +26,7 @@ public class BrowseMethods {
 	public InputStreamReader isr;
 	private static final String LOG_TAG = "TuCanMobile";
 	public boolean HTTPS = true;
+	private static final int MAX_BUFFER_SIZE = 1024;
 	/**
 	 * setImportantHeaders setzt Header für den HTTP-Request
 	 * @param RequestMethod RequestObject.METHOD_POST oder RequestObject.METHOD_GET
@@ -123,9 +124,13 @@ public class BrowseMethods {
 				Log.i(LOG_TAG, contentlength + "...");
 				StringBuilder inputBuilder = new StringBuilder();
 				String inputLine;
-
+				int read =0;
 				while ((inputLine = bin.readLine()) != null) {
+
 					inputBuilder.append(inputLine);
+					
+					read += inputLine.getBytes("ISO8859_1").length+2;
+				
 				}
 				in.close();
 				alllines = inputBuilder.toString();

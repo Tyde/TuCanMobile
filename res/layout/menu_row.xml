@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="@dimen/main_menu_row_height"
     android:orientation="horizontal"
-    android:paddingTop="@dimen/main_menu_row_padding_top" >
+    android:paddingTop="@dimen/main_menu_row_padding_top"
+    android:background="#FFFFFF" >
 
      
 

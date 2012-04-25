@@ -38,21 +38,20 @@ public class Exams extends SimpleWebListActivity {
 	private CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
 	private int mode = 0;
-	
-	private ArrayList<String> examLinks,examNames,examNameBuffer;
+
+	private ArrayList<String> examLinks, examNames, examNameBuffer;
 	private ArrayAdapter<String> ListAdapter;
-	private String  URLStringtoCall;
+	private String URLStringtoCall;
 	private ArrayList<String> SemesterOptionName;
 	private ArrayList<String> SemesterOptionValue;
-	private int SemesterOptionSelected=0;
-	
+	private int SemesterOptionSelected = 0;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.exams);
-		BugSenseHandler.setup(this,"ed5c1682");
-		
-		
+		BugSenseHandler.setup(this, "ed5c1682");
+
 		// Webhandling Start
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		URLStringtoCall = getIntent().getExtras().getString("URL");
@@ -64,8 +63,7 @@ public class Exams extends SimpleWebListActivity {
 			localCookieManager = new CookieManager();
 			localCookieManager.generateManagerfromHTTPString(
 					URLtoCall.getHost(), CookieHTTPString);
-			callResultBrowser = new SimpleSecureBrowser(
-					this);
+			callResultBrowser = new SimpleSecureBrowser(this);
 			RequestObject thisRequest = new RequestObject(URLStringtoCall,
 					localCookieManager, RequestObject.METHOD_GET, "");
 
@@ -75,161 +73,186 @@ public class Exams extends SimpleWebListActivity {
 		}
 		// Webhandling End
 	}
+
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		setContentView(R.layout.exams);
 	}
+
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		if(mode==0){
-			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(this);
+		if (mode == 0) {
+			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
+					this);
 			RequestObject thisRequest;
 			switch (position) {
 			case 0:
-				mode=10;
-				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+examLinks.get(0),
+				mode = 10;
+				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT
+						+ TucanMobile.TUCAN_HOST + examLinks.get(0),
 						localCookieManager, RequestObject.METHOD_GET, "");
 				callOverviewBrowser.execute(thisRequest);
 				break;
 			case 1:
-				mode=1;
-				Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
-			
-				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+examLinks.get(1),
+				mode = 1;
+				Log.i(LOG_TAG, "Exam Names hat: " + examNames.size()
+						+ " Elemente");
+
+				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT
+						+ TucanMobile.TUCAN_HOST + examLinks.get(1),
 						localCookieManager, RequestObject.METHOD_GET, "");
 				callOverviewBrowser.execute(thisRequest);
-				Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
+				Log.i(LOG_TAG, "Exam Names hat: " + examNames.size()
+						+ " Elemente");
 				break;
 			case 2:
-				mode=2;
-				Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
-				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+examLinks.get(2),
+				mode = 2;
+				Log.i(LOG_TAG, "Exam Names hat: " + examNames.size()
+						+ " Elemente");
+				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT
+						+ TucanMobile.TUCAN_HOST + examLinks.get(2),
 						localCookieManager, RequestObject.METHOD_GET, "");
 				callOverviewBrowser.execute(thisRequest);
-				Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
+				Log.i(LOG_TAG, "Exam Names hat: " + examNames.size()
+						+ " Elemente");
 				break;
 			case 3:
-				mode=3;
-				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+TucanMobile.TUCAN_HOST+examLinks.get(3),
+				mode = 3;
+				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT
+						+ TucanMobile.TUCAN_HOST + examLinks.get(3),
 						localCookieManager, RequestObject.METHOD_GET, "");
 				callOverviewBrowser.execute(thisRequest);
 				break;
 			case 4:
 				Intent callRegisterExams = new Intent(this, RegisterExams.class);
 				callRegisterExams.putExtra("URL", examLinks.get(4));
-				callRegisterExams.putExtra("Cookie", localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+				callRegisterExams.putExtra("Cookie", localCookieManager
+						.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 				callRegisterExams.putExtra("UserName", UserName);
 				startActivity(callRegisterExams);
-				//TODO: Call RegisterEvents
+				// TODO: Call RegisterEvents
 			default:
 				break;
 			}
 		}
-		
-		
+
 	}
-	public class OnItemSelectedListener implements android.widget.AdapterView.OnItemSelectedListener {
+
+	public class OnItemSelectedListener implements
+			android.widget.AdapterView.OnItemSelectedListener {
 		int hitcount = 0;
+
 		public void onItemSelected(AdapterView<?> parent, View view,
 				int position, long id) {
-			if(hitcount==0){
-				
-			}
-			else {
-				
-				if(mode==1){
-					RequestObject thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+
-							TucanMobile.TUCAN_HOST+examLinks.get(1)+"-N"+SemesterOptionValue.get(position),
+			if (hitcount == 0) {
+
+			} else {
+
+				if (mode == 1) {
+					RequestObject thisRequest = new RequestObject(
+							TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+									+ examLinks.get(1) + "-N"
+									+ SemesterOptionValue.get(position),
 							localCookieManager, RequestObject.METHOD_GET, "");
-					SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(Exams.this);
+					SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
+							Exams.this);
+					callOverviewBrowser.execute(thisRequest);
+				} else if (mode == 2) {
+					RequestObject thisRequest = new RequestObject(
+							TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+									+ examLinks.get(2) + "-N"
+									+ SemesterOptionValue.get(position),
+							localCookieManager, RequestObject.METHOD_GET, "");
+					SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
+							Exams.this);
+					callOverviewBrowser.execute(thisRequest);
+				} else if (mode == 10) {
+					RequestObject thisRequest = new RequestObject(
+							TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+									+ examLinks.get(0) + "-N"
+									+ SemesterOptionValue.get(position),
+							localCookieManager, RequestObject.METHOD_GET, "");
+					SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
+							Exams.this);
 					callOverviewBrowser.execute(thisRequest);
 				}
-				else if(mode==2){
-					RequestObject thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+
-							TucanMobile.TUCAN_HOST+examLinks.get(2)+"-N"+SemesterOptionValue.get(position),
-							localCookieManager, RequestObject.METHOD_GET, "");
-					SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(Exams.this);
-					callOverviewBrowser.execute(thisRequest);
-				}
-				else if(mode==10){
-					RequestObject thisRequest = new RequestObject(TucanMobile.TUCAN_PROT+
-							TucanMobile.TUCAN_HOST+examLinks.get(0)+"-N"+SemesterOptionValue.get(position),
-							localCookieManager, RequestObject.METHOD_GET, "");
-					SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(Exams.this);
-					callOverviewBrowser.execute(thisRequest);
-				}
-				
+
 			}
 			hitcount++;
-			
-			
-			
+
 		}
 
 		public void onNothingSelected(AdapterView<?> parent) {
-			//Passiert einfach mal nicht!!
-			
+			// Passiert einfach mal nicht!!
+
 		}
-		
+
 	}
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0 && mode!=0) {
-			
-			examNameBuffer=(ArrayList<String>) examNames.clone();
-			ListAdapter = new ArrayAdapter<String>(this,
-					android.R.layout.simple_list_item_1, examNameBuffer);
-			//Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0
+				&& mode != 0) {
+
+			examNameBuffer = (ArrayList<String>) examNames.clone();
+			ListAdapter = new ArrayAdapter<String>(this, R.layout.menu_row,
+					R.id.main_menu_row_textField, examNameBuffer);
+			// Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
 			setListAdapter(ListAdapter);
-			mode=0;			
+			mode = 0;
 			Spinner semesterSpinner = (Spinner) findViewById(R.id.exam_semester_spinner);
 			semesterSpinner.setVisibility(View.GONE);
 			return true;
-		}
-		else {
+		} else {
 			return super.onKeyDown(keyCode, event);
 		}
-		
-	}
-	
-	class ModuleAdapter extends ArrayAdapter<String>{
 
-		ArrayList<String> resultGrade,resultDate;
-		public ModuleAdapter(ArrayList<String> resultName,ArrayList<String> resultGrade,ArrayList<String> resultDate) {
-			super(Exams.this,R.layout.row_vv_events,R.id.row_vv_veranst,resultName);
-			this.resultDate=resultDate;
-			this.resultGrade=resultGrade;
+	}
+
+	class ModuleAdapter extends ArrayAdapter<String> {
+
+		ArrayList<String> resultGrade, resultDate;
+
+		public ModuleAdapter(ArrayList<String> resultName,
+				ArrayList<String> resultGrade, ArrayList<String> resultDate) {
+			super(Exams.this, R.layout.row_vv_events, R.id.row_vv_veranst,
+					resultName);
+			this.resultDate = resultDate;
+			this.resultGrade = resultGrade;
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View row = super.getView(position, convertView, parent);
-			TextView TypeTextView = (TextView) row.findViewById(R.id.row_vv_type);
-			TextView DozentTextView = (TextView) row.findViewById(R.id.row_vv_dozent);
-			
+			TextView TypeTextView = (TextView) row
+					.findViewById(R.id.row_vv_type);
+			TextView DozentTextView = (TextView) row
+					.findViewById(R.id.row_vv_dozent);
+
 			TypeTextView.setText(resultGrade.get(position));
 			DozentTextView.setText(resultDate.get(position));
-			
+
 			return row;
 		}
-		
+
 	}
 
 	@SuppressWarnings("unchecked")
 	public void onPostExecute(AnswerObject result) {
-		
+
 		Document doc = Jsoup.parse(result.getHTML());
 		sendHTMLatBug(result.getHTML());
-		if(result.getHTML().length()<10 || doc.select("span.notLoggedText").text().length()>0){
-			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
+		if (result.getHTML().length() < 10
+				|| doc.select("span.notLoggedText").text().length() > 0) {
+			Intent BackToLoginIntent = new Intent(this,
+					TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);
-		}
-		else {
-			if(mode==0){
+		} else {
+			if (mode == 0) {
 				Elements links = doc.select("li#link000280").select("li");
-				
+
 				Iterator<Element> linkIt = links.iterator();
 				examLinks = new ArrayList<String>();
 				examNames = new ArrayList<String>();
@@ -253,131 +276,147 @@ public class Exams extends SimpleWebListActivity {
 							examNames.add(name);
 						}
 					}
-					
+
 					// Log.i(LOG_TAG,next.toString()+"Hakki");
 				}
-				String SessionArgument = result.getLastCalledURL().split("ARGUMENTS=")[1].split(",")[0];
-				examLinks.add("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=EXAMREGISTRATION&ARGUMENTS="+SessionArgument+",-N000318,");
+				String SessionArgument = result.getLastCalledURL().split(
+						"ARGUMENTS=")[1].split(",")[0];
+				examLinks
+						.add("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=EXAMREGISTRATION&ARGUMENTS="
+								+ SessionArgument + ",-N000318,");
 				examNames.add("Anmeldung zu Prüfungen");
-				examNameBuffer=(ArrayList<String>) examNames.clone();
-				ListAdapter = new ArrayAdapter<String>(this,
-						android.R.layout.simple_list_item_1, examNameBuffer);
+				examNameBuffer = (ArrayList<String>) examNames.clone();
+				ListAdapter = new ArrayAdapter<String>(this, R.layout.menu_row,
+						R.id.main_menu_row_textField, examNameBuffer);
+
 				setListAdapter(ListAdapter);
-			}
-			else if(mode==10 || mode==1 || mode==2){
-				
-				if(mode==10){
+			} else if (mode == 10 || mode == 1 || mode == 2) {
+
+				if (mode == 10) {
 					ArrayList<String> ExamName = new ArrayList<String>();
 					ArrayList<String> ExamDate = new ArrayList<String>();
 					ArrayList<String> ExamState = new ArrayList<String>();
 					Element ModuleOverviewTable = doc.select("div.tb").first();
-					Iterator<Element> ExamRowIterator = ModuleOverviewTable.select("tbody").first().select("tr").iterator();
-					while(ExamRowIterator.hasNext()){
+					Iterator<Element> ExamRowIterator = ModuleOverviewTable
+							.select("tbody").first().select("tr").iterator();
+					while (ExamRowIterator.hasNext()) {
 						Element next = ExamRowIterator.next();
 						Elements ExamCols = next.select("td");
-						if(ExamCols.size()>1){
+						if (ExamCols.size() > 1) {
 							ExamName.add(ExamCols.get(1).text());
 							ExamDate.add(ExamCols.get(3).text());
 							ExamState.add(ExamCols.get(4).text());
 						}
 					}
 					ListAdapter.clear();
-					ListAdapter = new ModuleAdapter(ExamName, ExamDate, ExamState);
+					ListAdapter = new ModuleAdapter(ExamName, ExamDate,
+							ExamState);
 					setListAdapter(ListAdapter);
-				}
-				else if(mode==1){
+				} else if (mode == 1) {
 					ArrayList<String> ResultName = new ArrayList<String>();
 					ArrayList<String> ResultGrade = new ArrayList<String>();
 					ArrayList<String> ResultCredits = new ArrayList<String>();
 					Element ModuleOverviewTable = doc.select("div.tb").first();
-					Iterator<Element> ExamResultRowIterator = ModuleOverviewTable.select("tbody").first().select("tr").iterator();
-					while(ExamResultRowIterator.hasNext()){
+					Iterator<Element> ExamResultRowIterator = ModuleOverviewTable
+							.select("tbody").first().select("tr").iterator();
+					while (ExamResultRowIterator.hasNext()) {
 						Element next = ExamResultRowIterator.next();
 						Elements ExamResultCols = next.select("td");
-						Log.i(LOG_TAG,"Größe Cols:"+ExamResultCols.size());
-						if(ExamResultCols.size()>1){
+						Log.i(LOG_TAG, "Größe Cols:" + ExamResultCols.size());
+						if (ExamResultCols.size() > 1) {
 							ResultName.add(ExamResultCols.get(1).text());
 							ResultCredits.add(ExamResultCols.get(4).text());
 							ResultGrade.add(ExamResultCols.get(2).text());
 						}
-						
+
 					}
 					ListAdapter.clear();
-					ListAdapter = new ModuleAdapter(ResultName, ResultGrade, ResultCredits);
+					ListAdapter = new ModuleAdapter(ResultName, ResultGrade,
+							ResultCredits);
 					setListAdapter(ListAdapter);
-					Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
-				}
-				else if(mode==2){
+					Log.i(LOG_TAG, "Exam Names hat: " + examNames.size()
+							+ " Elemente");
+				} else if (mode == 2) {
 					ArrayList<String> ResultName = new ArrayList<String>();
 					ArrayList<String> ResultGrade = new ArrayList<String>();
 					ArrayList<String> ResultDate = new ArrayList<String>();
-					Iterator<Element> ExamResultRowIterator = doc.select("tr.tbdata").iterator();
-					while(ExamResultRowIterator.hasNext()){
+					Iterator<Element> ExamResultRowIterator = doc.select(
+							"tr.tbdata").iterator();
+					while (ExamResultRowIterator.hasNext()) {
 						Element next = ExamResultRowIterator.next();
 						Elements ExamResultCols = next.select("td");
-						Log.i(LOG_TAG,"Größe Cols:"+ExamResultCols.size());
-						ResultName.add(Jsoup.parse(ExamResultCols.get(0).html().split("<br />")[0]).text());
+						Log.i(LOG_TAG, "Größe Cols:" + ExamResultCols.size());
+						ResultName.add(Jsoup
+								.parse(ExamResultCols.get(0).html()
+										.split("<br />")[0]).text());
 						ResultDate.add(ExamResultCols.get(1).text());
-						ResultGrade.add(ExamResultCols.get(2).text() + "  "+ ExamResultCols.get(3).text());
+						ResultGrade.add(ExamResultCols.get(2).text() + "  "
+								+ ExamResultCols.get(3).text());
 					}
 					ListAdapter.clear();
-					ListAdapter = new ModuleAdapter(ResultName, ResultGrade, ResultDate);
+					ListAdapter = new ModuleAdapter(ResultName, ResultGrade,
+							ResultDate);
 					setListAdapter(ListAdapter);
-					
+
 				}
-				
-				
+
 				SemesterOptionName = new ArrayList<String>();
 				SemesterOptionValue = new ArrayList<String>();
-				
-				Iterator<Element> SemesterOptionIterator = doc.select("option").iterator();
-				int i=0;
-				while(SemesterOptionIterator.hasNext()){
+
+				Iterator<Element> SemesterOptionIterator = doc.select("option")
+						.iterator();
+				int i = 0;
+				while (SemesterOptionIterator.hasNext()) {
 					Element next = SemesterOptionIterator.next();
 					SemesterOptionName.add(next.text());
 					SemesterOptionValue.add(next.attr("value"));
-					if(next.hasAttr("selected")) {
-						Log.i(LOG_TAG,next.text() + " is selected, has val "+i);
-						SemesterOptionSelected=i;
+					if (next.hasAttr("selected")) {
+						Log.i(LOG_TAG, next.text() + " is selected, has val "
+								+ i);
+						SemesterOptionSelected = i;
 					}
 					i++;
 				}
-				ArrayAdapter<String> SpinnerAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, SemesterOptionName);
-				
-				
+				ArrayAdapter<String> SpinnerAdapter = new ArrayAdapter<String>(
+						this, android.R.layout.simple_spinner_item,
+						SemesterOptionName);
+
 				Spinner semesterSpinner = (Spinner) findViewById(R.id.exam_semester_spinner);
 				semesterSpinner.setVisibility(View.VISIBLE);
 				semesterSpinner.setAdapter(SpinnerAdapter);
 				semesterSpinner.setSelection(SemesterOptionSelected);
-				semesterSpinner.setOnItemSelectedListener(new OnItemSelectedListener());
-				Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
-				
-			}
-			else if(mode==3){
+				semesterSpinner
+						.setOnItemSelectedListener(new OnItemSelectedListener());
+				Log.i(LOG_TAG, "Exam Names hat: " + examNames.size()
+						+ " Elemente");
+
+			} else if (mode == 3) {
 				ArrayList<String> ResultName = new ArrayList<String>();
 				ArrayList<String> ResultGrade = new ArrayList<String>();
 				ArrayList<String> ResultCredits = new ArrayList<String>();
 				ArrayList<String> ResultCountedCredits = new ArrayList<String>();
 				Element ModuleOverviewTable = doc.select("div.tb").first();
-				Iterator<Element> ExamResultRowIterator = ModuleOverviewTable.select("tbody").first().select("tr").iterator();
-				while(ExamResultRowIterator.hasNext()){
+				Iterator<Element> ExamResultRowIterator = ModuleOverviewTable
+						.select("tbody").first().select("tr").iterator();
+				while (ExamResultRowIterator.hasNext()) {
 					Element next = ExamResultRowIterator.next();
 					Elements ExamResultCols = next.select("td");
-					if(ExamResultCols.size()>1){
+					if (ExamResultCols.size() > 1) {
 						ResultName.add(ExamResultCols.get(1).text());
 						ResultCountedCredits.add(ExamResultCols.get(3).text());
 						ResultCredits.add(ExamResultCols.get(4).text());
 						ResultGrade.add(ExamResultCols.get(5).text());
 					}
-					
+
 				}
-				ListAdapter = new AccomplishmentAdapter(ResultName, ResultGrade, ResultCredits, ResultCountedCredits);
+				ListAdapter = new AccomplishmentAdapter(ResultName,
+						ResultGrade, ResultCredits, ResultCountedCredits);
 				setListAdapter(ListAdapter);
 			}
 		}
-		
-		
+
 	}
+
 	class AccomplishmentAdapter extends ArrayAdapter<String> {
 		ArrayList<String> resultName, resultGrade, resultCredits,
 				resultCountedCredits;
@@ -396,7 +435,7 @@ public class Exams extends SimpleWebListActivity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View row = super.getView(position, convertView, parent);
-			
+
 			TextView AppTimeView = (TextView) row
 					.findViewById(R.id.singleevent_row_date_time);
 			TextView AppNumberView = (TextView) row
@@ -405,7 +444,7 @@ public class Exams extends SimpleWebListActivity {
 					.findViewById(R.id.singleevent_row_date_room);
 			TextView AppInstructorView = (TextView) row
 					.findViewById(R.id.singleevent_row_date_instructor);
-			
+
 			AppTimeView.setText(this.resultCountedCredits.get(position));
 			AppNumberView.setText("");
 			AppRoomView.setText(this.resultName.get(position));

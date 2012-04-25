@@ -72,6 +72,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
         }
         usrnameField 	= 	(EditText) findViewById(R.id.login_usrname);
 		pwdField		=	(EditText) findViewById(R.id.login_pw);
+		Log.i(LOG_TAG, usrnameField +  "ist" + tuid + R.id.login_usrname);
 		usrnameField.setText(tuid);
 		pwdField.setText(pw);
         //https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=MLSSTART&ARGUMENTS=
@@ -241,7 +242,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 					URL lcURL = new URL (lcURLString);
 					SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1].split(",")[0];
 				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
+				
 					e.printStackTrace();
 				}
     			User=Jsoup.parse(UserSpan.html().split(":")[1]).text();
@@ -283,7 +284,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 					URL lcURL = new URL (lcURLString);
 					SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1].split(",")[0];
 				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
     			
