@@ -29,7 +29,7 @@ import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 
-import dalvik.system.AllocationLimitError;
+
 
 public class VV extends SimpleWebListActivity {
 
