@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.acra.ACRA;
+import org.acra.ErrorReporter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -101,6 +103,8 @@ public class RegisterExams extends SimpleWebListActivity {
 				registerLink = new ArrayList<String>();
 				examSelection = new ArrayList<Integer>();
 				while (rows.hasNext()) {
+					try {
+					
 					Element next = rows.next();
 
 					if (next.hasClass("level02")) {
@@ -143,7 +147,13 @@ public class RegisterExams extends SimpleWebListActivity {
 						}
 
 					}
-
+					
+					}
+					
+					catch(IndexOutOfBoundsException e) {
+						Log.e(LOG_TAG, "Index out of Bounds");
+						ErrorReporter.getInstance().handleSilentException(e);
+					}
 					// System.out.println();
 				}
 				if (justGetimportant) {
