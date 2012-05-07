@@ -14,12 +14,13 @@
         android:debuggable="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:name=".TucanMobile" >
+        android:name=".TucanMobile" 
+        android:theme="@style/Theme.TucanActionBar" >
         <activity
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name"
             android:name=".TuCanMobileActivity"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,7 +32,7 @@
             android:label="mainmenu"
             android:name=".ui.MainMenu"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            >
         </activity>
 
         <!-- Vorlesungsverzeichnis -->
@@ -39,13 +40,13 @@
             android:configChanges="keyboardHidden|orientation"
             android:label="Vorlesungsverzeichnis"
             android:name=".ui.VV"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+           >
         </activity>
         <activity
             android:configChanges="keyboardHidden|orientation"
             android:label="Vorlesungen"
             android:name=".ui.VV_Events"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            >
         </activity>
 
         <!-- Veranstaltungen -->
@@ -53,31 +54,31 @@
             android:configChanges="keyboardHidden|orientation"
             android:label="Veranstaltungen"
             android:name=".ui.Events"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            >
         </activity>
         <activity
             android:configChanges="keyboardHidden|orientation"
             android:label="Veranstaltung"
             android:name=".ui.SingleEvent"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            >
         </activity>
         <activity
             android:configChanges="keyboardHidden|orientation"
             android:label="Veranstaltung"
             android:name=".ui.FragmentSingleEvent"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+             >
         </activity>
         <activity
             android:configChanges="keyboardHidden|orientation"
             android:label="Veranstaltungsanmeldung"
             android:name=".ui.ApplyEvent"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            >
         </activity>
         <activity
             android:configChanges="keyboardHidden|orientation"
             android:label="Module"
             android:name=".ui.Module"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            >
         </activity>
 
         <!-- Prüfungen -->
@@ -86,13 +87,13 @@
             android:configChanges="keyboardHidden|orientation"
             android:label="Prüfungen"
             android:name=".ui.Exams"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+             >
         </activity>
         <activity
             android:configChanges="keyboardHidden|orientation"
             android:label="Anmeldung zu Prüfungen"
             android:name=".ui.RegisterExams"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+             >
         </activity>
 
         <!-- Stundenplan -->
@@ -101,7 +102,7 @@
             android:configChanges="keyboardHidden|orientation"
             android:label="Stundenplan"
             android:name=".ui.Schedule"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+             >
         </activity>
 
         <!-- Nachrichten -->
@@ -109,13 +110,13 @@
             android:configChanges="keyboardHidden|orientation"
             android:label="Nachrichten"
             android:name=".ui.Messages"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+             >
         </activity>
         <activity
             android:configChanges="keyboardHidden|orientation"
             android:label="Nachricht"
             android:name=".ui.SingleMessage"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+             >
         </activity>
         <activity
             android:configChanges="keyboardHidden|orientation"

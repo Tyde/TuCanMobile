@@ -4,20 +4,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-     <include
-        android:id="@+id/linearLayout1_ref"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/activityheader" />
-
-    <TextView
-        android:id="@+id/vv_title"
-        style="@style/tucan_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:text="@string/applyevents_title" >
-    </TextView>
+     
 
     <ListView
         android:id="@+id/android:list"

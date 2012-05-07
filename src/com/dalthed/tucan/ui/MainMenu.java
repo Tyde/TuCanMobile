@@ -26,6 +26,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
@@ -48,12 +49,14 @@ public class MainMenu extends SimpleWebActivity {
 	String SessionArgument = "";
 	private boolean noeventstoday = false;
 	private String[] today_event_links;
-	
+	private ActionBar acBar = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
+		acBar = getSupportActionBar();
+		acBar.setTitle("Startseite");
 		
 		BugSenseHandler.setup(this, "ed5c1682");
 		// Webhandling Start
@@ -258,7 +261,7 @@ public class MainMenu extends SimpleWebActivity {
 			}
 
 			UserName = doc.select("span#loginDataName").text().split(":")[1];
-			TextView usertextview = (TextView) findViewById(R.id.mm_username);
+			
 			URL lcURL = null;
 			try {
 				lcURL = new URL(result.getLastCalledURL());
@@ -295,7 +298,7 @@ public class MainMenu extends SimpleWebActivity {
 				wronglanguageDialog.show();
 
 			}
-			usertextview.setText(UserName);
+			acBar.setSubtitle(UserName);
 			ListView EventList = (ListView) findViewById(R.id.mm_eventList);
 			EventList.setAdapter(new EventAdapter(Events, Times));
 			EventList.setOnItemClickListener(new OnItemClickListener() {
