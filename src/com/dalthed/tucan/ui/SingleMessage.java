@@ -29,13 +29,15 @@ public class SingleMessage extends SimpleWebActivity {
 	private String  URLStringtoCall;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		navigateList=true ;
+		navigationItem = 4; //NachrichtenNavigationItem
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.singlemessage);
 		BugSenseHandler.setup(this,"ed5c1682");
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		URLStringtoCall = getIntent().getExtras().getString("URL");
 		URL URLtoCall;
-
+		
 		try {
 			URLtoCall = new URL(URLStringtoCall);
 			localCookieManager = new CookieManager();

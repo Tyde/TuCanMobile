@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:weightSum="1" >
-
+	<!-- 
     <FrameLayout
         android:id="@+id/FrameLayout1"
         android:layout_width="fill_parent"
@@ -35,14 +35,15 @@
             android:layout_gravity="right"
             android:text="" >
         </TextView>
-    </FrameLayout>
+    </FrameLayout> -->
 
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight=".1"
-        android:orientation="vertical" >
+        android:orientation="vertical" 
+        android:layout_marginTop="10dip">
 
         <ListView
             android:id="@+id/mm_menuList"
