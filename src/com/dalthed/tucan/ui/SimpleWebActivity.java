@@ -2,14 +2,12 @@ package com.dalthed.tucan.ui;
 
 import org.acra.ErrorReporter;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
@@ -17,7 +15,7 @@ import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.acraload.LoadAcraResults;
 import com.dalthed.tucan.preferences.MainPreferences;
 
-public abstract class SimpleWebActivity extends Activity {
+public abstract class SimpleWebActivity extends SherlockActivity {
 	public SimpleSecureBrowser callResultBrowser;
 	protected Boolean HTTPS=true;
 	public abstract void onPostExecute(AnswerObject result);
@@ -37,14 +35,14 @@ public abstract class SimpleWebActivity extends Activity {
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.loginmenu, menu);
+		getSupportMenuInflater().inflate(R.menu.loginmenu, menu);
 		if(TucanMobile.DEBUG){
 			menu.add(Menu.NONE, 9941, Menu.NONE, "Test");
 		}
 		
 		return super.onCreateOptionsMenu(menu);
 	}
-
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
