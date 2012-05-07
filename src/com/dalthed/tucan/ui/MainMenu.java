@@ -1,5 +1,8 @@
 package com.dalthed.tucan.ui;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
@@ -11,6 +14,7 @@ import org.jsoup.select.Elements;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -49,15 +53,14 @@ public class MainMenu extends SimpleWebActivity {
 	String SessionArgument = "";
 	private boolean noeventstoday = false;
 	private String[] today_event_links;
-	private ActionBar acBar = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
-		acBar = getSupportActionBar();
+
 		acBar.setTitle("Startseite");
-		
+
 		BugSenseHandler.setup(this, "ed5c1682");
 		// Webhandling Start
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
@@ -69,12 +72,11 @@ public class MainMenu extends SimpleWebActivity {
 			try {
 				lastCalledURL = new URL(lastCalledURLString);
 				localCookieManager = new CookieManager();
-				localCookieManager.generateManagerfromHTTPString(
-						lastCalledURL.getHost(), CookieHTTPString);
+				localCookieManager.generateManagerfromHTTPString(lastCalledURL.getHost(),
+						CookieHTTPString);
 				callResultBrowser = new SimpleSecureBrowser(this);
-				RequestObject thisRequest = new RequestObject(
-						lastCalledURLString, localCookieManager,
-						RequestObject.METHOD_GET, "");
+				RequestObject thisRequest = new RequestObject(lastCalledURLString,
+						localCookieManager, RequestObject.METHOD_GET, "");
 
 				callResultBrowser.execute(thisRequest);
 			} catch (MalformedURLException e) {
@@ -82,10 +84,9 @@ public class MainMenu extends SimpleWebActivity {
 			}
 		} else {
 			localCookieManager = new CookieManager();
-			localCookieManager.generateManagerfromHTTPString(
-					TucanMobile.TUCAN_HOST, CookieHTTPString);
-			onPostExecute(new AnswerObject(source, "", localCookieManager,
-					lastCalledURLString));
+			localCookieManager.generateManagerfromHTTPString(TucanMobile.TUCAN_HOST,
+					CookieHTTPString);
+			onPostExecute(new AnswerObject(source, "", localCookieManager, lastCalledURLString));
 		}
 
 		// Webhandling End
@@ -93,61 +94,57 @@ public class MainMenu extends SimpleWebActivity {
 		ListView MenuList = (ListView) findViewById(R.id.mm_menuList);
 
 		MenuList.setDivider(null);
-		
+
 		MenuList.setAdapter(new ArrayAdapter<String>(this, R.layout.menu_row,
 				R.id.main_menu_row_textField, getResources().getStringArray(
 						R.array.mainmenu_options)));
 
 		MenuList.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> arg0, View view, int position,
-					long arg3) {
-				view.findViewById(R.id.main_menu_row_left_blue_strip).setBackgroundColor(R.color.tucan_green);
+			public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
+				view.findViewById(R.id.main_menu_row_left_blue_strip).setBackgroundColor(
+						R.color.tucan_green);
 				switch (position) {
 				case 0:
 					Intent StartVVIntent = new Intent(MainMenu.this, VV.class);
 					StartVVIntent.putExtra("URL", menu_link_vv);
-					StartVVIntent.putExtra("Cookie", localCookieManager
-							.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+					StartVVIntent.putExtra("Cookie",
+							localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 					StartVVIntent.putExtra("UserName", UserName);
 					startActivity(StartVVIntent);
 					// Vorlesungsverzeichnis
 					break;
 				case 1:
-					Intent StartScheduleIntent = new Intent(MainMenu.this,
-							Schedule.class);
+					Intent StartScheduleIntent = new Intent(MainMenu.this, Schedule.class);
 					StartScheduleIntent.putExtra("URL", menu_link_month);
-					StartScheduleIntent.putExtra("Cookie", localCookieManager
-							.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+					StartScheduleIntent.putExtra("Cookie",
+							localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 					StartScheduleIntent.putExtra("Session", SessionArgument);
 					startActivity(StartScheduleIntent);
 					// Stundenplan
 					break;
 				case 2:
-					Intent StartEventIntent = new Intent(MainMenu.this,
-							Events.class);
+					Intent StartEventIntent = new Intent(MainMenu.this, Events.class);
 					StartEventIntent.putExtra("URL", menu_link_ex);
-					StartEventIntent.putExtra("Cookie", localCookieManager
-							.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+					StartEventIntent.putExtra("Cookie",
+							localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 					StartEventIntent.putExtra("UserName", UserName);
 					startActivity(StartEventIntent);
 					// Veranstaltungen
 					break;
 				case 3:
-					Intent StartExamIntent = new Intent(MainMenu.this,
-							Exams.class);
+					Intent StartExamIntent = new Intent(MainMenu.this, Exams.class);
 					StartExamIntent.putExtra("URL", menu_link_ex);
-					StartExamIntent.putExtra("Cookie", localCookieManager
-							.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+					StartExamIntent.putExtra("Cookie",
+							localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 					StartExamIntent.putExtra("UserName", UserName);
 					startActivity(StartExamIntent);
 					// Prüfungen
 					break;
 				case 4:
-					Intent StartMessageIntent = new Intent(MainMenu.this,
-							Messages.class);
+					Intent StartMessageIntent = new Intent(MainMenu.this, Messages.class);
 					StartMessageIntent.putExtra("URL", menu_link_msg);
-					StartMessageIntent.putExtra("Cookie", localCookieManager
-							.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+					StartMessageIntent.putExtra("Cookie",
+							localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 					StartMessageIntent.putExtra("UserName", UserName);
 					startActivity(StartMessageIntent);
 					break;
@@ -195,18 +192,15 @@ public class MainMenu extends SimpleWebActivity {
 		sendHTMLatBug(result.getHTML());
 
 		Document doc = Jsoup.parse(result.getHTML());
-		if (doc.select("span.notLoggedText").text().length() > 0
-				|| result.getHTML().equals("")) {
-			Intent BackToLoginIntent = new Intent(this,
-					TuCanMobileActivity.class);
+		if (doc.select("span.notLoggedText").text().length() > 0 || result.getHTML().equals("")) {
+			Intent BackToLoginIntent = new Intent(this, TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);
 		} else {
 			String lcURLString = result.getLastCalledURL();
 			try {
 				URL lcURL = new URL(lcURLString);
-				SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1]
-						.split(",")[0];
+				SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1].split(",")[0];
 			} catch (MalformedURLException e) {
 
 				e.printStackTrace();
@@ -242,16 +236,14 @@ public class MainMenu extends SimpleWebActivity {
 					int i = 0;
 					while (RowIt.hasNext()) {
 						Element currentElement = (Element) RowIt.next();
-						String EventString = currentElement
-								.select("td[headers=Name]").select("a").first()
-								.text();
-						today_event_links[i] = currentElement
-								.select("td[headers=Name]").select("a").first()
-								.attr("href");
-						String EventTimeString = currentElement.select("td")
-								.get(2).select("a").first().text();
-						String EventTimeEndString = currentElement.select("td")
-								.get(3).select("a").first().text();
+						String EventString = currentElement.select("td[headers=Name]").select("a")
+								.first().text();
+						today_event_links[i] = currentElement.select("td[headers=Name]")
+								.select("a").first().attr("href");
+						String EventTimeString = currentElement.select("td").get(2).select("a")
+								.first().text();
+						String EventTimeEndString = currentElement.select("td").get(3).select("a")
+								.first().text();
 						Times[i] = EventTimeString + "-" + EventTimeEndString;
 						Events[i] = EventString;
 						i++;
@@ -261,7 +253,7 @@ public class MainMenu extends SimpleWebActivity {
 			}
 
 			UserName = doc.select("span#loginDataName").text().split(":")[1];
-			
+
 			URL lcURL = null;
 			try {
 				lcURL = new URL(result.getLastCalledURL());
@@ -275,8 +267,7 @@ public class MainMenu extends SimpleWebActivity {
 					+ doc.select("li#link000326").select("a").attr("href");
 			menu_link_ex = lcURL.getProtocol() + "://" + lcURL.getHost()
 					+ doc.select("li#link000280").select("a").attr("href");
-			menu_link_msg = lcURL.getProtocol() + "://" + lcURL.getHost()
-					+ ArchivLink.attr("href");
+			menu_link_msg = lcURL.getProtocol() + "://" + lcURL.getHost() + ArchivLink.attr("href");
 			/*
 			 * menu_link_export = lcURL.getProtocol() + "://" + lcURL.getHost()
 			 * + doc.select("li#link000272").select("a").attr("href");
@@ -284,37 +275,49 @@ public class MainMenu extends SimpleWebActivity {
 			menu_link_month = lcURL.getProtocol() + "://" + lcURL.getHost()
 					+ doc.select("li#link000271").select("a").attr("href");
 			if (doc.select("li#link000326").select("a").attr("href").equals("")) {
-				Dialog wronglanguageDialog = new AlertDialog.Builder(this)
-						.setTitle("")
+				Dialog wronglanguageDialog = new AlertDialog.Builder(this).setTitle("")
 						.setMessage(R.string.general_not_supported_lang)
-						.setPositiveButton("Okay",
-								new DialogInterface.OnClickListener() {
+						.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
 
-									public void onClick(DialogInterface dialog,
-											int which) {
-										finish();
-									}
-								}).create();
+							public void onClick(DialogInterface dialog, int which) {
+								finish();
+							}
+						}).create();
 				wronglanguageDialog.show();
 
 			}
+			try {
+				FileOutputStream fos = openFileOutput(TucanMobile.LINK_FILE_NAME,
+						Context.MODE_PRIVATE);
+
+				StringBuilder cacheString = new StringBuilder();
+				cacheString.append(menu_link_vv).append(">>").append(menu_link_month).append(">>")
+						.append(menu_link_ex).append(">>").append(menu_link_ex).append(">>")
+						.append(menu_link_msg).append("<<")
+						.append(localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST))
+						.append("<<").append(SessionArgument);
+				fos.write(cacheString.toString().getBytes());
+				fos.close();
+
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 			acBar.setSubtitle(UserName);
 			ListView EventList = (ListView) findViewById(R.id.mm_eventList);
 			EventList.setAdapter(new EventAdapter(Events, Times));
 			EventList.setOnItemClickListener(new OnItemClickListener() {
 
-				public void onItemClick(AdapterView<?> parent, View view,
-						int position, long id) {
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 					if (noeventstoday == false) {
-						Intent StartSingleEventIntent = new Intent(
-								MainMenu.this, FragmentSingleEvent.class);
-						StartSingleEventIntent.putExtra("URL",
-								TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-										+ today_event_links[position]);
-						StartSingleEventIntent.putExtra(
-								"Cookie",
-								localCookieManager
-										.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+						Intent StartSingleEventIntent = new Intent(MainMenu.this,
+								FragmentSingleEvent.class);
+						StartSingleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT
+								+ TucanMobile.TUCAN_HOST + today_event_links[position]);
+						StartSingleEventIntent.putExtra("Cookie",
+								localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 						// StartSingleEventIntent.putExtra("UserName",
 						// UserName);
 						startActivity(StartSingleEventIntent);

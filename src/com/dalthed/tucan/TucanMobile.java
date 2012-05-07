@@ -27,7 +27,7 @@ public class TucanMobile extends Application {
 	public final static String EXTRA_COOKIE = "Cookie";
 	public final static String EXTRA_URL = "URL";
 	public final static String EXTRA_USERNAME = "UserName";
-	
+	public final static String LINK_FILE_NAME = "link_cache";
 	public final static Boolean CRASH = false;
 	public final static Boolean DEBUG = true;
 	
