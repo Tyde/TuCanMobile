@@ -39,9 +39,8 @@ public class Schedule extends SimpleWebListActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		navigateList=true;
-		navigationItem=1;
-		super.onCreate(savedInstanceState);
+		
+		super.onCreate(savedInstanceState,true,1);
 		setContentView(R.layout.schedule);
 		BugSenseHandler.setup(this,"ed5c1682");
 

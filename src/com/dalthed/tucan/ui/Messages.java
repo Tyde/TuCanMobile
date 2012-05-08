@@ -39,7 +39,7 @@ public class Messages extends SimpleWebListActivity {
 	private ArrayList<String> MessageLink;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState,true,4);
 		setContentView(R.layout.messages);
 		BugSenseHandler.setup(this,"ed5c1682");
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");

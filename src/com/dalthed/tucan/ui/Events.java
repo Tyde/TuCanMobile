@@ -47,9 +47,8 @@ public class Events extends SimpleWebListActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		navigateList=true;
-		navigationItem=2;
-		super.onCreate(savedInstanceState);
+		
+		super.onCreate(savedInstanceState,true,2);
 		setContentView(R.layout.events);
 		BugSenseHandler.setup(this, "ed5c1682");
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");

@@ -43,9 +43,9 @@ public class VV extends SimpleWebListActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		navigateList=true;
-		navigationItem=0;
-		super.onCreate(savedInstanceState);
+		
+		
+		super.onCreate(savedInstanceState,true,0);
 		setContentView(R.layout.vv);
 		BugSenseHandler.setup(this,"ed5c1682");
 		// Webhandling Start

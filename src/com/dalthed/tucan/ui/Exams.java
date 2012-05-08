@@ -48,9 +48,8 @@ public class Exams extends SimpleWebListActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		navigateList=true;
-		navigationItem=3;
-		super.onCreate(savedInstanceState);
+		
+		super.onCreate(savedInstanceState,true,3);
 		setContentView(R.layout.exams);
 		BugSenseHandler.setup(this, "ed5c1682");
 
