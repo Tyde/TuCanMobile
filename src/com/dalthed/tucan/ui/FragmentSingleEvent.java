@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -156,10 +157,21 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 		
 		public void setPrimaryItem(ViewGroup container, int position,Object object){
 			super.setPrimaryItem(container, position, object);
+			Log.i(LOG_TAG,"setPrimaryItem called");
+			if(object instanceof ArrayListFragment && position <= (adapterList.size()-1) ){
+				Log.i(LOG_TAG,"is the right instance -> Position is "+position+" and Object is: "+object.toString());
+				ArrayListFragment curFrag = ((ArrayListFragment) object);
+				if(!curFrag.hasListAdapter){
+					curFrag.setListAdapter(adapterList.get(position));
+				}
+				
+				
+				
+			}
 			/*
 			 * Liste wird eingebaut, wenn geupdated wird und die Liste noch leer
 			 * ist
-			 */
+			
 			for (int ii = 0; ii <= 2; ii++) {
 				if (getInitializedItem(ii) != null && adapterList.size() > ii) {
 					if (getInitializedItem(ii).getListAdapter() == null)
@@ -169,8 +181,22 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 						getInitializedItem(ii).setFilelinks(fileList);
 					}
 				}
+				else {
+					Log.i(LOG_TAG, "hier ist schon was drin");
+				}
 
-			}
+			} */
+		}
+		
+		public void initializeData(ViewGroup container){
+			setPrimaryItem(container, 0, getInitializedItem(0));
+		}
+
+		
+		@Override
+		public void startUpdate(ViewGroup container) {
+			super.startUpdate(container);
+			Log.i(LOG_TAG,"startUpdate called");
 		}
 
 		@Override
@@ -188,6 +214,14 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 		int mNum;
 		private boolean thereAreFiles;
 		private ArrayList<String> materialLink;
+		public boolean hasListAdapter = false;
+
+		
+		@Override
+		public void setListAdapter(ListAdapter adapter) {
+			super.setListAdapter(adapter);
+			hasListAdapter=true;
+		}
 
 		static ArrayListFragment newInstance(int num) {
 			ArrayListFragment f = new ArrayListFragment();
@@ -412,7 +446,8 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 							android.R.layout.simple_list_item_1,
 							new String[] { "Kein Material" }));
 
-				mPageAdapter.finishUpdate(mPager);
+				//mPageAdapter.finishUpdate(mPager); Depricated
+				mPageAdapter.initializeData(mPager);
 
 			} else {
 				String nextlink = TucanMobile.TUCAN_PROT
