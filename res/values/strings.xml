@@ -14,6 +14,11 @@
     <!-- Hauptmenü -->
     <string name="mm_events_title">Heutige Veranstaltungen:</string>
 
+    <string name="events_subtitle">Übersicht</string>
+    <string name="events_subtitle_modules">Meine Module</string>
+    <string name="events_subtitle_events">Meine Veranstaltungen</string>
+    <string name="events_subtitle_register">Anmeldung</string>
+    <!--  depricated  -->
     <!-- Vorlesungsverzeichnis -->
     <string name="mmenu_vv">Vorlesungsverzeichnis//</string>
 
@@ -29,6 +34,7 @@
 
     <!-- Stundenplan -->
     <string name="schedule_title">Stundenplan//</string>
+    <!-- /depricated -->
 
     <!-- UI Dynamic -->
     <string name="ui_login">Anmelden...</string>

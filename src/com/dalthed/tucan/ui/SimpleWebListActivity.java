@@ -51,7 +51,7 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 		fsh = new FastSwitchHelper(this,navigateList,acBar,navigationItem);
 		
 	}
-	
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		onCreate(savedInstanceState, false,0);
 	}
@@ -71,7 +71,7 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	public void sendHTMLatBug(String html) {
+	public static void sendHTMLatBug(String html) {
 		ErrorReporter.getInstance().putCustomData("html", html);
 	}
 

@@ -41,7 +41,7 @@ public class TucanMobile extends Application {
 		super.onCreate();
 		TucanMobile.Appcontext = getApplicationContext();
 	}
-
+ 
 	public static Context getAppContext() {
 		return Appcontext;
 	}

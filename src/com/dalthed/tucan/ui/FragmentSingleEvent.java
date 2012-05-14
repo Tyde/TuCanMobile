@@ -53,7 +53,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState,true,2);
 		setContentView(R.layout.fragment_singleevent);
 
 		// Wichtige Infos aus dem Intent holen
