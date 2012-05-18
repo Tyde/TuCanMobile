@@ -59,6 +59,8 @@ public abstract class FragmentWebActivity extends SherlockFragmentActivity imple
 		case R.id.loginmenu_opt_close:
 			finish();
 			return true;
+		case android.R.id.home:
+			fsh.startHomeIntent();
 		default:
 			return super.onOptionsItemSelected(item);
 		}

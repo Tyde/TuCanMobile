@@ -13,6 +13,7 @@ import org.jsoup.select.Elements;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Debug;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -131,6 +132,10 @@ public class Events extends SimpleWebListActivity {
 
 	@Override
 	public void onPostExecute(AnswerObject result) {
+		
+		//Start Tracing zur geschwindigkeitsberschleunigung
+		
+		
 		// HTML Parsen
 		if(scrape==null){
 			scrape = new EventsScraper(this, result);
@@ -147,6 +152,7 @@ public class Events extends SimpleWebListActivity {
 			startActivity(BackToLoginIntent);
 		}
 		
+		//Stop tracing
 		
 		if(mode==0){
 			//Funktioniert nicht, da dies über den FastSwitchHelper gehen muss. Dazu muss noch ein neuer Adapter kreiert werden.

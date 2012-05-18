@@ -15,6 +15,7 @@ import com.dalthed.tucan.R;
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.ui.Events;
 import com.dalthed.tucan.ui.Exams;
+import com.dalthed.tucan.ui.MainMenu;
 import com.dalthed.tucan.ui.Messages;
 import com.dalthed.tucan.ui.Schedule;
 import com.dalthed.tucan.ui.VV;
@@ -26,7 +27,7 @@ public class FastSwitchHelper {
 	private Context context;
 	protected Boolean navigateList = false;
 	public int navigationItem = 0;
-	
+
 	protected HashMap<Integer, Class> ActivitiesToStart = new HashMap<Integer, Class>() {
 		{
 			put(0, VV.class);
@@ -36,8 +37,9 @@ public class FastSwitchHelper {
 			put(4, Messages.class);
 		}
 	};
-	
-	public FastSwitchHelper (Context context,Boolean navigateList,ActionBar acBar, int navigationItem) {
+
+	public FastSwitchHelper(Context context, Boolean navigateList, ActionBar acBar,
+			int navigationItem) {
 		this.context = context;
 		this.navigateList = navigateList;
 		this.navigationItem = navigationItem;
@@ -48,14 +50,16 @@ public class FastSwitchHelper {
 			list.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
 			acBar.setDisplayShowTitleEnabled(false);
 			acBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-			acBar.setListNavigationCallbacks(list,(ActionBar.OnNavigationListener) context);
+			acBar.setListNavigationCallbacks(list, (ActionBar.OnNavigationListener) context);
 			acBar.setSelectedNavigationItem(navigationItem);
-			
+			acBar.setDisplayHomeAsUpEnabled(true);
+
 		}
 	}
+
 	public boolean createLinkArray() {
 		try {
-			
+
 			FileInputStream fis = this.context.openFileInput(TucanMobile.LINK_FILE_NAME);
 			StringBuffer strFile = new StringBuffer("");
 			int ch;
@@ -83,29 +87,39 @@ public class FastSwitchHelper {
 		}
 
 	}
-	
-	public boolean startFastSwitchIntent (int itemPosition) {
-		if(itemPosition!=navigationItem){
-			try{
-				//Log.i(LOG_TAG, "in a Intent");
-				
-				Intent navigateIntent = new Intent(context,ActivitiesToStart.get(itemPosition));
+
+	public boolean startFastSwitchIntent(int itemPosition) {
+		if (itemPosition != navigationItem) {
+			try {
+				// Log.i(LOG_TAG, "in a Intent");
+
+				Intent navigateIntent = new Intent(context, ActivitiesToStart.get(itemPosition));
 				navigateIntent.putExtra("URL", linkarray[itemPosition]);
 				navigateIntent.putExtra("Cookie", cached_Cookie);
 				navigateIntent.putExtra("Session", cached_Session);
-				navigateIntent.putExtra("UserName", ""); 
+				navigateIntent.putExtra("UserName", "");
 				context.startActivity(navigateIntent);
-			}
-			catch (ArrayIndexOutOfBoundsException e) {
-				Log.e(LOG_TAG, "Array out of Bounds for switching. Tried: "+itemPosition+", but linkarray has only "+linkarray.length+" length");
+			} catch (ArrayIndexOutOfBoundsException e) {
+				Log.e(LOG_TAG, "Array out of Bounds for switching. Tried: " + itemPosition
+						+ ", but linkarray has only " + linkarray.length + " length");
 				return false;
 			}
-			
+
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
+	}
+
+	public void startHomeIntent() {
+		Intent homeIntent = new Intent(context, MainMenu.class);
+		homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		homeIntent.putExtra("Cookie", cached_Cookie);
+		homeIntent.putExtra("Session", cached_Session);
+		homeIntent.putExtra("URL",
+				"https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=MLSSTART&ARGUMENTS="
+						+ cached_Session + ",-N000019");
+		context.startActivity(homeIntent);
 	}
 
 }

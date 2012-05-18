@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+
+import com.actionbarsherlock.ActionBarSherlock.OnOptionsItemSelectedListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -85,6 +87,8 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 		case R.id.loginmenu_opt_close:
 			finish();
 			return true;
+		case android.R.id.home:
+			fsh.startHomeIntent();
 		default: 
 			return super.onOptionsItemSelected(item);
 		}
@@ -113,4 +117,5 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 		
 	}
 
+	
 }

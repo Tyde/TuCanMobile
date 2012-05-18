@@ -195,7 +195,8 @@ public class EventsScraper extends BasicScraper {
 		@SuppressWarnings("unchecked")
 		ArrayList<String> eventNameBuffer = (ArrayList<String>) eventNames.clone();
 		// Adapter erstellen und einsetzen
-		ListAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,
+		ListAdapter = new ArrayAdapter<String>(context, R.layout.menu_row,
+				R.id.main_menu_row_textField,
 				eventNameBuffer);
 		return ListAdapter;
 	}

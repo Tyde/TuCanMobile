@@ -98,11 +98,12 @@ public class MainMenu extends SimpleWebActivity {
 		MenuList.setAdapter(new ArrayAdapter<String>(this, R.layout.menu_row,
 				R.id.main_menu_row_textField, getResources().getStringArray(
 						R.array.mainmenu_options)));
+		
 
 		MenuList.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
-				view.findViewById(R.id.main_menu_row_left_blue_strip).setBackgroundColor(
-						R.color.tucan_green);
+			public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
+				
+				view.invalidate();
 				switch (position) {
 				case 0:
 					Intent StartVVIntent = new Intent(MainMenu.this, VV.class);
@@ -308,6 +309,7 @@ public class MainMenu extends SimpleWebActivity {
 			acBar.setSubtitle(UserName);
 			ListView EventList = (ListView) findViewById(R.id.mm_eventList);
 			EventList.setAdapter(new EventAdapter(Events, Times));
+			
 			EventList.setOnItemClickListener(new OnItemClickListener() {
 
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -320,7 +322,9 @@ public class MainMenu extends SimpleWebActivity {
 								localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 						// StartSingleEventIntent.putExtra("UserName",
 						// UserName);
+						parent.invalidate();
 						startActivity(StartSingleEventIntent);
+						
 					}
 				}
 			});

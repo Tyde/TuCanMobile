@@ -293,12 +293,12 @@ public class RegisterExams extends SimpleWebListActivity {
 					selectionstring = "Ausgewählt";
 					break;
 				case 2:
-					eventSelectionView.setTextColor(R.color.tucan_green);
+					eventSelectionView.setTextColor(getResources().getColor(R.color.tucan_green));
 
 					selectionstring = "Anmelden";
 					break;
 				case 3:
-					eventSelectionView.setTextColor(R.color.tucan_green);
+					eventSelectionView.setTextColor(getResources().getColor(R.color.register_deregister_red));
 					selectionstring = "Abmelden";
 					break;
 				default:
