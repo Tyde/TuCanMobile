@@ -10,16 +10,20 @@ import android.widget.TextView;
 
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.ui.Events;
+/**
+ * Ehemalig ModuleAdapter
+ * @author Daniel Thiem
+ * @since 2012-05-14
+ */
+public class ThreeLinesAdapter extends ArrayAdapter<String> {
 
-public class ModuleAdapter extends ArrayAdapter<String> {
+	ArrayList<String> middleRightThin, bottomLeftThin;
 
-	ArrayList<String> moduleCredits, moduleHeads;
-
-	public ModuleAdapter(Context context, ArrayList<String> moduleName,
-			ArrayList<String> resultGrade, ArrayList<String> resultDate) {
-		super(context, R.layout.row_vv_events, R.id.row_vv_veranst, moduleName);
-		this.moduleHeads = resultDate;
-		this.moduleCredits = resultGrade;
+	public ThreeLinesAdapter(Context context, ArrayList<String> topLeftFat,
+			ArrayList<String> middleRightThin, ArrayList<String> bottomLeftThin) {
+		super(context, R.layout.row_vv_events, R.id.row_vv_veranst, topLeftFat);
+		this.bottomLeftThin = bottomLeftThin;
+		this.middleRightThin = middleRightThin;
 	}
 
 	@Override
@@ -28,8 +32,8 @@ public class ModuleAdapter extends ArrayAdapter<String> {
 		TextView TypeTextView = (TextView) row.findViewById(R.id.row_vv_type);
 		TextView DozentTextView = (TextView) row.findViewById(R.id.row_vv_dozent);
 
-		TypeTextView.setText(moduleCredits.get(position));
-		DozentTextView.setText(moduleHeads.get(position));
+		TypeTextView.setText(middleRightThin.get(position));
+		DozentTextView.setText(bottomLeftThin.get(position));
 
 		return row;
 	}

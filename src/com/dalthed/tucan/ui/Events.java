@@ -132,8 +132,13 @@ public class Events extends SimpleWebListActivity {
 	@Override
 	public void onPostExecute(AnswerObject result) {
 		// HTML Parsen
-
-		scrape = new EventsScraper(this, result);
+		if(scrape==null){
+			scrape = new EventsScraper(this, result);
+		}
+		else {
+			scrape.setNewAnswer(result);
+		}
+		
 		try {
 			setListAdapter(scrape.scrapeAdapter(mode));
 		} catch (LostSessionException e) {

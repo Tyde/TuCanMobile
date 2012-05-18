@@ -21,7 +21,7 @@ import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.ui.Events.OnItemSelectedListener;
 import com.dalthed.tucan.ui.SimpleWebListActivity;
-import com.dalthed.tucan.adapters.ModuleAdapter;
+import com.dalthed.tucan.adapters.ThreeLinesAdapter;
 
 public class EventsScraper extends BasicScraper {
 	private int mode;
@@ -37,6 +37,8 @@ public class EventsScraper extends BasicScraper {
 	public EventsScraper(Context context, AnswerObject result) {
 		super(context, result);
 	}
+	
+	
 
 	public ListAdapter scrapeAdapter(int modus) throws LostSessionException {
 		this.mode = modus;
@@ -115,7 +117,7 @@ public class EventsScraper extends BasicScraper {
 		if(ListAdapter!=null){
 			ListAdapter.clear();
 		}
-		ListAdapter = new ModuleAdapter(context, eventName, eventTime, eventHead);
+		ListAdapter = new ThreeLinesAdapter(context, eventName, eventTime, eventHead);
 		return ListAdapter;
 	}
 
@@ -143,7 +145,7 @@ public class EventsScraper extends BasicScraper {
 		if(ListAdapter!=null){
 			ListAdapter.clear();
 		}
-		ListAdapter = new ModuleAdapter(context, eventName, eventCredits, eventHead);
+		ListAdapter = new ThreeLinesAdapter(context, eventName, eventCredits, eventHead);
 		return ListAdapter;
 	}
 
