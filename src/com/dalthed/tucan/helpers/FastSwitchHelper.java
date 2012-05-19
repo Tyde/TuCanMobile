@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import com.actionbarsherlock.app.ActionBar;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TucanMobile;
+import com.dalthed.tucan.adapters.FastSwitchAdapter;
 import com.dalthed.tucan.ui.Events;
 import com.dalthed.tucan.ui.Exams;
 import com.dalthed.tucan.ui.MainMenu;
@@ -45,14 +46,14 @@ public class FastSwitchHelper {
 		this.navigationItem = navigationItem;
 		if (navigateList && createLinkArray() && context instanceof ActionBar.OnNavigationListener) {
 			Context ac_context = acBar.getThemedContext();
-			ArrayAdapter<CharSequence> list = ArrayAdapter.createFromResource(context,
-					R.array.mainmenu_options, R.layout.sherlock_spinner_item);
-			list.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
+			FastSwitchAdapter dropAdapter = new FastSwitchAdapter(context,context.getResources().getStringArray(R.array.mainmenu_options));
+			
 			acBar.setDisplayShowTitleEnabled(false);
 			acBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-			acBar.setListNavigationCallbacks(list, (ActionBar.OnNavigationListener) context);
+			acBar.setListNavigationCallbacks(dropAdapter, (ActionBar.OnNavigationListener) context);
 			acBar.setSelectedNavigationItem(navigationItem);
 			acBar.setDisplayHomeAsUpEnabled(true);
+			dropAdapter.setSubtitle("test");
 
 		}
 	}
