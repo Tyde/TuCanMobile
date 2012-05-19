@@ -38,26 +38,32 @@ public class FastSwitchHelper {
 			put(4, Messages.class);
 		}
 	};
+	private ActionBar acBar;
+	private FastSwitchAdapter dropAdapter;
 
 	public FastSwitchHelper(Context context, Boolean navigateList, ActionBar acBar,
 			int navigationItem) {
 		this.context = context;
 		this.navigateList = navigateList;
 		this.navigationItem = navigationItem;
+		this.acBar = acBar;
 		if (navigateList && createLinkArray() && context instanceof ActionBar.OnNavigationListener) {
 			Context ac_context = acBar.getThemedContext();
-			FastSwitchAdapter dropAdapter = new FastSwitchAdapter(context,context.getResources().getStringArray(R.array.mainmenu_options));
+			dropAdapter = new FastSwitchAdapter(context,context.getResources().getStringArray(R.array.mainmenu_options));
 			
 			acBar.setDisplayShowTitleEnabled(false);
 			acBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 			acBar.setListNavigationCallbacks(dropAdapter, (ActionBar.OnNavigationListener) context);
 			acBar.setSelectedNavigationItem(navigationItem);
 			acBar.setDisplayHomeAsUpEnabled(true);
-			dropAdapter.setSubtitle("test");
+			
 
 		}
 	}
-
+	public void setSubtitle (CharSequence subtitle) {
+		dropAdapter.setSubtitle(subtitle.toString());
+		
+	}
 	public boolean createLinkArray() {
 		try {
 
@@ -93,7 +99,7 @@ public class FastSwitchHelper {
 		if (itemPosition != navigationItem) {
 			try {
 				// Log.i(LOG_TAG, "in a Intent");
-
+				dropAdapter.setSubtitle(null);
 				Intent navigateIntent = new Intent(context, ActivitiesToStart.get(itemPosition));
 				navigateIntent.putExtra("URL", linkarray[itemPosition]);
 				navigateIntent.putExtra("Cookie", cached_Cookie);

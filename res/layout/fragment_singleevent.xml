@@ -6,14 +6,7 @@
 
     
 
-    <TextView
-        android:id="@+id/singleevent_title"
-        style="@style/event_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:text="" >
-    </TextView>
+    
     
     <com.viewpagerindicator.TitlePageIndicator
         android:id="@+id/titles"

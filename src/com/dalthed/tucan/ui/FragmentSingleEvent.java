@@ -76,6 +76,8 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 		titleIndicator.setTextSize(20);
 		titleIndicator.setTextColor(0x33333333);
 		titleIndicator.setSelectedColor(0xFF000000);
+		titleIndicator.setFooterColor(getResources().getColor(R.color.tucan_green));
+		titleIndicator.setBackgroundColor(getResources().getColor(R.color.tucan_grey));
 		titleIndicator.setSelectedBold(false);
 
 		try {
@@ -303,9 +305,9 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 					return;
 				}
 				String Title = doc.select("h1").text();
-
-				TextView SingleEventTitle = (TextView) findViewById(R.id.singleevent_title);
-				SingleEventTitle.setText(Title);
+				
+				fsh.setSubtitle(Title);
+				
 				Elements Deltarows = doc.select("table[courseid]").first()
 						.select("tr");
 				Element rows;

@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="?attr/dropdownListPreferredItemHeight"
-    android:orientation="vertical" >
-    
+    android:layout_height="?attr/dropdownListPreferredItemHeight" >
 
-    <TextView
-	    android:id="@+id/dropdown_maintitle"
-	   android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-	    android:ellipsize="marquee" />
-   <TextView 
-        android:id="@+id/dropdown_subtitle"
-        style="@style/dropdown_subtitle"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ellipsize="marquee"/>
-</LinearLayout>
+        android:orientation="vertical" 
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/dropdown_maintitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            
+            android:ellipsize="marquee"
+            android:textSize="@dimen/dropdown_maintitle_alone" />
+
+        <TextView
+            android:id="@+id/dropdown_subtitle"
+            style="@style/dropdown_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dropdown_maintitle"
+            android:ellipsize="marquee"
+            android:textSize="@dimen/dropdown_subtitle" />
+    </LinearLayout>
+
+</RelativeLayout>

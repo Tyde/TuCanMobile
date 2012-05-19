@@ -7,7 +7,8 @@
     <dimen name="event_title">17dip</dimen>
     <dimen name="vv_event_title">15dip</dimen>
     <dimen name="mm_event_list">14dip</dimen>
-    <dimen name="dropdown_subtitle">12dip</dimen>
+    <dimen name="dropdown_subtitle">14sp</dimen>
+    <dimen name="dropdown_maintitle_alone">18sp</dimen>
     
     
     <!-- New Layout -->

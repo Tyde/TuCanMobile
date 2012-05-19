@@ -155,17 +155,17 @@ public class Events extends SimpleWebListActivity {
 		//Stop tracing
 		
 		if(mode==0){
-			//Funktioniert nicht, da dies über den FastSwitchHelper gehen muss. Dazu muss noch ein neuer Adapter kreiert werden.
-			acBar.setSubtitle(getResources().getText(R.string.events_subtitle));
+			
+			fsh.setSubtitle(getResources().getText(R.string.events_subtitle));
 		}
 		else if (mode==1){
-			acBar.setSubtitle(getResources().getText(R.string.events_subtitle_events));
+			fsh.setSubtitle(getResources().getText(R.string.events_subtitle_events));
 		}
 		else if (mode==2){
-			acBar.setSubtitle(getResources().getText(R.string.events_subtitle_register));
+			fsh.setSubtitle(getResources().getText(R.string.events_subtitle_register));
 		}
 		else if(mode==10){
-			acBar.setSubtitle(getResources().getText(R.string.events_subtitle_modules));
+			fsh.setSubtitle(getResources().getText(R.string.events_subtitle_modules));
 		}
 		if(mode!=0){
 			Spinner semesterSpinner = (Spinner) findViewById(R.id.exam_semester_spinner);

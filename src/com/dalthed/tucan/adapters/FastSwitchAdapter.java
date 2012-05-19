@@ -13,9 +13,10 @@ import android.widget.TextView;
 
 public class FastSwitchAdapter extends ArrayAdapter<String> {
 	String mSubtitle = null;
+	private Context context;
 	public FastSwitchAdapter(Context context,String[] ressource) {
 		super(context, R.layout.fast_switch_dropdown,R.id.dropdown_maintitle,ressource);
-		
+		this.context = context;
 		setDropDownViewResource(R.layout.fast_switch_dropdown_item);
 	}
 	/**
@@ -37,8 +38,18 @@ public class FastSwitchAdapter extends ArrayAdapter<String> {
 		Log.i(TucanMobile.LOG_TAG, "getView called with position"+position);
 		TextView subtitleView = (TextView) reuseView.findViewById(R.id.dropdown_subtitle);
 		
-		if(mSubtitle!=null && subtitleView != null){
-			subtitleView.setText(mSubtitle);
+		if(subtitleView != null){
+			if(mSubtitle==null){
+				subtitleView.setVisibility(View.GONE);
+				TextView maintitleView = (TextView) reuseView.findViewById(R.id.dropdown_maintitle);
+				if(maintitleView != null) {
+					//maintitleView.setTextSize(context.getResources().getDimension(R.dimen.dropdown_maintitle_alone));
+				}
+			}
+			else {
+				subtitleView.setText(mSubtitle);
+			}
+			
 		}
 		return reuseView;
 	}
