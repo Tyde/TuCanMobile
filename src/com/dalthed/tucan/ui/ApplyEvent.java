@@ -3,6 +3,7 @@ package com.dalthed.tucan.ui;
 import android.os.Bundle;
 
 import com.dalthed.tucan.Connection.AnswerObject;
+import com.dalthed.tucan.Connection.BrowserAnswerReciever;
 
 public class ApplyEvent extends SimpleWebListActivity {
 
@@ -30,10 +31,11 @@ public class ApplyEvent extends SimpleWebListActivity {
 		}*/
 	}
 
-	@Override
 	public void onPostExecute(AnswerObject result) {
-
-
 	}
+
+	
+	
+	
 
 }

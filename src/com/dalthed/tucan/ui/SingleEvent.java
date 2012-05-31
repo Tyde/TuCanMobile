@@ -154,7 +154,7 @@ public class SingleEvent extends SimpleWebListActivity {
 
 	}
 
-	@Override
+
 	public void onPostExecute(AnswerObject result) {
 		Document doc = Jsoup.parse(result.getHTML());
 		sendHTMLatBug(doc.html());

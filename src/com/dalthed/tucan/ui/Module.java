@@ -77,7 +77,6 @@ public class Module extends SimpleWebListActivity {
 	}
 
 
-	@Override
 	public void onPostExecute(AnswerObject result) {
 		Document doc = Jsoup.parse(result.getHTML());
 		String title = doc.select("h1").text();

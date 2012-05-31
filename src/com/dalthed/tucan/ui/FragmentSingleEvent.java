@@ -285,7 +285,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 
 	}
 
-	@Override
+
 	public void onPostExecute(AnswerObject result) {
 
 		Document doc = Jsoup.parse(result.getHTML());

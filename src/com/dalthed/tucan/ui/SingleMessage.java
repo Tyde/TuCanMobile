@@ -59,7 +59,7 @@ public class SingleMessage extends SimpleWebActivity {
 		setContentView(R.layout.singlemessage);
 	}
 
-	@Override
+
 	public void onPostExecute(AnswerObject result) {
 		Document doc = Jsoup.parse(result.getHTML());
 		sendHTMLatBug(doc.html());

@@ -187,7 +187,7 @@ public class MainMenu extends SimpleWebActivity {
 		}
 	}
 
-	@Override
+
 	public void onPostExecute(AnswerObject result) {
 		// HTML auslesen
 		sendHTMLatBug(result.getHTML());

@@ -102,7 +102,7 @@ public class VV extends SimpleWebListActivity {
 		setListAdapter(ListAdapter);
 	}
 
-	@Override
+	
 	public void onPostExecute(AnswerObject result) {
 		Log.i(LOG_TAG, "HTML zum parsen bereit");
 		Document doc = Jsoup.parse(result.getHTML());

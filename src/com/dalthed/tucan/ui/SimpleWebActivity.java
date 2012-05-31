@@ -14,15 +14,16 @@ import com.actionbarsherlock.view.MenuItem;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
+import com.dalthed.tucan.Connection.BrowserAnswerReciever;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.acraload.LoadAcraResults;
 import com.dalthed.tucan.preferences.MainPreferences;
 
-public abstract class SimpleWebActivity extends SherlockActivity implements ActionBar.OnNavigationListener {
+public abstract class SimpleWebActivity extends SherlockActivity implements ActionBar.OnNavigationListener, BrowserAnswerReciever {
 	public SimpleSecureBrowser callResultBrowser;
 	protected Boolean HTTPS=true;
 	protected Boolean navigateList = false;
-	public abstract void onPostExecute(AnswerObject result);
+
 	protected ActionBar acBar = null;
 	protected int navigationItem = 0;
 	

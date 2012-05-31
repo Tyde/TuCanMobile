@@ -24,6 +24,7 @@ import com.actionbarsherlock.app.SherlockListActivity;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
+import com.dalthed.tucan.Connection.BrowserAnswerReciever;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.helpers.FastSwitchHelper;
 import com.dalthed.tucan.preferences.MainPreferences;
@@ -35,7 +36,7 @@ import com.dalthed.tucan.preferences.MainPreferences;
  * 
  */
 public abstract class SimpleWebListActivity extends SherlockListActivity implements
-		ActionBar.OnNavigationListener {
+		ActionBar.OnNavigationListener,BrowserAnswerReciever {
 	public SimpleSecureBrowser callResultBrowser;
 	protected static final String LOG_TAG = "TuCanMobile";
 	protected Boolean HTTPS = true;
@@ -58,13 +59,7 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 		onCreate(savedInstanceState, false,0);
 	}
 
-	/**
-	 * Wird aufgerufen, wenn SimpleSecureBrowser fertig ist.
-	 * 
-	 * @param result
-	 */
-	public abstract void onPostExecute(AnswerObject result);
-
+	
 	
 
 	@Override

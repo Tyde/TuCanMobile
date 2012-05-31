@@ -58,7 +58,7 @@ public class LoadAcraResults extends SimpleWebListActivity {
 		}
 	}
 
-	@Override
+	
 	public void onPostExecute(AnswerObject result) {
 		Document doc = Jsoup.parse(result.getHTML());
 		Iterator<Element> divs = doc.select("div").iterator();

@@ -320,7 +320,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
     public void onRequestisAnswered(){
     	
     }
-	@Override
+	
 	public void onPostExecute(AnswerObject result) {
 		Document doc = Jsoup.parse(result.getHTML());
 		try{
