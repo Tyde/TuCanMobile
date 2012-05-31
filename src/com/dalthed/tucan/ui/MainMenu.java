@@ -17,12 +17,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.FeatureInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -31,34 +33,42 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Window;
 import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
+import com.dalthed.tucan.Connection.BackgroundBrowserReciever;
+import com.dalthed.tucan.Connection.BrowseMethods;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
+import com.dalthed.tucan.Connection.SimpleBackgroundBrowser;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 
-public class MainMenu extends SimpleWebActivity {
-
+public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReciever {
+	private Boolean windowFeatureCalled = false;
 	CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
 	private String menu_link_vv = "";
 	private String menu_link_ex = "";
 	private String menu_link_msg = "";
-
+	
 	private String menu_link_month = "";
 	private String UserName = "";
 	String SessionArgument = "";
 	private boolean noeventstoday = false;
 	private String[] today_event_links;
+	String load_link_ev_loc;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
+		//requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		
 		setContentView(R.layout.main_menu);
-
+		//sthis.windowFeatureCalled = true;
 		acBar.setTitle("Startseite");
 
 		BugSenseHandler.setup(this, "ed5c1682");
@@ -269,6 +279,14 @@ public class MainMenu extends SimpleWebActivity {
 			menu_link_ex = lcURL.getProtocol() + "://" + lcURL.getHost()
 					+ doc.select("li#link000280").select("a").attr("href");
 			menu_link_msg = lcURL.getProtocol() + "://" + lcURL.getHost() + ArchivLink.attr("href");
+			
+			
+			//Load special Location Information
+			load_link_ev_loc = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST + doc.select("li#link000269").select("a").attr("href"); 
+			
+			SimpleBackgroundBrowser simpleBackgroundBrowser = new SimpleBackgroundBrowser(this, acBar);
+			simpleBackgroundBrowser.execute(new RequestObject(load_link_ev_loc,result.getCookieManager(),RequestObject.METHOD_GET,""));
+			
 			/*
 			 * menu_link_export = lcURL.getProtocol() + "://" + lcURL.getHost()
 			 * + doc.select("li#link000272").select("a").attr("href");
@@ -331,6 +349,14 @@ public class MainMenu extends SimpleWebActivity {
 
 		}
 
+	}
+
+	public void onBackgroundBrowserFinalized(AnswerObject result) {
+		//chill
+	}
+
+	public boolean getwindowFeatureCalled() {
+		return this.windowFeatureCalled;
 	}
 
 	/*
