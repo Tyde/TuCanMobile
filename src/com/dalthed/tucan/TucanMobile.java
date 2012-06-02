@@ -30,13 +30,17 @@ public class TucanMobile extends Application {
 	public final static String LINK_FILE_NAME = "link_cache";
 	public final static Boolean CRASH = false;
 	public final static Boolean DEBUG = true;
+	public final static Boolean TESTING = true;
+	
 	public static final String LOG_TAG = "TuCanMobile";
 
 	@Override
 	public void onCreate() {
 		
+		if(!TucanMobile.TESTING){
+			ACRA.init(this);
+		}
 		
-		ACRA.init(this);
 		
 		super.onCreate();
 		TucanMobile.Appcontext = getApplicationContext();

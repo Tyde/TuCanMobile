@@ -38,7 +38,7 @@ import com.dalthed.tucan.preferences.MainPreferences;
 public abstract class SimpleWebListActivity extends SherlockListActivity implements
 		ActionBar.OnNavigationListener,BrowserAnswerReciever {
 	public SimpleSecureBrowser callResultBrowser;
-	protected static final String LOG_TAG = "TuCanMobile";
+	public static final String LOG_TAG = "TuCanMobile";
 	protected Boolean HTTPS = true;
 	
 	
@@ -69,7 +69,10 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 	}
 
 	public static void sendHTMLatBug(String html) {
-		ErrorReporter.getInstance().putCustomData("html", html);
+		if(!TucanMobile.TESTING){
+			ErrorReporter.getInstance().putCustomData("html", html);
+		}
+		
 	}
 
 	@Override

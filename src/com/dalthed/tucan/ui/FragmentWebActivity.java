@@ -41,7 +41,10 @@ public abstract class FragmentWebActivity extends SherlockFragmentActivity imple
 	}
 
 	public void sendHTMLatBug(String html) {
-		ErrorReporter.getInstance().putCustomData("html", html);
+		if(!TucanMobile.TESTING){
+			ErrorReporter.getInstance().putCustomData("html", html);
+		}
+		
 	}
 
 	@Override
