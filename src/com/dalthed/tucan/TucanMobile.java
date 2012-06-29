@@ -22,21 +22,50 @@ formUri = "http://daniel-thiem.de/ACRA/insertsql.php")
 //@ReportsCrashes(formUri = "http://www.bugsense.com/api/acra?api_key=f08ba688", formKey="")
 public class TucanMobile extends Application {
 	private static Context Appcontext;
+	/**
+	 * The Host String of Tucan without protocol
+	 */
 	public final static String TUCAN_HOST = "www.tucan.tu-darmstadt.de";
+	/**
+	 * The used Protocol
+	 */
 	public final static String TUCAN_PROT = "https://";
+	/**
+	 * Name of the extra in Intents in which Cookies are forwarded
+	 */
 	public final static String EXTRA_COOKIE = "Cookie";
+	/**
+	 * Name of the URL Intent-Extra
+	 */
 	public final static String EXTRA_URL = "URL";
+	/**
+	 * Name of the URL Intent-Extra
+	 */
 	public final static String EXTRA_USERNAME = "UserName";
+	/**
+	 * Name of the cache, where ActionBar fastswitch links are safed
+	 */
 	public final static String LINK_FILE_NAME = "link_cache";
+	/**
+	 * Make App Crash (Bug-Reporting testing)
+	 */
 	public final static Boolean CRASH = false;
+	/**
+	 * App is/isn't in Debug mode
+	 */
 	public final static Boolean DEBUG = true;
-	public final static Boolean TESTING = true;
-	
+	/**
+	 * App is/isn't in Testing mode; App cannot work properly, if it is in Testing mode
+	 */
+	public final static Boolean TESTING = false;
+	/**
+	 * Tag for Log
+	 */
 	public static final String LOG_TAG = "TuCanMobile";
 
 	@Override
 	public void onCreate() {
-		
+		//BugReporting does not Work in testing mode
 		if(!TucanMobile.TESTING){
 			ACRA.init(this);
 		}
@@ -49,7 +78,12 @@ public class TucanMobile extends Application {
 	public static Context getAppContext() {
 		return Appcontext;
 	}
-
+	/**
+	 * Writes a note on the SD. Only Used for Development purposes
+	 * @param sFileName Filname
+	 * @param sBody content
+	 * @param mContext App Context
+	 */
 	public static void generateNoteOnSD(String sFileName, String sBody,Context mContext) {
 		try {
 			File root = new File(Environment.getExternalStorageDirectory(),

@@ -35,7 +35,11 @@ import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.scraper.EventsScraper;
-
+/**
+ * Displays the Events Menu
+ * @author Daniel Thiem
+ *
+ */
 public class Events extends SimpleWebListActivity {
 
 	private CookieManager localCookieManager;
@@ -48,7 +52,7 @@ public class Events extends SimpleWebListActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
+		//Standart procedure: Loading URL from Intent
 		super.onCreate(savedInstanceState, true, 2);
 		setContentView(R.layout.events);
 		BugSenseHandler.setup(this, "ed5c1682");
@@ -78,9 +82,10 @@ public class Events extends SimpleWebListActivity {
 
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
+		//When Item is clicked, a new Request will start
 		SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(this);
 		RequestObject thisRequest;
-		Log.i(LOG_TAG, "Modus:" + mode);
+		
 		if (mode == 0) {
 			// Modus overview
 			switch (position) {
