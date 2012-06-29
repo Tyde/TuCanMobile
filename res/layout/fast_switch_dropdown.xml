@@ -22,7 +22,7 @@
             style="@style/dropdown_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/dropdown_maintitle"
+            
             android:ellipsize="marquee"
             android:textSize="@dimen/dropdown_subtitle" />
     </LinearLayout>

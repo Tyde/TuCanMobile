@@ -36,6 +36,7 @@ public class EventsScraper extends BasicScraper {
 
 	public EventsScraper(Context context, AnswerObject result) {
 		super(context, result);
+		
 	}
 	
 	

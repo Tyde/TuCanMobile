@@ -4,129 +4,116 @@
     android:versionCode="25"
     android:versionName="0.3pre" >
 
-    <uses-sdk android:minSdkVersion="4" />
+    <uses-sdk
+        android:minSdkVersion="4"
+        android:targetSdkVersion="16" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:debuggable="false"
+        android:name=".TucanMobile"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:name=".TucanMobile" 
         android:theme="@style/Theme.TucanActionBar" >
         <activity
-            android:configChanges="keyboardHidden|orientation"
-            android:label="@string/app_name"
             android:name=".TuCanMobileActivity"
-            >
-            <intent-filter >
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.MainMenu"
             android:configChanges="keyboardHidden|orientation"
             android:label="mainmenu"
-            android:name=".ui.MainMenu"
-            android:screenOrientation="portrait"
-            >
+            android:screenOrientation="portrait" >
         </activity>
 
         <!-- Vorlesungsverzeichnis -->
         <activity
-            android:configChanges="keyboardHidden|orientation"
-            android:label="Vorlesungsverzeichnis"
             android:name=".ui.VV"
-           >
+            android:configChanges="keyboardHidden|orientation"
+            android:label="Vorlesungsverzeichnis" >
         </activity>
         <activity
-            android:configChanges="keyboardHidden|orientation"
-            android:label="Vorlesungen"
             android:name=".ui.VV_Events"
-            >
+            android:configChanges="keyboardHidden|orientation"
+            android:label="Vorlesungen" >
         </activity>
 
         <!-- Veranstaltungen -->
         <activity
-            android:configChanges="keyboardHidden|orientation"
-            android:label="Veranstaltungen"
             android:name=".ui.Events"
-            >
+            android:configChanges="keyboardHidden|orientation"
+            android:label="Veranstaltungen" >
         </activity>
         <activity
-            android:configChanges="keyboardHidden|orientation"
-            android:label="Veranstaltung"
             android:name=".ui.SingleEvent"
-            >
+            android:configChanges="keyboardHidden|orientation"
+            android:label="Veranstaltung" >
         </activity>
         <activity
-            android:configChanges="keyboardHidden|orientation"
-            android:label="Veranstaltung"
             android:name=".ui.FragmentSingleEvent"
-             >
+            android:configChanges="keyboardHidden|orientation"
+            android:label="Veranstaltung" >
         </activity>
         <activity
-            android:configChanges="keyboardHidden|orientation"
-            android:label="Veranstaltungsanmeldung"
             android:name=".ui.ApplyEvent"
-            >
+            android:configChanges="keyboardHidden|orientation"
+            android:label="Veranstaltungsanmeldung" >
         </activity>
         <activity
-            android:configChanges="keyboardHidden|orientation"
-            android:label="Module"
             android:name=".ui.Module"
-            >
+            android:configChanges="keyboardHidden|orientation"
+            android:label="Module" >
         </activity>
 
         <!-- Prüfungen -->
 
         <activity
-            android:configChanges="keyboardHidden|orientation"
-            android:label="Prüfungen"
             android:name=".ui.Exams"
-             >
+            android:configChanges="keyboardHidden|orientation"
+            android:label="Prüfungen" >
         </activity>
         <activity
-            android:configChanges="keyboardHidden|orientation"
-            android:label="Anmeldung zu Prüfungen"
             android:name=".ui.RegisterExams"
-             >
+            android:configChanges="keyboardHidden|orientation"
+            android:label="Anmeldung zu Prüfungen" >
         </activity>
 
         <!-- Stundenplan -->
 
         <activity
-            android:configChanges="keyboardHidden|orientation"
-            android:label="Stundenplan"
             android:name=".ui.Schedule"
-             >
+            android:configChanges="keyboardHidden|orientation"
+            android:label="Stundenplan" >
         </activity>
 
         <!-- Nachrichten -->
         <activity
-            android:configChanges="keyboardHidden|orientation"
-            android:label="Nachrichten"
             android:name=".ui.Messages"
-             >
+            android:configChanges="keyboardHidden|orientation"
+            android:label="Nachrichten" >
         </activity>
         <activity
-            android:configChanges="keyboardHidden|orientation"
-            android:label="Nachricht"
             android:name=".ui.SingleMessage"
-             >
+            android:configChanges="keyboardHidden|orientation"
+            android:label="Nachricht" >
         </activity>
         <activity
+            android:name=".acraload.LoadAcraResults"
             android:configChanges="keyboardHidden|orientation"
-            android:label="ACRA"
-            android:name=".acraload.LoadAcraResults" >
+            android:label="ACRA" >
         </activity>
         <!-- Einstellungen -->
         <activity
-            android:label="Sicherheitseinstellungen"
-            android:name=".preferences.MainPreferences" >
+            android:name=".preferences.MainPreferences"
+            android:label="Sicherheitseinstellungen" >
         </activity>
     </application>
 

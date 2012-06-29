@@ -18,33 +18,16 @@
     <string name="events_subtitle_modules">Meine Module</string>
     <string name="events_subtitle_events">Meine Veranstaltungen</string>
     <string name="events_subtitle_register">Anmeldung</string>
-    <!--  depricated  -->
-    <!-- Vorlesungsverzeichnis -->
-    <string name="mmenu_vv">Vorlesungsverzeichnis//</string>
-
-    <!-- Prüfungen -->
-    <string name="exams_title">Prüfungen//</string>
-
-    <!-- Veranstaltungen -->
-    <string name="events_title">Veranstaltungen//</string>
-    <string name="applyevents_title">Anmeldung//</string>
-
-    <!-- Nachrichten -->
-    <string name="messages_title">Nachrichten//</string>
-
-    <!-- Stundenplan -->
-    <string name="schedule_title">Stundenplan//</string>
-    <!-- /depricated -->
+   
 
     <!-- UI Dynamic -->
-    <string name="ui_login">Anmelden...</string>
-    <string name="ui_load_data">Lade Daten...</string>
-    <string name="ui_calc">Berechne...</string>
+    <string name="ui_login">Anmelden…</string>
+    <string name="ui_load_data">Lade Daten…</string>
+    <string name="ui_calc">Berechne…</string>
 
     <!-- Preferences -->
     <string name="settings_general">Haupteinstellungen:</string>
-    <string name="settings_tuid">TU-ID:</string>
-    <string name="settings_pw">Passwort:</string>
+    
 
     <!-- Wrong Lang -->
     <string name="general_not_supported_lang">We are sorry to inform you, that this App does currently not support usage, when the TuCan Website is set to English. To use this App, please change back into German. English support will be added in the future.</string>

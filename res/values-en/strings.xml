@@ -1,47 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name">TuCanMobile</string>
 
-	<!-- Login -->
-	<string name="login_tuid">TU-ID:</string>
-	<string name="login_pw">Password:</string>
-	<string name="login_send">Login</string>
-	<string name="login_stay_logged">Remember Password</string>
-	<string name="loginmenu_preferences">Settings</string>
-	<string name="loginmenu_close">Close</string>
+    <string name="app_name">TuCanMobile</string>
 
-	<!-- Hauptmenü -->
-	<string name="mm_events_title">Today`s Evens:</string>
+    <!-- Login -->
+    <string name="login_tuid">TU-ID:</string>
+    <string name="login_pw">Password:</string>
+    <string name="login_send">Login</string>
+    <string name="login_stay_logged">Remember Password</string>
+    <string name="loginmenu_preferences">Settings</string>
+    <string name="loginmenu_close">Close</string>
 
-	<!-- Vorlesungsverzeichnis -->
-	<string name="mmenu_vv">Course Catalogue//</string>
+    <!-- Hauptmenü -->
+    <string name="mm_events_title">Today`s Evens:</string>
+    <string name="events_subtitle">Overview</string>
+    <string name="events_subtitle_modules">My Modules</string>
+    <string name="events_subtitle_events">My Events</string>
+    <string name="events_subtitle_register">Registration</string>
 
-	<!-- Prüfungen -->
-	<string name="exams_title">Examinations//</string>
+    <!-- UI Dynamic -->
+    <string name="ui_login">Logging in…</string>
+    <string name="ui_load_data">Loading Data…</string>
+    <string name="ui_calc">Calculating…</string>
 
-	<!-- Veranstaltungen -->
-	<string name="events_title">Courses//</string>
+    <!-- Preferences -->
+    <string name="settings_general">Main Settings:</string>
 
-	<!-- Nachrichten -->
-	<string name="messages_title">Messages//</string>
+    <!-- Wrong Language -->
 
-	<!-- Stundenplan -->
-	<string name="schedule_title">Schedule//</string>
-
-	<!-- UI Dynamic -->
-	<string name="ui_login">Logging in...</string>
-	<string name="ui_load_data">Loading Data...</string>
-	<string name="ui_calc">Calculating...</string>
-
-	<!-- Preferences -->
-	<string name="settings_username">TU-ID and Password:</string>
-	<string name="settings_tuid">TU-ID:</string>
-	<string name="settings_pw">Password:</string>
-
-	<!-- Wrong Language -->
-
-	<string name="general_not_supported_lang">We are sorry to inform you, that this App does
+    <string name="general_not_supported_lang">We are sorry to inform you, that this App does
 		currently not support usage, when the TuCan Website is set to English.
 		To use this App, please change back into German. English support will
 		be added in the future.</string>
+
+    <!-- ACRA -->
+    <string name="pref_disable_acra">deactivate Bugreport</string>
+    <string name="pref_acra_disabled">The Bugreport may contain private Data like Name and contents of the site. By disabling, Bugs that may occur, may not be analized and not be fixed.</string>
+    <string name="pref_acra_enabled">The Bugreport may contain private Data like Name and contents of the site. By disabling, Bugs that may occur, may not be analized and not be fixed.</string>
+
+     <!-- Image Content Description -->
+    <string name="img_content_logo">Logo</string>
+    <!-- DEBUG -->
+    <string name="debug_title">DEBUG</string>
 </resources>

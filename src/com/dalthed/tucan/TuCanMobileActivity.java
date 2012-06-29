@@ -93,7 +93,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 			//taking the fast Road
 			CheckBox remember = (CheckBox) findViewById(R.id.checkBox1);
 			remember.setChecked(true);
-			Toast.makeText(this, "Versuch: FastLogin", Toast.LENGTH_SHORT);
+			Toast.makeText(this, "Versuch: FastLogin", Toast.LENGTH_SHORT).show();
 			CookieManager localCookieManager = new CookieManager();
 			localCookieManager.generateManagerfromHTTPString(
 					TucanMobile.TUCAN_HOST, settCookie);
@@ -333,13 +333,13 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 	    		startActivity(i);
 			}
 			else {
-				Toast.makeText(this, "Schneller Login fehlgeschlagen", Toast.LENGTH_LONG);
+				Toast.makeText(this, "Schneller Login fehlgeschlagen", Toast.LENGTH_LONG).show();
 				onClickSendLogin(null);
 			}
 		}
 		catch(Exception e) {
 			Log.i(LOG_TAG,"Fehler: "+e.getMessage());
-			Toast.makeText(this, "Schneller Login fehlgeschlagen", Toast.LENGTH_LONG);
+			Toast.makeText(this, "Schneller Login fehlgeschlagen", Toast.LENGTH_LONG).show();
 			onClickSendLogin(null);
 		}
 		

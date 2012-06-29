@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="mainmenu_options">
+    	<item>Course catalogue</item>
+		<item>Schedule</item>
+		<item>Courses</item>
+		<item>Examinations</item>
+		<item>Messages</item>
+    </string-array>
+    
+       
+    <string-array name="singleevent_options">
+        <item>Course offering details</item>
+        <item>Appointments</item>   
+        <item>Material</item>   
+        <!-- <item>Kleingruppen</item>-->   
+    </string-array>
+</resources>

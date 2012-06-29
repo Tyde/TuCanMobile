@@ -1,6 +1,7 @@
 package com.dalthed.tucan.Connection;
 
 import com.dalthed.tucan.R;
+import com.dalthed.tucan.TucanMobile;
 
 import com.dalthed.tucan.ui.FragmentWebActivity;
 import com.dalthed.tucan.ui.SimpleWebActivity;
@@ -51,10 +52,11 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 		Activity parentActivityHandler = getparentActivityHandler();
 
 		// parentActivityHandler.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		if (parentActivityHandler != null) {
+		if (parentActivityHandler != null && !TucanMobile.TESTING) {
+			String loading = getparentActivityHandler().getResources().getString(R.string.ui_load_data);
 			dialog = ProgressDialog.show(parentActivityHandler, "",
 			// parentActivityHandler.getResources().getString(R.string.ui_load_data),true);
-					"Lade", true);
+					loading, true);
 			dialog.setCancelable(true);
 			dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 

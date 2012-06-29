@@ -1,14 +1,11 @@
 package com.dalthed.tucan.Connection;
 
+import android.os.AsyncTask;
+
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.app.SherlockListActivity;
-
-import android.R;
-
-import android.app.Activity;
-import android.os.AsyncTask;
 
 public class SimpleBackgroundBrowser extends AsyncTask<RequestObject, Integer, AnswerObject> {
 	public boolean HTTPS = true;

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.util.SparseArray;
 import android.widget.ArrayAdapter;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -29,13 +30,15 @@ public class FastSwitchHelper {
 	protected Boolean navigateList = false;
 	public int navigationItem = 0;
 
-	protected HashMap<Integer, Class> ActivitiesToStart = new HashMap<Integer, Class>() {
+	
+	
+	protected SparseArray<Class> ActivitiesToStart = new SparseArray<Class>() {
 		{
-			put(0, VV.class);
-			put(1, Schedule.class);
-			put(2, Events.class);
-			put(3, Exams.class);
-			put(4, Messages.class);
+			append(0, VV.class);
+			append(1, Schedule.class);
+			append(2, Events.class);
+			append(3, Exams.class);
+			append(4, Messages.class);
 		}
 	};
 	private ActionBar acBar;
