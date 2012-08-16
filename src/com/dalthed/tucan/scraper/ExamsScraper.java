@@ -74,22 +74,29 @@ public class ExamsScraper extends BasicScraper {
 		ArrayList<String> ResultCredits = new ArrayList<String>();
 		ArrayList<String> ResultCountedCredits = new ArrayList<String>();
 		Element ModuleOverviewTable = doc.select("div.tb").first();
-		Iterator<Element> ExamResultRowIterator = ModuleOverviewTable.select("tbody").first()
-				.select("tr").iterator();
-		while (ExamResultRowIterator.hasNext()) {
-			Element next = ExamResultRowIterator.next();
-			Elements ExamResultCols = next.select("td");
-			if (ExamResultCols.size() > 1) {
-				ResultName.add(ExamResultCols.get(1).text());
-				ResultCountedCredits.add(ExamResultCols.get(3).text());
-				ResultCredits.add(ExamResultCols.get(4).text());
-				ResultGrade.add(ExamResultCols.get(5).text());
-			}
+		Element examResultTable = ModuleOverviewTable.select("tbody").first();
+		if (examResultTable != null) {
+			Iterator<Element> ExamResultRowIterator = examResultTable.select("tr").iterator();
+			while (ExamResultRowIterator.hasNext()) {
+				Element next = ExamResultRowIterator.next();
+				Elements ExamResultCols = next.select("td");
+				if (ExamResultCols.size() > 1) {
+					ResultName.add(ExamResultCols.get(1).text());
+					ResultCountedCredits.add(ExamResultCols.get(3).text());
+					ResultCredits.add(ExamResultCols.get(4).text());
+					ResultGrade.add(ExamResultCols.get(5).text());
+				}
 
+			}
+			ListAdapter = new ThreeLinesTableAdapter(context, ResultName, ResultGrade,
+					ResultCredits, ResultCountedCredits);
+		} else {
+			ListAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,
+					new String[] { "Keine Informationen gefunden" });
 		}
-		ListAdapter = new ThreeLinesTableAdapter(context, ResultName, ResultGrade, ResultCredits,
-				ResultCountedCredits);
+
 		return ListAdapter;
+
 	}
 
 	public SpinnerAdapter spinnerAdapter() {
@@ -155,7 +162,7 @@ public class ExamsScraper extends BasicScraper {
 			}
 
 		}
-		
+
 		ListAdapter = new ThreeLinesAdapter(context, ResultName, ResultGrade, ResultCredits);
 		return ListAdapter;
 	}
@@ -179,7 +186,7 @@ public class ExamsScraper extends BasicScraper {
 				ExamState.add(ExamCols.get(4).text());
 			}
 		}
-		
+
 		ListAdapter = new ThreeLinesAdapter(context, ExamName, ExamDate, ExamState);
 		return ListAdapter;
 	}
