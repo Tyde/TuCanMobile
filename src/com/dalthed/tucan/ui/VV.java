@@ -90,6 +90,7 @@ public class VV extends SimpleWebListActivity {
 				previousURLs.add(scrape.getlastCalledURL());
 				scrape.onItemClick(l, v, position, id);
 			} else {
+				int newPosition = position-categoryAdapter.getCount();
 				evScrape.onItemClick(l, v, position, id);
 			}
 
