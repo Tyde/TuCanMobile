@@ -33,10 +33,12 @@ public class VVScraper extends BasicScraper implements OnItemClickListener {
 	public boolean haslinkstoclick;
 	public String[] Listlinks;
 	public Boolean hasBothCategoryAndEvents = false;
+	
 
 	public VVScraper(Context context, AnswerObject result, String userName) {
 		super(context, result);
 		this.userName = userName;
+		
 		this.cookieManager = result.getCookieManager();
 	}
 
@@ -136,6 +138,10 @@ public class VVScraper extends BasicScraper implements OnItemClickListener {
 
 			callOverviewBrowser.execute(thisRequest);
 		}
+	}
+	
+	public String getlastCalledURL(){
+		return lastCalledUrl;
 	}
 
 	
