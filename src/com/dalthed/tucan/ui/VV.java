@@ -28,6 +28,8 @@ import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
+import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.scraper.VVScraper;
 
 
 
@@ -35,11 +37,11 @@ public class VV extends SimpleWebListActivity {
 
 	CookieManager localCookieManager;
 	String UserName = "";
-	String[] Listlinks;
+	
 	String myHTML;
-	ArrayAdapter<String> ListAdapter = null;
-	boolean haslinkstoclick = false;
+	
 	private static final String LOG_TAG = "TuCanMobile";
+	private VVScraper scrape;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,10 +77,10 @@ public class VV extends SimpleWebListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		// Webhandling Start
-		if(haslinkstoclick==true){
+		if(scrape.haslinkstoclick==true){
 			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(this);
 			RequestObject thisRequest = new RequestObject(TucanMobile.TUCAN_PROT
-					+ TucanMobile.TUCAN_HOST + Listlinks[position],
+					+ TucanMobile.TUCAN_HOST + scrape.Listlinks[position],
 					localCookieManager, RequestObject.METHOD_GET, "");
 
 			callOverviewBrowser.execute(thisRequest);
@@ -95,72 +97,19 @@ public class VV extends SimpleWebListActivity {
 	}
 
 	public void callsetListAdapter(ArrayList<String> Elements) {
-		if (ListAdapter != null)
-			ListAdapter.clear();
-		ListAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, Elements);
-		setListAdapter(ListAdapter);
+		
 	}
 
 	
 	public void onPostExecute(AnswerObject result) {
-		Log.i(LOG_TAG, "HTML zum parsen bereit");
-		Document doc = Jsoup.parse(result.getHTML());
-		
-		if(doc.select("span.notLoggedText").text().length()>0){
-			Intent BackToLoginIntent = new Intent(this,TuCanMobileActivity.class);
+		scrape = new VVScraper(this, result, UserName);
+		try {
+			setListAdapter(scrape.scrapeAdapter(0));
+		} catch (LostSessionException e) {
+			//Im falle einer verlorenen Session -> zurück zum login
+			Intent BackToLoginIntent = new Intent(this, TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);
-		}
-		else {
-			Elements tbdata = doc.select("tr.tbdata");
-			sendHTMLatBug(doc.html());
-			
-			/*
-			 * Crash for Bug Reporting
-			 */
-			if(TucanMobile.CRASH){
-				String crasher = "";
-				crasher.charAt(48);
-			}
-			
-			
-			if (tbdata.size() > 0) {
-				Log.i(LOG_TAG, "In Event-Table angekomen");
-				Intent EventStartIntent = new Intent(VV.this, VV_Events.class);
-				EventStartIntent.putExtra("URL", result.getLastCalledURL());
-				EventStartIntent.putExtra("User", UserName);
-				EventStartIntent.putExtra("Cookie", result.getCookieManager()
-						.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-				startActivity(EventStartIntent);
-	
-			} else {
-				if(doc.select("div.tbdata").size()>0){
-					ArrayList<String> noEvents = new ArrayList<String>();
-					noEvents.add("Es wurden keine Veranstaltungen gefunden.");
-					callsetListAdapter(noEvents);
-					haslinkstoclick=false;
-				}
-				else {
-					Elements ulList = doc.select("ul#auditRegistration_list").first()
-							.select("li");
-					Iterator<Element> ListIterator = ulList.iterator();
-					ArrayList<String> AllListElementStrings = new ArrayList<String>();
-					Listlinks = new String[ulList.size()];
-					Log.i(LOG_TAG, "Größe: " + ulList.size());
-					int i = 0;
-					while (ListIterator.hasNext()) {
-						Element next = ListIterator.next();
-						AllListElementStrings.add(next.select("a").text());
-						Listlinks[i] = next.select("a").attr("href");
-						Log.i(LOG_TAG, "Bin bei " + i);
-						i++;
-					}
-					haslinkstoclick=true;
-					callsetListAdapter(AllListElementStrings);
-				}
-				
-			}
 		}
 	}
 
