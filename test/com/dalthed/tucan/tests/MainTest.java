@@ -13,6 +13,7 @@ import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.scraper.RegisterExamsScraper;
 import com.dalthed.tucan.ui.RegisterExams;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
@@ -24,7 +25,7 @@ public class MainTest extends BasicTest {
 
 	
 	@Test
-	public void testRegisterExamsScraper() throws IOException, LostSessionException {
+	public void testRegisterExamsScraper() throws IOException, LostSessionException, TucanDownException {
 
 		String URLStringtoCall = dtef.getErrorURL(896, "RegisterExams");
 		RegisterExams fakeExams = new RegisterExams();

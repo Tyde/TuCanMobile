@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.helpers.FastSwitchHelper;
 import com.dalthed.tucan.scraper.SingleEventScraper;
 import com.dalthed.tucan.ui.FragmentSingleEvent;
@@ -14,7 +15,7 @@ import com.dalthed.tucan.ui.FragmentSingleEvent;
 public class SingleEventTest extends BasicTest {
 
 	@Test
-	public void singleEventTest() throws IOException, LostSessionException {
+	public void singleEventTest() throws IOException, LostSessionException, TucanDownException {
 		String URLStringtoCall = dtef.getErrorURL(1188, "FragmentSingleEvent");
 		FragmentSingleEvent fakeSingleEvent = new FragmentSingleEvent();
 		
