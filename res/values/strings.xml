@@ -28,7 +28,7 @@
     <!-- Preferences -->
     <string name="settings_general">Haupteinstellungen:</string>
     
-
+	
     <!-- Wrong Lang -->
     <string name="general_not_supported_lang">We are sorry to inform you, that this App does currently not support usage, when the TuCan Website is set to English. To use this App, please change back into German. English support will be added in the future.</string>
 

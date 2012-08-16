@@ -47,6 +47,7 @@ import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleBackgroundBrowser;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.scraper.MainMenuScraper;
 
 public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReciever {
@@ -215,6 +216,9 @@ public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReci
 			Intent BackToLoginIntent = new Intent(this, TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);
+		
+		} catch (TucanDownException e) {
+			TucanMobile.alertOnTucanDown(this, e.getMessage());
 		}
 
 		acBar.setSubtitle(scrape.UserName);

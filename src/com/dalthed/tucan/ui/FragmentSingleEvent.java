@@ -35,6 +35,7 @@ import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.scraper.SingleEventScraper;
 import com.viewpagerindicator.TitlePageIndicator;
 
@@ -302,6 +303,8 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 					TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);
+		} catch (TucanDownException e) {
+			TucanMobile.alertOnTucanDown(this, e.getMessage());
 		}
 		
 			

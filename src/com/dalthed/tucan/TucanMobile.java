@@ -7,9 +7,14 @@ import java.io.IOException;
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
 
+import android.app.AlertDialog;
 import android.app.Application;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Environment;
+import android.sax.StartElementListener;
 import android.util.Log;
 
 //@ReportsCrashes(formKey = "dGxJeFNVZk5YQXRmaXV6WVZfVHYzdWc6MQ")
@@ -102,6 +107,19 @@ public class TucanMobile extends Application {
 			String importError = e.getMessage();
 			Log.e("TuCanMobile", importError);
 		}
+	}
+	
+	public static void alertOnTucanDown(final Context context,String error) {
+		Dialog tucanDownDialog = new AlertDialog.Builder(context).setTitle("")
+				.setMessage(error)
+				.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+
+					public void onClick(DialogInterface dialog, int which) {
+						Intent goToLogin = new Intent(context, TuCanMobileActivity.class);
+						goToLogin.putExtra("loggedout", true);
+						context.startActivity(goToLogin);
+					}
+				}).create();
 	}
 
 }

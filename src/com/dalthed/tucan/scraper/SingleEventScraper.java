@@ -22,6 +22,7 @@ import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.adapters.AppointmentAdapter;
 import com.dalthed.tucan.adapters.TwoLinesAdapter;
 import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.helpers.FastSwitchHelper;
 import com.dalthed.tucan.ui.FragmentSingleEvent.PagerAdapter;
 import com.dalthed.tucan.ui.Module;
@@ -51,7 +52,7 @@ public class SingleEventScraper extends BasicScraper {
 	}
 
 	@Override
-	public ListAdapter scrapeAdapter(int mode) throws LostSessionException {
+	public ListAdapter scrapeAdapter(int mode) throws LostSessionException,TucanDownException {
 		if (checkForLostSeesion()) {
 			if (PREPCall == false) {
 

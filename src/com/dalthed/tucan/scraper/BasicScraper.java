@@ -6,6 +6,7 @@ import org.jsoup.nodes.Document;
 import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.ui.SimpleWebListActivity;
 
 import android.content.Context;
@@ -43,18 +44,18 @@ public abstract class BasicScraper {
 	 * @return der Adapter für die Liste
 	 * @throws LostSessionException
 	 */
-	abstract public ListAdapter scrapeAdapter(int mode) throws LostSessionException;
+	abstract public ListAdapter scrapeAdapter(int mode) throws LostSessionException,TucanDownException;
 	/**
 	 * Prüft ob die Session schon abgelaufen ist und wirft eine Exception falls dies passiert
 	 * @return true, wenn Session noch aktiv
 	 * @throws LostSessionException
 	 */
-	protected Boolean checkForLostSeesion() throws LostSessionException {
+	protected Boolean checkForLostSeesion() throws LostSessionException,TucanDownException {
 		SimpleWebListActivity.sendHTMLatBug(doc.html());
 		if (doc.select("span.notLoggedText").text().length() > 0) {
-			Intent BackToLoginIntent = new Intent(this.context,
-					TuCanMobileActivity.class);
 			throw new LostSessionException();
+		} else if(doc.select("div#pageContainer")==null){
+			throw new TucanDownException(doc.text());
 		} else {
 			return true;
 		}

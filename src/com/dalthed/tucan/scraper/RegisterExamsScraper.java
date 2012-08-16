@@ -27,6 +27,7 @@ import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.adapters.RegisterExamAdapter;
 import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.exceptions.TucanDownException;
 
 
 
@@ -63,7 +64,7 @@ public class RegisterExamsScraper extends BasicScraper implements OnClickListene
 	}
 
 	@Override
-	public ListAdapter scrapeAdapter(int mode) throws LostSessionException {
+	public ListAdapter scrapeAdapter(int mode) throws LostSessionException,TucanDownException {
 
 		if (checkForLostSeesion() && mode == 0) {
 
@@ -81,7 +82,7 @@ public class RegisterExamsScraper extends BasicScraper implements OnClickListene
 	 * @throws LostSessionException 
 	 * @since 2012-06-01
 	 */
-	public int getRegisterdialog() throws LostSessionException {
+	public int getRegisterdialog() throws LostSessionException,TucanDownException {
 		if (checkForLostSeesion()) {
 			
 			Element form = doc.select("form[name=registrationdetailsform]").first();
@@ -120,7 +121,7 @@ public class RegisterExamsScraper extends BasicScraper implements OnClickListene
 	 * @throws LostSessionException 
 	 * @since 2012-06-01
 	 */
-	public int startRegistration() throws LostSessionException {
+	public int startRegistration() throws LostSessionException,TucanDownException {
 		if (checkForLostSeesion()) {
 			
 			Element form = doc.select("form[name=registrationdetailsform]").first();

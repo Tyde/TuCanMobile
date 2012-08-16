@@ -22,6 +22,7 @@ import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.adapters.ThreeLinesAdapter;
 import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.ui.FragmentSingleEvent;
 import com.dalthed.tucan.ui.VV_Events;
 
@@ -37,7 +38,7 @@ public class VVEventsScraper extends BasicScraper implements OnItemClickListener
 	}
 
 	@Override
-	public ListAdapter scrapeAdapter(int mode) throws LostSessionException {
+	public ListAdapter scrapeAdapter(int mode) throws LostSessionException,TucanDownException {
 		if(checkForLostSeesion()){
 			return getListOfEvents();
 		}

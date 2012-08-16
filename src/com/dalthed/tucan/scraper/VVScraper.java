@@ -23,6 +23,7 @@ import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.ui.VV;
 import com.dalthed.tucan.ui.VV_Events;
 
@@ -43,7 +44,7 @@ public class VVScraper extends BasicScraper implements OnItemClickListener {
 	}
 
 	@Override
-	public ListAdapter scrapeAdapter(int mode) throws LostSessionException {
+	public ListAdapter scrapeAdapter(int mode) throws LostSessionException,TucanDownException {
 		if (checkForLostSeesion()) {
 			Elements tbdata = doc.select("tr.tbdata");
 
