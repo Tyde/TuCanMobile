@@ -91,7 +91,7 @@ public class VV extends SimpleWebListActivity {
 				scrape.onItemClick(l, v, position, id);
 			} else {
 				int newPosition = position-categoryAdapter.getCount();
-				evScrape.onItemClick(l, v, position, id);
+				evScrape.onItemClick(l, v, newPosition, id);
 			}
 
 		}

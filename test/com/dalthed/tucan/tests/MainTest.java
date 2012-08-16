@@ -17,24 +17,12 @@ import com.dalthed.tucan.scraper.RegisterExamsScraper;
 import com.dalthed.tucan.ui.RegisterExams;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 
-@RunWith(RobolectricTestRunner.class)
-public class MainTest {
-	private DanielThiemdeErrorFinder dtef;
-	private CookieManager cm;
+public class MainTest extends BasicTest {
+	
 
-	@Before
-	public void setUp() throws Exception {
+	
 
-		if (!TucanMobile.TESTING) {
-			System.err.println("App is NOT in Testing mode");
-			assertTrue(false);
-			System.exit(1);
-		}
-		dtef = new DanielThiemdeErrorFinder();
-		cm = new CookieManager();
-		cm.inputCookie("www.daniel-thiem.de", "canView", "16ede40c878aee38d0882b3a6b2642c0ae76dafb");
-	}
-
+	
 	@Test
 	public void testRegisterExamsScraper() throws IOException, LostSessionException {
 

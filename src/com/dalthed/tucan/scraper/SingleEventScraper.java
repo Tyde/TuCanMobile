@@ -41,7 +41,7 @@ public class SingleEventScraper extends BasicScraper {
 	private ViewPager mPager;
 
 	public SingleEventScraper(Context context, AnswerObject result, Boolean PREPCall,
-			FastSwitchHelper fsh, PagerAdapter mPageAdapter,ViewPager mPager) {
+			FastSwitchHelper fsh, PagerAdapter mPageAdapter, ViewPager mPager) {
 		super(context, result);
 		this.PREPCall = PREPCall;
 		this.localCookieManager = result.getCookieManager();
@@ -54,15 +54,14 @@ public class SingleEventScraper extends BasicScraper {
 	public ListAdapter scrapeAdapter(int mode) throws LostSessionException {
 		if (checkForLostSeesion()) {
 			if (PREPCall == false) {
-				
+
 				checkforModule();
 				String Title = doc.select("h1").text();
-
-				fsh.setSubtitle(Title);
+				if (fsh != null) {
+					fsh.setSubtitle(Title);
+				}
 
 				scrapeInformations();
-
-				
 
 				Iterator<Element> captionIt = doc.select("caption").iterator();
 				Iterator<Element> dateTable = null;
@@ -80,14 +79,15 @@ public class SingleEventScraper extends BasicScraper {
 				scrapeAppointments(dateTable);
 
 				scrapeMaterials(materialTable);
-
-				mPageAdapter.initializeData(mPager);
+				if (mPageAdapter != null) {
+					mPageAdapter.initializeData(mPager);
+				}
 
 			} else {
 				// Es handelt sich um eine Übersichtsseite zu einem einzelnen
 				// Termin
 				callRealEventPage();
-				
+
 			}
 		}
 		return null;
@@ -164,14 +164,18 @@ public class SingleEventScraper extends BasicScraper {
 			materialFile.add("");
 		}
 		if (ct > 2) {
-			mPageAdapter.setAdapter(new AppointmentAdapter(context, materialNumber,
-					materialFile, null, materialName, materialDesc));
-			thereAreFiles = true;
+			if (mPageAdapter != null) {
+				mPageAdapter.setAdapter(new AppointmentAdapter(context, materialNumber,
+						materialFile, null, materialName, materialDesc));
+				thereAreFiles = true;
 
-			mPageAdapter.fileList = materialLink;
-		} else
+				mPageAdapter.fileList = materialLink;
+			}
+		} else if (mPageAdapter != null) {
 			mPageAdapter.setAdapter(new ArrayAdapter<String>(context,
 					android.R.layout.simple_list_item_1, new String[] { "Kein Material" }));
+			thereAreFiles = false;
+		}
 	}
 
 	/**
@@ -205,8 +209,10 @@ public class SingleEventScraper extends BasicScraper {
 			eventRoom.add("Keine Daten vorhanden");
 			eventInstructor.add("");
 		}
-		mPageAdapter.setAdapter(new AppointmentAdapter(context, eventDate, eventTime,
-				eventNumber, eventRoom, eventInstructor));
+		if (mPageAdapter != null) {
+			mPageAdapter.setAdapter(new AppointmentAdapter(context, eventDate, eventTime,
+					eventNumber, eventRoom, eventInstructor));
+		}
 	}
 
 	/**
@@ -234,8 +240,9 @@ public class SingleEventScraper extends BasicScraper {
 			values.add(information[1]);
 
 		}
-
-		mPageAdapter.setAdapter(new TwoLinesAdapter(context, titles, values));
+		if (mPageAdapter != null) {
+			mPageAdapter.setAdapter(new TwoLinesAdapter(context, titles, values));
+		}
 	}
 
 	private static String[] crop(String startstring) {

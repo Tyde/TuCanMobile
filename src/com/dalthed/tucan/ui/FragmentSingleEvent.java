@@ -162,7 +162,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 			if(object instanceof ArrayListFragment && position <= (adapterList.size()-1) ){
 				Log.i(LOG_TAG,"is the right instance -> Position is "+position+" and Object is: "+object.toString());
 				ArrayListFragment curFrag = ((ArrayListFragment) object);
-				if(position==2){
+				if(position==2 && fileList != null){
 					curFrag.setFilelinks(fileList);
 				}
 				if(!curFrag.hasListAdapter){
