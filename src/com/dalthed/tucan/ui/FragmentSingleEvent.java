@@ -34,6 +34,8 @@ import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
+import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.scraper.SingleEventScraper;
 import com.viewpagerindicator.TitlePageIndicator;
 
 
@@ -46,11 +48,8 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 	private String URLStringtoCall;
 	private Boolean PREPCall;
 	protected String[] mTitles;
-	ArrayList<String> materialLink;
 	
 
-	Integer mode = 0;  
-	boolean thereAreFiles = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -292,259 +291,28 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 
 	public void onPostExecute(AnswerObject result) {
 
-		Document doc = Jsoup.parse(result.getHTML());
-		sendHTMLatBug(doc.html());
-		if (result.getHTML().length()<10 || doc.select("span.notLoggedText").text().length() > 0) {
+		SingleEventScraper scrape = new SingleEventScraper(this, result, PREPCall, fsh, mPageAdapter, mPager);
+		try {
+			
+			scrape.scrapeAdapter(0);
+			this.PREPCall = scrape.PREPCall;
+		}
+		catch(LostSessionException e){
 			Intent BackToLoginIntent = new Intent(this,
 					TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);
-		} else {
-			if (PREPCall == false) {
-				if (!doc.select("form[name=moduleform]").isEmpty()) {
-					Intent goToModule = new Intent(this, Module.class);
-					
-					goToModule.putExtra("Cookie", localCookieManager
-							.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-					goToModule.putExtra("URL", "HTML");
-					goToModule.putExtra("HTML", result.getHTML());
-					startActivity(goToModule);
-					return;
-				}
-				String Title = doc.select("h1").text();
-				
-				fsh.setSubtitle(Title);
-				
-				Elements Deltarows = doc.select("table[courseid]").first()
-						.select("tr");
-				Element rows;
-				if (Deltarows.size() == 1) {
-					rows = Deltarows.get(0).select("td").first();
-				} else {
-					rows = Deltarows.get(1).select("td").first();
-				}
-
-				Elements Paragraphs = rows.select("p");
-				Iterator<Element> PaIt = Paragraphs.iterator();
-				ArrayList<String> titles = new ArrayList<String>();
-				ArrayList<String> values = new ArrayList<String>();
-
-				while (PaIt.hasNext()) {
-
-					Element next = PaIt.next();
-					String[] information = crop(next.html());
-					titles.add(information[0]);
-					values.add(information[1]);
-
-				}
-
-				mPageAdapter.setAdapter(new SingleEventAdapter(titles, values));
-
-				// Termin-Selektor:
-				// Terminselektor
-
-				Iterator<Element> captionIt = doc.select("caption").iterator();
-				Iterator<Element> DateTable = null;
-				Iterator<Element> materialTable = null;
-				while (captionIt.hasNext()) {
-					Element next = captionIt.next();
-					if (next.text().equals("Termine")) {
-
-						DateTable = next.parent().select("tr").iterator();
-					} else if (next.text().contains("Material")) {
-
-						materialTable = next.parent().select("tr").iterator();
-					}
-				}
-				ArrayList<String> eventNumber = new ArrayList<String>();
-				ArrayList<String> eventDate = new ArrayList<String>();
-				ArrayList<String> eventTime = new ArrayList<String>();
-
-				ArrayList<String> eventRoom = new ArrayList<String>();
-				ArrayList<String> eventInstructor = new ArrayList<String>();
-				if (DateTable != null) {
-					while (DateTable.hasNext()) {
-						Element next = DateTable.next();
-						Elements cols = next.select("td");
-						if (cols.size() > 5) {
-							eventNumber.add(cols.get(0).text());
-							eventDate.add(cols.get(1).text());
-							eventTime.add(cols.get(2).text() + "-"
-									+ cols.get(3).text());
-							eventRoom.add(cols.get(4).text());
-							eventInstructor.add(cols.get(5).text());
-						}
-
-					}
-
-				} else {
-					eventDate.add("");
-					eventTime.add("");
-					eventNumber.add("");
-					eventRoom.add("Keine Daten vorhanden");
-					eventInstructor.add("");
-				}
-				mPageAdapter.setAdapter(new AppointmentAdapter(eventDate,
-						eventTime, eventNumber, eventRoom, eventInstructor));
-
-				int ct = 0;
-				ArrayList<String> materialNumber = new ArrayList<String>();
-				ArrayList<String> materialName = new ArrayList<String>();
-				ArrayList<String> materialDesc = new ArrayList<String>();
-				materialLink = new ArrayList<String>();
-				ArrayList<String> materialFile = new ArrayList<String>();
-				int mod = 0;
-				if (materialTable != null) {
-					while (materialTable.hasNext()) {
-						Element next = materialTable.next();
-
-						if (next.select("td").size() > 1) {
-							ct++;
-
-							if (next.select("td").get(0).text()
-									.matches("[0-9]+")) {
-								// First line
-
-								materialNumber.add(next.select("td").get(0)
-										.text());
-								materialName.add(next.select("td").get(1)
-										.text());
-								if (mod == 1) {
-									materialDesc.add("");
-									mod = 2;
-								}
-								if (mod == 2) {
-									materialLink.add("");
-									materialFile.add("");
-								}
-
-								mod = 1;
-							} else if (mod == 1) {
-
-								materialDesc.add(next.select("td").get(1)
-										.text());
-								mod = 2;
-							} else if (mod == 2) {
-
-								materialLink.add(next.select("td").get(1)
-										.select("a").attr("href"));
-								materialFile.add(next.select("td").get(1)
-										.select("a").text());
-								mod = 0;
-							}
-						}
-					}
-				}
-				if (mod == 1) {
-					materialDesc.add("");
-					mod = 2;
-				}
-				if (mod == 2) {
-					materialLink.add("");
-					materialFile.add("");
-				}
-				if (ct > 2) {
-					mPageAdapter.setAdapter(new AppointmentAdapter(
-							materialNumber, materialFile, null, materialName,
-							materialDesc));
-					thereAreFiles = true;
-
-					mPageAdapter.fileList = materialLink;
-				} else
-					mPageAdapter.setAdapter(new ArrayAdapter<String>(this,
-							android.R.layout.simple_list_item_1,
-							new String[] { "Kein Material" }));
-
-				//mPageAdapter.finishUpdate(mPager); Depricated
-				mPageAdapter.initializeData(mPager);
-
-			} else {
-				String nextlink = TucanMobile.TUCAN_PROT
-						+ TucanMobile.TUCAN_HOST
-						+ doc.select("div.detailout").select("a").attr("href");
-				SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
-						this);
-				RequestObject thisRequest = new RequestObject(nextlink,
-						localCookieManager, RequestObject.METHOD_GET, "");
-				PREPCall = false;
-				callOverviewBrowser.execute(thisRequest);
-			}
 		}
+		
+			
+	
 
 	}
 
-	private static String[] crop(String startstring) {
-		if (startstring.length() > 0) {
-			String[] splitted = startstring.split("</b>");
-			return new String[] { Jsoup.parse(splitted[0]).text().trim(),
-					Jsoup.parse(splitted[1]).text() };
-		} else {
-			return new String[] { "", "" };
+	
 
-		}
-	}
+	
 
-	class SingleEventAdapter extends ArrayAdapter<String> {
-		ArrayList<String> values;
-
-		public SingleEventAdapter(ArrayList<String> properties,
-				ArrayList<String> values) {
-			super(FragmentSingleEvent.this, R.layout.singleevent_row,
-					R.id.singleevent_row_property, properties);
-			this.values = values;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			View row = super.getView(position, convertView, parent);
-			TextView ValueTextView = (TextView) row
-					.findViewById(R.id.singleevent_row_value);
-
-			ValueTextView.setText(" " + this.values.get(position));
-
-			return row;
-		}
-
-	}
-
-	class AppointmentAdapter extends ArrayAdapter<String> {
-		ArrayList<String> appointmentTime, appointmentNumber, appointmentRoom,
-				appointmentInstructor;
-
-		public AppointmentAdapter(ArrayList<String> appDate,
-				ArrayList<String> appTime, ArrayList<String> appNumber,
-				ArrayList<String> appRoom, ArrayList<String> appInstructor) {
-			super(FragmentSingleEvent.this, R.layout.singleevent_row_date,
-					R.id.singleevent_row_date_date, appDate);
-			this.appointmentTime = appTime;
-			this.appointmentInstructor = appInstructor;
-			this.appointmentNumber = appNumber;
-			this.appointmentRoom = appRoom;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			View row = super.getView(position, convertView, parent);
-			TextView AppTimeView = (TextView) row
-					.findViewById(R.id.singleevent_row_date_time);
-			TextView AppNumberView = (TextView) row
-					.findViewById(R.id.singleevent_row_date_number);
-			TextView AppRoomView = (TextView) row
-					.findViewById(R.id.singleevent_row_date_room);
-			TextView AppInstructorView = (TextView) row
-					.findViewById(R.id.singleevent_row_date_instructor);
-
-			AppTimeView.setText(this.appointmentTime.get(position));
-			if (this.appointmentNumber != null)
-				AppNumberView.setText(this.appointmentNumber.get(position));
-			else
-				AppNumberView.setText("");
-			AppRoomView.setText(this.appointmentRoom.get(position));
-			AppInstructorView.setText(this.appointmentInstructor.get(position));
-
-			return row;
-		}
-
-	}
+	
 
 }

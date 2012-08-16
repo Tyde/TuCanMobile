@@ -12,7 +12,7 @@ import com.dalthed.tucan.R;
 
 
 public class ThreeLinesTableAdapter extends ArrayAdapter<String> {
-	ArrayList<String> resultName, resultGrade, resultCredits,
+	protected ArrayList<String> resultName, resultGrade, resultCredits,
 			resultCountedCredits;
 
 	public ThreeLinesTableAdapter(Context context,ArrayList<String> resName,

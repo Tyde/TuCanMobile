@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dalthed.tucan"
     android:versionCode="25"
-    android:versionName="0.3pre" >
+    android:versionName="0.3.1dev" >
 
     <uses-sdk
         android:minSdkVersion="4"
