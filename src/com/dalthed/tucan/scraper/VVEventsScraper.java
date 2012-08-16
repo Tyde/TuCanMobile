@@ -1,0 +1,72 @@
+package com.dalthed.tucan.scraper;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.select.Elements;
+
+import android.content.Context;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+
+import com.dalthed.tucan.Connection.AnswerObject;
+import com.dalthed.tucan.adapters.ThreeLinesAdapter;
+import com.dalthed.tucan.exceptions.LostSessionException;
+
+
+public class VVEventsScraper extends BasicScraper {
+
+	public String[] Eventlink;
+
+	public VVEventsScraper(Context context, AnswerObject result) {
+		super(context, result);
+	}
+
+	@Override
+	public ListAdapter scrapeAdapter(int mode) throws LostSessionException {
+		if(checkForLostSeesion()){
+			return getListOfEvents();
+		}
+		return null;
+	}
+
+	/**
+	 * @return
+	 */
+	private ListAdapter getListOfEvents() {
+		Elements tbdata = doc.select("tr.tbdata");
+		String[] Eventnames = new String[tbdata.size()];
+		String[] Eventdozent = new String[tbdata.size()];
+		String[] Eventtype = new String[tbdata.size()];
+		Eventlink = new String[tbdata.size()];
+		int i = 0;
+		if (tbdata.size() > 0) {
+			Iterator<Element> EventListIterator = tbdata.iterator();
+			while (EventListIterator.hasNext()) {
+				Element nextElement = EventListIterator.next();
+				Elements rows = nextElement.select("td");
+				Element leftcolumn = rows.get(1);
+				Element rightcolumn = rows.get(3);
+				Eventlink[i] = leftcolumn.select("a").attr("href");
+				Eventnames[i] = leftcolumn.select("a").text();
+				List<Node> importantnotes = leftcolumn.childNodes();
+				Iterator<Node> imnit = importantnotes.iterator();
+				while (imnit.hasNext()) {
+					Log.i(LOG_TAG, imnit.next().outerHtml());
+				}
+				Eventdozent[i] = importantnotes.get(3).toString();
+				Eventtype[i] = rightcolumn.text();
+				Log.i(LOG_TAG, Eventtype[i]);
+				i++;
+			}
+		}
+		ArrayAdapter<String> listAdapter = new ThreeLinesAdapter(context,Arrays.asList(Eventnames)
+				,Arrays.asList(Eventtype) ,Arrays.asList(Eventdozent));
+		return listAdapter;
+	}
+
+}

@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.bugsense.trace.BugSenseHandler;
@@ -104,7 +105,13 @@ public class VV extends SimpleWebListActivity {
 	public void onPostExecute(AnswerObject result) {
 		scrape = new VVScraper(this, result, UserName);
 		try {
-			setListAdapter(scrape.scrapeAdapter(0));
+			ListAdapter adapter = scrape.scrapeAdapter(0);
+			if(adapter!=null){
+				setListAdapter(scrape.scrapeAdapter(0));
+			} else if(scrape.hasBothCategoryAndEvents){
+				//TODO: Display both Categories and Events
+			}
+			
 		} catch (LostSessionException e) {
 			//Im falle einer verlorenen Session -> zurück zum login
 			Intent BackToLoginIntent = new Intent(this, TuCanMobileActivity.class);

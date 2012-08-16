@@ -1,6 +1,6 @@
 package com.dalthed.tucan.adapters;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.view.View;
@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.dalthed.tucan.R;
-import com.dalthed.tucan.ui.Events;
 /**
  * Ehemalig ModuleAdapter
  * @author Daniel Thiem
@@ -17,10 +16,10 @@ import com.dalthed.tucan.ui.Events;
  */
 public class ThreeLinesAdapter extends ArrayAdapter<String> {
 
-	ArrayList<String> middleRightThin, bottomLeftThin;
+	List<String> middleRightThin, bottomLeftThin;
 
-	public ThreeLinesAdapter(Context context, ArrayList<String> topLeftFat,
-			ArrayList<String> middleRightThin, ArrayList<String> bottomLeftThin) {
+	public ThreeLinesAdapter(Context context, List<String> topLeftFat,
+			List<String> middleRightThin, List<String> bottomLeftThin) {
 		super(context, R.layout.row_vv_events, R.id.row_vv_veranst, topLeftFat);
 		this.bottomLeftThin = bottomLeftThin;
 		this.middleRightThin = middleRightThin;

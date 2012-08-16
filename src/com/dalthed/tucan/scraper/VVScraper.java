@@ -25,6 +25,7 @@ public class VVScraper extends BasicScraper {
 	private CookieManager cookieManager;
 	public boolean haslinkstoclick;
 	public String[] Listlinks;
+	public Boolean hasBothCategoryAndEvents = false;
 
 	public VVScraper(Context context, AnswerObject result, String userName) {
 		super(context, result);
@@ -40,7 +41,23 @@ public class VVScraper extends BasicScraper {
 			ArrayAdapter<String> listAdapter = null;
 
 			if (tbdata.size() > 0) {
-				startEventOverview();
+				Element ulElement = doc.select("ul#auditRegistration_list").first();
+				if (ulElement != null) {
+					Elements liList = ulElement.select("li");
+					if (liList.size() > 0) {
+						// Sowohl Kategorieliste, als auch einzelne
+						// Veranstaltungen vorhanden.
+						hasBothCategoryAndEvents = true;
+						if (mode == 1) {
+							return getVVCategory();
+						}
+
+					} else {
+						startEventOverview();
+					}
+				} else {
+					startEventOverview();
+				}
 
 			} else {
 				if (doc.select("div.tbdata").size() > 0) {
@@ -49,21 +66,7 @@ public class VVScraper extends BasicScraper {
 					listAdapter = convertArrayListToArrayAdapter(noEvents);
 					haslinkstoclick = false;
 				} else {
-					Elements ulList = doc.select("ul#auditRegistration_list").first().select("li");
-					Iterator<Element> ListIterator = ulList.iterator();
-					ArrayList<String> AllListElementStrings = new ArrayList<String>();
-					Listlinks = new String[ulList.size()];
-					Log.i(LOG_TAG, "Größe: " + ulList.size());
-					int i = 0;
-					while (ListIterator.hasNext()) {
-						Element next = ListIterator.next();
-						AllListElementStrings.add(next.select("a").text());
-						Listlinks[i] = next.select("a").attr("href");
-						Log.i(LOG_TAG, "Bin bei " + i);
-						i++;
-					}
-					haslinkstoclick = true;
-					listAdapter = convertArrayListToArrayAdapter(AllListElementStrings);
+					listAdapter = getVVCategory();
 				}
 
 			}
@@ -71,6 +74,29 @@ public class VVScraper extends BasicScraper {
 		}
 		return null;
 
+	}
+
+	/**
+	 * @return
+	 */
+	private ArrayAdapter<String> getVVCategory() {
+		ArrayAdapter<String> listAdapter;
+		Elements ulList = doc.select("ul#auditRegistration_list").first().select("li");
+		Iterator<Element> ListIterator = ulList.iterator();
+		ArrayList<String> AllListElementStrings = new ArrayList<String>();
+		Listlinks = new String[ulList.size()];
+		Log.i(LOG_TAG, "Größe: " + ulList.size());
+		int i = 0;
+		while (ListIterator.hasNext()) {
+			Element next = ListIterator.next();
+			AllListElementStrings.add(next.select("a").text());
+			Listlinks[i] = next.select("a").attr("href");
+			Log.i(LOG_TAG, "Bin bei " + i);
+			i++;
+		}
+		haslinkstoclick = true;
+		listAdapter = convertArrayListToArrayAdapter(AllListElementStrings);
+		return listAdapter;
 	}
 
 	private ArrayAdapter<String> convertArrayListToArrayAdapter(ArrayList<String> list) {
