@@ -98,13 +98,7 @@ public class VV_Events extends SimpleWebListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		Intent StartSingleEventIntent = new Intent(VV_Events.this, FragmentSingleEvent.class);
-		StartSingleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-				+ scrape.Eventlink[position]);
-		StartSingleEventIntent.putExtra("Cookie",
-				localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-		// StartSingleEventIntent.putExtra("UserName", UserName);
-		startActivity(StartSingleEventIntent);
+		
 	}
 
 	public void onPostExecute(AnswerObject result) {

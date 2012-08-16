@@ -9,21 +9,31 @@ import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 
+import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
+import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.adapters.ThreeLinesAdapter;
 import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.ui.FragmentSingleEvent;
+import com.dalthed.tucan.ui.VV_Events;
 
 
-public class VVEventsScraper extends BasicScraper {
+public class VVEventsScraper extends BasicScraper implements OnItemClickListener {
 
 	public String[] Eventlink;
+	private CookieManager localCookieManager;
 
 	public VVEventsScraper(Context context, AnswerObject result) {
 		super(context, result);
+		this.localCookieManager = result.getCookieManager();
 	}
 
 	@Override
@@ -67,6 +77,17 @@ public class VVEventsScraper extends BasicScraper {
 		ArrayAdapter<String> listAdapter = new ThreeLinesAdapter(context,Arrays.asList(Eventnames)
 				,Arrays.asList(Eventtype) ,Arrays.asList(Eventdozent));
 		return listAdapter;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		Intent StartSingleEventIntent = new Intent(context, FragmentSingleEvent.class);
+		StartSingleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+				+ this.Eventlink[position]);
+		StartSingleEventIntent.putExtra("Cookie",
+				localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+		// StartSingleEventIntent.putExtra("UserName", UserName);
+		context.startActivity(StartSingleEventIntent);
 	}
 
 }

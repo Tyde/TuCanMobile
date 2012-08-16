@@ -29,7 +29,9 @@ import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
+import com.dalthed.tucan.adapters.MergedAdapter;
 import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.scraper.VVEventsScraper;
 import com.dalthed.tucan.scraper.VVScraper;
 
 
@@ -43,6 +45,9 @@ public class VV extends SimpleWebListActivity {
 	
 	private static final String LOG_TAG = "TuCanMobile";
 	private VVScraper scrape;
+	private VVEventsScraper evScrape;
+	private ListAdapter categoryAdapter;
+	private ListAdapter eventAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,13 +83,17 @@ public class VV extends SimpleWebListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		// Webhandling Start
-		if(scrape.haslinkstoclick==true){
-			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(this);
-			RequestObject thisRequest = new RequestObject(TucanMobile.TUCAN_PROT
-					+ TucanMobile.TUCAN_HOST + scrape.Listlinks[position],
-					localCookieManager, RequestObject.METHOD_GET, "");
-
-			callOverviewBrowser.execute(thisRequest);
+		
+		if(scrape!=null && !scrape.hasBothCategoryAndEvents){
+			scrape.onItemClick(l, v, position, id);
+		} else if (scrape!= null && evScrape!=null && scrape.hasBothCategoryAndEvents){
+			if(position< categoryAdapter.getCount()){
+				scrape.onItemClick(l, v, position, id);
+			}
+			else{
+				evScrape.onItemClick(l, v, position, id);
+			}
+			
 		}
 		
 
@@ -104,12 +113,19 @@ public class VV extends SimpleWebListActivity {
 	
 	public void onPostExecute(AnswerObject result) {
 		scrape = new VVScraper(this, result, UserName);
+		evScrape = null;
 		try {
 			ListAdapter adapter = scrape.scrapeAdapter(0);
+			
 			if(adapter!=null){
 				setListAdapter(scrape.scrapeAdapter(0));
 			} else if(scrape.hasBothCategoryAndEvents){
-				//TODO: Display both Categories and Events
+				evScrape = new VVEventsScraper(this, result);
+				categoryAdapter = scrape.scrapeAdapter(1);
+				eventAdapter = evScrape.scrapeAdapter(0);
+				
+				MergedAdapter mergedAdapter = new MergedAdapter(categoryAdapter, eventAdapter);
+				setListAdapter(mergedAdapter);
 			}
 			
 		} catch (LostSessionException e) {

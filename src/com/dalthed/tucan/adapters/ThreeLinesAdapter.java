@@ -36,5 +36,7 @@ public class ThreeLinesAdapter extends ArrayAdapter<String> {
 
 		return row;
 	}
+	
+	
 
 }

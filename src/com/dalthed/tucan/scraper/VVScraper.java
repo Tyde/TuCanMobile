@@ -9,17 +9,24 @@ import org.jsoup.select.Elements;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
+import com.dalthed.tucan.Connection.BrowserAnswerReciever;
 import com.dalthed.tucan.Connection.CookieManager;
+import com.dalthed.tucan.Connection.RequestObject;
+import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.ui.VV;
 import com.dalthed.tucan.ui.VV_Events;
 
-public class VVScraper extends BasicScraper {
+public class VVScraper extends BasicScraper implements OnItemClickListener {
 
 	private String userName;
 	private CookieManager cookieManager;
@@ -40,6 +47,7 @@ public class VVScraper extends BasicScraper {
 
 			ArrayAdapter<String> listAdapter = null;
 
+			hasBothCategoryAndEvents = false;
 			if (tbdata.size() > 0) {
 				Element ulElement = doc.select("ul#auditRegistration_list").first();
 				if (ulElement != null) {
@@ -117,5 +125,19 @@ public class VVScraper extends BasicScraper {
 				cookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 		context.startActivity(EventStartIntent);
 	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		if(this.haslinkstoclick==true && context instanceof BrowserAnswerReciever){
+			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser((BrowserAnswerReciever) context);
+			RequestObject thisRequest = new RequestObject(TucanMobile.TUCAN_PROT
+					+ TucanMobile.TUCAN_HOST + this.Listlinks[position],
+					cookieManager, RequestObject.METHOD_GET, "");
+
+			callOverviewBrowser.execute(thisRequest);
+		}
+	}
+
+	
 
 }
