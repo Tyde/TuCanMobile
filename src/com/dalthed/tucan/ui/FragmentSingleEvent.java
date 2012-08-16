@@ -27,6 +27,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.SherlockListFragment;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
@@ -219,7 +220,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 		}
 	}
 
-	public static class ArrayListFragment extends ListFragment {
+	public static class ArrayListFragment extends SherlockListFragment {
 		int mNum;
 		private boolean thereAreFiles;
 		private ArrayList<String> materialLink;
