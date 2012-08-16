@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,30 +46,29 @@ import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleBackgroundBrowser;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
+import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.scraper.MainMenuScraper;
 
 public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReciever {
 	private Boolean windowFeatureCalled = false;
 	CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
-	private String menu_link_vv = "";
-	private String menu_link_ex = "";
-	private String menu_link_msg = "";
-	
+
 	private String menu_link_month = "";
-	private String UserName = "";
-	String SessionArgument = "";
-	private boolean noeventstoday = false;
-	private String[] today_event_links;
-	String load_link_ev_loc;
+
+	/**
+	 * HTML Scraper
+	 */
+	private MainMenuScraper scrape;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		
+
 		super.onCreate(savedInstanceState);
-		//requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		
+		// requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
 		setContentView(R.layout.main_menu);
-		//sthis.windowFeatureCalled = true;
+		// sthis.windowFeatureCalled = true;
 		acBar.setTitle("Startseite");
 
 		BugSenseHandler.setup(this, "ed5c1682");
@@ -108,19 +108,18 @@ public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReci
 		MenuList.setAdapter(new ArrayAdapter<String>(this, R.layout.menu_row,
 				R.id.main_menu_row_textField, getResources().getStringArray(
 						R.array.mainmenu_options)));
-		
 
 		MenuList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
-				
+
 				view.invalidate();
 				switch (position) {
 				case 0:
 					Intent StartVVIntent = new Intent(MainMenu.this, VV.class);
-					StartVVIntent.putExtra("URL", menu_link_vv);
+					StartVVIntent.putExtra("URL", scrape.menu_link_vv);
 					StartVVIntent.putExtra("Cookie",
 							localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-					StartVVIntent.putExtra("UserName", UserName);
+					StartVVIntent.putExtra("UserName", scrape.UserName);
 					startActivity(StartVVIntent);
 					// Vorlesungsverzeichnis
 					break;
@@ -129,34 +128,34 @@ public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReci
 					StartScheduleIntent.putExtra("URL", menu_link_month);
 					StartScheduleIntent.putExtra("Cookie",
 							localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-					StartScheduleIntent.putExtra("Session", SessionArgument);
+					StartScheduleIntent.putExtra("Session", scrape.SessionArgument);
 					startActivity(StartScheduleIntent);
 					// Stundenplan
 					break;
 				case 2:
 					Intent StartEventIntent = new Intent(MainMenu.this, Events.class);
-					StartEventIntent.putExtra("URL", menu_link_ex);
+					StartEventIntent.putExtra("URL", scrape.menu_link_ex);
 					StartEventIntent.putExtra("Cookie",
 							localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-					StartEventIntent.putExtra("UserName", UserName);
+					StartEventIntent.putExtra("UserName", scrape.UserName);
 					startActivity(StartEventIntent);
 					// Veranstaltungen
 					break;
 				case 3:
 					Intent StartExamIntent = new Intent(MainMenu.this, Exams.class);
-					StartExamIntent.putExtra("URL", menu_link_ex);
+					StartExamIntent.putExtra("URL", scrape.menu_link_ex);
 					StartExamIntent.putExtra("Cookie",
 							localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-					StartExamIntent.putExtra("UserName", UserName);
+					StartExamIntent.putExtra("UserName", scrape.UserName);
 					startActivity(StartExamIntent);
 					// Prüfungen
 					break;
 				case 4:
 					Intent StartMessageIntent = new Intent(MainMenu.this, Messages.class);
-					StartMessageIntent.putExtra("URL", menu_link_msg);
+					StartMessageIntent.putExtra("URL", scrape.menu_link_msg);
 					StartMessageIntent.putExtra("Cookie",
 							localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-					StartMessageIntent.putExtra("UserName", UserName);
+					StartMessageIntent.putExtra("UserName", scrape.UserName);
 					startActivity(StartMessageIntent);
 					break;
 				}
@@ -180,179 +179,54 @@ public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReci
 		return super.onKeyDown(keyCode, event);
 	}
 
-	class EventAdapter extends ArrayAdapter<String> {
-		String[] startClock;
-
-		EventAdapter(String[] Events, String[] Times) {
-			super(MainMenu.this, R.layout.row, R.id.label, Events);
-			this.startClock = Times;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			View row = super.getView(position, convertView, parent);
-			TextView clockText = (TextView) row.findViewById(R.id.row_time);
-			clockText.setText(startClock[position]);
-			return row;
-		}
-	}
-
-
 	public void onPostExecute(AnswerObject result) {
 		// HTML auslesen
-		sendHTMLatBug(result.getHTML());
-
-		Document doc = Jsoup.parse(result.getHTML());
-		if (doc.select("span.notLoggedText").text().length() > 0 || result.getHTML().equals("")) {
-			Intent BackToLoginIntent = new Intent(this, TuCanMobileActivity.class);
-			BackToLoginIntent.putExtra("lostSession", true);
-			startActivity(BackToLoginIntent);
-		} else {
-			String lcURLString = result.getLastCalledURL();
-			try {
-				URL lcURL = new URL(lcURLString);
-				SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1].split(",")[0];
-			} catch (MalformedURLException e) {
-
-				e.printStackTrace();
-			}
-
-			// Tabelle mit den Terminen finden und Durchlaufen
-			Element EventTable = doc.select("table.nb").first();
-
-			String[] Events;
-			String[] Times;
-
-			if (EventTable == null) {
-				Events = new String[1];
-				Times = new String[1];
-				Events[0] = "Keine Heutigen Veranstaltungen";
-				Times[0] = "";
-				noeventstoday = true;
-			} else {
-
-				if (EventTable.select("tr.tbdata").first().select("td").size() == 5) {
-					Events = new String[1];
-					Times = new String[1];
-					Events[0] = "Keine Heutigen Veranstaltungen";
-					Times[0] = "";
-					noeventstoday = true;
-				} else {
-
-					Elements EventRows = EventTable.select("tr.tbdata");
-					Iterator<Element> RowIt = EventRows.iterator();
-					Events = new String[EventRows.size()];
-					Times = new String[EventRows.size()];
-					today_event_links = new String[EventRows.size()];
-					int i = 0;
-					while (RowIt.hasNext()) {
-						Element currentElement = (Element) RowIt.next();
-						String EventString = currentElement.select("td[headers=Name]").select("a")
-								.first().text();
-						today_event_links[i] = currentElement.select("td[headers=Name]")
-								.select("a").first().attr("href");
-						String EventTimeString = currentElement.select("td").get(2).select("a")
-								.first().text();
-						String EventTimeEndString = currentElement.select("td").get(3).select("a")
-								.first().text();
-						Times[i] = EventTimeString + "-" + EventTimeEndString;
-						Events[i] = EventString;
-						i++;
-					}
-
-				}
-			}
-
-			UserName = doc.select("span#loginDataName").text().split(":")[1];
-
-			URL lcURL = null;
-			try {
-				lcURL = new URL(result.getLastCalledURL());
-			} catch (MalformedURLException e) {
-				Log.e(LOG_TAG, "Malformed URL");
-			}
-			Elements LinkstoOuterWorld = doc.select("div.tb");
-			Element ArchivLink = LinkstoOuterWorld.get(1).select("a").first();
-
-			menu_link_vv = lcURL.getProtocol() + "://" + lcURL.getHost()
-					+ doc.select("li#link000326").select("a").attr("href");
-			menu_link_ex = lcURL.getProtocol() + "://" + lcURL.getHost()
-					+ doc.select("li#link000280").select("a").attr("href");
-			menu_link_msg = lcURL.getProtocol() + "://" + lcURL.getHost() + ArchivLink.attr("href");
-			
-			
-			//Load special Location Information
-			load_link_ev_loc = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST + doc.select("li#link000269").select("a").attr("href"); 
-			
-			SimpleBackgroundBrowser simpleBackgroundBrowser = new SimpleBackgroundBrowser(this, acBar);
-			simpleBackgroundBrowser.execute(new RequestObject(load_link_ev_loc,result.getCookieManager(),RequestObject.METHOD_GET,""));
-			
-			/*
-			 * menu_link_export = lcURL.getProtocol() + "://" + lcURL.getHost()
-			 * + doc.select("li#link000272").select("a").attr("href");
-			 */
-			menu_link_month = lcURL.getProtocol() + "://" + lcURL.getHost()
-					+ doc.select("li#link000271").select("a").attr("href");
-			if (doc.select("li#link000326").select("a").attr("href").equals("")) {
-				Dialog wronglanguageDialog = new AlertDialog.Builder(this).setTitle("")
-						.setMessage(R.string.general_not_supported_lang)
-						.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-
-							public void onClick(DialogInterface dialog, int which) {
-								finish();
-							}
-						}).create();
-				wronglanguageDialog.show();
-
-			}
-			try {
-				FileOutputStream fos = openFileOutput(TucanMobile.LINK_FILE_NAME,
-						Context.MODE_PRIVATE);
-
-				StringBuilder cacheString = new StringBuilder();
-				cacheString.append(menu_link_vv).append(">>").append(menu_link_month).append(">>")
-						.append(menu_link_ex).append(">>").append(menu_link_ex).append(">>")
-						.append(menu_link_msg).append("<<")
-						.append(localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST))
-						.append("<<").append(SessionArgument);
-				fos.write(cacheString.toString().getBytes());
-				fos.close();
-
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			acBar.setSubtitle(UserName);
+		scrape = new MainMenuScraper(this, result);
+		ListAdapter todayseventsadapter;
+		try {
+			todayseventsadapter = scrape.scrapeAdapter(0);
 			ListView EventList = (ListView) findViewById(R.id.mm_eventList);
-			EventList.setAdapter(new EventAdapter(Events, Times));
-			
+			EventList.setAdapter(todayseventsadapter);
+
 			EventList.setOnItemClickListener(new OnItemClickListener() {
 
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-					if (noeventstoday == false) {
+					if (scrape.noeventstoday == false) {
 						Intent StartSingleEventIntent = new Intent(MainMenu.this,
 								FragmentSingleEvent.class);
 						StartSingleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT
-								+ TucanMobile.TUCAN_HOST + today_event_links[position]);
+								+ TucanMobile.TUCAN_HOST + scrape.today_event_links[position]);
 						StartSingleEventIntent.putExtra("Cookie",
 								localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 						// StartSingleEventIntent.putExtra("UserName",
 						// UserName);
 						parent.invalidate();
 						startActivity(StartSingleEventIntent);
-						
+
 					}
 				}
 			});
-
+		} catch (LostSessionException e) {
+			Intent BackToLoginIntent = new Intent(this, TuCanMobileActivity.class);
+			BackToLoginIntent.putExtra("lostSession", true);
+			startActivity(BackToLoginIntent);
 		}
+
+		acBar.setSubtitle(scrape.UserName);
+
+		// Start Location finding
+		SimpleBackgroundBrowser simpleBackgroundBrowser = new SimpleBackgroundBrowser(this, acBar);
+		simpleBackgroundBrowser.execute(new RequestObject(scrape.load_link_ev_loc, result
+				.getCookieManager(), RequestObject.METHOD_GET, ""));
+
+		scrape.checkForRightTucanLanguage(this);
+
+		scrape.bufferLinks(this, localCookieManager);
 
 	}
 
 	public void onBackgroundBrowserFinalized(AnswerObject result) {
-		//chill
+		// chill
 	}
 
 	public boolean getwindowFeatureCalled() {

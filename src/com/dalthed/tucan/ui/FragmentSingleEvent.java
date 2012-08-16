@@ -35,7 +35,7 @@ import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.viewpagerindicator.TitlePageIndicator;
-import com.viewpagerindicator.TitleProvider;
+
 
 public class FragmentSingleEvent extends FragmentWebActivity {
 	static final int NUM_ITEMS = 3;
@@ -47,8 +47,9 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 	private Boolean PREPCall;
 	protected String[] mTitles;
 	ArrayList<String> materialLink;
+	
 
-	int mode = 0;
+	Integer mode = 0;  
 	boolean thereAreFiles = false;
 
 	@Override
@@ -107,8 +108,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 	 * @author Tyde
 	 * 
 	 */
-	public static class PagerAdapter extends FragmentPagerAdapter implements
-			TitleProvider {
+	public static class PagerAdapter extends FragmentPagerAdapter  {
 		private String[] mtitles;
 		private ArrayList<ArrayAdapter<String>> adapterList;
 		FragmentManager fm;
@@ -208,10 +208,14 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 		public int getCount() {
 			return NUM_ITEMS;
 		}
-
-		public String getTitle(int position) {
+		
+		public CharSequence getTitle(int position) {
 
 			return mtitles[position];
+		}
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return getTitle(position);
 		}
 	}
 

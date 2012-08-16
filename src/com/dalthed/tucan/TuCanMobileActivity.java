@@ -101,6 +101,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 							+ settArg + ",", localCookieManager, RequestObject.METHOD_GET, "");
 
 			callOverviewBrowser.execute(thisRequest);
+			
 		} else if (tuid != "" && pw != "") {
 			// Start Login-procedure
 			onClickSendLogin(null);

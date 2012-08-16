@@ -44,7 +44,11 @@ public abstract class BasicScraper {
 	 * @throws LostSessionException
 	 */
 	abstract public ListAdapter scrapeAdapter(int mode) throws LostSessionException;
-	
+	/**
+	 * Prüft ob die Session schon abgelaufen ist und wirft eine Exception falls dies passiert
+	 * @return true, wenn Session noch aktiv
+	 * @throws LostSessionException
+	 */
 	protected Boolean checkForLostSeesion() throws LostSessionException {
 		SimpleWebListActivity.sendHTMLatBug(doc.html());
 		if (doc.select("span.notLoggedText").text().length() > 0) {
