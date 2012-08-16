@@ -80,7 +80,7 @@ public class ExamsScraper extends BasicScraper {
 			while (ExamResultRowIterator.hasNext()) {
 				Element next = ExamResultRowIterator.next();
 				Elements ExamResultCols = next.select("td");
-				if (ExamResultCols.size() > 1) {
+				if (ExamResultCols.size() > 4) {
 					ResultName.add(ExamResultCols.get(1).text());
 					ResultCountedCredits.add(ExamResultCols.get(3).text());
 					ResultCredits.add(ExamResultCols.get(4).text());
