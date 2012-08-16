@@ -180,14 +180,18 @@ public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReci
 	}
 
 	public void onPostExecute(AnswerObject result) {
-		// HTML auslesen
+		// Scraper initialisieren
 		scrape = new MainMenuScraper(this, result);
+		
+		//Adapter für heutige Events erstellen
 		ListAdapter todayseventsadapter;
 		try {
+			//Adapter mittels scraper starten und auf die Liste setzen
 			todayseventsadapter = scrape.scrapeAdapter(0);
 			ListView EventList = (ListView) findViewById(R.id.mm_eventList);
 			EventList.setAdapter(todayseventsadapter);
 
+			//OnClicklistener für Eventliste: Bei klick wird ein intent für die SingleEventAnsicht gestartet
 			EventList.setOnItemClickListener(new OnItemClickListener() {
 
 				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -207,6 +211,7 @@ public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReci
 				}
 			});
 		} catch (LostSessionException e) {
+			//Im falle einer verlorenen Session -> zurück zum login
 			Intent BackToLoginIntent = new Intent(this, TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);
@@ -218,9 +223,9 @@ public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReci
 		SimpleBackgroundBrowser simpleBackgroundBrowser = new SimpleBackgroundBrowser(this, acBar);
 		simpleBackgroundBrowser.execute(new RequestObject(scrape.load_link_ev_loc, result
 				.getCookieManager(), RequestObject.METHOD_GET, ""));
-
+		//User, welche Tucan auf englisch gestellt haben, ausschließen, da sonst fehler auftreten würden
 		scrape.checkForRightTucanLanguage(this);
-
+		//Links in den Buffer für die Actionbar schreiben
 		scrape.bufferLinks(this, localCookieManager);
 
 	}
