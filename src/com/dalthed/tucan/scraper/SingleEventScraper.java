@@ -56,7 +56,9 @@ public class SingleEventScraper extends BasicScraper {
 		if (checkForLostSeesion()) {
 			if (PREPCall == false) {
 
-				checkforModule();
+				if(checkforModule()){
+					return null;
+				}
 				String Title = doc.select("h1").text();
 				if (fsh != null) {
 					fsh.setSubtitle(Title);
@@ -260,7 +262,7 @@ public class SingleEventScraper extends BasicScraper {
 	/**
 	 * 
 	 */
-	private void checkforModule() {
+	private Boolean checkforModule() {
 		if (!doc.select("form[name=moduleform]").isEmpty()) {
 			// Möglicherweise ist ein Modul angewählt
 			Intent goToModule = new Intent(context, Module.class);
@@ -270,8 +272,9 @@ public class SingleEventScraper extends BasicScraper {
 			goToModule.putExtra("URL", "HTML");
 			goToModule.putExtra("HTML", doc.html());
 			context.startActivity(goToModule);
-
+			return true;
 		}
+		return false;
 	}
 
 }
