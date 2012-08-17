@@ -101,7 +101,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 							+ settArg + ",", localCookieManager, RequestObject.METHOD_GET, "");
 
 			callOverviewBrowser.execute(thisRequest);
-			
+
 		} else if (tuid != "" && pw != "") {
 			// Start Login-procedure
 			onClickSendLogin(null);
@@ -249,23 +249,23 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 						"Login fehlerhaft", Toast.LENGTH_LONG);
 				wrongLoginNotif.show();
 			} else {
-				//Login worked
+				// Login worked
 				dialog.dismiss();
-				//Get SessionArgument for other purposes in other activities
+				// Get SessionArgument for other purposes in other activities
 				String lcURLString = result.getLastCalledURL();
 				try {
 					URL lcURL = new URL(lcURLString);
 					SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1].split(",")[0];
 				} catch (MalformedURLException e) {
-					//Send Bugreport
+					// Send Bugreport
 					ErrorReporter.getInstance().handleSilentException(e);
 				}
-				//Redeem username
+				// Redeem username
 				User = Jsoup.parse(UserSpan.html().split(":")[1]).text();
 				CheckBox remember = (CheckBox) findViewById(R.id.checkBox1);
 				if (remember.isChecked()) {
-					
-					//Delete sensitive Data in old Preferences
+
+					// Delete sensitive Data in old Preferences
 					final SharedPreferences einstellungen = MainPreferences
 							.getSettings(TuCanMobileActivity.this);
 					SharedPreferences.Editor editor = einstellungen.edit();
@@ -275,7 +275,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 					editor.putString("Session", "");
 					editor.commit();
 
-					//Save Data in new Preferences
+					// Save Data in new Preferences
 					final SharedPreferences altPrefs = getSharedPreferences("LOGIN", MODE_PRIVATE);
 					SharedPreferences.Editor edit = altPrefs.edit();
 					edit.putString("tuid", usrnameField.getText().toString());
@@ -285,7 +285,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 					edit.putString("Session", SessionArgument);
 					edit.commit();
 				}
-				//Start MainMenu
+				// Start MainMenu
 				final Intent i = new Intent(TuCanMobileActivity.this, MainMenu.class);
 				i.putExtra(TucanMobile.EXTRA_COOKIE,
 						result.getCookieManager().getCookieHTTPString("www.tucan.tu-darmstadt.de"));
@@ -303,26 +303,34 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 	}
 
 	/**
-	 *  Is Called, when the Request of the SimpleSecureBrowser has finished
-	 *  This happens, when the Fast-Login method ended
+	 * Is Called, when the Request of the SimpleSecureBrowser has finished This
+	 * happens, when the Fast-Login method ended
 	 */
 	public void onPostExecute(AnswerObject result) {
-		//Parse HTML
+		// Parse HTML
 		Document doc = Jsoup.parse(result.getHTML());
 		try {
-			//Get username and check it. If it exists, start MainMenu
-			String UserName = doc.select("span#loginDataName").text().split(":")[1];
-			if (!UserName.equals("")) {
-				final Intent i = new Intent(TuCanMobileActivity.this, MainMenu.class);
-				i.putExtra(TucanMobile.EXTRA_COOKIE,
-						result.getCookieManager().getCookieHTTPString("www.tucan.tu-darmstadt.de"));
-				i.putExtra("source", result.getHTML());
-				i.putExtra(TucanMobile.EXTRA_URL, result.getLastCalledURL());
-				startActivity(i);
+			// Get username and check it. If it exists, start MainMenu
+			final String[] userSpan = doc.select("span#loginDataName").text().split(":");
+			if (userSpan.length > 1) {
+				String UserName = userSpan[1];
+				if (!UserName.equals("")) {
+					final Intent i = new Intent(TuCanMobileActivity.this, MainMenu.class);
+					i.putExtra(TucanMobile.EXTRA_COOKIE, result.getCookieManager()
+							.getCookieHTTPString("www.tucan.tu-darmstadt.de"));
+					i.putExtra("source", result.getHTML());
+					i.putExtra(TucanMobile.EXTRA_URL, result.getLastCalledURL());
+					startActivity(i);
+				} else {
+					Toast.makeText(this, "Schneller Login fehlgeschlagen", Toast.LENGTH_LONG)
+							.show();
+					onClickSendLogin(null);
+				}
 			} else {
 				Toast.makeText(this, "Schneller Login fehlgeschlagen", Toast.LENGTH_LONG).show();
 				onClickSendLogin(null);
 			}
+
 		} catch (Exception e) {
 			ErrorReporter.getInstance().handleSilentException(e);
 			Log.i(LOG_TAG, "Fehler: " + e.getMessage());
