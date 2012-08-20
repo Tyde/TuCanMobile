@@ -22,6 +22,7 @@ import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.scraper.VVEventsScraper;
+import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -120,6 +121,20 @@ public class VV_Events extends SimpleWebListActivity {
 			TucanMobile.alertOnTucanDown(this, e.getMessage());
 		}
 
+	}
+
+	@Override
+	public ConfigurationChangeStorage saveConfiguration() {
+		ConfigurationChangeStorage conf = new ConfigurationChangeStorage();
+		conf.scrapers.add(scrape);
+		conf.adapters.add(getListAdapter());
+		return null;
+	}
+
+	@Override
+	public void retainConfiguration(ConfigurationChangeStorage conf) {
+		scrape = (VVEventsScraper) conf.scrapers.get(0);
+		setListAdapter(conf.adapters.get(0));
 	}
 
 }

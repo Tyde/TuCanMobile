@@ -35,6 +35,7 @@ import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.scraper.EventsScraper;
+import com.dalthed.tucan.util.ConfigurationChangeStorage;
 /**
  * Displays the Events Menu
  * @author Daniel Thiem
@@ -233,6 +234,15 @@ public class Events extends SimpleWebListActivity {
 			return super.onKeyDown(keyCode, event);
 		}
 
+	}
+
+	@Override
+	public ConfigurationChangeStorage saveConfiguration() {
+		return null;
+	}
+
+	@Override
+	public void retainConfiguration(ConfigurationChangeStorage conf) {
 	}
 
 }

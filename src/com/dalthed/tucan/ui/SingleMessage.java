@@ -21,6 +21,7 @@ import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
+import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class SingleMessage extends SimpleWebActivity {
 	
@@ -90,6 +91,13 @@ public class SingleMessage extends SimpleWebActivity {
 		
 		
 
+	}
+	@Override
+	public ConfigurationChangeStorage saveConfiguration() {
+		return null;
+	}
+	@Override
+	public void retainConfiguration(ConfigurationChangeStorage conf) {
 	}
 
 }

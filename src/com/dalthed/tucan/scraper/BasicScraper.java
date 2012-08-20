@@ -31,6 +31,14 @@ public abstract class BasicScraper {
 		doc= Jsoup.parse(result.getHTML());
 	}
 	/**
+	 * Bei einem Configurationchange wird die Activity neu gestartet und somit ist 
+	 * ein neuer Context von nöten
+	 * @param context Context der Activity
+	 */
+	public void renewContext(Context context) {
+		this.context = context;
+	}
+	/**
 	 * Hin und wieder muss eine neue Antwort des Browsers übergeben werden
 	 * @param result Antwort des Browsers
 	 */

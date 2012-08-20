@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.BrowserAnswerReciever;
+import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class ApplyEvent extends SimpleWebListActivity {
 
@@ -32,6 +33,15 @@ public class ApplyEvent extends SimpleWebListActivity {
 	}
 
 	public void onPostExecute(AnswerObject result) {
+	}
+
+	@Override
+	public ConfigurationChangeStorage saveConfiguration() {
+		return null;
+	}
+
+	@Override
+	public void retainConfiguration(ConfigurationChangeStorage conf) {
 	}
 
 	

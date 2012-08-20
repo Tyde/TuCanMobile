@@ -58,7 +58,7 @@ public class TucanMobile extends Application {
 	/**
 	 * App is/isn't in Debug mode
 	 */
-	public final static Boolean DEBUG = false;
+	public final static Boolean DEBUG = true;
 	/**
 	 * App is/isn't in Testing mode; App cannot work properly, if it is in Testing mode
 	 */

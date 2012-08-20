@@ -26,6 +26,7 @@ import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.ui.SimpleWebListActivity;
+import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class LoadAcraResults extends SimpleWebListActivity {
 	private CookieManager localCookieManager;
@@ -109,6 +110,17 @@ public class LoadAcraResults extends SimpleWebListActivity {
 			startActivity(loadDefectClassIntent);
 		}
 		
+	}
+
+
+	@Override
+	public ConfigurationChangeStorage saveConfiguration() {
+		return null;
+	}
+
+
+	@Override
+	public void retainConfiguration(ConfigurationChangeStorage conf) {
 	}
 	
 

@@ -49,6 +49,7 @@ import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.scraper.MainMenuScraper;
+import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReciever {
 	private Boolean windowFeatureCalled = false;
@@ -240,6 +241,15 @@ public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReci
 
 	public boolean getwindowFeatureCalled() {
 		return this.windowFeatureCalled;
+	}
+
+	@Override
+	public ConfigurationChangeStorage saveConfiguration() {
+		return null;
+	}
+
+	@Override
+	public void retainConfiguration(ConfigurationChangeStorage conf) {
 	}
 
 	/*

@@ -35,6 +35,7 @@ import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.scraper.ExamsScraper;
+import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class Exams extends SimpleWebListActivity {
 	private String UserName;
@@ -271,6 +272,15 @@ public class Exams extends SimpleWebListActivity {
 		
 		
 
+	}
+
+	@Override
+	public ConfigurationChangeStorage saveConfiguration() {
+		return null;
+	}
+
+	@Override
+	public void retainConfiguration(ConfigurationChangeStorage conf) {
 	}
 
 	

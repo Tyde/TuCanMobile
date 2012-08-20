@@ -10,6 +10,7 @@ import org.acra.ErrorReporter;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -36,31 +37,28 @@ import com.dalthed.tucan.preferences.MainPreferences;
  * 
  */
 public abstract class SimpleWebListActivity extends SherlockListActivity implements
-		ActionBar.OnNavigationListener,BrowserAnswerReciever {
+		ActionBar.OnNavigationListener, BrowserAnswerReciever {
 	public SimpleSecureBrowser callResultBrowser;
 	public static final String LOG_TAG = "TuCanMobile";
 	protected Boolean HTTPS = true;
-	
-	
+
 	protected ActionBar acBar = null;
 	protected FastSwitchHelper fsh;
-	
-	protected void onCreate(Bundle savedInstanceState,Boolean navigateList,int navigationItem) {
+
+	protected void onCreate(Bundle savedInstanceState, Boolean navigateList, int navigationItem) {
 		acBar = getSupportActionBar();
 		if (TucanMobile.DEBUG && getIntent().hasExtra("HTTPS")) {
 			HTTPS = getIntent().getExtras().getBoolean("HTTPS");
 		}
 		super.onCreate(savedInstanceState);
-		fsh = new FastSwitchHelper(this,navigateList,acBar,navigationItem);
-		
-	}
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		onCreate(savedInstanceState, false,0);
+		fsh = new FastSwitchHelper(this, navigateList, acBar, navigationItem);
+
 	}
 
-	
-	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		onCreate(savedInstanceState, false, 0);
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -69,10 +67,10 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 	}
 
 	public static void sendHTMLatBug(String html) {
-		if(!TucanMobile.TESTING){
+		if (!TucanMobile.TESTING) {
 			ErrorReporter.getInstance().putCustomData("html", html);
 		}
-		
+
 	}
 
 	@Override
@@ -87,7 +85,7 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 			return true;
 		case android.R.id.home:
 			fsh.startHomeIntent();
-		default: 
+		default:
 			return super.onOptionsItemSelected(item);
 		}
 
@@ -95,10 +93,31 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 
 	public Object onRetainNonConfigurationInstance() {
 		if (callResultBrowser != null) {
+			callResultBrowser.mConfigurationStorage = saveConfiguration();
 			callResultBrowser.dialog.dismiss();
+			return callResultBrowser;
 		}
-		
+
 		return super.onRetainNonConfigurationInstance();
+	}
+
+	protected Boolean restoreResultBrowser() {
+		if (getLastNonConfigurationInstance() != null) {
+			if (getLastNonConfigurationInstance() instanceof SimpleSecureBrowser) {
+				SimpleSecureBrowser oldBrowser = (SimpleSecureBrowser) getLastNonConfigurationInstance();
+				 callResultBrowser = oldBrowser;
+				 if (!(oldBrowser.getStatus()
+	                        .equals(AsyncTask.Status.FINISHED))) {
+					
+					 callResultBrowser.dialog.show();
+					 
+				 } else {
+					 this.retainConfiguration(oldBrowser.mConfigurationStorage);
+				 }
+			}
+			return true;
+		}
+		return false;
 	}
 
 	/*
@@ -108,12 +127,9 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 	 * onNavigationItemSelected(int, long)
 	 */
 	public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-		
+
 		return fsh.startFastSwitchIntent(itemPosition);
-		
-		
-		
+
 	}
 
-	
 }

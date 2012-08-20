@@ -38,6 +38,7 @@ import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.scraper.RegisterExamsScraper;
+import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class RegisterExams extends SimpleWebListActivity {
 	private String UserName, URLStringtoCall;
@@ -123,6 +124,15 @@ public class RegisterExams extends SimpleWebListActivity {
 					RequestObject.METHOD_GET, "");
 			callOverviewBrowser.execute(callstatuschange);
 		}
+	}
+
+	@Override
+	public ConfigurationChangeStorage saveConfiguration() {
+		return null;
+	}
+
+	@Override
+	public void retainConfiguration(ConfigurationChangeStorage conf) {
 	}
 
 }

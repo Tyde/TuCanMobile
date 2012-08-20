@@ -6,6 +6,7 @@ import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.ui.FragmentWebActivity;
 import com.dalthed.tucan.ui.SimpleWebActivity;
 import com.dalthed.tucan.ui.SimpleWebListActivity;
+import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -14,6 +15,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 
 import android.os.AsyncTask;
+import android.widget.ListAdapter;
 
 /**
  * SimpleSecureBrowser ist ein AsyncTask welcher die RequestObjects passend
@@ -30,6 +32,10 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 	public ProgressDialog dialog;
 	public boolean HTTPS = true;
 	boolean finished = false;
+	/**
+	 * List Adapter that has been set on the activity
+	 */
+	public ConfigurationChangeStorage mConfigurationStorage;
 
 	public SimpleSecureBrowser(BrowserAnswerReciever callingActivity) {
 		outerCallingRecieverActivity = callingActivity;
@@ -89,5 +95,7 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 			dialog.dismiss();
 
 	}
+	
+	
 
 }

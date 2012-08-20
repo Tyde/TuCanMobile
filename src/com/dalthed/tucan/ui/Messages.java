@@ -29,6 +29,7 @@ import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
+import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class Messages extends SimpleWebListActivity {
 	private String UserName;
@@ -140,6 +141,13 @@ public class Messages extends SimpleWebListActivity {
 				setListAdapter(ListAdapter);
 			}
 		}
+	}
+	@Override
+	public ConfigurationChangeStorage saveConfiguration() {
+		return null;
+	}
+	@Override
+	public void retainConfiguration(ConfigurationChangeStorage conf) {
 	}
 
 }

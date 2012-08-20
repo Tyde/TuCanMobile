@@ -38,6 +38,7 @@ import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.scraper.SingleEventScraper;
+import com.dalthed.tucan.util.ConfigurationChangeStorage;
 import com.viewpagerindicator.TitlePageIndicator;
 
 
@@ -311,6 +312,17 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 			
 	
 
+	}
+
+
+	@Override
+	public ConfigurationChangeStorage saveConfiguration() {
+		return null;
+	}
+
+
+	@Override
+	public void retainConfiguration(ConfigurationChangeStorage conf) {
 	}
 
 	

@@ -32,6 +32,7 @@ import com.dalthed.tucan.preferences.MainPreferences;
 import com.dalthed.tucan.ui.MainMenu;
 import com.dalthed.tucan.ui.ProgressBarDialogFactory;
 import com.dalthed.tucan.ui.SimpleWebActivity;
+import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class TuCanMobileActivity extends SimpleWebActivity {
 	/** Called when the activity is first created. */
@@ -338,5 +339,14 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 			onClickSendLogin(null);
 		}
 
+	}
+
+	@Override
+	public ConfigurationChangeStorage saveConfiguration() {
+		return null;
+	}
+
+	@Override
+	public void retainConfiguration(ConfigurationChangeStorage conf) {
 	}
 }

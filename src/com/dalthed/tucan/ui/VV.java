@@ -36,6 +36,7 @@ import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.scraper.VVEventsScraper;
 import com.dalthed.tucan.scraper.VVScraper;
+import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class VV extends SimpleWebListActivity {
 
@@ -62,17 +63,20 @@ public class VV extends SimpleWebListActivity {
 		String URLStringtoCall = getIntent().getExtras().getString("URL");
 		UserName = getIntent().getExtras().getString("UserName");
 		URL URLtoCall;
-		try {
-			URLtoCall = new URL(URLStringtoCall);
-			localCookieManager = new CookieManager();
-			localCookieManager.generateManagerfromHTTPString(URLtoCall.getHost(), CookieHTTPString);
-			callResultBrowser = new SimpleSecureBrowser(this);
-			RequestObject thisRequest = new RequestObject(URLStringtoCall, localCookieManager,
-					RequestObject.METHOD_GET, "");
+		if (!restoreResultBrowser()) {
+			try {
+				URLtoCall = new URL(URLStringtoCall);
+				localCookieManager = new CookieManager();
+				localCookieManager.generateManagerfromHTTPString(URLtoCall.getHost(),
+						CookieHTTPString);
+				callResultBrowser = new SimpleSecureBrowser(this);
+				RequestObject thisRequest = new RequestObject(URLStringtoCall, localCookieManager,
+						RequestObject.METHOD_GET, "");
 
-			callResultBrowser.execute(thisRequest);
-		} catch (MalformedURLException e) {
-			Log.e(LOG_TAG, e.getMessage());
+				callResultBrowser.execute(thisRequest);
+			} catch (MalformedURLException e) {
+				Log.e(LOG_TAG, e.getMessage());
+			}
 		}
 		// Webhandling End
 
@@ -91,7 +95,7 @@ public class VV extends SimpleWebListActivity {
 				previousURLs.add(scrape.getlastCalledURL());
 				scrape.onItemClick(l, v, position, id);
 			} else {
-				int newPosition = position-categoryAdapter.getCount();
+				int newPosition = position - categoryAdapter.getCount();
 				evScrape.onItemClick(l, v, newPosition, id);
 			}
 
@@ -152,5 +156,23 @@ public class VV extends SimpleWebListActivity {
 			TucanMobile.alertOnTucanDown(this, e.getMessage());
 		}
 	}
+
+	@Override
+	public ConfigurationChangeStorage saveConfiguration() {
+		ConfigurationChangeStorage cStore = new ConfigurationChangeStorage();
+		cStore.scrapers.add(scrape);
+		cStore.scrapers.add(evScrape);
+		cStore.adapters.add(getListAdapter());
+		return cStore;
+	}
+
+	@Override
+	public void retainConfiguration(ConfigurationChangeStorage conf) {
+		setListAdapter(conf.adapters.get(0));
+		scrape = (VVScraper) conf.getScraper(0, this);
+		evScrape = (VVEventsScraper) conf.getScraper(1, this);
+	}
+	
+	
 
 }
