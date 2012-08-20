@@ -218,7 +218,7 @@ public class MainMenuScraper extends BasicScraper {
 	private void getSessionArgument() {
 		// Die Session ID aus URL gewinnen
 		try {
-			URL lcURL = new URL(lastCalledUrl);
+			lcURL = new URL(lastCalledUrl);
 			SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1].split(",")[0];
 		} catch (MalformedURLException e) {
 
