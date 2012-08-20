@@ -52,18 +52,21 @@ public class VV_Events extends SimpleWebListActivity {
 		String URLStringtoCall = getIntent().getExtras().getString("URL");
 		UserName = getIntent().getExtras().getString("UserName");
 		URL URLtoCall;
-		try {
-			URLtoCall = new URL(URLStringtoCall);
-			localCookieManager = new CookieManager();
-			localCookieManager.generateManagerfromHTTPString(URLtoCall.getHost(), CookieHTTPString);
-			callResultBrowser = new SimpleSecureBrowser(this);
-			RequestObject thisRequest = new RequestObject(URLStringtoCall, localCookieManager,
-					RequestObject.METHOD_GET, "");
+		if (!restoreResultBrowser()) {
+			try {
+				URLtoCall = new URL(URLStringtoCall);
+				localCookieManager = new CookieManager();
+				localCookieManager.generateManagerfromHTTPString(URLtoCall.getHost(),
+						CookieHTTPString);
+				callResultBrowser = new SimpleSecureBrowser(this);
+				RequestObject thisRequest = new RequestObject(URLStringtoCall, localCookieManager,
+						RequestObject.METHOD_GET, "");
 
-			callResultBrowser.execute(thisRequest);
-		} catch (MalformedURLException e) {
+				callResultBrowser.execute(thisRequest);
+			} catch (MalformedURLException e) {
 
-			Log.e(LOG_TAG, e.getMessage());
+				Log.e(LOG_TAG, e.getMessage());
+			}
 		}
 	}
 
@@ -100,7 +103,9 @@ public class VV_Events extends SimpleWebListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		
+		if (scrape != null) {
+			scrape.onItemClick(l, v, position, id);
+		}
 	}
 
 	public void onPostExecute(AnswerObject result) {
@@ -113,7 +118,7 @@ public class VV_Events extends SimpleWebListActivity {
 				setListAdapter(adapter);
 			}
 		} catch (LostSessionException e) {
-			//Im falle einer verlorenen Session -> zurück zum login
+			// Im falle einer verlorenen Session -> zurück zum login
 			Intent BackToLoginIntent = new Intent(this, TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);
@@ -133,7 +138,7 @@ public class VV_Events extends SimpleWebListActivity {
 
 	@Override
 	public void retainConfiguration(ConfigurationChangeStorage conf) {
-		scrape = (VVEventsScraper) conf.scrapers.get(0);
+		scrape = (VVEventsScraper) conf.getScraper(0, this);
 		setListAdapter(conf.adapters.get(0));
 	}
 
