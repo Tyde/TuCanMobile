@@ -312,7 +312,10 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 		Document doc = Jsoup.parse(result.getHTML());
 		try {
 			// Get username and check it. If it exists, start MainMenu
-			final String[] userSpan = doc.select("span#loginDataName").text().split(":");
+			final String[] userSpan = doc.
+					select("span#loginDataName").
+					text().
+					split(":");
 			if (userSpan.length > 1) {
 				String UserName = userSpan[1];
 				if (!UserName.equals("")) {
@@ -331,7 +334,10 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 				Toast.makeText(this, "Schneller Login fehlgeschlagen", Toast.LENGTH_LONG).show();
 				onClickSendLogin(null);
 			}
-
+		} catch (ArrayIndexOutOfBoundsException e) {
+			Log.i(LOG_TAG, "Fehler: " + e.getMessage());
+			Toast.makeText(this, "Schneller Login fehlgeschlagen", Toast.LENGTH_LONG).show();
+			onClickSendLogin(null);
 		} catch (Exception e) {
 			ErrorReporter.getInstance().handleSilentException(e);
 			Log.i(LOG_TAG, "Fehler: " + e.getMessage());

@@ -68,7 +68,7 @@ public class MainMenuScraper extends BasicScraper {
 	}
 
 	@Override
-	public ListAdapter scrapeAdapter(int mode) throws LostSessionException,TucanDownException {
+	public ListAdapter scrapeAdapter(int mode) throws LostSessionException, TucanDownException {
 
 		if (checkForLostSeesion()) {
 			getSessionArgument();
@@ -87,8 +87,7 @@ public class MainMenuScraper extends BasicScraper {
 	 * @author Daniel Thiem
 	 */
 	public void checkForRightTucanLanguage(final Activity context) {
-		menu_link_month = lcURL.getProtocol() + "://" + lcURL.getHost()
-				+ doc.select("li#link000271").select("a").attr("href");
+		
 		if (doc.select("li#link000326").select("a").attr("href").equals("")) {
 			Dialog wronglanguageDialog = new AlertDialog.Builder(context).setTitle("")
 					.setMessage(R.string.general_not_supported_lang)
@@ -105,7 +104,8 @@ public class MainMenuScraper extends BasicScraper {
 
 	public void bufferLinks(Activity context, CookieManager localCookieManager) {
 		try {
-			FileOutputStream fos = context.openFileOutput(TucanMobile.LINK_FILE_NAME, Context.MODE_PRIVATE);
+			FileOutputStream fos = context.openFileOutput(TucanMobile.LINK_FILE_NAME,
+					Context.MODE_PRIVATE);
 
 			StringBuilder cacheString = new StringBuilder();
 			cacheString.append(menu_link_vv).append(">>").append(menu_link_month).append(">>")
@@ -201,7 +201,8 @@ public class MainMenuScraper extends BasicScraper {
 		}
 		Elements LinkstoOuterWorld = doc.select("div.tb");
 		Element ArchivLink = LinkstoOuterWorld.get(1).select("a").first();
-
+		menu_link_month = lcURL.getProtocol() + "://" + lcURL.getHost()
+				+ doc.select("li#link000271").select("a").attr("href");
 		menu_link_vv = lcURL.getProtocol() + "://" + lcURL.getHost()
 				+ doc.select("li#link000326").select("a").attr("href");
 		menu_link_ex = lcURL.getProtocol() + "://" + lcURL.getHost()
@@ -217,12 +218,14 @@ public class MainMenuScraper extends BasicScraper {
 	 */
 	private void getSessionArgument() {
 		// Die Session ID aus URL gewinnen
-		try {
-			lcURL = new URL(lastCalledUrl);
-			SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1].split(",")[0];
-		} catch (MalformedURLException e) {
+		if (!TucanMobile.TESTING) {
+			try {
+				lcURL = new URL(lastCalledUrl);
+				SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1].split(",")[0];
+			} catch (MalformedURLException e) {
 
-			e.printStackTrace();
+				e.printStackTrace();
+			}
 		}
 	}
 }

@@ -56,7 +56,7 @@ public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReci
 	CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
 
-	private String menu_link_month = "";
+	
 
 	/**
 	 * HTML Scraper
@@ -127,7 +127,7 @@ public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReci
 					break;
 				case 1:
 					Intent StartScheduleIntent = new Intent(MainMenu.this, Schedule.class);
-					StartScheduleIntent.putExtra("URL", menu_link_month);
+					StartScheduleIntent.putExtra("URL", scrape.menu_link_month);
 					StartScheduleIntent.putExtra("Cookie",
 							localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 					StartScheduleIntent.putExtra("Session", scrape.SessionArgument);
