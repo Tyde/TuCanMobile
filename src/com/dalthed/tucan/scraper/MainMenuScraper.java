@@ -68,7 +68,7 @@ public class MainMenuScraper extends BasicScraper {
 	}
 
 	@Override
-	public ListAdapter scrapeAdapter(int mode) throws LostSessionException,TucanDownException {
+	public ListAdapter scrapeAdapter(int mode) throws LostSessionException, TucanDownException {
 
 		if (checkForLostSeesion()) {
 			getSessionArgument();
@@ -105,7 +105,8 @@ public class MainMenuScraper extends BasicScraper {
 
 	public void bufferLinks(Activity context, CookieManager localCookieManager) {
 		try {
-			FileOutputStream fos = context.openFileOutput(TucanMobile.LINK_FILE_NAME, Context.MODE_PRIVATE);
+			FileOutputStream fos = context.openFileOutput(TucanMobile.LINK_FILE_NAME,
+					Context.MODE_PRIVATE);
 
 			StringBuilder cacheString = new StringBuilder();
 			cacheString.append(menu_link_vv).append(">>").append(menu_link_month).append(">>")
@@ -217,12 +218,14 @@ public class MainMenuScraper extends BasicScraper {
 	 */
 	private void getSessionArgument() {
 		// Die Session ID aus URL gewinnen
-		try {
-			lcURL = new URL(lastCalledUrl);
-			SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1].split(",")[0];
-		} catch (MalformedURLException e) {
+		if (!TucanMobile.TESTING) {
+			try {
+				lcURL = new URL(lastCalledUrl);
+				SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1].split(",")[0];
+			} catch (MalformedURLException e) {
 
-			e.printStackTrace();
+				e.printStackTrace();
+			}
 		}
 	}
 }
