@@ -163,6 +163,8 @@ public class VV extends SimpleWebListActivity {
 		cStore.scrapers.add(scrape);
 		cStore.scrapers.add(evScrape);
 		cStore.adapters.add(getListAdapter());
+		cStore.adapters.add(categoryAdapter);
+		cStore.adapters.add(eventAdapter);
 		return cStore;
 	}
 
@@ -171,6 +173,8 @@ public class VV extends SimpleWebListActivity {
 		setListAdapter(conf.adapters.get(0));
 		scrape = (VVScraper) conf.getScraper(0, this);
 		evScrape = (VVEventsScraper) conf.getScraper(1, this);
+		categoryAdapter=conf.adapters.get(1);
+		eventAdapter = conf.adapters.get(2);
 	}
 	
 	
