@@ -16,7 +16,7 @@ public class SingleEventTest extends BasicTest {
 
 	@Test
 	public void singleEventTest() throws IOException, LostSessionException, TucanDownException {
-		String URLStringtoCall = dtef.getErrorURL(1188, "FragmentSingleEvent");
+		String URLStringtoCall = dtef.getErrorURL(9821, "FragmentSingleEvent");
 		FragmentSingleEvent fakeSingleEvent = new FragmentSingleEvent();
 		
 		String html = Jsoup.connect(URLStringtoCall)
