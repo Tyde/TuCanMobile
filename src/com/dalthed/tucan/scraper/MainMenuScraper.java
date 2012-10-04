@@ -87,8 +87,7 @@ public class MainMenuScraper extends BasicScraper {
 	 * @author Daniel Thiem
 	 */
 	public void checkForRightTucanLanguage(final Activity context) {
-		menu_link_month = lcURL.getProtocol() + "://" + lcURL.getHost()
-				+ doc.select("li#link000271").select("a").attr("href");
+		
 		if (doc.select("li#link000326").select("a").attr("href").equals("")) {
 			Dialog wronglanguageDialog = new AlertDialog.Builder(context).setTitle("")
 					.setMessage(R.string.general_not_supported_lang)
@@ -202,7 +201,8 @@ public class MainMenuScraper extends BasicScraper {
 		}
 		Elements LinkstoOuterWorld = doc.select("div.tb");
 		Element ArchivLink = LinkstoOuterWorld.get(1).select("a").first();
-
+		menu_link_month = lcURL.getProtocol() + "://" + lcURL.getHost()
+				+ doc.select("li#link000271").select("a").attr("href");
 		menu_link_vv = lcURL.getProtocol() + "://" + lcURL.getHost()
 				+ doc.select("li#link000326").select("a").attr("href");
 		menu_link_ex = lcURL.getProtocol() + "://" + lcURL.getHost()
