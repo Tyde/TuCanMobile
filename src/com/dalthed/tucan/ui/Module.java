@@ -15,20 +15,25 @@ import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
+import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
+import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.exceptions.TucanDownException;
+import com.dalthed.tucan.scraper.BasicScraper;
+import com.dalthed.tucan.scraper.ModuleScraper;
+import com.dalthed.tucan.scraper.RegisterExamsScraper;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class Module extends SimpleWebListActivity {
 	private CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
 	private String URLStringtoCall;
-	private ArrayList<String> eventLinks;
-	
-	
+	private ModuleScraper scrape;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,78 +42,74 @@ public class Module extends SimpleWebListActivity {
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		URLStringtoCall = getIntent().getExtras().getString("URL");
 		localCookieManager = new CookieManager();
-		if(CookieHTTPString!=null){
-			
-			localCookieManager.generateManagerfromHTTPString(
-					TucanMobile.TUCAN_HOST, CookieHTTPString);
+		if (CookieHTTPString != null) {
+
+			localCookieManager.generateManagerfromHTTPString(TucanMobile.TUCAN_HOST,
+					CookieHTTPString);
+		} else {
+
 		}
-		else {
-			
-		}
-		
-		if(URLStringtoCall.equals("HTML")){
+
+		if (URLStringtoCall.equals("HTML")) {
 			String HTML = getIntent().getExtras().getString("HTML");
 			AnswerObject result = new AnswerObject(HTML, "", localCookieManager, "");
 			onPostExecute(result);
-		}
-		else {
+		} else {
 			callResultBrowser = new SimpleSecureBrowser(this);
-			RequestObject thisRequest = new RequestObject(URLStringtoCall,
-					localCookieManager, RequestObject.METHOD_GET, "");
+			RequestObject thisRequest = new RequestObject(URLStringtoCall, localCookieManager,
+					RequestObject.METHOD_GET, "");
 
 			callResultBrowser.execute(thisRequest);
 		}
 
 	}
 
-
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		Intent StartSingleEventIntent = new Intent(Module.this,
-				FragmentSingleEvent.class);
-		StartSingleEventIntent.putExtra(
-				TucanMobile.EXTRA_URL,
-				TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-						+ eventLinks.get(position));
-		StartSingleEventIntent.putExtra(TucanMobile.EXTRA_COOKIE,
-				localCookieManager
-						.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-		
-		startActivity(StartSingleEventIntent);
-	}
+		if (scrape != null) {
+			Intent StartSingleEventIntent = new Intent(Module.this, FragmentSingleEvent.class);
+			StartSingleEventIntent.putExtra(TucanMobile.EXTRA_URL, TucanMobile.TUCAN_PROT
+					+ TucanMobile.TUCAN_HOST + scrape.eventLinks.get(position));
+			StartSingleEventIntent.putExtra(TucanMobile.EXTRA_COOKIE,
+					localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 
+			startActivity(StartSingleEventIntent);
+		}
+	}
 
 	public void onPostExecute(AnswerObject result) {
-		Document doc = Jsoup.parse(result.getHTML());
-		String title = doc.select("h1").text();
-		Elements events = doc.select("a[name=eventLink]");
-		//System.out.println(events);
-		ArrayList<String> eventNames = new ArrayList<String>();
-						  eventLinks = new ArrayList<String>();
-		if(events.size()%3==0){
-			for (int i = 0; i < events.size(); i += 3) {
-				eventNames.add(events.get(i).text()+" "+events.get(i+1).text()+" "+events.get(i+2).text());
-				eventLinks.add(events.get(i).attr("href"));
-				System.out.println(events.get(i).attr("href"));
-			}
-		}
-		TextView titleTextView = (TextView) findViewById(R.id.module_title);
-		titleTextView.setText(title);
-		ArrayAdapter<String> simpleAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1	,eventNames);
-		setListAdapter(simpleAdapter);
-		
-		
-	}
+		scrape = new ModuleScraper(this, result);
 
+		TextView titleTextView = (TextView) findViewById(R.id.module_title);
+
+		try {
+			setListAdapter(scrape.scrapeAdapter(0));
+			titleTextView.setText(scrape.title);
+		} catch (LostSessionException e) {
+			Intent BackToLoginIntent = new Intent(this, TuCanMobileActivity.class);
+			BackToLoginIntent.putExtra("lostSession", true);
+			startActivity(BackToLoginIntent);
+		} catch (TucanDownException e) {
+			TucanMobile.alertOnTucanDown(this, e.getMessage());
+		}
+
+	}
 
 	@Override
 	public ConfigurationChangeStorage saveConfiguration() {
-		return null;
+		ConfigurationChangeStorage cStore = new ConfigurationChangeStorage();
+		cStore.adapters.add(getListAdapter());
+		cStore.scrapers.add(scrape);
+		return cStore;
 	}
-
 
 	@Override
 	public void retainConfiguration(ConfigurationChangeStorage conf) {
+		setListAdapter(conf.adapters.get(0));
+		BasicScraper retainedScraper = conf.scrapers.get(0);
+		if (retainedScraper != null && retainedScraper instanceof ModuleScraper) {
+			scrape = (ModuleScraper) retainedScraper;
+		}
 	}
 
 }
