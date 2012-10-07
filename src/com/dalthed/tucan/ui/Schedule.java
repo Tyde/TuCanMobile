@@ -86,9 +86,11 @@ public class Schedule extends SimpleWebListActivity {
 				setListAdapter(adapter);
 			}
 		} catch (LostSessionException e) {
-			e.printStackTrace();
+			Intent BackToLoginIntent = new Intent(this, TuCanMobileActivity.class);
+			BackToLoginIntent.putExtra("lostSession", true);
+			startActivity(BackToLoginIntent);
 		} catch (TucanDownException e) {
-			e.printStackTrace();
+			TucanMobile.alertOnTucanDown(this, e.getMessage());
 		}
 
 	}
