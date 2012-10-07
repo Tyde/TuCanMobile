@@ -37,7 +37,9 @@ import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
+import com.dalthed.tucan.scraper.BasicScraper;
 import com.dalthed.tucan.scraper.RegisterExamsScraper;
+import com.dalthed.tucan.scraper.ScheduleScraper;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class RegisterExams extends SimpleWebListActivity {
@@ -128,11 +130,19 @@ public class RegisterExams extends SimpleWebListActivity {
 
 	@Override
 	public ConfigurationChangeStorage saveConfiguration() {
-		return null;
+		ConfigurationChangeStorage cStore = new ConfigurationChangeStorage();
+		cStore.adapters.add(getListAdapter());
+		cStore.scrapers.add(scrape);
+		return cStore;
 	}
 
 	@Override
 	public void retainConfiguration(ConfigurationChangeStorage conf) {
+		setListAdapter(conf.adapters.get(0));
+		BasicScraper retainedScraper = conf.scrapers.get(0);
+		if (retainedScraper != null && retainedScraper instanceof RegisterExamsScraper) {
+			scrape = (RegisterExamsScraper) retainedScraper;
+		}
 	}
 
 }
