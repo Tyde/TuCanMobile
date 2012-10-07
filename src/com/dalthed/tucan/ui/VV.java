@@ -160,8 +160,8 @@ public class VV extends SimpleWebListActivity {
 	@Override
 	public ConfigurationChangeStorage saveConfiguration() {
 		ConfigurationChangeStorage cStore = new ConfigurationChangeStorage();
-		cStore.scrapers.add(scrape);
-		cStore.scrapers.add(evScrape);
+		cStore.addScraper(scrape);
+		cStore.addScraper(evScrape);
 		cStore.adapters.add(getListAdapter());
 		cStore.adapters.add(categoryAdapter);
 		cStore.adapters.add(eventAdapter);

@@ -52,18 +52,20 @@ public class Schedule extends SimpleWebListActivity {
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		URLStringtoCall = getIntent().getExtras().getString("URL");
 		URL URLtoCall;
+		if (!restoreResultBrowser()) {
+			try {
+				URLtoCall = new URL(URLStringtoCall);
+				localCookieManager = new CookieManager();
+				localCookieManager.generateManagerfromHTTPString(URLtoCall.getHost(),
+						CookieHTTPString);
+				callResultBrowser = new SimpleSecureBrowser(this);
+				RequestObject thisRequest = new RequestObject(URLStringtoCall, localCookieManager,
+						RequestObject.METHOD_GET, "");
 
-		try {
-			URLtoCall = new URL(URLStringtoCall);
-			localCookieManager = new CookieManager();
-			localCookieManager.generateManagerfromHTTPString(URLtoCall.getHost(), CookieHTTPString);
-			callResultBrowser = new SimpleSecureBrowser(this);
-			RequestObject thisRequest = new RequestObject(URLStringtoCall, localCookieManager,
-					RequestObject.METHOD_GET, "");
-
-			callResultBrowser.execute(thisRequest);
-		} catch (MalformedURLException e) {
-			Log.e(LOG_TAG, e.getMessage());
+				callResultBrowser.execute(thisRequest);
+			} catch (MalformedURLException e) {
+				Log.e(LOG_TAG, e.getMessage());
+			}
 		}
 
 	}
@@ -110,14 +112,14 @@ public class Schedule extends SimpleWebListActivity {
 	public ConfigurationChangeStorage saveConfiguration() {
 		ConfigurationChangeStorage cStore = new ConfigurationChangeStorage();
 		cStore.adapters.add(adapter);
-		cStore.scrapers.add(scrape);
+		cStore.addScraper(scrape);
 		return cStore;
 	}
 
 	@Override
 	public void retainConfiguration(ConfigurationChangeStorage conf) {
-		BasicScraper retainedScraper = conf.scrapers.get(0);
-		if (retainedScraper != null && retainedScraper instanceof ScheduleScraper) {
+		BasicScraper retainedScraper = conf.getScraper(0, this);
+		if (retainedScraper instanceof ScheduleScraper) {
 			scrape = (ScheduleScraper) retainedScraper;
 		}
 		if (conf.adapters.get(0) != null) {

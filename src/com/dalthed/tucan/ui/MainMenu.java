@@ -48,15 +48,15 @@ import com.dalthed.tucan.Connection.SimpleBackgroundBrowser;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
+import com.dalthed.tucan.scraper.BasicScraper;
 import com.dalthed.tucan.scraper.MainMenuScraper;
+import com.dalthed.tucan.scraper.RegisterExamsScraper;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReciever {
 	private Boolean windowFeatureCalled = false;
 	CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
-
-	
 
 	/**
 	 * HTML Scraper
@@ -80,38 +80,133 @@ public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReci
 		String source = getIntent().getExtras().getString("source");
 		// Log.i(LOG_TAG,"Qsource);
 		URL lastCalledURL;
-		if (source == null || source.equals("")) {
-			try {
-				lastCalledURL = new URL(lastCalledURLString);
-				localCookieManager = new CookieManager();
-				localCookieManager.generateManagerfromHTTPString(lastCalledURL.getHost(),
-						CookieHTTPString);
-				callResultBrowser = new SimpleSecureBrowser(this);
-				RequestObject thisRequest = new RequestObject(lastCalledURLString,
-						localCookieManager, RequestObject.METHOD_GET, "");
+		if (!restoreResultBrowser()) {
+			if (source == null || source.equals("")) {
+				try {
+					lastCalledURL = new URL(lastCalledURLString);
+					localCookieManager = new CookieManager();
+					localCookieManager.generateManagerfromHTTPString(lastCalledURL.getHost(),
+							CookieHTTPString);
+					callResultBrowser = new SimpleSecureBrowser(this);
+					RequestObject thisRequest = new RequestObject(lastCalledURLString,
+							localCookieManager, RequestObject.METHOD_GET, "");
 
-				callResultBrowser.execute(thisRequest);
-			} catch (MalformedURLException e) {
-				Log.e(LOG_TAG, e.getMessage());
+					callResultBrowser.execute(thisRequest);
+				} catch (MalformedURLException e) {
+					Log.e(LOG_TAG, e.getMessage());
+				}
+			} else {
+				localCookieManager = new CookieManager();
+				localCookieManager.generateManagerfromHTTPString(TucanMobile.TUCAN_HOST,
+						CookieHTTPString);
+				onPostExecute(new AnswerObject(source, "", localCookieManager, lastCalledURLString));
 			}
-		} else {
-			localCookieManager = new CookieManager();
-			localCookieManager.generateManagerfromHTTPString(TucanMobile.TUCAN_HOST,
-					CookieHTTPString);
-			onPostExecute(new AnswerObject(source, "", localCookieManager, lastCalledURLString));
 		}
 
 		// Webhandling End
 
-		ListView MenuList = (ListView) findViewById(R.id.mm_menuList);
+		menuListInitialisation();
 
-		MenuList.setDivider(null);
+	}
 
-		MenuList.setAdapter(new ArrayAdapter<String>(this, R.layout.menu_row,
+	/**
+	 * 
+	 */
+	private void menuListInitialisation() {
+		ListView menuList = (ListView) findViewById(R.id.mm_menuList);
+
+		menuList.setDivider(null);
+
+		menuList.setAdapter(new ArrayAdapter<String>(this, R.layout.menu_row,
 				R.id.main_menu_row_textField, getResources().getStringArray(
 						R.array.mainmenu_options)));
 
-		MenuList.setOnItemClickListener(new OnItemClickListener() {
+		setMenuListListener(menuList);
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		setContentView(R.layout.main_menu);
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+			localCookieManager = new CookieManager();
+			Toast.makeText(this, "Abgemeldet", Toast.LENGTH_SHORT).show();
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
+	public void onPostExecute(AnswerObject result) {
+		// Scraper initialisieren
+		scrape = new MainMenuScraper(this, result);
+
+		// Adapter für heutige Events erstellen
+		ListAdapter todayseventsadapter;
+		try {
+			// Adapter mittels scraper starten und auf die Liste setzen
+			todayseventsadapter = scrape.scrapeAdapter(0);
+			ListView EventList = (ListView) findViewById(R.id.mm_eventList);
+			EventList.setAdapter(todayseventsadapter);
+
+			// OnClicklistener für Eventliste: Bei klick wird ein intent für die
+			// SingleEventAnsicht gestartet
+			setEventListListener(EventList);
+		} catch (LostSessionException e) {
+			// Im falle einer verlorenen Session -> zurück zum login
+			Intent BackToLoginIntent = new Intent(this, TuCanMobileActivity.class);
+			BackToLoginIntent.putExtra("lostSession", true);
+			startActivity(BackToLoginIntent);
+
+		} catch (TucanDownException e) {
+			TucanMobile.alertOnTucanDown(this, e.getMessage());
+		}
+
+		acBar.setSubtitle(scrape.UserName);
+
+		// Start Location finding
+		SimpleBackgroundBrowser simpleBackgroundBrowser = new SimpleBackgroundBrowser(this, acBar);
+		simpleBackgroundBrowser.execute(new RequestObject(scrape.load_link_ev_loc, result
+				.getCookieManager(), RequestObject.METHOD_GET, ""));
+		// User, welche Tucan auf englisch gestellt haben, ausschließen, da
+		// sonst fehler auftreten würden
+		scrape.checkForRightTucanLanguage(this);
+		// Links in den Buffer für die Actionbar schreiben
+		scrape.bufferLinks(this, localCookieManager);
+
+	}
+
+	/**
+	 * @param EventList
+	 */
+	private void setEventListListener(ListView EventList) {
+		EventList.setOnItemClickListener(new OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				if (scrape.noeventstoday == false) {
+					Intent StartSingleEventIntent = new Intent(MainMenu.this,
+							FragmentSingleEvent.class);
+					StartSingleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT
+							+ TucanMobile.TUCAN_HOST + scrape.today_event_links[position]);
+					StartSingleEventIntent.putExtra("Cookie",
+							localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+					// StartSingleEventIntent.putExtra("UserName",
+					// UserName);
+					parent.invalidate();
+					startActivity(StartSingleEventIntent);
+
+				}
+			}
+		});
+	}
+
+	/**
+	 * @param menuList
+	 */
+	private void setMenuListListener(ListView menuList) {
+		menuList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
 
 				view.invalidate();
@@ -163,76 +258,6 @@ public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReci
 				}
 			}
 		});
-
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		setContentView(R.layout.main_menu);
-	}
-
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-			localCookieManager = new CookieManager();
-			Toast.makeText(this, "Abgemeldet", Toast.LENGTH_SHORT).show();
-		}
-		return super.onKeyDown(keyCode, event);
-	}
-
-	public void onPostExecute(AnswerObject result) {
-		// Scraper initialisieren
-		scrape = new MainMenuScraper(this, result);
-		
-		//Adapter für heutige Events erstellen
-		ListAdapter todayseventsadapter;
-		try {
-			//Adapter mittels scraper starten und auf die Liste setzen
-			todayseventsadapter = scrape.scrapeAdapter(0);
-			ListView EventList = (ListView) findViewById(R.id.mm_eventList);
-			EventList.setAdapter(todayseventsadapter);
-
-			//OnClicklistener für Eventliste: Bei klick wird ein intent für die SingleEventAnsicht gestartet
-			EventList.setOnItemClickListener(new OnItemClickListener() {
-
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-					if (scrape.noeventstoday == false) {
-						Intent StartSingleEventIntent = new Intent(MainMenu.this,
-								FragmentSingleEvent.class);
-						StartSingleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT
-								+ TucanMobile.TUCAN_HOST + scrape.today_event_links[position]);
-						StartSingleEventIntent.putExtra("Cookie",
-								localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-						// StartSingleEventIntent.putExtra("UserName",
-						// UserName);
-						parent.invalidate();
-						startActivity(StartSingleEventIntent);
-
-					}
-				}
-			});
-		} catch (LostSessionException e) {
-			//Im falle einer verlorenen Session -> zurück zum login
-			Intent BackToLoginIntent = new Intent(this, TuCanMobileActivity.class);
-			BackToLoginIntent.putExtra("lostSession", true);
-			startActivity(BackToLoginIntent);
-		
-		} catch (TucanDownException e) {
-			TucanMobile.alertOnTucanDown(this, e.getMessage());
-		}
-
-		acBar.setSubtitle(scrape.UserName);
-
-		// Start Location finding
-		SimpleBackgroundBrowser simpleBackgroundBrowser = new SimpleBackgroundBrowser(this, acBar);
-		simpleBackgroundBrowser.execute(new RequestObject(scrape.load_link_ev_loc, result
-				.getCookieManager(), RequestObject.METHOD_GET, ""));
-		//User, welche Tucan auf englisch gestellt haben, ausschließen, da sonst fehler auftreten würden
-		scrape.checkForRightTucanLanguage(this);
-		//Links in den Buffer für die Actionbar schreiben
-		scrape.bufferLinks(this, localCookieManager);
-
 	}
 
 	public void onBackgroundBrowserFinalized(AnswerObject result) {
@@ -245,11 +270,25 @@ public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReci
 
 	@Override
 	public ConfigurationChangeStorage saveConfiguration() {
-		return null;
+		ConfigurationChangeStorage cStore = new ConfigurationChangeStorage();
+		ListView menuList = (ListView) findViewById(R.id.mm_menuList);
+		ListView eventList = (ListView) findViewById(R.id.mm_eventList);
+		cStore.adapters.add(menuList.getAdapter());
+		cStore.adapters.add(eventList.getAdapter());
+		cStore.addScraper(scrape);
+		return cStore;
 	}
 
 	@Override
 	public void retainConfiguration(ConfigurationChangeStorage conf) {
+		BasicScraper retainedScraper = conf.getScraper(0, this);
+		if (retainedScraper instanceof MainMenuScraper) {
+			scrape = (MainMenuScraper) retainedScraper;
+		}
+		ListView eventList = (ListView) findViewById(R.id.mm_eventList);
+		eventList.setAdapter(conf.adapters.get(1));
+		setEventListListener(eventList);
+
 	}
 
 	/*

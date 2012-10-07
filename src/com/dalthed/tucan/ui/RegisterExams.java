@@ -45,9 +45,9 @@ import com.dalthed.tucan.util.ConfigurationChangeStorage;
 public class RegisterExams extends SimpleWebListActivity {
 	private String UserName, URLStringtoCall;
 	private CookieManager localCookieManager;
-	
+
 	private static final String LOG_TAG = "TuCanMobile";
-	
+
 	int mode = 0;
 	private RegisterExamsScraper scrape;
 
@@ -62,22 +62,24 @@ public class RegisterExams extends SimpleWebListActivity {
 		URLStringtoCall = getIntent().getExtras().getString("URL");
 		UserName = getIntent().getExtras().getString("UserName");
 		URL URLtoCall;
+		if (!restoreResultBrowser()) {
+			try {
+				URLtoCall = new URL(URLStringtoCall);
 
-		try {
-			URLtoCall = new URL(URLStringtoCall);
+				localCookieManager = new CookieManager();
+				localCookieManager.generateManagerfromHTTPString(URLtoCall.getHost(),
+						CookieHTTPString);
+				callResultBrowser = new SimpleSecureBrowser(this);
+				if (TucanMobile.DEBUG) {
+					callResultBrowser.HTTPS = this.HTTPS;
+				}
+				RequestObject thisRequest = new RequestObject(URLStringtoCall, localCookieManager,
+						RequestObject.METHOD_GET, "");
 
-			localCookieManager = new CookieManager();
-			localCookieManager.generateManagerfromHTTPString(URLtoCall.getHost(), CookieHTTPString);
-			callResultBrowser = new SimpleSecureBrowser(this);
-			if (TucanMobile.DEBUG) {
-				callResultBrowser.HTTPS = this.HTTPS;
+				callResultBrowser.execute(thisRequest);
+			} catch (MalformedURLException e) {
+				Log.e(LOG_TAG, e.getMessage());
 			}
-			RequestObject thisRequest = new RequestObject(URLStringtoCall, localCookieManager,
-					RequestObject.METHOD_GET, "");
-
-			callResultBrowser.execute(thisRequest);
-		} catch (MalformedURLException e) {
-			Log.e(LOG_TAG, e.getMessage());
 		}
 
 	}
@@ -122,8 +124,8 @@ public class RegisterExams extends SimpleWebListActivity {
 				mode = 1;
 			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(this);
 			RequestObject callstatuschange = new RequestObject(TucanMobile.TUCAN_PROT
-					+ TucanMobile.TUCAN_HOST + scrape.registerLink.get(position), localCookieManager,
-					RequestObject.METHOD_GET, "");
+					+ TucanMobile.TUCAN_HOST + scrape.registerLink.get(position),
+					localCookieManager, RequestObject.METHOD_GET, "");
 			callOverviewBrowser.execute(callstatuschange);
 		}
 	}
@@ -132,15 +134,15 @@ public class RegisterExams extends SimpleWebListActivity {
 	public ConfigurationChangeStorage saveConfiguration() {
 		ConfigurationChangeStorage cStore = new ConfigurationChangeStorage();
 		cStore.adapters.add(getListAdapter());
-		cStore.scrapers.add(scrape);
+		cStore.addScraper(scrape);
 		return cStore;
 	}
 
 	@Override
 	public void retainConfiguration(ConfigurationChangeStorage conf) {
 		setListAdapter(conf.adapters.get(0));
-		BasicScraper retainedScraper = conf.scrapers.get(0);
-		if (retainedScraper != null && retainedScraper instanceof RegisterExamsScraper) {
+		BasicScraper retainedScraper = conf.getScraper(0, this);
+		if (retainedScraper instanceof RegisterExamsScraper) {
 			scrape = (RegisterExamsScraper) retainedScraper;
 		}
 	}

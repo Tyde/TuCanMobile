@@ -3,19 +3,22 @@ package com.dalthed.tucan.util;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListAdapter;
 
 import com.dalthed.tucan.scraper.BasicScraper;
 
 public class ConfigurationChangeStorage {
 
-	public ArrayList<BasicScraper> scrapers;
+	private ArrayList<BasicScraper> scrapers;
 
 	public ArrayList<ListAdapter> adapters;
+
 
 	public ConfigurationChangeStorage() {
 		scrapers = new ArrayList<BasicScraper>();
 		adapters = new ArrayList<ListAdapter>();
+
 	}
 
 	/**
@@ -36,6 +39,10 @@ public class ConfigurationChangeStorage {
 		}
 		return null;
 
+	}
+	
+	public void addScraper(BasicScraper scrape) {
+		scrapers.add(scrape);
 	}
 
 }

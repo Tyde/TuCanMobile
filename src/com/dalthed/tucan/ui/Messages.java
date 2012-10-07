@@ -52,18 +52,20 @@ public class Messages extends SimpleWebListActivity {
 		URLStringtoCall = getIntent().getExtras().getString("URL");
 		UserName = getIntent().getExtras().getString("UserName");
 		URL URLtoCall;
+		if (!restoreResultBrowser()) {
+			try {
+				URLtoCall = new URL(URLStringtoCall);
+				localCookieManager = new CookieManager();
+				localCookieManager.generateManagerfromHTTPString(URLtoCall.getHost(),
+						CookieHTTPString);
+				callResultBrowser = new SimpleSecureBrowser(this);
+				RequestObject thisRequest = new RequestObject(URLStringtoCall, localCookieManager,
+						RequestObject.METHOD_GET, "");
 
-		try {
-			URLtoCall = new URL(URLStringtoCall);
-			localCookieManager = new CookieManager();
-			localCookieManager.generateManagerfromHTTPString(URLtoCall.getHost(), CookieHTTPString);
-			callResultBrowser = new SimpleSecureBrowser(this);
-			RequestObject thisRequest = new RequestObject(URLStringtoCall, localCookieManager,
-					RequestObject.METHOD_GET, "");
-
-			callResultBrowser.execute(thisRequest);
-		} catch (MalformedURLException e) {
-			Log.e(LOG_TAG, e.getMessage());
+				callResultBrowser.execute(thisRequest);
+			} catch (MalformedURLException e) {
+				Log.e(LOG_TAG, e.getMessage());
+			}
 		}
 	}
 
@@ -76,7 +78,7 @@ public class Messages extends SimpleWebListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		if (scrape != null && scrape.messageLink.size()>position) {
+		if (scrape != null && scrape.messageLink.size() > position) {
 			Intent MessageStartIntent = new Intent(Messages.this, SingleMessage.class);
 			MessageStartIntent.putExtra("URL", TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
 					+ scrape.messageLink.get(position));
@@ -105,15 +107,15 @@ public class Messages extends SimpleWebListActivity {
 	public ConfigurationChangeStorage saveConfiguration() {
 		ConfigurationChangeStorage cStore = new ConfigurationChangeStorage();
 		cStore.adapters.add(getListAdapter());
-		cStore.scrapers.add(scrape);
+		cStore.addScraper(scrape);
 		return cStore;
 	}
 
 	@Override
 	public void retainConfiguration(ConfigurationChangeStorage conf) {
 		setListAdapter(conf.adapters.get(0));
-		BasicScraper retainedScraper = conf.scrapers.get(0);
-		if (retainedScraper != null && retainedScraper instanceof MessagesScraper) {
+		BasicScraper retainedScraper = conf.getScraper(0, this);
+		if (retainedScraper instanceof MessagesScraper) {
 			scrape = (MessagesScraper) retainedScraper;
 		}
 	}

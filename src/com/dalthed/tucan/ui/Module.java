@@ -49,17 +49,18 @@ public class Module extends SimpleWebListActivity {
 		} else {
 
 		}
+		if (!restoreResultBrowser()) {
+			if (URLStringtoCall.equals("HTML")) {
+				String HTML = getIntent().getExtras().getString("HTML");
+				AnswerObject result = new AnswerObject(HTML, "", localCookieManager, "");
+				onPostExecute(result);
+			} else {
+				callResultBrowser = new SimpleSecureBrowser(this);
+				RequestObject thisRequest = new RequestObject(URLStringtoCall, localCookieManager,
+						RequestObject.METHOD_GET, "");
 
-		if (URLStringtoCall.equals("HTML")) {
-			String HTML = getIntent().getExtras().getString("HTML");
-			AnswerObject result = new AnswerObject(HTML, "", localCookieManager, "");
-			onPostExecute(result);
-		} else {
-			callResultBrowser = new SimpleSecureBrowser(this);
-			RequestObject thisRequest = new RequestObject(URLStringtoCall, localCookieManager,
-					RequestObject.METHOD_GET, "");
-
-			callResultBrowser.execute(thisRequest);
+				callResultBrowser.execute(thisRequest);
+			}
 		}
 
 	}
@@ -99,14 +100,14 @@ public class Module extends SimpleWebListActivity {
 	public ConfigurationChangeStorage saveConfiguration() {
 		ConfigurationChangeStorage cStore = new ConfigurationChangeStorage();
 		cStore.adapters.add(getListAdapter());
-		cStore.scrapers.add(scrape);
+		cStore.addScraper(scrape);
 		return cStore;
 	}
 
 	@Override
 	public void retainConfiguration(ConfigurationChangeStorage conf) {
 		setListAdapter(conf.adapters.get(0));
-		BasicScraper retainedScraper = conf.scrapers.get(0);
+		BasicScraper retainedScraper = conf.getScraper(0, this);
 		if (retainedScraper != null && retainedScraper instanceof ModuleScraper) {
 			scrape = (ModuleScraper) retainedScraper;
 		}

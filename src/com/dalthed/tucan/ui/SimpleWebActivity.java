@@ -4,6 +4,7 @@ import org.acra.ErrorReporter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 
@@ -84,10 +85,35 @@ public abstract class SimpleWebActivity extends SherlockActivity implements
 		}
 
 	}
+	
+	protected Boolean restoreResultBrowser() {
+		if (getLastNonConfigurationInstance() != null) {
+			if (getLastNonConfigurationInstance() instanceof SimpleSecureBrowser) {
+				SimpleSecureBrowser oldBrowser = (SimpleSecureBrowser) getLastNonConfigurationInstance();
+				 callResultBrowser = oldBrowser;
+				 if (!(oldBrowser.getStatus()
+	                        .equals(AsyncTask.Status.FINISHED))) {
+					
+					 callResultBrowser.dialog.show();
+					 
+				 } else {
+					 this.retainConfiguration(oldBrowser.mConfigurationStorage);
+				 }
+			}
+			return true;
+		}
+		return false;
+	}
 
 	@Override
 	public Object onRetainNonConfigurationInstance() {
-		return callResultBrowser;
+		if (callResultBrowser != null) {
+			callResultBrowser.mConfigurationStorage = saveConfiguration();
+			callResultBrowser.dialog.dismiss();
+			return callResultBrowser;
+		}
+
+		return super.onRetainNonConfigurationInstance();
 	}
 
 	/*

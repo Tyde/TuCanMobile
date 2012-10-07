@@ -89,7 +89,7 @@ public class SingleMessage extends SimpleWebActivity {
 	@Override
 	public ConfigurationChangeStorage saveConfiguration() {
 		ConfigurationChangeStorage cStore = new ConfigurationChangeStorage();
-		cStore.scrapers.add(scrape);
+		cStore.addScraper(scrape);
 		
 		return null;
 	}
