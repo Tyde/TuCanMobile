@@ -10,6 +10,7 @@ import org.jsoup.select.Elements;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -77,7 +78,7 @@ public class SingleMessage extends SimpleWebActivity {
 			authorTextView.setText(scrape.authorText);
 			dateTextView.setText(scrape.dateText);
 			titleTextView.setText(scrape.titleText);
-			textTextView.setText(scrape.textText);
+			textTextView.setText(Html.fromHtml(scrape.textText));
 		} catch (LostSessionException e) {
 			e.printStackTrace();
 		} catch (TucanDownException e) {

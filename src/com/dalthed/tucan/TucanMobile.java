@@ -26,7 +26,7 @@ import android.util.Log;
 formUri = "http://daniel-thiem.de/ACRA/insertsql.php")
 //@ReportsCrashes(formUri = "http://www.bugsense.com/api/acra?api_key=f08ba688", formKey="")
 public class TucanMobile extends Application {
-	private static Context Appcontext;
+	private static Context Appcontext; 
 	/**
 	 * The Host String of Tucan without protocol
 	 */

@@ -35,6 +35,7 @@ public class MessagesScraper extends BasicScraper {
 		if (checkForLostSeesion()) {
 			if (step == 0) {
 				loadArchive();
+				step++; 
 			} else {
 				return extractMessageList();
 			}

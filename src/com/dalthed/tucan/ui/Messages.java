@@ -90,7 +90,11 @@ public class Messages extends SimpleWebListActivity {
 	}
 
 	public void onPostExecute(AnswerObject result) {
-		scrape = new MessagesScraper(this, result);
+		if (scrape == null) {
+			scrape = new MessagesScraper(this, result);
+		} else {
+			scrape.setNewAnswer(result);
+		}
 		try {
 			setListAdapter(scrape.scrapeAdapter(0));
 		} catch (LostSessionException e) {
