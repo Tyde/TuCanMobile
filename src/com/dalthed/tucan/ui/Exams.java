@@ -34,7 +34,9 @@ import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.scraper.BasicScraper;
 import com.dalthed.tucan.scraper.ExamsScraper;
+import com.dalthed.tucan.scraper.MessagesScraper;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class Exams extends SimpleWebListActivity {
@@ -259,6 +261,17 @@ public class Exams extends SimpleWebListActivity {
 			startActivity(BackToLoginIntent);
 		}
 		
+		setSpinner();
+			
+		
+		
+
+	}
+
+	/**
+	 * 
+	 */
+	private void setSpinner() {
 		if (mode == 10 || mode == 1 || mode == 2) {
 			
 			Spinner semesterSpinner = (Spinner) findViewById(R.id.exam_semester_spinner);
@@ -268,19 +281,25 @@ public class Exams extends SimpleWebListActivity {
 			semesterSpinner
 					.setOnItemSelectedListener(new OnItemSelectedListener());
 		}
-			
-		
-		
-
 	}
 
 	@Override
 	public ConfigurationChangeStorage saveConfiguration() {
-		return null;
+		ConfigurationChangeStorage cStore = new ConfigurationChangeStorage();
+		cStore.adapters.add(getListAdapter());
+		cStore.addScraper(scrape);
+		cStore.mode=mode;
+		return cStore;
 	}
 
 	@Override
 	public void retainConfiguration(ConfigurationChangeStorage conf) {
+		setListAdapter(conf.adapters.get(0));
+		BasicScraper retainedScraper = conf.getScraper(0, this);
+		if (retainedScraper instanceof ExamsScraper) {
+			scrape = (ExamsScraper) retainedScraper;
+		}
+		setSpinner();
 	}
 
 	

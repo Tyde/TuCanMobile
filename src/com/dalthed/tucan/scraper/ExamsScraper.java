@@ -33,6 +33,7 @@ public class ExamsScraper extends BasicScraper {
 	private ArrayList<String> SemesterOptionName;
 	public ArrayList<String> SemesterOptionValue;
 	public int SemesterOptionSelected;
+	private ArrayAdapter<String> spinnerAdapter;
 
 	public ExamsScraper(Context context, AnswerObject result) {
 		super(context, result);
@@ -100,24 +101,28 @@ public class ExamsScraper extends BasicScraper {
 	}
 
 	public SpinnerAdapter spinnerAdapter() {
-		SemesterOptionName = new ArrayList<String>();
-		SemesterOptionValue = new ArrayList<String>();
-		Iterator<Element> SemesterOptionIterator = doc.select("option").iterator();
-		int i = 0;
-		SemesterOptionSelected = 0;
-		while (SemesterOptionIterator.hasNext()) {
-			Element next = SemesterOptionIterator.next();
-			SemesterOptionName.add(next.text());
-			SemesterOptionValue.add(next.attr("value"));
-			if (next.hasAttr("selected")) {
-				Log.i(LOG_TAG, next.text() + " is selected, has val " + i);
-				SemesterOptionSelected = i;
+		if (spinnerAdapter == null) {
+			SemesterOptionName = new ArrayList<String>();
+			SemesterOptionValue = new ArrayList<String>();
+			Iterator<Element> SemesterOptionIterator = doc.select("option").iterator();
+			int i = 0;
+			SemesterOptionSelected = 0;
+			while (SemesterOptionIterator.hasNext()) {
+				Element next = SemesterOptionIterator.next();
+				SemesterOptionName.add(next.text());
+				SemesterOptionValue.add(next.attr("value"));
+				if (next.hasAttr("selected")) {
+					Log.i(LOG_TAG, next.text() + " is selected, has val " + i);
+					SemesterOptionSelected = i;
+				}
+				i++;
 			}
-			i++;
+			spinnerAdapter = new ArrayAdapter<String>(context,
+					android.R.layout.simple_spinner_item, SemesterOptionName);
+			
 		}
-		ArrayAdapter<String> SpinnerAdapter = new ArrayAdapter<String>(context,
-				android.R.layout.simple_spinner_item, SemesterOptionName);
-		return SpinnerAdapter;
+		return spinnerAdapter;
+		
 	}
 
 	/**

@@ -14,7 +14,7 @@ public class ConfigurationChangeStorage {
 
 	public ArrayList<ListAdapter> adapters;
 
-
+	public int mode;
 	public ConfigurationChangeStorage() {
 		scrapers = new ArrayList<BasicScraper>();
 		adapters = new ArrayList<ListAdapter>();
