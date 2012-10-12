@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dalthed.tucan"
-
     android:versionCode="27"
     android:versionName="0.3.1" >
-
-  
- 
 
     <uses-sdk
         android:minSdkVersion="4"
@@ -33,7 +29,6 @@
         </activity>
         <activity
             android:name=".ui.MainMenu"
-            android:configChanges="keyboardHidden|orientation"
             android:label="mainmenu"
             android:screenOrientation="portrait" >
         </activity>
@@ -45,14 +40,12 @@
         </activity>
         <activity
             android:name=".ui.VV_Events"
-            android:configChanges="keyboardHidden|orientation"
             android:label="Vorlesungen" >
         </activity>
 
         <!-- Veranstaltungen -->
         <activity
             android:name=".ui.Events"
-            android:configChanges="keyboardHidden|orientation"
             android:label="Veranstaltungen" >
         </activity>
         <activity
@@ -72,7 +65,6 @@
         </activity>
         <activity
             android:name=".ui.Module"
-            android:configChanges="keyboardHidden|orientation"
             android:label="Module" >
         </activity>
 
@@ -80,12 +72,10 @@
 
         <activity
             android:name=".ui.Exams"
-            android:configChanges="keyboardHidden|orientation"
             android:label="Prüfungen" >
         </activity>
         <activity
             android:name=".ui.RegisterExams"
-            android:configChanges="keyboardHidden|orientation"
             android:label="Anmeldung zu Prüfungen" >
         </activity>
 
@@ -93,19 +83,16 @@
 
         <activity
             android:name=".ui.Schedule"
-            android:configChanges="keyboardHidden|orientation"
             android:label="Stundenplan" >
         </activity>
 
         <!-- Nachrichten -->
         <activity
             android:name=".ui.Messages"
-            android:configChanges="keyboardHidden|orientation"
             android:label="Nachrichten" >
         </activity>
         <activity
             android:name=".ui.SingleMessage"
-            android:configChanges="keyboardHidden|orientation"
             android:label="Nachricht" >
         </activity>
         <activity
