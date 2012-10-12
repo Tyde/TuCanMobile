@@ -34,7 +34,9 @@ import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.scraper.BasicScraper;
 import com.dalthed.tucan.scraper.EventsScraper;
+import com.dalthed.tucan.scraper.ExamsScraper;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
 /**
  * Displays the Events Menu
@@ -160,6 +162,29 @@ public class Events extends SimpleWebListActivity {
 		
 		//Stop tracing
 		
+		setFastSwitchSubtites();
+		setSpinner();
+		
+
+	}
+
+	/**
+	 * 
+	 */
+	private void setSpinner() {
+		if(mode!=0){
+			Spinner semesterSpinner = (Spinner) findViewById(R.id.exam_semester_spinner);
+			semesterSpinner.setVisibility(View.VISIBLE);
+			semesterSpinner.setAdapter(scrape.spinnerAdapter());
+			semesterSpinner.setSelection(scrape.SemesterOptionSelected);
+			semesterSpinner.setOnItemSelectedListener(new OnItemSelectedListener());
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void setFastSwitchSubtites() {
 		if(mode==0){
 			
 			fsh.setSubtitle(getResources().getText(R.string.events_subtitle));
@@ -173,15 +198,6 @@ public class Events extends SimpleWebListActivity {
 		else if(mode==10){
 			fsh.setSubtitle(getResources().getText(R.string.events_subtitle_modules));
 		}
-		if(mode!=0){
-			Spinner semesterSpinner = (Spinner) findViewById(R.id.exam_semester_spinner);
-			semesterSpinner.setVisibility(View.VISIBLE);
-			semesterSpinner.setAdapter(scrape.spinnerAdapter());
-			semesterSpinner.setSelection(scrape.SemesterOptionSelected);
-			semesterSpinner.setOnItemSelectedListener(new OnItemSelectedListener());
-		}
-		
-
 	}
 
 	public class OnItemSelectedListener implements
@@ -238,11 +254,23 @@ public class Events extends SimpleWebListActivity {
 
 	@Override
 	public ConfigurationChangeStorage saveConfiguration() {
-		return null;
+		ConfigurationChangeStorage cStore = new ConfigurationChangeStorage();
+		cStore.adapters.add(getListAdapter());
+		cStore.addScraper(scrape);
+		cStore.mode=mode;
+		return cStore;
 	}
 
 	@Override
 	public void retainConfiguration(ConfigurationChangeStorage conf) {
+		setListAdapter(conf.adapters.get(0));
+		BasicScraper retainedScraper = conf.getScraper(0, this);
+		if (retainedScraper instanceof EventsScraper) {
+			scrape = (EventsScraper) retainedScraper;
+		}
+		mode = conf.mode;
+		setSpinner();
+		setFastSwitchSubtites();
 	}
 
 }
