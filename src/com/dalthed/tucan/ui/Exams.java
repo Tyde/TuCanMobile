@@ -299,6 +299,7 @@ public class Exams extends SimpleWebListActivity {
 		if (retainedScraper instanceof ExamsScraper) {
 			scrape = (ExamsScraper) retainedScraper;
 		}
+		mode = conf.mode;
 		setSpinner();
 	}
 
