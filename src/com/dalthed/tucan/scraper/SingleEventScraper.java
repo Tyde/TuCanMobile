@@ -95,6 +95,13 @@ public class SingleEventScraper extends BasicScraper {
 		}
 		return null;
 	}
+	
+	public void configurationChange(FastSwitchHelper fsh,PagerAdapter mPageAdapter, ViewPager mPager) throws LostSessionException, TucanDownException{
+		this.fsh = fsh;
+		this.mPageAdapter = mPageAdapter;
+		this.mPager = mPager;
+		scrapeAdapter(0);
+	}
 
 	/**
 	 * 

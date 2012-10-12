@@ -41,7 +41,6 @@ import com.dalthed.tucan.scraper.SingleEventScraper;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
 import com.viewpagerindicator.TitlePageIndicator;
 
-
 public class FragmentSingleEvent extends FragmentWebActivity {
 	static final int NUM_ITEMS = 3;
 	PagerAdapter mPageAdapter;
@@ -51,12 +50,11 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 	private String URLStringtoCall;
 	private Boolean PREPCall;
 	protected String[] mTitles;
-	
-
+	private SingleEventScraper scrape;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState,true,2);
+		super.onCreate(savedInstanceState, true, 2);
 		setContentView(R.layout.fragment_singleevent);
 
 		// Wichtige Infos aus dem Intent holen
@@ -82,26 +80,27 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 		titleIndicator.setFooterColor(getResources().getColor(R.color.tucan_green));
 		titleIndicator.setBackgroundColor(getResources().getColor(R.color.tucan_grey));
 		titleIndicator.setSelectedBold(false);
+		
+			try {
+				// Seite aufrufen..
+				callResultBrowser = new SimpleSecureBrowser(this);
+				if (TucanMobile.DEBUG) {
+					callResultBrowser.HTTPS = this.HTTPS;
+				}
+				URLtoCall = new URL(URLStringtoCall);
 
-		try {
-			// Seite aufrufen..
-			callResultBrowser = new SimpleSecureBrowser(this);
-			if (TucanMobile.DEBUG) {
-				callResultBrowser.HTTPS = this.HTTPS;
+				localCookieManager = new CookieManager();
+				localCookieManager.generateManagerfromHTTPString(URLtoCall.getHost(),
+						CookieHTTPString);
+
+				RequestObject thisRequest = new RequestObject(URLStringtoCall, localCookieManager,
+						RequestObject.METHOD_GET, "");
+
+				callResultBrowser.execute(thisRequest);
+			} catch (MalformedURLException e) {
+				Log.e(LOG_TAG, e.getMessage());
 			}
-			URLtoCall = new URL(URLStringtoCall);
-
-			localCookieManager = new CookieManager();
-			localCookieManager.generateManagerfromHTTPString(
-					URLtoCall.getHost(), CookieHTTPString);
-
-			RequestObject thisRequest = new RequestObject(URLStringtoCall,
-					localCookieManager, RequestObject.METHOD_GET, "");
-
-			callResultBrowser.execute(thisRequest);
-		} catch (MalformedURLException e) {
-			Log.e(LOG_TAG, e.getMessage());
-		}
+		
 	}
 
 	/**
@@ -110,7 +109,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 	 * @author Tyde
 	 * 
 	 */
-	public static class PagerAdapter extends FragmentPagerAdapter  {
+	public static class PagerAdapter extends FragmentPagerAdapter {
 		private String[] mtitles;
 		private ArrayList<ArrayAdapter<String>> adapterList;
 		FragmentManager fm;
@@ -126,9 +125,8 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 
 		@Override
 		public ListFragment getItem(int position) {
-			ArrayListFragment newFragment = ArrayListFragment
-					.newInstance(position);
-			
+			ArrayListFragment newFragment = ArrayListFragment.newInstance(position);
+
 			return (ListFragment) newFragment;
 		}
 
@@ -141,8 +139,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 		 */
 		public ArrayListFragment getInitializedItem(int position) {
 			ArrayListFragment fragment = (ArrayListFragment) fm
-					.findFragmentByTag("android:switcher:" + R.id.multipager
-							+ ":" + position);
+					.findFragmentByTag("android:switcher:" + R.id.multipager + ":" + position);
 			return (ArrayListFragment) fragment;
 
 		}
@@ -158,63 +155,57 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 			adapterList.add(adapter);
 		}
 
-		
-		public void setPrimaryItem(ViewGroup container, int position,Object object){
+		public void setPrimaryItem(ViewGroup container, int position, Object object) {
 			super.setPrimaryItem(container, position, object);
-			Log.i(LOG_TAG,"setPrimaryItem called");
-			if(object instanceof ArrayListFragment && position <= (adapterList.size()-1) ){
-				Log.i(LOG_TAG,"is the right instance -> Position is "+position+" and Object is: "+object.toString());
+			Log.i(LOG_TAG, "setPrimaryItem called");
+			if (object instanceof ArrayListFragment && position <= (adapterList.size() - 1)) {
+				Log.i(LOG_TAG, "is the right instance -> Position is " + position
+						+ " and Object is: " + object.toString());
 				ArrayListFragment curFrag = ((ArrayListFragment) object);
-				if(position==2 && fileList != null){
+				if (position == 2 && fileList != null) {
 					curFrag.setFilelinks(fileList);
 				}
-				if(!curFrag.hasListAdapter){
+				if (!curFrag.hasListAdapter) {
 					curFrag.setListAdapter(adapterList.get(position));
 				}
-				
-				
-				
+
 			}
 			/*
 			 * Liste wird eingebaut, wenn geupdated wird und die Liste noch leer
 			 * ist
-			
-			for (int ii = 0; ii <= 2; ii++) {
-				if (getInitializedItem(ii) != null && adapterList.size() > ii) {
-					if (getInitializedItem(ii).getListAdapter() == null)
-						getInitializedItem(ii).setListAdapter(
-								adapterList.get(ii));
-					if (ii == 2 && fileList != null) {
-						getInitializedItem(ii).setFilelinks(fileList);
-					}
-				}
-				else {
-					Log.i(LOG_TAG, "hier ist schon was drin");
-				}
-
-			} */
+			 * 
+			 * for (int ii = 0; ii <= 2; ii++) { if (getInitializedItem(ii) !=
+			 * null && adapterList.size() > ii) { if
+			 * (getInitializedItem(ii).getListAdapter() == null)
+			 * getInitializedItem(ii).setListAdapter( adapterList.get(ii)); if
+			 * (ii == 2 && fileList != null) {
+			 * getInitializedItem(ii).setFilelinks(fileList); } } else {
+			 * Log.i(LOG_TAG, "hier ist schon was drin"); }
+			 * 
+			 * }
+			 */
 		}
-		
-		public void initializeData(ViewGroup container){
+
+		public void initializeData(ViewGroup container) {
 			setPrimaryItem(container, 0, getInitializedItem(0));
 		}
 
-		
 		@Override
 		public void startUpdate(ViewGroup container) {
 			super.startUpdate(container);
-			Log.i(LOG_TAG,"startUpdate called");
+			Log.i(LOG_TAG, "startUpdate called");
 		}
 
 		@Override
 		public int getCount() {
 			return NUM_ITEMS;
 		}
-		
+
 		public CharSequence getTitle(int position) {
 
 			return mtitles[position];
 		}
+
 		@Override
 		public CharSequence getPageTitle(int position) {
 			return getTitle(position);
@@ -227,11 +218,10 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 		private ArrayList<String> materialLink;
 		public boolean hasListAdapter = false;
 
-		
 		@Override
 		public void setListAdapter(ListAdapter adapter) {
 			super.setListAdapter(adapter);
-			hasListAdapter=true;
+			hasListAdapter = true;
 		}
 
 		static ArrayListFragment newInstance(int num) {
@@ -249,8 +239,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View v = inflater.inflate(R.layout.fragment_pager_list, container,
-					false);
+			View v = inflater.inflate(R.layout.fragment_pager_list, container, false);
 			myid = this.getId();
 			return v;
 
@@ -276,8 +265,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 		public void onListItemClick(ListView l, View v, int position, long id) {
 			if (thereAreFiles) {
 				if (!materialLink.get(position).equals("")) {
-					String url = TucanMobile.TUCAN_PROT
-							+ TucanMobile.TUCAN_HOST
+					String url = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
 							+ materialLink.get(position);
 
 					Uri mUri = Uri.parse(url);
@@ -291,43 +279,31 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 
 	}
 
-
 	public void onPostExecute(AnswerObject result) {
 
-		SingleEventScraper scrape = new SingleEventScraper(this, result, PREPCall, fsh, mPageAdapter, mPager);
+		scrape = new SingleEventScraper(this, result, PREPCall, fsh, mPageAdapter, mPager);
 		try {
-			
+
 			scrape.scrapeAdapter(0);
 			this.PREPCall = scrape.PREPCall;
-		}
-		catch(LostSessionException e){
-			Intent BackToLoginIntent = new Intent(this,
-					TuCanMobileActivity.class);
+		} catch (LostSessionException e) {
+			Intent BackToLoginIntent = new Intent(this, TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);
 		} catch (TucanDownException e) {
 			TucanMobile.alertOnTucanDown(this, e.getMessage());
 		}
-		
-			
-	
 
 	}
-
 
 	@Override
 	public ConfigurationChangeStorage saveConfiguration() {
 		return null;
 	}
 
-
 	@Override
 	public void retainConfiguration(ConfigurationChangeStorage conf) {
 	}
-
-	
-
-	
 
 	
 

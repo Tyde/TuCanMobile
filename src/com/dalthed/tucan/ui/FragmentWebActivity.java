@@ -3,6 +3,7 @@ package com.dalthed.tucan.ui;
 import org.acra.ErrorReporter;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -70,6 +71,7 @@ public abstract class FragmentWebActivity extends SherlockFragmentActivity imple
 		}
 
 	}
+	
 
 	/* (non-Javadoc)
 	 * @see com.actionbarsherlock.app.ActionBar.OnNavigationListener#onNavigationItemSelected(int, long)
@@ -79,5 +81,34 @@ public abstract class FragmentWebActivity extends SherlockFragmentActivity imple
 	}
 	
 
+	@Override
+	public Object onRetainCustomNonConfigurationInstance() {
+		if (callResultBrowser != null) {
+			callResultBrowser.mConfigurationStorage = saveConfiguration();
+			callResultBrowser.dialog.dismiss();
+			return callResultBrowser;
+		}
+
+		return super.onRetainCustomNonConfigurationInstance();
+	}
+
+	protected Boolean restoreResultBrowser() {
+		if (getLastCustomNonConfigurationInstance() != null) {
+			if (getLastCustomNonConfigurationInstance() instanceof SimpleSecureBrowser) {
+				SimpleSecureBrowser oldBrowser = (SimpleSecureBrowser) getLastCustomNonConfigurationInstance();
+				 callResultBrowser = oldBrowser;
+				 if (!(oldBrowser.getStatus()
+	                        .equals(AsyncTask.Status.FINISHED))) {
+					
+					 callResultBrowser.dialog.show();
+					 
+				 } else {
+					 this.retainConfiguration(oldBrowser.mConfigurationStorage);
+				 }
+			}
+			return true;
+		}
+		return false;
+	}
 
 }
