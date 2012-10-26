@@ -94,7 +94,12 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 	public Object onRetainNonConfigurationInstance() {
 		if (callResultBrowser != null) {
 			callResultBrowser.mConfigurationStorage = saveConfiguration();
-			callResultBrowser.dialog.dismiss();
+			if (callResultBrowser.dialog != null) {
+				callResultBrowser.dialog.dismiss();
+			}
+			if(callResultBrowser.mConfigurationStorage!= null){
+				callResultBrowser.mConfigurationStorage.dismissDialogs();
+			}
 			return callResultBrowser;
 		}
 
@@ -105,15 +110,19 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 		if (getLastNonConfigurationInstance() != null) {
 			if (getLastNonConfigurationInstance() instanceof SimpleSecureBrowser) {
 				SimpleSecureBrowser oldBrowser = (SimpleSecureBrowser) getLastNonConfigurationInstance();
-				 callResultBrowser = oldBrowser;
-				 if (!(oldBrowser.getStatus()
-	                        .equals(AsyncTask.Status.FINISHED))) {
-					
-					 callResultBrowser.dialog.show();
-					 
-				 } else {
-					 this.retainConfiguration(oldBrowser.mConfigurationStorage);
-				 }
+				callResultBrowser = oldBrowser;
+				callResultBrowser.renewContext(this);
+				callResultBrowser.dialog = null;
+				if (!(oldBrowser.getStatus().equals(AsyncTask.Status.FINISHED))) {
+					Log.i(TucanMobile.LOG_TAG,
+							"Configuration Change at unfinished Browser, show Dialog");
+
+					callResultBrowser.showDialog();
+
+				} else {
+					this.retainConfiguration(oldBrowser.mConfigurationStorage);
+				}
+				oldBrowser.mConfigurationStorage.updateBrowser(this);
 			}
 			return true;
 		}

@@ -34,7 +34,7 @@ public class VVScraper extends BasicScraper implements OnItemClickListener {
 	public boolean haslinkstoclick;
 	public String[] Listlinks;
 	public Boolean hasBothCategoryAndEvents = false;
-	
+	public ArrayList<SimpleSecureBrowser> browsers = new ArrayList<SimpleSecureBrowser>();
 
 	public VVScraper(Context context, AnswerObject result, String userName) {
 		super(context, result);
@@ -136,7 +136,7 @@ public class VVScraper extends BasicScraper implements OnItemClickListener {
 			RequestObject thisRequest = new RequestObject(TucanMobile.TUCAN_PROT
 					+ TucanMobile.TUCAN_HOST + this.Listlinks[position],
 					cookieManager, RequestObject.METHOD_GET, "");
-
+			browsers.add(callOverviewBrowser);
 			callOverviewBrowser.execute(thisRequest);
 		}
 	}

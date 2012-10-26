@@ -52,6 +52,9 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 		return answer;
 	}
 
+	public void showDialog() {
+		onPreExecute();
+	}
 	@Override
 	protected void onPreExecute() {
 
@@ -94,6 +97,10 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 		if (dialog.isShowing() && dialog != null)
 			dialog.dismiss();
 
+	}
+	
+	public void renewContext(BrowserAnswerReciever context) {
+		outerCallingRecieverActivity= context;
 	}
 	
 	
