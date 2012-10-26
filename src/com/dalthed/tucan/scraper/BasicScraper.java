@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 
 import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.Connection.AnswerObject;
+import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.ui.SimpleWebListActivity;
@@ -19,6 +20,7 @@ public abstract class BasicScraper {
 	protected Document doc;
 	protected Context context;
 	protected String lastCalledUrl;
+	protected CookieManager localCookieManager;
 	
 	/**
 	 * Konstruktor bekommt Activity-Context und ein Answerobject zur verarbeitung
@@ -28,7 +30,15 @@ public abstract class BasicScraper {
 	public BasicScraper(Context context,AnswerObject result) {
 		this.context = context;
 		this.lastCalledUrl = result.getLastCalledURL();
+		this.localCookieManager = result.getCookieManager();
 		doc= Jsoup.parse(result.getHTML());
+	}
+	/**
+	 * Gibt den genutzten CookieManager zurück
+	 * @return genutzter CookieManager
+	 */
+	public CookieManager getCookieManager() {
+		return localCookieManager;
 	}
 	/**
 	 * Bei einem Configurationchange wird die Activity neu gestartet und somit ist 

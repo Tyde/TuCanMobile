@@ -70,9 +70,7 @@ public class ExamsScraper extends BasicScraper {
 
 	}
 	
-	public CookieManager getCookieManager() {
-		return this.localcookiemanager;
-	}
+	
 
 	/**
 	 * @return

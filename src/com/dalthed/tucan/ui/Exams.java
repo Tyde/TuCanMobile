@@ -3,27 +3,18 @@ package com.dalthed.tucan.ui;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
@@ -36,7 +27,6 @@ import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.scraper.BasicScraper;
 import com.dalthed.tucan.scraper.ExamsScraper;
-import com.dalthed.tucan.scraper.MessagesScraper;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class Exams extends SimpleWebListActivity {
@@ -140,11 +130,17 @@ public class Exams extends SimpleWebListActivity {
 
 	public class OnItemSelectedListener implements
 			android.widget.AdapterView.OnItemSelectedListener {
-		int hitcount = 0;
+		public int hitcount = 0;
+		private boolean initializedView = false;
+		
+		public  OnItemSelectedListener() {
+			this.hitcount=0;
+		}
 
 		public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-			if (hitcount == 0) {
-
+			//TODO: Find solution for double calls at rotation change
+			if (!initializedView) {
+				initializedView = true;
 			} else {
 
 				if (mode == 1) {
@@ -185,8 +181,8 @@ public class Exams extends SimpleWebListActivity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0 && mode != 0) {
-
-			examNameBuffer = (ArrayList<String>) scrape.examNames.clone();
+			
+			examNameBuffer = new ArrayList<String>(scrape.examNames);
 			ListAdapter ListAdapter = new ArrayAdapter<String>(this, R.layout.menu_row,
 					R.id.main_menu_row_textField, examNameBuffer);
 			// Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
@@ -201,30 +197,7 @@ public class Exams extends SimpleWebListActivity {
 
 	}
 
-	class ModuleAdapter extends ArrayAdapter<String> {
 
-		ArrayList<String> resultGrade, resultDate;
-
-		public ModuleAdapter(ArrayList<String> resultName, ArrayList<String> resultGrade,
-				ArrayList<String> resultDate) {
-			super(Exams.this, R.layout.row_vv_events, R.id.row_vv_veranst, resultName);
-			this.resultDate = resultDate;
-			this.resultGrade = resultGrade;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			View row = super.getView(position, convertView, parent);
-			TextView TypeTextView = (TextView) row.findViewById(R.id.row_vv_type);
-			TextView DozentTextView = (TextView) row.findViewById(R.id.row_vv_dozent);
-
-			TypeTextView.setText(resultGrade.get(position));
-			DozentTextView.setText(resultDate.get(position));
-
-			return row;
-		}
-
-	}
 
 	public void onPostExecute(AnswerObject result) {
 		if (scrape == null) {
@@ -244,6 +217,7 @@ public class Exams extends SimpleWebListActivity {
 		setSpinner();
 
 	}
+	
 
 	/**
 	 * 
@@ -254,9 +228,14 @@ public class Exams extends SimpleWebListActivity {
 			Spinner semesterSpinner = (Spinner) findViewById(R.id.exam_semester_spinner);
 			semesterSpinner.setVisibility(View.VISIBLE);
 			semesterSpinner.setAdapter(scrape.spinnerAdapter());
+			semesterSpinner.setOnItemSelectedListener(null);
+			
 			semesterSpinner.setSelection(scrape.SemesterOptionSelected);
 			semesterSpinner.setOnItemSelectedListener(new OnItemSelectedListener());
+			
 		}
+	
+		
 	}
 
 	@Override
@@ -277,6 +256,7 @@ public class Exams extends SimpleWebListActivity {
 		}
 		mode = conf.mode;
 		setSpinner();
+		
 	}
 
 }

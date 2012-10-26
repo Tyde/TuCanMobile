@@ -38,7 +38,7 @@ import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class Messages extends SimpleWebListActivity {
 	private String UserName;
-	private CookieManager localCookieManager;
+	
 	private static final String LOG_TAG = "TuCanMobile";
 	private String URLStringtoCall;
 	private MessagesScraper scrape;
@@ -55,7 +55,7 @@ public class Messages extends SimpleWebListActivity {
 		if (!restoreResultBrowser()) {
 			try {
 				URLtoCall = new URL(URLStringtoCall);
-				localCookieManager = new CookieManager();
+				CookieManager localCookieManager = new CookieManager();
 				localCookieManager.generateManagerfromHTTPString(URLtoCall.getHost(),
 						CookieHTTPString);
 				callResultBrowser = new SimpleSecureBrowser(this);
@@ -84,7 +84,7 @@ public class Messages extends SimpleWebListActivity {
 					+ scrape.messageLink.get(position));
 			MessageStartIntent.putExtra("User", UserName);
 			MessageStartIntent.putExtra("Cookie",
-					localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+					scrape.getCookieManager().getCookieHTTPString(TucanMobile.TUCAN_HOST));
 			startActivity(MessageStartIntent);
 		}
 	}
