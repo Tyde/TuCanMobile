@@ -3,17 +3,14 @@ package com.dalthed.tucan.scraper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import com.dalthed.tucan.TuCanMobileActivity;
+import android.content.Context;
+import android.widget.ListAdapter;
+
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.ui.SimpleWebListActivity;
-
-import android.content.Context;
-import android.content.Intent;
-import android.widget.Adapter;
-import android.widget.ListAdapter;
 
 public abstract class BasicScraper {
 	static final String LOG_TAG = "TuCanMobile";

@@ -3,27 +3,17 @@ package com.dalthed.tucan.ui;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Debug;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
@@ -36,7 +26,6 @@ import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.scraper.BasicScraper;
 import com.dalthed.tucan.scraper.EventsScraper;
-import com.dalthed.tucan.scraper.ExamsScraper;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
 /**
  * Displays the Events Menu

@@ -4,21 +4,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.acra.ErrorReporter;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
-import android.content.Intent;
 import android.util.Log;
 import android.widget.ListAdapter;
 import android.widget.Toast;
 
-import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.BrowserAnswerReciever;

@@ -3,7 +3,6 @@ package com.dalthed.tucan.ui;
 import android.os.Bundle;
 
 import com.dalthed.tucan.Connection.AnswerObject;
-import com.dalthed.tucan.Connection.BrowserAnswerReciever;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class ApplyEvent extends SimpleWebListActivity {

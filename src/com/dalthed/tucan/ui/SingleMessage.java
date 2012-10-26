@@ -3,20 +3,12 @@ package com.dalthed.tucan.ui;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
-import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;

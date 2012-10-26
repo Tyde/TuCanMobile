@@ -3,25 +3,20 @@ package com.dalthed.tucan.scraper;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.ListAdapter;
 import android.widget.SpinnerAdapter;
 
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.Connection.AnswerObject;
-import com.dalthed.tucan.exceptions.LostSessionException;
-import com.dalthed.tucan.ui.Events.OnItemSelectedListener;
-import com.dalthed.tucan.ui.SimpleWebListActivity;
 import com.dalthed.tucan.adapters.ThreeLinesAdapter;
+import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.ui.SimpleWebListActivity;
 
 public class EventsScraper extends BasicScraper {
 	private int mode;

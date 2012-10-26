@@ -5,15 +5,12 @@ import java.util.ArrayList;
 import org.jsoup.select.Elements;
 
 import android.content.Context;
-import android.content.Intent;
 import android.text.Html;
 import android.text.Spanned;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
-import android.widget.TextView;
 
 import com.dalthed.tucan.R;
-import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;

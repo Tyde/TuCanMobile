@@ -9,21 +9,16 @@ import org.jsoup.select.Elements;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.ListAdapter;
 import android.widget.SpinnerAdapter;
 
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.Connection.AnswerObject;
-import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.adapters.ThreeLinesAdapter;
 import com.dalthed.tucan.adapters.ThreeLinesTableAdapter;
 import com.dalthed.tucan.exceptions.LostSessionException;
-
 import com.dalthed.tucan.ui.SimpleWebListActivity;
-import com.dalthed.tucan.ui.Exams.OnItemSelectedListener;
 
 public class ExamsScraper extends BasicScraper {
 
@@ -35,12 +30,12 @@ public class ExamsScraper extends BasicScraper {
 	public ArrayList<String> SemesterOptionValue;
 	public int SemesterOptionSelected;
 	private ArrayAdapter<String> spinnerAdapter;
-	private CookieManager localcookiemanager;
+	
 
 	public ExamsScraper(Context context, AnswerObject result) {
 		
 		super(context, result);
-		localcookiemanager = result.getCookieManager();
+		
 	}
 
 	@Override

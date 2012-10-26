@@ -1,15 +1,8 @@
 package com.dalthed.tucan.ui;
 
-import java.util.ArrayList;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,12 +18,11 @@ import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.scraper.BasicScraper;
 import com.dalthed.tucan.scraper.ModuleScraper;
-import com.dalthed.tucan.scraper.RegisterExamsScraper;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class Module extends SimpleWebListActivity {
 	private CookieManager localCookieManager;
-	private static final String LOG_TAG = "TuCanMobile";
+	
 	private String URLStringtoCall;
 	private ModuleScraper scrape;
 

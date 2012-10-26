@@ -2,30 +2,12 @@ package com.dalthed.tucan.ui;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
 
-import org.acra.ACRA;
-import org.acra.ErrorReporter;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
@@ -39,11 +21,10 @@ import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.scraper.BasicScraper;
 import com.dalthed.tucan.scraper.RegisterExamsScraper;
-import com.dalthed.tucan.scraper.ScheduleScraper;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class RegisterExams extends SimpleWebListActivity {
-	private String UserName, URLStringtoCall;
+	private String  URLStringtoCall;
 	private CookieManager localCookieManager;
 
 	private static final String LOG_TAG = "TuCanMobile";
@@ -60,7 +41,7 @@ public class RegisterExams extends SimpleWebListActivity {
 		// Webhandling Start
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		URLStringtoCall = getIntent().getExtras().getString("URL");
-		UserName = getIntent().getExtras().getString("UserName");
+		
 		URL URLtoCall;
 		if (!restoreResultBrowser()) {
 			try {

@@ -38,7 +38,7 @@ public class SingleEventScraper extends BasicScraper {
 	private FastSwitchHelper fsh;
 	private PagerAdapter mPageAdapter;
 	public ArrayList<String> materialLink;
-	private boolean thereAreFiles = false;
+	
 	private ViewPager mPager;
 
 	public SingleEventScraper(Context context, AnswerObject result, Boolean PREPCall,
@@ -177,14 +177,14 @@ public class SingleEventScraper extends BasicScraper {
 			if (mPageAdapter != null) {
 				mPageAdapter.setAdapter(new AppointmentAdapter(context, materialNumber,
 						materialFile, null, materialName, materialDesc));
-				thereAreFiles = true;
+				
 
 				mPageAdapter.fileList = materialLink;
 			}
 		} else if (mPageAdapter != null) {
 			mPageAdapter.setAdapter(new ArrayAdapter<String>(context,
 					android.R.layout.simple_list_item_1, new String[] { "Kein Material" }));
-			thereAreFiles = false;
+			
 		}
 	}
 

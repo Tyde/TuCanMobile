@@ -7,9 +7,7 @@ import org.jsoup.select.Elements;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
-import android.widget.TextView;
 
-import com.dalthed.tucan.R;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;

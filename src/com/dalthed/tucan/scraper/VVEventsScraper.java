@@ -24,7 +24,6 @@ import com.dalthed.tucan.adapters.ThreeLinesAdapter;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.ui.FragmentSingleEvent;
-import com.dalthed.tucan.ui.VV_Events;
 
 
 public class VVEventsScraper extends BasicScraper implements OnItemClickListener {
