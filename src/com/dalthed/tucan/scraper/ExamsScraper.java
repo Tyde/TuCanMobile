@@ -17,6 +17,7 @@ import android.widget.SpinnerAdapter;
 
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.Connection.AnswerObject;
+import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.adapters.ThreeLinesAdapter;
 import com.dalthed.tucan.adapters.ThreeLinesTableAdapter;
 import com.dalthed.tucan.exceptions.LostSessionException;
@@ -34,9 +35,12 @@ public class ExamsScraper extends BasicScraper {
 	public ArrayList<String> SemesterOptionValue;
 	public int SemesterOptionSelected;
 	private ArrayAdapter<String> spinnerAdapter;
+	private CookieManager localcookiemanager;
 
 	public ExamsScraper(Context context, AnswerObject result) {
+		
 		super(context, result);
+		localcookiemanager = result.getCookieManager();
 	}
 
 	@Override
@@ -64,6 +68,10 @@ public class ExamsScraper extends BasicScraper {
 			return null;
 		}
 
+	}
+	
+	public CookieManager getCookieManager() {
+		return this.localcookiemanager;
 	}
 
 	/**

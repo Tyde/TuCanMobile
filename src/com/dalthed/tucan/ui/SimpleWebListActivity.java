@@ -97,7 +97,7 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 			if (callResultBrowser.dialog != null) {
 				callResultBrowser.dialog.dismiss();
 			}
-			if(callResultBrowser.mConfigurationStorage!= null){
+			if (callResultBrowser.mConfigurationStorage != null) {
 				callResultBrowser.mConfigurationStorage.dismissDialogs();
 			}
 			return callResultBrowser;
@@ -122,7 +122,9 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 				} else {
 					this.retainConfiguration(oldBrowser.mConfigurationStorage);
 				}
-				oldBrowser.mConfigurationStorage.updateBrowser(this);
+				if (oldBrowser.mConfigurationStorage != null) {
+					oldBrowser.mConfigurationStorage.updateBrowser(this);
+				}
 			}
 			return true;
 		}

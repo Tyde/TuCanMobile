@@ -26,7 +26,7 @@ import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.scraper.SingleMessageScraper;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
-public class SingleMessage extends SimpleWebActivity {
+public class SingleMessage extends SimpleWebListActivity {
 
 	private CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
@@ -35,26 +35,27 @@ public class SingleMessage extends SimpleWebActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		navigateList = true;
-		navigationItem = 4; // NachrichtenNavigationItem
-		super.onCreate(savedInstanceState);
+
+		super.onCreate(savedInstanceState, true, 4);
 		setContentView(R.layout.singlemessage);
 		BugSenseHandler.setup(this, "ed5c1682");
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		URLStringtoCall = getIntent().getExtras().getString("URL");
 		URL URLtoCall;
+		if (!restoreResultBrowser()) {
+			try {
+				URLtoCall = new URL(URLStringtoCall);
+				localCookieManager = new CookieManager();
+				localCookieManager.generateManagerfromHTTPString(URLtoCall.getHost(),
+						CookieHTTPString);
+				callResultBrowser = new SimpleSecureBrowser(this);
+				RequestObject thisRequest = new RequestObject(URLStringtoCall, localCookieManager,
+						RequestObject.METHOD_GET, "");
 
-		try {
-			URLtoCall = new URL(URLStringtoCall);
-			localCookieManager = new CookieManager();
-			localCookieManager.generateManagerfromHTTPString(URLtoCall.getHost(), CookieHTTPString);
-			callResultBrowser = new SimpleSecureBrowser(this);
-			RequestObject thisRequest = new RequestObject(URLStringtoCall, localCookieManager,
-					RequestObject.METHOD_GET, "");
-
-			callResultBrowser.execute(thisRequest);
-		} catch (MalformedURLException e) {
-			Log.e(LOG_TAG, e.getMessage());
+				callResultBrowser.execute(thisRequest);
+			} catch (MalformedURLException e) {
+				Log.e(LOG_TAG, e.getMessage());
+			}
 		}
 	}
 
@@ -68,17 +69,8 @@ public class SingleMessage extends SimpleWebActivity {
 		scrape = new SingleMessageScraper(this, result);
 
 		try {
-			scrape.scrapeAdapter(0);
+			setListAdapter(scrape.scrapeAdapter(0));
 
-			TextView authorTextView = (TextView) findViewById(R.id.message_Author);
-			TextView dateTextView = (TextView) findViewById(R.id.message_Date);
-			TextView titleTextView = (TextView) findViewById(R.id.message_title);
-			TextView textTextView = (TextView) findViewById(R.id.message_text);
-
-			authorTextView.setText(scrape.authorText);
-			dateTextView.setText(scrape.dateText);
-			titleTextView.setText(scrape.titleText);
-			textTextView.setText(Html.fromHtml(scrape.textText));
 		} catch (LostSessionException e) {
 			e.printStackTrace();
 		} catch (TucanDownException e) {
@@ -91,12 +83,14 @@ public class SingleMessage extends SimpleWebActivity {
 	public ConfigurationChangeStorage saveConfiguration() {
 		ConfigurationChangeStorage cStore = new ConfigurationChangeStorage();
 		cStore.addScraper(scrape);
-		
-		return null;
+		cStore.adapters.add(getListAdapter());
+		return cStore;
 	}
 
 	@Override
 	public void retainConfiguration(ConfigurationChangeStorage conf) {
+		scrape = (SingleMessageScraper) conf.getScraper(0, this);
+		setListAdapter(conf.adapters.get(0));
 	}
 
 }

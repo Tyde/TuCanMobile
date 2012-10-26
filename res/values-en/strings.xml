@@ -42,4 +42,9 @@
     <string name="img_content_logo">Logo</string>
     <!-- DEBUG -->
     <string name="debug_title">DEBUG</string>
+    
+        <!-- MESSAGES -->
+    <string name="messages_from">From:</string>
+    <string name="messages_time">Arrived:</string>
+    <string name="messages_title">Subject:</string>
 </resources>

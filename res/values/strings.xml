@@ -42,4 +42,10 @@
     
     <!-- DEBUG -->
     <string name="debug_title">DEBUG</string>
+    
+    <!-- MESSAGES -->
+    <string name="messages_from">Von:</string>
+    <string name="messages_time">Eingegangen:</string>
+    <string name="messages_title">Betreff:</string>
+    
 </resources>

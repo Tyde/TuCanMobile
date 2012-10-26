@@ -19,7 +19,7 @@ import com.dalthed.tucan.Connection.BrowserAnswerReciever;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.acraload.LoadAcraResults;
 import com.dalthed.tucan.preferences.MainPreferences;
-
+@Deprecated
 public abstract class SimpleWebActivity extends SherlockActivity implements
 		ActionBar.OnNavigationListener, BrowserAnswerReciever {
 	public SimpleSecureBrowser callResultBrowser;
