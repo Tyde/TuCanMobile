@@ -133,7 +133,7 @@ public class VV_Events extends SimpleWebListActivity {
 		ConfigurationChangeStorage conf = new ConfigurationChangeStorage();
 		conf.addScraper(scrape);
 		conf.adapters.add(getListAdapter());
-		return null;
+		return conf;
 	}
 
 	@Override
