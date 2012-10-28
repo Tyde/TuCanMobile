@@ -48,6 +48,9 @@
     <string name="messages_time">Eingegangen:</string>
     <string name="messages_title">Betreff:</string>
     
+    <!-- SCHEDULE -->
+    <string name="schedule_today">Heute</string>
+    <string name="schedule_tomorrow">Morgen</string>
     
     
 </resources>

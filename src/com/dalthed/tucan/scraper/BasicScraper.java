@@ -2,6 +2,7 @@ package com.dalthed.tucan.scraper;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import android.content.Context;
 import android.widget.ListAdapter;
@@ -66,10 +67,12 @@ public abstract class BasicScraper {
 	 * @throws LostSessionException
 	 */
 	protected Boolean checkForLostSeesion() throws LostSessionException,TucanDownException {
+		
 		SimpleWebListActivity.sendHTMLatBug(doc.html());
+		
 		if (doc.select("span.notLoggedText").text().length() > 0) {
 			throw new LostSessionException();
-		} else if(doc.select("div#pageContainer")==null){
+		} else if(doc.select("div#pageContainer").first()==null || doc.select("div#pageContainer").text().equals("")){
 			throw new TucanDownException(doc.text());
 		} else {
 			return true;

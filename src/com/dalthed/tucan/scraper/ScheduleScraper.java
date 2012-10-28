@@ -1,13 +1,18 @@
 package com.dalthed.tucan.scraper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 
 import org.jsoup.nodes.Element;
 
 import android.content.Context;
+import android.text.format.DateFormat;
 import android.widget.ListAdapter;
 
+import com.dalthed.tucan.R;
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.BrowserAnswerReciever;
@@ -37,6 +42,7 @@ public class ScheduleScraper extends BasicScraper {
 			Iterator<Element> schedDays = doc.select("div.tbMonthDay").iterator();
 			int Month = java.util.Calendar.getInstance().get(java.util.Calendar.MONTH);
 			int Day = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_MONTH);
+			int year = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
 			if (step == 0) {
 				loadNextPage();
 
@@ -44,7 +50,7 @@ public class ScheduleScraper extends BasicScraper {
 			if (step == 1) {
 				Month++;
 			}
-			scrapeDates(step, schedDays, Month, Day);
+			scrapeDates(step, schedDays, Month, Day,year);
 
 			if (step == 1) {
 				ScheduleAdapter externAdapter = new ScheduleAdapter(context, eventDay, eventTime,
@@ -62,20 +68,27 @@ public class ScheduleScraper extends BasicScraper {
 	/**
 	 * @param mode
 	 * @param schedDays
-	 * @param Month
-	 * @param Day
+	 * @param month
+	 * @param day
 	 */
-	private void scrapeDates(int step, Iterator<Element> schedDays, int Month, int Day) {
+	private void scrapeDates(int step, Iterator<Element> schedDays, int month, int day,int year) {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+		
+		
 		while (schedDays.hasNext()) {
+			
 			Element next = schedDays.next();
+			
 			String monthday = next.attr("title");
 			Iterator<Element> dayEvents = next.select("div.appMonth").iterator();
+			
 			if (dayEvents != null) {
 				int i = 0;
 				while (dayEvents.hasNext()) {
 
 					Element nextEvent = dayEvents.next();
-					if (Integer.parseInt(monthday.trim()) >= Day || step == 1) {
+					if (Integer.parseInt(monthday.trim()) >= day || step == 1) {
 						String[] LinktitleArgument = nextEvent.select("a").attr("title")
 								.split(" / ");
 
@@ -85,17 +98,29 @@ public class ScheduleScraper extends BasicScraper {
 							firstEventofDay.add(false);
 						}
 						i++;
-						if (Integer.parseInt(monthday.trim()) == Day && step == 0) {
-							eventDay.add("Heute");
-						} else if (Integer.parseInt(monthday.trim()) == (Day + 1) && step == 0) {
-							eventDay.add("Morgen");
+						StringBuilder displayDate = new StringBuilder();
+						if (Integer.parseInt(monthday.trim()) == day && step == 0) {
+							
+							displayDate.append(context.getResources().getString(R.string.schedule_today));
+							
+						} else if (Integer.parseInt(monthday.trim()) == (day + 1) && step == 0) {
+							displayDate.append(context.getResources().getString(R.string.schedule_tomorrow));
+							
 						} else {
-							eventDay.add(monthday + "." + (Month + 1));
+							displayDate.append(monthday).append(".").append((month + 1));
+							
 						}
+						String weekday = sdf.format(new Date(year-1900, month, Integer.parseInt(monthday.trim())));
+						displayDate.append(" - ").append(weekday);
+						eventDay.add(displayDate.toString());
 
 						eventTime.add(LinktitleArgument[0].trim());
 						eventRoom.add(LinktitleArgument[1].trim());
-						eventName.add(LinktitleArgument[2].trim());
+						if (LinktitleArgument.length > 2) {
+							eventName.add(LinktitleArgument[2].trim());
+						} else {
+							eventName.add("");
+						}
 						eventLink.add(nextEvent.select("a").attr("href"));
 
 					}
