@@ -46,7 +46,7 @@
         android:layout_marginTop="10dip">
 
         <ListView
-            android:id="@+id/mm_menuList"
+            android:id="@+id/android:list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layoutAnimation="@anim/layout_bottom_to_top_slide"

@@ -32,7 +32,7 @@ import com.dalthed.tucan.scraper.BasicScraper;
 import com.dalthed.tucan.scraper.MainMenuScraper;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
-public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReciever {
+public class MainMenu extends SimpleWebListActivity implements BackgroundBrowserReciever {
 	private Boolean windowFeatureCalled = false;
 	CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
@@ -92,8 +92,8 @@ public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReci
 	 * 
 	 */
 	private void menuListInitialisation() {
-		ListView menuList = (ListView) findViewById(R.id.mm_menuList);
-
+		ListView menuList = getListView();
+		
 		menuList.setDivider(null);
 
 		menuList.setAdapter(new ArrayAdapter<String>(this, R.layout.menu_row,
@@ -250,7 +250,7 @@ public class MainMenu extends SimpleWebActivity implements BackgroundBrowserReci
 	@Override
 	public ConfigurationChangeStorage saveConfiguration() {
 		ConfigurationChangeStorage cStore = new ConfigurationChangeStorage();
-		ListView menuList = (ListView) findViewById(R.id.mm_menuList);
+		ListView menuList = getListView();
 		ListView eventList = (ListView) findViewById(R.id.mm_eventList);
 		cStore.adapters.add(menuList.getAdapter());
 		cStore.adapters.add(eventList.getAdapter());

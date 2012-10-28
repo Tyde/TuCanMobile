@@ -3,13 +3,11 @@ package com.dalthed.tucan.helpers;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
 
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.util.SparseArray;
-import android.widget.ArrayAdapter;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.dalthed.tucan.R;
