@@ -15,7 +15,9 @@ import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.scraper.RegisterExamsScraper;
+import com.dalthed.tucan.scraper.ScheduleScraper;
 import com.dalthed.tucan.ui.RegisterExams;
+import com.dalthed.tucan.ui.Schedule;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 
 public class MainTest extends BasicTest {
@@ -24,7 +26,7 @@ public class MainTest extends BasicTest {
 	
 
 	
-	@Test
+	//@Test
 	public void testRegisterExamsScraper() throws IOException, LostSessionException, TucanDownException {
 
 		String URLStringtoCall = dtef.getErrorURL(896, "RegisterExams");
@@ -54,6 +56,18 @@ public class MainTest extends BasicTest {
 			break;
 		}
 
+	}
+	
+	@Test
+	public void testScheduleScraper() throws IOException, LostSessionException, TucanDownException {
+		String URLStringtoCall = dtef.getErrorURL(13923, "Schedule");
+		Schedule fakeSched = new Schedule();
+		String html = Jsoup.connect(URLStringtoCall)
+				.cookie("canView", "16ede40c878aee38d0882b3a6b2642c0ae76dafb").get().html();
+		AnswerObject result = new AnswerObject(html, "", cm, URLStringtoCall);
+		ScheduleScraper schedscraper = new ScheduleScraper(fakeSched, result);
+		
+		schedscraper.scrapeAdapter(0);
 	}
 
 }

@@ -13,7 +13,7 @@ import com.dalthed.tucan.ui.MainMenu;
 
 public class MainMenuTest extends BasicTest {
 	
-	@Test
+	//@Test
 	public void testMainMenu() throws IOException, LostSessionException, TucanDownException {
 		String URLStringtoCall = dtef.getErrorURL(9833, "MainMenu");
 		MainMenu fakeMenu = new MainMenu();

@@ -14,13 +14,12 @@ import com.dalthed.tucan.ui.FragmentSingleEvent;
 
 public class SingleEventTest extends BasicTest {
 
-	@Test
+	//@Test
 	public void singleEventTest() throws IOException, LostSessionException, TucanDownException {
-<<<<<<< HEAD
+
 		String URLStringtoCall = dtef.getErrorURL(1223, "FragmentSingleEvent");
-=======
-		String URLStringtoCall = dtef.getErrorURL(9821, "FragmentSingleEvent");
->>>>>>> refs/heads/master
+
+
 		FragmentSingleEvent fakeSingleEvent = new FragmentSingleEvent();
 		
 		String html = Jsoup.connect(URLStringtoCall)	

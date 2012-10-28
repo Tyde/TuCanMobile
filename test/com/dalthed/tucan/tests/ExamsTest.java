@@ -12,7 +12,7 @@ import com.dalthed.tucan.scraper.ExamsScraper;
 import com.dalthed.tucan.ui.Exams;
 
 public class ExamsTest extends BasicTest {
-	@Test
+	//@Test
 	public void testExamsScraper() throws IOException, LostSessionException, TucanDownException {
 		String URLStringtoCall = dtef.getErrorURL(1132, "ExamsScraper");
 		Exams fakeExams = new Exams();
