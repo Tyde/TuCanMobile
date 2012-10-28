@@ -27,10 +27,12 @@ import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.scraper.BasicScraper;
 import com.dalthed.tucan.scraper.EventsScraper;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
+
 /**
  * Displays the Events Menu
+ * 
  * @author Daniel Thiem
- *
+ * 
  */
 public class Events extends SimpleWebListActivity {
 
@@ -39,12 +41,10 @@ public class Events extends SimpleWebListActivity {
 	private String URLStringtoCall;
 	private int mode = 0;
 	private EventsScraper scrape;
-	
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		//Standart procedure: Loading URL from Intent
+		// Standart procedure: Loading URL from Intent
 		super.onCreate(savedInstanceState, true, 2);
 		setContentView(R.layout.events);
 		BugSenseHandler.setup(this, "ed5c1682");
@@ -74,73 +74,75 @@ public class Events extends SimpleWebListActivity {
 
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		//When Item is clicked, a new Request will start
+		// When Item is clicked, a new Request will start
 		SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(this);
 		RequestObject thisRequest;
-		
-		if (mode == 0) {
-			// Modus overview
-			switch (position) {
-			case 0:
-				// Klick auf Module
-				mode = 10;
+		if (scrape != null) {
+			if (mode == 0) {
+				// Modus overview
+				switch (position) {
+				case 0:
+					// Klick auf Module
+					mode = 10;
+					thisRequest = new RequestObject(TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+							+ scrape.eventLinks.get(0), localCookieManager,
+							RequestObject.METHOD_GET, "");
+					callOverviewBrowser.execute(thisRequest);
+					break;
+				case 1:
+					// Klick auf Veranstaltungen
+					mode = 1;
+					thisRequest = new RequestObject(TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+							+ scrape.eventLinks.get(1), localCookieManager,
+							RequestObject.METHOD_GET, "");
+					callOverviewBrowser.execute(thisRequest);
+					break;
+				case 2:
+					// Klick auf Anmeldung
+					mode = 2;
+					thisRequest = new RequestObject(TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+							+ scrape.eventLinks.get(2), localCookieManager,
+							RequestObject.METHOD_GET, "");
+					callOverviewBrowser.execute(thisRequest);
+					break;
+				}
+
+			} else if (mode == 1) {
+				Intent StartSingleEventIntent = new Intent(Events.this, FragmentSingleEvent.class);
+				StartSingleEventIntent.putExtra(TucanMobile.EXTRA_URL, TucanMobile.TUCAN_PROT
+						+ TucanMobile.TUCAN_HOST + scrape.eventLink.get(position));
+				StartSingleEventIntent.putExtra(TucanMobile.EXTRA_COOKIE,
+						localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+				// StartSingleEventIntent.putExtra("UserName", UserName);
+				startActivity(StartSingleEventIntent);
+			} else if (mode == 2) {
+
 				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-						+ scrape.eventLinks.get(0), localCookieManager, RequestObject.METHOD_GET, "");
+						+ scrape.applyLink.get(position), localCookieManager,
+						RequestObject.METHOD_GET, "");
 				callOverviewBrowser.execute(thisRequest);
-				break;
-			case 1:
-				// Klick auf Veranstaltungen
-				mode = 1;
-				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-						+ scrape.eventLinks.get(1), localCookieManager, RequestObject.METHOD_GET, "");
-				callOverviewBrowser.execute(thisRequest);
-				break;
-			case 2:
-				// Klick auf Anmeldung
-				mode = 2;
-				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-						+ scrape.eventLinks.get(2), localCookieManager, RequestObject.METHOD_GET, "");
-				callOverviewBrowser.execute(thisRequest);
-				break;
+			} else if (mode == 10) {
+				Intent StartModuleIntent = new Intent(Events.this, Module.class);
+				StartModuleIntent.putExtra(TucanMobile.EXTRA_URL, TucanMobile.TUCAN_PROT
+						+ TucanMobile.TUCAN_HOST + scrape.eventLink.get(position));
+				StartModuleIntent.putExtra(TucanMobile.EXTRA_COOKIE,
+						localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+				startActivity(StartModuleIntent);
 			}
-
-		} else if (mode == 1) {
-			Intent StartSingleEventIntent = new Intent(Events.this, FragmentSingleEvent.class);
-			StartSingleEventIntent.putExtra(TucanMobile.EXTRA_URL, TucanMobile.TUCAN_PROT
-					+ TucanMobile.TUCAN_HOST + scrape.eventLink.get(position));
-			StartSingleEventIntent.putExtra(TucanMobile.EXTRA_COOKIE,
-					localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-			// StartSingleEventIntent.putExtra("UserName", UserName);
-			startActivity(StartSingleEventIntent);
-		} else if (mode == 2) {
-
-			thisRequest = new RequestObject(TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-					+ scrape.applyLink.get(position), localCookieManager, RequestObject.METHOD_GET, "");
-			callOverviewBrowser.execute(thisRequest);
-		} else if (mode == 10) {
-			Intent StartModuleIntent = new Intent(Events.this, Module.class);
-			StartModuleIntent.putExtra(TucanMobile.EXTRA_URL, TucanMobile.TUCAN_PROT
-					+ TucanMobile.TUCAN_HOST + scrape.eventLink.get(position));
-			StartModuleIntent.putExtra(TucanMobile.EXTRA_COOKIE,
-					localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-			startActivity(StartModuleIntent);
 		}
 	}
 
-	
 	public void onPostExecute(AnswerObject result) {
-		
-		//Start Tracing zur geschwindigkeitsberschleunigung
-		
-		
+
+		// Start Tracing zur geschwindigkeitsberschleunigung
+
 		// HTML Parsen
-		if(scrape==null){
+		if (scrape == null) {
 			scrape = new EventsScraper(this, result);
-		}
-		else {
+		} else {
 			scrape.setNewAnswer(result);
 		}
-		
+
 		try {
 			setListAdapter(scrape.scrapeAdapter(mode));
 		} catch (LostSessionException e) {
@@ -148,12 +150,11 @@ public class Events extends SimpleWebListActivity {
 			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);
 		}
-		
-		//Stop tracing
-		
+
+		// Stop tracing
+
 		setFastSwitchSubtites();
 		setSpinner();
-		
 
 	}
 
@@ -161,7 +162,7 @@ public class Events extends SimpleWebListActivity {
 	 * 
 	 */
 	private void setSpinner() {
-		if(mode!=0){
+		if (mode != 0) {
 			Spinner semesterSpinner = (Spinner) findViewById(R.id.exam_semester_spinner);
 			semesterSpinner.setVisibility(View.VISIBLE);
 			semesterSpinner.setAdapter(scrape.spinnerAdapter());
@@ -174,17 +175,14 @@ public class Events extends SimpleWebListActivity {
 	 * 
 	 */
 	private void setFastSwitchSubtites() {
-		if(mode==0){
-			
+		if (mode == 0) {
+
 			fsh.setSubtitle(getResources().getText(R.string.events_subtitle));
-		}
-		else if (mode==1){
+		} else if (mode == 1) {
 			fsh.setSubtitle(getResources().getText(R.string.events_subtitle_events));
-		}
-		else if (mode==2){
+		} else if (mode == 2) {
 			fsh.setSubtitle(getResources().getText(R.string.events_subtitle_register));
-		}
-		else if(mode==10){
+		} else if (mode == 10) {
 			fsh.setSubtitle(getResources().getText(R.string.events_subtitle_modules));
 		}
 	}
@@ -227,8 +225,8 @@ public class Events extends SimpleWebListActivity {
 
 			@SuppressWarnings("unchecked")
 			ArrayList<String> eventNameBuffer = (ArrayList<String>) scrape.eventNames.clone();
-			ArrayAdapter<String> ListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
-					eventNameBuffer);
+			ArrayAdapter<String> ListAdapter = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, eventNameBuffer);
 			// Log.i(LOG_TAG,"Exam Names hat: "+examNames.size()+" Elemente");
 			setListAdapter(ListAdapter);
 			mode = 0;
@@ -246,7 +244,7 @@ public class Events extends SimpleWebListActivity {
 		ConfigurationChangeStorage cStore = new ConfigurationChangeStorage();
 		cStore.adapters.add(getListAdapter());
 		cStore.addScraper(scrape);
-		cStore.mode=mode;
+		cStore.mode = mode;
 		return cStore;
 	}
 
