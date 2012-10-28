@@ -37,8 +37,8 @@ public class MainMenu extends SimpleWebListActivity implements BackgroundBrowser
 	CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
 
-	/**s
-	 * HTML Scraper
+	/**
+	 * s HTML Scraper
 	 */
 	private MainMenuScraper scrape;
 
@@ -93,7 +93,7 @@ public class MainMenu extends SimpleWebListActivity implements BackgroundBrowser
 	 */
 	private void menuListInitialisation() {
 		ListView menuList = getListView();
-		
+
 		menuList.setDivider(null);
 
 		menuList.setAdapter(new ArrayAdapter<String>(this, R.layout.menu_row,
@@ -187,53 +187,54 @@ public class MainMenu extends SimpleWebListActivity implements BackgroundBrowser
 	private void setMenuListListener(ListView menuList) {
 		menuList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
-
-				view.invalidate();
-				switch (position) {
-				case 0:
-					Intent StartVVIntent = new Intent(MainMenu.this, VV.class);
-					StartVVIntent.putExtra("URL", scrape.menu_link_vv);
-					StartVVIntent.putExtra("Cookie",
-							localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-					StartVVIntent.putExtra("UserName", scrape.UserName);
-					startActivity(StartVVIntent);
-					// Vorlesungsverzeichnis
-					break;
-				case 1:
-					Intent StartScheduleIntent = new Intent(MainMenu.this, Schedule.class);
-					StartScheduleIntent.putExtra("URL", scrape.menu_link_month);
-					StartScheduleIntent.putExtra("Cookie",
-							localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-					StartScheduleIntent.putExtra("Session", scrape.SessionArgument);
-					startActivity(StartScheduleIntent);
-					// Stundenplan
-					break;
-				case 2:
-					Intent StartEventIntent = new Intent(MainMenu.this, Events.class);
-					StartEventIntent.putExtra("URL", scrape.menu_link_ex);
-					StartEventIntent.putExtra("Cookie",
-							localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-					StartEventIntent.putExtra("UserName", scrape.UserName);
-					startActivity(StartEventIntent);
-					// Veranstaltungen
-					break;
-				case 3:
-					Intent StartExamIntent = new Intent(MainMenu.this, Exams.class);
-					StartExamIntent.putExtra("URL", scrape.menu_link_ex);
-					StartExamIntent.putExtra("Cookie",
-							localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-					StartExamIntent.putExtra("UserName", scrape.UserName);
-					startActivity(StartExamIntent);
-					// Prüfungen
-					break;
-				case 4:
-					Intent StartMessageIntent = new Intent(MainMenu.this, Messages.class);
-					StartMessageIntent.putExtra("URL", scrape.menu_link_msg);
-					StartMessageIntent.putExtra("Cookie",
-							localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-					StartMessageIntent.putExtra("UserName", scrape.UserName);
-					startActivity(StartMessageIntent);
-					break;
+				if (scrape != null) {
+					view.invalidate();
+					switch (position) {
+					case 0:
+						Intent StartVVIntent = new Intent(MainMenu.this, VV.class);
+						StartVVIntent.putExtra("URL", scrape.menu_link_vv);
+						StartVVIntent.putExtra("Cookie",
+								localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+						StartVVIntent.putExtra("UserName", scrape.UserName);
+						startActivity(StartVVIntent);
+						// Vorlesungsverzeichnis
+						break;
+					case 1:
+						Intent StartScheduleIntent = new Intent(MainMenu.this, Schedule.class);
+						StartScheduleIntent.putExtra("URL", scrape.menu_link_month);
+						StartScheduleIntent.putExtra("Cookie",
+								localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+						StartScheduleIntent.putExtra("Session", scrape.SessionArgument);
+						startActivity(StartScheduleIntent);
+						// Stundenplan
+						break;
+					case 2:
+						Intent StartEventIntent = new Intent(MainMenu.this, Events.class);
+						StartEventIntent.putExtra("URL", scrape.menu_link_ex);
+						StartEventIntent.putExtra("Cookie",
+								localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+						StartEventIntent.putExtra("UserName", scrape.UserName);
+						startActivity(StartEventIntent);
+						// Veranstaltungen
+						break;
+					case 3:
+						Intent StartExamIntent = new Intent(MainMenu.this, Exams.class);
+						StartExamIntent.putExtra("URL", scrape.menu_link_ex);
+						StartExamIntent.putExtra("Cookie",
+								localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+						StartExamIntent.putExtra("UserName", scrape.UserName);
+						startActivity(StartExamIntent);
+						// Prüfungen
+						break;
+					case 4:
+						Intent StartMessageIntent = new Intent(MainMenu.this, Messages.class);
+						StartMessageIntent.putExtra("URL", scrape.menu_link_msg);
+						StartMessageIntent.putExtra("Cookie",
+								localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+						StartMessageIntent.putExtra("UserName", scrape.UserName);
+						startActivity(StartMessageIntent);
+						break;
+					}
 				}
 			}
 		});
