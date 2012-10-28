@@ -1,21 +1,15 @@
 package com.dalthed.tucan.Connection;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
+
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TucanMobile;
-
-import com.dalthed.tucan.ui.FragmentWebActivity;
-import com.dalthed.tucan.ui.SimpleWebActivity;
-import com.dalthed.tucan.ui.SimpleWebListActivity;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
-
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
-
-import android.os.AsyncTask;
-import android.widget.ListAdapter;
 
 /**
  * SimpleSecureBrowser ist ein AsyncTask welcher die RequestObjects passend
@@ -28,15 +22,40 @@ import android.widget.ListAdapter;
  */
 public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, AnswerObject> {
 
+	/**
+	 * Der {@link BrowserAnswerReciever}, welcher den
+	 * {@link SimpleSecureBrowser} aufgerufen hat. Meistens ist dies auch eine
+	 * {@link Activity}
+	 */
 	public BrowserAnswerReciever outerCallingRecieverActivity;
+	/**
+	 * Der lade-{@link Dialog}, welcher während des Ladevorgangs gezeigt wird,
+	 * jedoch bei manchen Events von außen auch abgebrochen werden muss
+	 */
 	public ProgressDialog dialog;
+	/**
+	 * Bei <code>true</code> wird ein HTTPS request restartet, anderenfalls nur
+	 * HTTP
+	 */
 	public boolean HTTPS = true;
+	/**
+	 * <i>Depricated: </i> nutze stattdessen: {@link #getStatus()}
+	 */
+	@Deprecated
 	boolean finished = false;
 	/**
 	 * List Adapter that has been set on the activity
 	 */
 	public ConfigurationChangeStorage mConfigurationStorage;
 
+	/**
+	 * SimpleSecureBrowser ist ein AsyncTask welcher die RequestObjects
+	 * passend abschickt und zurückgibt. Muss aus einer SimpleWebListActivity
+	 * gestartet werden. Nachdem die Daten angekommen sind, wird die
+	 * onPostExecute der aufrufenden SimpleWebListActivity aufgerufen.
+	 * 
+	 * @param callingActivity aufrufender {@link BrowserAnswerReciever}
+	 */
 	public SimpleSecureBrowser(BrowserAnswerReciever callingActivity) {
 		outerCallingRecieverActivity = callingActivity;
 
@@ -52,9 +71,13 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 		return answer;
 	}
 
+	/**
+	 * Zeige Dialog
+	 */
 	public void showDialog() {
 		onPreExecute();
 	}
+
 	@Override
 	protected void onPreExecute() {
 
@@ -62,7 +85,8 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 
 		// parentActivityHandler.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		if (parentActivityHandler != null && !TucanMobile.TESTING) {
-			String loading = getparentActivityHandler().getResources().getString(R.string.ui_load_data);
+			String loading = getparentActivityHandler().getResources().getString(
+					R.string.ui_load_data);
 			dialog = ProgressDialog.show(parentActivityHandler, "",
 			// parentActivityHandler.getResources().getString(R.string.ui_load_data),true);
 					loading, true);
@@ -77,7 +101,10 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 		}
 
 	}
-
+	/**
+	 * 
+	 * @return {@link Activity} Object of {@link BrowserAnswerReciever}, if it is an instance of that, otherwise <code>null</code>
+	 */
 	private Activity getparentActivityHandler() {
 		if (outerCallingRecieverActivity instanceof Activity) {
 			return (Activity) outerCallingRecieverActivity;
@@ -91,18 +118,19 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 
 		Activity parentActivityHandler = getparentActivityHandler();
 		dialog.setTitle(parentActivityHandler.getResources().getString(R.string.ui_calc));
-		
+
 		outerCallingRecieverActivity.onPostExecute(result);
 
 		if (dialog.isShowing() && dialog != null)
 			dialog.dismiss();
 
 	}
-	
+	/**
+	 * Renews the given {@link Activity} {@link Context}, if a new App Instance had to be created 
+	 * @param context {@link BrowserAnswerReciever} object
+	 */
 	public void renewContext(BrowserAnswerReciever context) {
-		outerCallingRecieverActivity= context;
+		outerCallingRecieverActivity = context;
 	}
-	
-	
 
 }
