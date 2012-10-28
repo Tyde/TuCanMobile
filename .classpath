@@ -2,14 +2,14 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK">
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/Tyde/android-sdks/sources/android-15"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry kind="lib" path="libs/acra-4.2.3.jar"/>
-	<classpathentry kind="lib" path="libs/jsoup-1.6.1.jar"/>
-	<classpathentry kind="lib" path="libs/bugsense-trace-1-1.jar"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry exported="true" kind="lib" path="libs/acra-4.2.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jsoup-1.6.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/bugsense-trace-1-1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

@@ -173,7 +173,7 @@ public class RegisterExamAdapter extends ArrayAdapter<String> {
 			// Auswahlstatus in Text umwandeln und Farben wählen
 			String[] selectionstrings = context.getResources().getStringArray(
 					R.array.register_status);
-			selectionstring = selectionstrings[position];
+			selectionstring = selectionstrings[examSelection.get(position)];
 			switch (examSelection.get(position)) {
 			case 0:
 				eventSelectionView.setTextColor(Color.BLACK);
