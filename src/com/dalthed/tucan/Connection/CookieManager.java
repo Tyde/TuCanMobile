@@ -2,20 +2,45 @@ package com.dalthed.tucan.Connection;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import java.util.Iterator;
 
+
 import android.util.Log;
 
+/**
+ * Der CookieManager speichert empfangene Cookies ab und gibt sie auch wieder
+ * aus
+ * 
+ * @author Daniel Thiem
+ * 
+ */
 public class CookieManager {
 
 	private Map<String, Map<String, String>> Cookies;
 	private static final String LOG_TAG = "TuCanMobile";
 
+	/**
+	 * Der CookieManager speichert empfangene Cookies ab und gibt sie auch
+	 * wieder aus <br>
+	 * <br>
+	 * Erzeugt einen leeren {@link CookieManager}
+	 */
 	public CookieManager() {
 		Cookies = new HashMap<String, Map<String, String>>();
 	}
 
+	/**
+	 * fügt ein neues Cookie hinzu
+	 * 
+	 * @param domain
+	 *            Die Domain, auf welche der Cookie registriert werden soll
+	 * @param name
+	 *            Cookie-Name
+	 * @param value
+	 *            Cookie-Wert
+	 */
 	public void inputCookie(String domain, String name, String value) {
 		if (Cookies.get(domain) == null) {
 			Map<String, String> DomainMap = new HashMap<String, String>();
@@ -27,6 +52,14 @@ public class CookieManager {
 		Log.i(LOG_TAG, "Cookie in Storage (" + domain + ") aufgenommen: " + name + " = " + value);
 	}
 
+	/**
+	 * Prüft ob die angegeben Domain schon Cookies gespeichert hat
+	 * 
+	 * @param domain
+	 *            die zu prüfende Domain
+	 * @return <code>true</code>, wenn schon ein Cookie unter dieser Domain
+	 *         eingespeichert wurde, <code>false</code> anderenfalls
+	 */
 	public boolean domain_exists(String domain) {
 		if (Cookies.get(domain) == null)
 			return false;
@@ -34,16 +67,20 @@ public class CookieManager {
 			return true;
 	}
 
-	@SuppressWarnings("rawtypes")
+	/**
+	 * Gibt die unter der angegebenen URL gespeicherten Cookies als zum Header passenden HTTP-String an.
+	 * @param domain Die Domain, von welcher die Cookies abgefragt werden sollen
+	 * @return HTTP-Header-Cookie-String
+	 */
 	public String getCookieHTTPString(String domain) {
 		if (!Cookies.containsKey(domain))
 			return null;
 
 		String[] HTTPString = new String[Cookies.get(domain).size()];
-		Iterator it = Cookies.get(domain).entrySet().iterator();
+		Iterator<Entry<String,String>> it = Cookies.get(domain).entrySet().iterator();
 		int i = 0;
 		while (it.hasNext()) {
-			Map.Entry pairs = (Map.Entry) it.next();
+			Entry<String,String> pairs = it.next();
 			HTTPString[i] = pairs.getKey() + "=" + pairs.getValue();
 			i++;
 		}
@@ -58,7 +95,11 @@ public class CookieManager {
 		return sb.substring(0, sb.length() - glue.length());
 
 	}
-
+	/**
+	 * Speichert die Cookies aus einem HTTP-HEADER-COOKIE String ab
+	 * @param host Domain auf welche die Cookies gespeichert werden sollen
+	 * @param HTTPString HTTP-Header-Cookie String
+	 */
 	public void generateManagerfromHTTPString(String host, String HTTPString) {
 		if (HTTPString != null) {
 			String[] multipleCookies = HTTPString.split(";\\s*");
