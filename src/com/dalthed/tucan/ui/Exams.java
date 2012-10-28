@@ -25,6 +25,7 @@ import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.scraper.BasicScraper;
 import com.dalthed.tucan.scraper.ExamsScraper;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
@@ -212,6 +213,8 @@ public class Exams extends SimpleWebListActivity {
 			Intent BackToLoginIntent = new Intent(this, TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);
+		} catch (TucanDownException e) {
+			TucanMobile.alertOnTucanDown(this, e.getMessage());
 		}
 
 		setSpinner();

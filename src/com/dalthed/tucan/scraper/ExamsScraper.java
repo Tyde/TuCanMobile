@@ -18,6 +18,7 @@ import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.adapters.ThreeLinesAdapter;
 import com.dalthed.tucan.adapters.ThreeLinesTableAdapter;
 import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.ui.SimpleWebListActivity;
 
 public class ExamsScraper extends BasicScraper {
@@ -30,42 +31,36 @@ public class ExamsScraper extends BasicScraper {
 	public ArrayList<String> SemesterOptionValue;
 	public int SemesterOptionSelected;
 	private ArrayAdapter<String> spinnerAdapter;
-	
 
 	public ExamsScraper(Context context, AnswerObject result) {
-		
+
 		super(context, result);
-		
+
 	}
 
 	@Override
-	public ListAdapter scrapeAdapter(int mode) throws LostSessionException {
-		if (doc.select("span.notLoggedText") == null
-				|| doc.select("span.notLoggedText").text().length() > 0) {
-			// Logged out..
-			throw new LostSessionException();
+	public ListAdapter scrapeAdapter(int mode) throws LostSessionException, TucanDownException {
+		if (checkForLostSeesion()) {
+			if (ListAdapter != null) {
+				ListAdapter.clear();
+			}
+			if (mode == 0) {
+				return getMenuAdapter();
+			} else if (mode == 10) {
+				return getExamOverview();
+			} else if (mode == 1) {
+				return getModuleOverview();
+			} else if (mode == 2) {
+				return getExamResults();
+			} else if (mode == 3) {
+				return getAccomplishment();
+			} else {
+				return null;
+			}
 		}
-		SimpleWebListActivity.sendHTMLatBug(doc.html());
-		if (ListAdapter != null) {
-			ListAdapter.clear();
-		}
-		if (mode == 0) {
-			return getMenuAdapter();
-		} else if (mode == 10) {
-			return getExamOverview();
-		} else if (mode == 1) {
-			return getModuleOverview();
-		} else if (mode == 2) {
-			return getExamResults();
-		} else if (mode == 3) {
-			return getAccomplishment();
-		} else {
-			return null;
-		}
+		return null;
 
 	}
-	
-	
 
 	/**
 	 * @return
@@ -120,10 +115,10 @@ public class ExamsScraper extends BasicScraper {
 			}
 			spinnerAdapter = new ArrayAdapter<String>(context,
 					android.R.layout.simple_spinner_item, SemesterOptionName);
-			
+
 		}
 		return spinnerAdapter;
-		
+
 	}
 
 	/**
