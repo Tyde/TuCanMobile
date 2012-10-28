@@ -5,10 +5,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
-
+/**
+ * Verbindet zwei verschiedene Adapter in einem 
+ * @author Tyde
+ *
+ */
 public class MergedAdapter extends BaseAdapter {
 	private ListAdapter firstAdapter, secondAdapter;
-
+	/**
+	 * Erstellt einen neuen Adapter, welcher zuerst alle Views des ersten dann alle Views des zweiten darstellt
+	 * @param firstAdapter erster Adapter
+	 * @param secondAdapter zweiter Adapter
+	 */
 	public MergedAdapter(ListAdapter firstAdapter, ListAdapter secondAdapter) {
 		if (firstAdapter != null && secondAdapter != null) {
 			this.firstAdapter = firstAdapter;
@@ -20,14 +28,17 @@ public class MergedAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
+		//Anzahl addieren
 		return firstAdapter.getCount() + secondAdapter.getCount();
 	}
 
 	@Override
 	public Object getItem(int position) {
+		//anfangs nur ersten Adapter, dann zweiter Adapter
 		if(position<firstAdapter.getCount()){
 			return firstAdapter.getItem(position);
 		}else {
+			//Neue position muss berechent werden sonst out of bounds
 			int newPosition = position-firstAdapter.getCount();
 			return secondAdapter.getItem(newPosition);
 		}
@@ -36,6 +47,7 @@ public class MergedAdapter extends BaseAdapter {
 
 	@Override
 	public long getItemId(int position) {
+		
 		if(position<firstAdapter.getCount()){
 			return firstAdapter.getItemId(position);
 		}else {

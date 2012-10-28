@@ -15,4 +15,11 @@
         <item>Materialien</item>   
         <!-- <item>Kleingruppen</item>-->   
     </string-array>
+    
+    <string-array name="register_status">
+        <item>Abgelaufen</item>
+        <item>Ausgewählt</item>
+        <item>Anmelden</item>
+        <item>Abmelden</item>
+    </string-array>
 </resources>
