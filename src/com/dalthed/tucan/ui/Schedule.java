@@ -26,7 +26,7 @@ import com.dalthed.tucan.scraper.ScheduleScraper;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class Schedule extends SimpleWebListActivity {
-	private CookieManager localCookieManager;
+
 	private static final String LOG_TAG = "TuCanMobile";
 	private String URLStringtoCall;
 	ScheduleScraper scrape = null;
@@ -45,7 +45,7 @@ public class Schedule extends SimpleWebListActivity {
 		if (!restoreResultBrowser()) {
 			try {
 				URLtoCall = new URL(URLStringtoCall);
-				localCookieManager = new CookieManager();
+				CookieManager localCookieManager = new CookieManager();
 				localCookieManager.generateManagerfromHTTPString(URLtoCall.getHost(),
 						CookieHTTPString);
 				callResultBrowser = new SimpleSecureBrowser(this);
@@ -89,13 +89,15 @@ public class Schedule extends SimpleWebListActivity {
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		Intent singleEventIntent = new Intent(Schedule.this, FragmentSingleEvent.class);
-		singleEventIntent.putExtra("PREPLink", true);
-		singleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-				+ scrape.eventLink.get(position));
-		singleEventIntent.putExtra("Cookie",
-				localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-		startActivity(singleEventIntent);
+		if (scrape != null) {
+			Intent singleEventIntent = new Intent(Schedule.this, FragmentSingleEvent.class);
+			singleEventIntent.putExtra("PREPLink", true);
+			singleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+					+ scrape.eventLink.get(position));
+			singleEventIntent.putExtra("Cookie",
+					scrape.getCookieManager().getCookieHTTPString(TucanMobile.TUCAN_HOST));
+			startActivity(singleEventIntent);
+		}
 	}
 
 	@Override
