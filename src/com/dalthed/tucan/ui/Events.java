@@ -78,14 +78,14 @@ public class Events extends SimpleWebListActivity {
 		SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(this);
 		RequestObject thisRequest;
 		if (scrape != null) {
-			if (mode == 0) {
+			if (mode == 0 && scrape.eventLinks != null) {
 				// Modus overview
 				switch (position) {
 				case 0:
 					// Klick auf Module
 					mode = 10;
 					thisRequest = new RequestObject(TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-							+ scrape.eventLinks.get(0), localCookieManager,
+							+ scrape.eventLinks.get(0), scrape.getCookieManager(),
 							RequestObject.METHOD_GET, "");
 					callOverviewBrowser.execute(thisRequest);
 					break;
@@ -93,7 +93,7 @@ public class Events extends SimpleWebListActivity {
 					// Klick auf Veranstaltungen
 					mode = 1;
 					thisRequest = new RequestObject(TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-							+ scrape.eventLinks.get(1), localCookieManager,
+							+ scrape.eventLinks.get(1), scrape.getCookieManager(),
 							RequestObject.METHOD_GET, "");
 					callOverviewBrowser.execute(thisRequest);
 					break;
@@ -101,27 +101,27 @@ public class Events extends SimpleWebListActivity {
 					// Klick auf Anmeldung
 					mode = 2;
 					thisRequest = new RequestObject(TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-							+ scrape.eventLinks.get(2), localCookieManager,
+							+ scrape.eventLinks.get(2), scrape.getCookieManager(),
 							RequestObject.METHOD_GET, "");
 					callOverviewBrowser.execute(thisRequest);
 					break;
 				}
 
-			} else if (mode == 1) {
+			} else if (mode == 1 && scrape.eventLink != null) {
 				Intent StartSingleEventIntent = new Intent(Events.this, FragmentSingleEvent.class);
 				StartSingleEventIntent.putExtra(TucanMobile.EXTRA_URL, TucanMobile.TUCAN_PROT
 						+ TucanMobile.TUCAN_HOST + scrape.eventLink.get(position));
-				StartSingleEventIntent.putExtra(TucanMobile.EXTRA_COOKIE,
-						localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+				StartSingleEventIntent.putExtra(TucanMobile.EXTRA_COOKIE, scrape.getCookieManager()
+						.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 				// StartSingleEventIntent.putExtra("UserName", UserName);
 				startActivity(StartSingleEventIntent);
-			} else if (mode == 2) {
+			} else if (mode == 2 && scrape.applyLink != null) {
 
 				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-						+ scrape.applyLink.get(position), localCookieManager,
+						+ scrape.applyLink.get(position), scrape.getCookieManager(),
 						RequestObject.METHOD_GET, "");
 				callOverviewBrowser.execute(thisRequest);
-			} else if (mode == 10) {
+			} else if (mode == 10 && scrape.eventLink != null) {
 				Intent StartModuleIntent = new Intent(Events.this, Module.class);
 				StartModuleIntent.putExtra(TucanMobile.EXTRA_URL, TucanMobile.TUCAN_PROT
 						+ TucanMobile.TUCAN_HOST + scrape.eventLink.get(position));

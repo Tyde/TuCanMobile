@@ -20,13 +20,34 @@ import com.dalthed.tucan.ui.SimpleWebListActivity;
 
 public class EventsScraper extends BasicScraper {
 	private int mode;
+	/**
+	 * Links zu den einzelnen Untermodulen
+	 */
 	public ArrayList<String> eventLinks;
+	/**
+	 * Namen deer einzelnen Events
+	 */
 	public ArrayList<String> eventNames;
 	private ArrayAdapter<String> ListAdapter;
+	/**
+	 * Links zur Anmeldung zu Events
+	 */
 	public ArrayList<String> applyLink;
+	/**
+	 * Links zu den einzelnen Events
+	 */
 	public ArrayList<String> eventLink;
+	/**
+	 * Option zum Einstellen des Semesters - Name
+	 */
 	public ArrayList<String> SemesterOptionName;
+	/**
+	 * Option zum einstellen des Semesters - Link
+	 */
 	public ArrayList<String> SemesterOptionValue;
+	/**
+	 * id des gewählten Semesters
+	 */
 	public int SemesterOptionSelected;
 
 	public EventsScraper(Context context, AnswerObject result) {
