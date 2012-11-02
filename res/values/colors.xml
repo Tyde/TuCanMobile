@@ -15,4 +15,12 @@
     <color name="menu_left_stop">#1667b2</color>
     <color name="menu_bg">#f4f5d0</color>
     <color name="subtitle_grey">#e8e8e8</color>
+    
+    <!-- ACCOMPLISHMEHT-LEVELS -->
+    <color name="level00">#99a604</color>
+    <color name="level01">#b1bd00</color>
+    <color name="level02">#d2d2d1</color>
+    <color name="level03">#efefee</color>
+    <color name="level04">#d0d65e</color>
+    
 </resources>

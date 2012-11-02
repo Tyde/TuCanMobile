@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
@@ -70,23 +71,36 @@ public class ExamsScraper extends BasicScraper {
 		ArrayList<String> ResultGrade = new ArrayList<String>();
 		ArrayList<String> ResultCredits = new ArrayList<String>();
 		ArrayList<String> ResultCountedCredits = new ArrayList<String>();
+		ArrayList<Integer> resultColor = new ArrayList<Integer>();
 		Element ModuleOverviewTable = doc.select("div.tb").first();
-		Element examResultTable = ModuleOverviewTable.select("tbody").first();
+		final Elements examTbodies = ModuleOverviewTable.select("tbody");
+		Element examResultTable = examTbodies.first();
 		if (examResultTable != null) {
 			Iterator<Element> ExamResultRowIterator = examResultTable.select("tr").iterator();
 			while (ExamResultRowIterator.hasNext()) {
 				Element next = ExamResultRowIterator.next();
-				Elements ExamResultCols = next.select("td");
-				if (ExamResultCols.size() > 4) {
-					ResultName.add(ExamResultCols.get(1).text());
-					ResultCountedCredits.add(ExamResultCols.get(3).text());
-					ResultCredits.add(ExamResultCols.get(4).text());
-					ResultGrade.add(ExamResultCols.get(5).text());
-				}
+				scrapeAccomplishmentRow(ResultName, ResultGrade, ResultCredits,
+						ResultCountedCredits, resultColor, next);
 
 			}
+			if (examTbodies.size() > 1) {
+				Element gpaTable = examTbodies.get(1);
+				Iterator<Element> gpaTableIterator = gpaTable.select("tr").iterator();
+				while(gpaTableIterator.hasNext()){
+					Element next = gpaTableIterator.next();
+					final Elements tableHead = next.select("th");
+					if(tableHead.size()==2){
+						ResultName.add(tableHead.get(0).text());
+						ResultGrade.add(tableHead.get(1).text());
+						resultColor.add(-1);
+						ResultCountedCredits.add("");
+						ResultCredits.add("");
+						
+					}
+				}
+			}
 			ListAdapter = new ThreeLinesTableAdapter(context, ResultName, ResultGrade,
-					ResultCredits, ResultCountedCredits);
+					ResultCredits, ResultCountedCredits, resultColor);
 		} else {
 			ListAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,
 					new String[] { "Keine Informationen gefunden" });
@@ -94,6 +108,118 @@ public class ExamsScraper extends BasicScraper {
 
 		return ListAdapter;
 
+	}
+
+	/**
+	 * @param ResultName
+	 * @param ResultGrade
+	 * @param ResultCredits
+	 * @param ResultCountedCredits
+	 * @param resultColor
+	 * @param next
+	 */
+	private void scrapeAccomplishmentRow(ArrayList<String> ResultName,
+			ArrayList<String> ResultGrade, ArrayList<String> ResultCredits,
+			ArrayList<String> ResultCountedCredits, ArrayList<Integer> resultColor, Element next) {
+		Elements examResultCols = next.select("td");
+		if (next.hasClass("level00")) {
+			// MainHead
+			if (examResultCols.size() > 0) {
+				resultColor.add(context.getResources().getColor(R.color.level00));
+				ResultName.add(examResultCols.get(0).text());
+				ResultCountedCredits.add("");
+				ResultCredits.add("");
+				ResultGrade.add("");
+			}
+
+		} else if (next.hasClass("level01")) {
+			// SubHead
+			if (examResultCols.size() > 0) {
+				resultColor.add(context.getResources().getColor(R.color.level01));
+				ResultName.add(examResultCols.get(0).text());
+				ResultCountedCredits.add("");
+				ResultCredits.add("");
+				ResultGrade.add("");
+			}
+
+		} else if (next.hasClass("level02")) {
+
+			// SubSubHead
+			if (examResultCols.size() > 0) {
+				resultColor.add(context.getResources().getColor(R.color.level02));
+				ResultName.add(examResultCols.get(0).text());
+				ResultCountedCredits.add("");
+				ResultCredits.add("");
+				ResultGrade.add("");
+			}
+		} else if (next.hasClass("level03")) {
+			// SubSubSubHead
+			if (examResultCols.size() > 0) {
+
+				resultColor.add(context.getResources().getColor(R.color.level03));
+				ResultName.add(examResultCols.get(0).text());
+				ResultCountedCredits.add("");
+				ResultCredits.add("");
+				ResultGrade.add("");
+			}
+
+		} else if (next.hasClass("level04")) {
+			// SubSubSubSubHead
+			if (examResultCols.size() > 0) {
+				resultColor.add(context.getResources().getColor(R.color.level04));
+				ResultName.add(examResultCols.get(0).text());
+				ResultCountedCredits.add("");
+				ResultCredits.add("");
+				ResultGrade.add("");
+			}
+		} else if (examResultCols.size() > 4) {
+			if (examResultCols.get(0).hasClass("level04")
+					|| examResultCols.get(0).hasClass("level03")
+					|| examResultCols.get(0).hasClass("level02")
+					|| examResultCols.get(0).hasClass("level01")) {
+				Element firstColumn = examResultCols.get(0);
+				int rowColor = getRowColor(firstColumn);
+				resultColor.add(rowColor);
+				ResultName.add(examResultCols.get(0).text());
+				ResultCredits.add(examResultCols.get(2).text());
+				ResultCountedCredits.add(examResultCols.get(3).text());
+				ResultGrade.add("");
+
+			} else {
+				resultColor.add(-1);
+				ResultName.add(examResultCols.get(1).text());
+				ResultCountedCredits.add(examResultCols.get(3).text());
+				ResultCredits.add(examResultCols.get(4).text());
+				ResultGrade.add(examResultCols.get(5).text());
+			}
+		} else if (examResultCols.size() == 1) {
+			Element firstColumn = examResultCols.get(0);
+			int rowColor = getRowColor(firstColumn);
+			resultColor.add(rowColor);
+			ResultName.add(firstColumn.text());
+			ResultCountedCredits.add("");
+			ResultGrade.add("");
+			ResultCredits.add("");
+
+		}
+	}
+
+	/**
+	 * @param firstColumn
+	 * @return
+	 */
+	private int getRowColor(Element firstColumn) {
+		int rowColor = -1;
+		if (firstColumn.hasClass("level04")) {
+			rowColor = (context.getResources().getColor(R.color.level04));
+		} else if (firstColumn.hasClass("level03")) {
+			rowColor = (context.getResources().getColor(R.color.level03));
+		} else if (firstColumn.hasClass("level02")) {
+			rowColor = (context.getResources().getColor(R.color.level02));
+		} else if (firstColumn.hasClass("level01")) {
+			rowColor = (context.getResources().getColor(R.color.level01));
+		}
+		return rowColor;
 	}
 
 	public SpinnerAdapter spinnerAdapter() {
