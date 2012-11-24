@@ -49,12 +49,13 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 	public ConfigurationChangeStorage mConfigurationStorage;
 
 	/**
-	 * SimpleSecureBrowser ist ein AsyncTask welcher die RequestObjects
-	 * passend abschickt und zurückgibt. Muss aus einer SimpleWebListActivity
-	 * gestartet werden. Nachdem die Daten angekommen sind, wird die
-	 * onPostExecute der aufrufenden SimpleWebListActivity aufgerufen.
+	 * SimpleSecureBrowser ist ein AsyncTask welcher die RequestObjects passend
+	 * abschickt und zurückgibt. Muss aus einer SimpleWebListActivity gestartet
+	 * werden. Nachdem die Daten angekommen sind, wird die onPostExecute der
+	 * aufrufenden SimpleWebListActivity aufgerufen.
 	 * 
-	 * @param callingActivity aufrufender {@link BrowserAnswerReciever}
+	 * @param callingActivity
+	 *            aufrufender {@link BrowserAnswerReciever}
 	 */
 	public SimpleSecureBrowser(BrowserAnswerReciever callingActivity) {
 		outerCallingRecieverActivity = callingActivity;
@@ -101,9 +102,11 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 		}
 
 	}
+
 	/**
 	 * 
-	 * @return {@link Activity} Object of {@link BrowserAnswerReciever}, if it is an instance of that, otherwise <code>null</code>
+	 * @return {@link Activity} Object of {@link BrowserAnswerReciever}, if it
+	 *         is an instance of that, otherwise <code>null</code>
 	 */
 	private Activity getparentActivityHandler() {
 		if (outerCallingRecieverActivity instanceof Activity) {
@@ -117,17 +120,22 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 	protected void onPostExecute(AnswerObject result) {
 
 		Activity parentActivityHandler = getparentActivityHandler();
-		dialog.setTitle(parentActivityHandler.getResources().getString(R.string.ui_calc));
-
+		if (dialog != null) {
+			dialog.setTitle(parentActivityHandler.getResources().getString(R.string.ui_calc));
+		}
 		outerCallingRecieverActivity.onPostExecute(result);
 
-		if (dialog.isShowing() && dialog != null)
+		if ( dialog != null &&dialog.isShowing())
 			dialog.dismiss();
 
 	}
+
 	/**
-	 * Renews the given {@link Activity} {@link Context}, if a new App Instance had to be created 
-	 * @param context {@link BrowserAnswerReciever} object
+	 * Renews the given {@link Activity} {@link Context}, if a new App Instance
+	 * had to be created
+	 * 
+	 * @param context
+	 *            {@link BrowserAnswerReciever} object
 	 */
 	public void renewContext(BrowserAnswerReciever context) {
 		outerCallingRecieverActivity = context;

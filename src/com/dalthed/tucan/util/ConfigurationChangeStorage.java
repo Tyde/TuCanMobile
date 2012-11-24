@@ -69,6 +69,7 @@ public class ConfigurationChangeStorage {
 			for(SimpleSecureBrowser singleBrowser: browser) {
 				if(singleBrowser.dialog!=null) {
 					singleBrowser.dialog.dismiss();
+					singleBrowser.dialog = null;
 				}
 			}
 		}
