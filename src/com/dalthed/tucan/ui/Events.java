@@ -39,6 +39,13 @@ public class Events extends SimpleWebListActivity {
 	private CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
 	private String URLStringtoCall;
+	/**
+	 * Modus der Seite:<br>
+	 * 0: Startseite<br>
+	 * 1: Veranstaltungen<br>
+	 * 2: Anmeldung zu Veranstaltungen<br>
+	 * 10: Module
+	 */
 	private int mode = 0;
 	private EventsScraper scrape;
 
@@ -116,11 +123,12 @@ public class Events extends SimpleWebListActivity {
 				// StartSingleEventIntent.putExtra("UserName", UserName);
 				startActivity(StartSingleEventIntent);
 			} else if (mode == 2 && scrape.applyLink != null) {
-
-				thisRequest = new RequestObject(TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-						+ scrape.applyLink.get(position), scrape.getCookieManager(),
-						RequestObject.METHOD_GET, "");
-				callOverviewBrowser.execute(thisRequest);
+				if (position < scrape.applyLink.size()) {
+					thisRequest = new RequestObject(TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+							+ scrape.applyLink.get(position), scrape.getCookieManager(),
+							RequestObject.METHOD_GET, "");
+					callOverviewBrowser.execute(thisRequest);
+				}
 			} else if (mode == 10 && scrape.eventLink != null) {
 				Intent StartModuleIntent = new Intent(Events.this, Module.class);
 				StartModuleIntent.putExtra(TucanMobile.EXTRA_URL, TucanMobile.TUCAN_PROT
@@ -162,7 +170,7 @@ public class Events extends SimpleWebListActivity {
 	 * 
 	 */
 	private void setSpinner() {
-		if (mode != 0) {
+		if (mode != 0 && mode != 2) {
 			Spinner semesterSpinner = (Spinner) findViewById(R.id.exam_semester_spinner);
 			semesterSpinner.setVisibility(View.VISIBLE);
 			semesterSpinner.setAdapter(scrape.spinnerAdapter());
