@@ -84,6 +84,7 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 			callResultBrowser.mConfigurationStorage = saveConfiguration();
 			if (callResultBrowser.dialog != null) {
 				callResultBrowser.dialog.dismiss();
+				callResultBrowser.dialog =null;
 			}
 			if (callResultBrowser.mConfigurationStorage != null) {
 				callResultBrowser.mConfigurationStorage.dismissDialogs();
