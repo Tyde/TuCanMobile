@@ -76,7 +76,7 @@ public class ThreeLinesTableAdapter extends ArrayAdapter<String> {
 	 * @param bottomLeft siehe Tabelle
 	 * @param topLeft siehe Tabelle
 	 * @param topRight siehe Tabelle
-	 * @param backgroundcolor gibt die Hintergrundfarbe der Zeile an
+	 * @param backgroundcolor gibt die Hintergrundfarbe der Zeile an. Bei null wird die Farbe belassen
 	 *
 	 */
 	public ThreeLinesTableAdapter(Context context,ArrayList<String> mittleRight,
