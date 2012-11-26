@@ -3,9 +3,11 @@ package com.dalthed.tucan;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import android.app.AlertDialog;
 import android.app.Application;
@@ -58,7 +60,7 @@ public class TucanMobile extends Application {
 	/**
 	 * App is/isn't in Debug mode
 	 */
-	public final static Boolean DEBUG = false;
+	public final static Boolean DEBUG = true;
 	/**
 	 * App is/isn't in Testing mode; App cannot work properly, if it is in Testing mode
 	 */
@@ -68,6 +70,10 @@ public class TucanMobile extends Application {
 	 */
 	public static final String LOG_TAG = "TuCanMobile";
 
+	/**
+	 * Pattern for nspbTrennung
+	 */
+	private static final Pattern nbspPat = Pattern.compile("&nbsp;");
 	@Override
 	public void onCreate() {
 		//BugReporting does not Work in testing mode
@@ -79,7 +85,22 @@ public class TucanMobile extends Application {
 		super.onCreate();
 		TucanMobile.Appcontext = getApplicationContext();
 	}
- 
+	/**
+	 * Gibt bei einem String wie "04-00-0126-vu&nbsp;Mathematik 1 (f&uuml;r ET)" "Mathematik 1 (f&uuml;r ET)" zurück
+	 * @param evNameString
+	 * @return
+	 */
+	public static String getEventNameByString(String evNameString) {
+		String[] evNameAr = nbspPat.split(evNameString);
+		if(evNameAr.length==2){
+			
+			return StringEscapeUtils.unescapeHtml4(evNameAr[1]);
+		}
+		else {
+			return evNameString;
+		}
+	}
+	
 	public static Context getAppContext() {
 		return Appcontext;
 	}
