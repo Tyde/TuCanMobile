@@ -144,6 +144,9 @@ public class BrowseMethods {
 						String[] getredirectURL = headerValue.split("URL=");
 						redirectURL = getredirectURL[1];
 					}
+					if("location".equalsIgnoreCase(headerName)){
+						redirectURL = headerValue;
+					}
 
 				}
 				int contentlength = HTTPConnection.getContentLength();
