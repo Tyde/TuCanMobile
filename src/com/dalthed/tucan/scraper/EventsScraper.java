@@ -169,13 +169,13 @@ public class EventsScraper extends BasicScraper {
 		while (ExamRowIterator.hasNext()) {
 			Element next = ExamRowIterator.next();
 			Elements ExamCols = next.select("td");
-			if (ExamCols.size() > 0) {
+			if (ExamCols.size() > 4) {
 				eventName.add(ExamCols.get(2).text());
 				eventHead.add(ExamCols.get(3).text());
 				eventCredits.add(ExamCols.get(4).text());
 				eventLink.add(ExamCols.get(2).select("a").attr("href"));
 				Log.i(LOG_TAG, "Link" + ExamCols.get(2).select("a").attr("href"));
-			}
+			} 
 		}
 		if (ListAdapter != null) {
 			ListAdapter.clear();
