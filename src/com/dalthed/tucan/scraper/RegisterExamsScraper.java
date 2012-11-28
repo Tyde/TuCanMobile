@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -24,9 +25,6 @@ import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.adapters.RegisterExamAdapter;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
-
-
-
 
 public class RegisterExamsScraper extends BasicScraper implements OnClickListener {
 
@@ -60,7 +58,7 @@ public class RegisterExamsScraper extends BasicScraper implements OnClickListene
 	}
 
 	@Override
-	public ListAdapter scrapeAdapter(int mode) throws LostSessionException,TucanDownException {
+	public ListAdapter scrapeAdapter(int mode) throws LostSessionException, TucanDownException {
 
 		if (checkForLostSeesion() && mode == 0) {
 
@@ -75,57 +73,70 @@ public class RegisterExamsScraper extends BasicScraper implements OnClickListene
 	 * Modus an
 	 * 
 	 * @return nachfolgender Modus
-	 * @throws LostSessionException 
+	 * @throws LostSessionException
 	 * @since 2012-06-01
 	 */
-	public int getRegisterdialog() throws LostSessionException,TucanDownException {
+	public int getRegisterdialog() throws LostSessionException, TucanDownException {
 		if (checkForLostSeesion()) {
-			
+
 			Element form = doc.select("form[name=registrationdetailsform]").first();
-			Elements cols = form.select("table.tb750").first().select("tr").last().select("td");
-			Iterator<Element> iterateForms = form.select("input").iterator();
-			ArrayList<String> formName = new ArrayList<String>();
-			ArrayList<String> formValue = new ArrayList<String>();
-			postString = "";
-			int ct = 0;
-			while (iterateForms.hasNext()) {
-				Element next = iterateForms.next();
-				formName.add(next.attr("name"));
-				formValue.add(next.attr("value"));
-				if (ct > 0) {
-					postString += "&";
+			if (form != null) {
+				final Element contenttable = form.select("table.tb750").first();
+				final Element contentrow = contenttable.select("tr").last();
+				Elements cols = contentrow.select("td");
+				Iterator<Element> iterateForms = form.select("input").iterator();
+				ArrayList<String> formName = new ArrayList<String>();
+				ArrayList<String> formValue = new ArrayList<String>();
+				postString = "";
+				int ct = 0;
+				while (iterateForms.hasNext()) {
+					Element next = iterateForms.next();
+					formName.add(next.attr("name"));
+					formValue.add(next.attr("value"));
+					if (ct > 0) {
+						postString += "&";
+					}
+					ct++;
+					postString += next.attr("name") + "=" + next.attr("value");
 				}
-				ct++;
-				postString += next.attr("name") + "=" + next.attr("value");
+				AlertDialog.Builder builder = new AlertDialog.Builder(context);
+				builder.setMessage(
+						"An/Abmelden zu:" + cols.get(1).text() + "\n" + cols.get(6).text())
+						.setCancelable(true).setPositiveButton("Ja", this)
+						.setNegativeButton("Nein", null);
+				AlertDialog alert = builder.create();
+				alert.show();
+				return 3; // Return Mode
+			} else {
+				Element errorSpan = doc.select("span.error").first();
+				if(errorSpan!=null){
+					AlertDialog.Builder builder = new AlertDialog.Builder(context);
+					builder.setMessage("Fehler: "+errorSpan.text());
+					AlertDialog alert = builder.create();
+					alert.show();
+					return 0;
+				}
 			}
-			AlertDialog.Builder builder = new AlertDialog.Builder(context);
-			builder.setMessage("An/Abmelden zu:" + cols.get(1).text() + "\n" + cols.get(6).text())
-					.setCancelable(true).setPositiveButton("Ja", this)
-					.setNegativeButton("Nein", null);
-			AlertDialog alert = builder.create();
-			alert.show();
-			return 3; // Return Mode
 		}
 		return -1;
-		
+
 	}
 
 	/**
 	 * Führt die Anmeldung aus und gibt den nächsten modus zurück
 	 * 
 	 * @return der nächste modus
-	 * @throws LostSessionException 
+	 * @throws LostSessionException
 	 * @since 2012-06-01
 	 */
-	public int startRegistration() throws LostSessionException,TucanDownException {
+	public int startRegistration() throws LostSessionException, TucanDownException {
 		if (checkForLostSeesion()) {
-			
+
 			Element form = doc.select("form[name=registrationdetailsform]").first();
-			String resultText="";
-			if(form!=null){
+			String resultText = "";
+			if (form != null) {
 				resultText = form.select("span.note").first().text();
-			}
-			else {
+			} else {
 				try {
 					resultText = doc.select("p.remarks").first().select("span.error").text();
 				} catch (NullPointerException e) {
@@ -137,7 +148,7 @@ public class RegisterExamsScraper extends BasicScraper implements OnClickListene
 				callResultBrowser = new SimpleSecureBrowser((BrowserAnswerReciever) context);
 				RequestObject thisRequest = new RequestObject(URLStringtoCall, localCookieManager,
 						RequestObject.METHOD_GET, "");
-	
+
 				callResultBrowser.execute(thisRequest);
 			}
 			return 0;
@@ -147,7 +158,7 @@ public class RegisterExamsScraper extends BasicScraper implements OnClickListene
 
 	public ListAdapter getExamsOverview() {
 		Element significantTable = doc.select("table.nb").select("tbody").first();
-		
+
 		Iterator<Element> rows = significantTable.select("tr").iterator();
 		eventisModule = new ArrayList<Boolean>();
 		eventName = new ArrayList<String>();
