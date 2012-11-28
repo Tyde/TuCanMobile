@@ -70,7 +70,7 @@ public abstract class BasicScraper {
 		
 		SimpleWebListActivity.sendHTMLatBug(doc.html());
 		
-		if (doc.select("span.notLoggedText").text().length() > 0) {
+		if (doc.select("span.notLoggedText").text().length() > 0 || doc.select("div.inputFieldLabel").size()>0) {
 			throw new LostSessionException();
 		} else if(doc.select("div#pageContainer").first()==null || doc.select("div#pageContainer").text().equals("")){
 			throw new TucanDownException(doc.text());
