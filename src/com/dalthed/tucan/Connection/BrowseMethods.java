@@ -7,8 +7,10 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLException;
 
 import org.acra.ErrorReporter;
 
@@ -32,7 +34,6 @@ public class BrowseMethods {
 	public InputStreamReader isr;
 	private static final String LOG_TAG = "TuCanMobile";
 	public boolean HTTPS = true;
-	
 
 	/**
 	 * setImportantHeaders setzt Header für den HTTP-Request
@@ -83,99 +84,107 @@ public class BrowseMethods {
 		try {
 			// Informationen aus RequestObject auslesen
 			URL realURL = requestInfo.getmyURL();
-			myCookies = requestInfo.getCookies();
-			String RequestMethod = requestInfo.getMethod();
-			String postdata = requestInfo.getPostData();
+			if (realURL != null) {
+				myCookies = requestInfo.getCookies();
+				String RequestMethod = requestInfo.getMethod();
+				String postdata = requestInfo.getPostData();
 
-			if (HTTPS == true) {
-				HTTPConnection = (HttpsURLConnection) realURL.openConnection();
-			} else {
-				HTTPConnection = (HttpURLConnection) realURL.openConnection();
-			}
-			if (TucanMobile.DEBUG) {
-				Log.i(LOG_TAG, "Started Connection with: " + realURL.toString());
-			}
-			if (RequestMethod == "POST") {
-				// Output bei POST-Übertragung aktivierten
-				HTTPConnection.setDoOutput(true);
-			}
-			// Ursprünglichen Request setzen
-			setImportantHeaders(RequestMethod, realURL.getHost());
-
-			if (RequestMethod == "POST") {
-				// Post-Daten senden
-				OutputStreamWriter out = new OutputStreamWriter(HTTPConnection.getOutputStream());
-				out.write(postdata);
-				out.close();
-			}
-
-			// Antwort auslesen
-			in = HTTPConnection.getInputStream();
-			isr = new InputStreamReader(in, "ISO8859_1");
-
-			if (iwantthereader == false) {
-
-				BufferedReader bin = new BufferedReader(isr, 8 * 1024);
-				// Header auslesen
-				for (int n = 0;; n++) {
-					String headerValue = HTTPConnection.getHeaderField(n);
-					String headerName = HTTPConnection.getHeaderFieldKey(n);
-					if (headerValue == null && headerName == null) {
-
-						break;
-					}
-
-					// Cookies auslesen
-					if ("Set-Cookie".equalsIgnoreCase(headerName)) {
-						if (TucanMobile.DEBUG) {
-							Log.i(LOG_TAG, "Lese Cookies aus");
-						}
-						String[] multipleCookies = headerValue.split(";\\s*");
-						for (String ccy : multipleCookies) {
-							String[] eachVal = ccy.split("=");
-							if (eachVal.length == 2)
-								myCookies.inputCookie(realURL.getHost(), eachVal[0], eachVal[1]);
-							else
-								myCookies.inputCookie(realURL.getHost(), eachVal[0], null);
-						}
-					}
-					// Eventuellen redirect auslesen und speichern
-					if ("refresh".equalsIgnoreCase(headerName)) {
-						String[] getredirectURL = headerValue.split("URL=");
-						redirectURL = getredirectURL[1];
-					}
-					if("location".equalsIgnoreCase(headerName)){
-						redirectURL = headerValue;
-					}
-
+				if (HTTPS == true) {
+					HTTPConnection = (HttpsURLConnection) realURL.openConnection();
+				} else {
+					HTTPConnection = (HttpURLConnection) realURL.openConnection();
 				}
-				int contentlength = HTTPConnection.getContentLength();
 				if (TucanMobile.DEBUG) {
-					Log.i(LOG_TAG, contentlength + "...");
+					Log.i(LOG_TAG, "Started Connection with: " + realURL.toString());
 				}
-				
-				//Server-Antwort auslesen und speichern
-				StringBuilder inputBuilder = new StringBuilder();
-				String inputLine;
-				
-				while ((inputLine = bin.readLine()) != null) {
-
-					inputBuilder.append(inputLine);
-
-					
-
+				if (RequestMethod == "POST") {
+					// Output bei POST-Übertragung aktivierten
+					HTTPConnection.setDoOutput(true);
 				}
-				in.close();
-				alllines = inputBuilder.toString();
+				// Ursprünglichen Request setzen
+				setImportantHeaders(RequestMethod, realURL.getHost());
+
+				if (RequestMethod == "POST") {
+					// Post-Daten senden
+					OutputStreamWriter out = new OutputStreamWriter(
+							HTTPConnection.getOutputStream());
+					out.write(postdata);
+					out.close();
+				}
+
+				// Antwort auslesen
+				in = HTTPConnection.getInputStream();
+				isr = new InputStreamReader(in, "ISO8859_1");
+
+				if (iwantthereader == false) {
+
+					BufferedReader bin = new BufferedReader(isr, 8 * 1024);
+					// Header auslesen
+					for (int n = 0;; n++) {
+						String headerValue = HTTPConnection.getHeaderField(n);
+						String headerName = HTTPConnection.getHeaderFieldKey(n);
+						if (headerValue == null && headerName == null) {
+
+							break;
+						}
+
+						// Cookies auslesen
+						if ("Set-Cookie".equalsIgnoreCase(headerName)) {
+							if (TucanMobile.DEBUG) {
+								Log.i(LOG_TAG, "Lese Cookies aus");
+							}
+							String[] multipleCookies = headerValue.split(";\\s*");
+							for (String ccy : multipleCookies) {
+								String[] eachVal = ccy.split("=");
+								if (eachVal.length == 2)
+									myCookies
+											.inputCookie(realURL.getHost(), eachVal[0], eachVal[1]);
+								else
+									myCookies.inputCookie(realURL.getHost(), eachVal[0], null);
+							}
+						}
+						// Eventuellen redirect auslesen und speichern
+						if ("refresh".equalsIgnoreCase(headerName)) {
+							String[] getredirectURL = headerValue.split("URL=");
+							redirectURL = getredirectURL[1];
+						}
+						if ("location".equalsIgnoreCase(headerName)) {
+							redirectURL = headerValue;
+						}
+
+					}
+					int contentlength = HTTPConnection.getContentLength();
+					if (TucanMobile.DEBUG) {
+						Log.i(LOG_TAG, contentlength + "...");
+					}
+
+					// Server-Antwort auslesen und speichern
+					StringBuilder inputBuilder = new StringBuilder();
+					String inputLine;
+
+					while ((inputLine = bin.readLine()) != null) {
+
+						inputBuilder.append(inputLine);
+
+					}
+					in.close();
+					alllines = inputBuilder.toString();
+				}
 			}
 
 		} catch (Exception e) {
-			ErrorReporter.getInstance().handleSilentException(e);
-			if(TucanMobile.DEBUG){
+			if (!(e instanceof UnknownHostException) && !(e instanceof SSLException)) {
+				ErrorReporter.getInstance().handleSilentException(e);
+			}
+			if (TucanMobile.DEBUG) {
 				e.printStackTrace();
 			}
-			
+
 		}
-		return new AnswerObject(alllines, redirectURL, myCookies, requestInfo.getmyURL().toString());
+		if (requestInfo.getmyURL() != null) {
+			return new AnswerObject(alllines, redirectURL, myCookies, requestInfo.getmyURL()
+					.toString());
+		}
+		return new AnswerObject(alllines, redirectURL, myCookies, "");
 	}
 }
