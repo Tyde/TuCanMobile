@@ -38,7 +38,7 @@ public class SingleEventScraper extends BasicScraper {
 	private FastSwitchHelper fsh;
 	private PagerAdapter mPageAdapter;
 	public ArrayList<String> materialLink;
-	
+
 	private ViewPager mPager;
 
 	public SingleEventScraper(Context context, AnswerObject result, Boolean PREPCall,
@@ -52,11 +52,11 @@ public class SingleEventScraper extends BasicScraper {
 	}
 
 	@Override
-	public ListAdapter scrapeAdapter(int mode) throws LostSessionException,TucanDownException {
+	public ListAdapter scrapeAdapter(int mode) throws LostSessionException, TucanDownException {
 		if (checkForLostSeesion()) {
 			if (PREPCall == false) {
 
-				if(checkforModule()){
+				if (checkforModule()) {
 					return null;
 				}
 				String Title = doc.select("h1").text();
@@ -95,8 +95,9 @@ public class SingleEventScraper extends BasicScraper {
 		}
 		return null;
 	}
-	
-	public void configurationChange(FastSwitchHelper fsh,PagerAdapter mPageAdapter, ViewPager mPager) throws LostSessionException, TucanDownException{
+
+	public void configurationChange(FastSwitchHelper fsh, PagerAdapter mPageAdapter,
+			ViewPager mPager) throws LostSessionException, TucanDownException {
 		this.fsh = fsh;
 		this.mPageAdapter = mPageAdapter;
 		this.mPager = mPager;
@@ -177,14 +178,13 @@ public class SingleEventScraper extends BasicScraper {
 			if (mPageAdapter != null) {
 				mPageAdapter.setAdapter(new AppointmentAdapter(context, materialNumber,
 						materialFile, null, materialName, materialDesc));
-				
 
 				mPageAdapter.fileList = materialLink;
 			}
 		} else if (mPageAdapter != null) {
 			mPageAdapter.setAdapter(new ArrayAdapter<String>(context,
 					android.R.layout.simple_list_item_1, new String[] { "Kein Material" }));
-			
+
 		}
 	}
 
@@ -229,29 +229,32 @@ public class SingleEventScraper extends BasicScraper {
 	 * 
 	 */
 	private void scrapeInformations() {
-		Elements Deltarows = doc.select("table[courseid]").first().select("tr");
-		Element rows;
-		if (Deltarows.size() == 1) {
-			rows = Deltarows.get(0).select("td").first();
-		} else {
-			rows = Deltarows.get(1).select("td").first();
-		}
+		final Element courseTable = doc.select("table[courseid]").first();
+		if (courseTable != null) {
+			Elements Deltarows = courseTable.select("tr");
+			Element rows;
+			if (Deltarows.size() == 1) {
+				rows = Deltarows.get(0).select("td").first();
+			} else {
+				rows = Deltarows.get(1).select("td").first();
+			}
 
-		Elements Paragraphs = rows.select("p");
-		Iterator<Element> PaIt = Paragraphs.iterator();
-		ArrayList<String> titles = new ArrayList<String>();
-		ArrayList<String> values = new ArrayList<String>();
+			Elements Paragraphs = rows.select("p");
+			Iterator<Element> PaIt = Paragraphs.iterator();
+			ArrayList<String> titles = new ArrayList<String>();
+			ArrayList<String> values = new ArrayList<String>();
 
-		while (PaIt.hasNext()) {
+			while (PaIt.hasNext()) {
 
-			Element next = PaIt.next();
-			String[] information = crop(next.html());
-			titles.add(information[0]);
-			values.add(information[1]);
+				Element next = PaIt.next();
+				String[] information = crop(next.html());
+				titles.add(information[0]);
+				values.add(information[1]);
 
-		}
-		if (mPageAdapter != null) {
-			mPageAdapter.setAdapter(new TwoLinesAdapter(context, titles, values));
+			}
+			if (mPageAdapter != null) {
+				mPageAdapter.setAdapter(new TwoLinesAdapter(context, titles, values));
+			}
 		}
 	}
 
