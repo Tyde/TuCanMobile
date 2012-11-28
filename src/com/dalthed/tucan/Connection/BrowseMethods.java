@@ -57,7 +57,7 @@ public class BrowseMethods {
 						"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.94 Safari/537.4");
 		HTTPConnection.setInstanceFollowRedirects(false);
 		// Cookies setzen:
-		if (myCookies.domain_exists(domain)) {
+		if (myCookies != null && myCookies.domain_exists(domain)) {
 			if (TucanMobile.DEBUG) {
 				Log.i(LOG_TAG, "Cookie gesetzt:" + myCookies.getCookieHTTPString(domain));
 			}
