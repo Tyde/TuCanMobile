@@ -133,24 +133,32 @@ public class EventsScraper extends BasicScraper {
 		ArrayList<String> eventHead = new ArrayList<String>();
 		ArrayList<String> eventTime = new ArrayList<String>();
 		Element ModuleOverviewTable = doc.select("div.tb").first();
-		Iterator<Element> ExamRowIterator = ModuleOverviewTable.select("tbody").first()
-				.select("tr").iterator();
-		while (ExamRowIterator.hasNext()) {
-			Element next = ExamRowIterator.next();
-			Elements ExamCols = next.select("td");
-			if (ExamCols.size() > 0) {
-				eventName.add(ExamCols.get(2).text());
-				eventLink.add(ExamCols.get(2).select("a").attr("href"));
-				Log.i(LOG_TAG, "Link" + ExamCols.get(2).select("a").attr("href"));
-				eventHead.add(ExamCols.get(3).text());
-				eventTime.add(ExamCols.get(4).text());
+		final Element tableBody = ModuleOverviewTable.select("tbody").first();
+		if (tableBody != null) {
+			final Elements tableRow = tableBody.select("tr");
+			if (tableRow != null) {
+				Iterator<Element> ExamRowIterator = tableRow.iterator();
+				while (ExamRowIterator.hasNext()) {
+					Element next = ExamRowIterator.next();
+					Elements ExamCols = next.select("td");
+					if (ExamCols.size() > 0) {
+						eventName.add(ExamCols.get(2).text());
+						eventLink.add(ExamCols.get(2).select("a").attr("href"));
+						Log.i(LOG_TAG, "Link" + ExamCols.get(2).select("a").attr("href"));
+						eventHead.add(ExamCols.get(3).text());
+						eventTime.add(ExamCols.get(4).text());
+					}
+				}
+				if (ListAdapter != null) {
+					ListAdapter.clear();
+				}
+				ListAdapter = new ThreeLinesAdapter(context, eventName, eventTime, eventHead);
+				return ListAdapter;
 			}
 		}
-		if (ListAdapter != null) {
-			ListAdapter.clear();
-		}
-		ListAdapter = new ThreeLinesAdapter(context, eventName, eventTime, eventHead);
-		return ListAdapter;
+		return new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,
+				android.R.id.text1, new String[] { context.getResources().getString(
+						R.string.events_none_found) });
 	}
 
 	/**
@@ -175,7 +183,7 @@ public class EventsScraper extends BasicScraper {
 				eventCredits.add(ExamCols.get(4).text());
 				eventLink.add(ExamCols.get(2).select("a").attr("href"));
 				Log.i(LOG_TAG, "Link" + ExamCols.get(2).select("a").attr("href"));
-			} 
+			}
 		}
 		if (ListAdapter != null) {
 			ListAdapter.clear();
@@ -294,11 +302,11 @@ public class EventsScraper extends BasicScraper {
 						}
 					}
 				}
-				//Adapter zum zurückgeben erstellen
+				// Adapter zum zurückgeben erstellen
 				singleEventAdapter = new HighlightedThreeLinesAdapter(context, itemName,
 						itemInstructor, itemDate, isModule);
 			}
-			
+
 			return singleEventAdapter;
 		}
 		return null;
