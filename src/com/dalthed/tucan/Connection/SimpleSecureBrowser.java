@@ -1,5 +1,7 @@
 package com.dalthed.tucan.Connection;
 
+import org.acra.ErrorReporter;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -120,13 +122,18 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 	protected void onPostExecute(AnswerObject result) {
 
 		Activity parentActivityHandler = getparentActivityHandler();
-		if (dialog != null) {
-			dialog.setTitle(parentActivityHandler.getResources().getString(R.string.ui_calc));
-		}
-		outerCallingRecieverActivity.onPostExecute(result);
+		try {
+			if (dialog != null) {
+				dialog.setTitle(parentActivityHandler.getResources().getString(R.string.ui_calc));
+			}
+			outerCallingRecieverActivity.onPostExecute(result);
 
-		if ( dialog != null &&dialog.isShowing())
-			dialog.dismiss();
+			if (dialog != null && dialog.isShowing())
+				dialog.dismiss();
+		} catch (IllegalArgumentException e) {
+			ErrorReporter.getInstance().handleSilentException(e);
+
+		}
 
 	}
 

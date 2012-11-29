@@ -15,6 +15,7 @@ import com.dalthed.tucan.R;
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.BrowserAnswerReciever;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
+import com.dalthed.tucan.acraload.LoadAcraResults;
 import com.dalthed.tucan.helpers.FastSwitchHelper;
 import com.dalthed.tucan.preferences.MainPreferences;
 
@@ -26,6 +27,7 @@ import com.dalthed.tucan.preferences.MainPreferences;
  */
 public abstract class SimpleWebListActivity extends SherlockListActivity implements
 		ActionBar.OnNavigationListener, BrowserAnswerReciever {
+	private static final int DEBUG_MENU_ID = 4855569;
 	public SimpleSecureBrowser callResultBrowser;
 	public static final String LOG_TAG = "TuCanMobile";
 	protected Boolean HTTPS = true;
@@ -50,6 +52,8 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		if(TucanMobile.DEBUG)
+			menu.add(Menu.NONE, DEBUG_MENU_ID, Menu.NONE, "DEBUG");
 		getSupportMenuInflater().inflate(R.menu.loginmenu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -73,6 +77,9 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 			return true;
 		case android.R.id.home:
 			fsh.startHomeIntent();
+		case DEBUG_MENU_ID:
+			Intent acraInten = new Intent(getBaseContext(), LoadAcraResults.class);
+			startActivity(acraInten);
 		default:
 			return super.onOptionsItemSelected(item);
 		}

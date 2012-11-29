@@ -48,6 +48,7 @@ public class LoadAcraResults extends SimpleWebListActivity {
 		try {
 			URLtoCall = new URL(URLStringtoCall);
 			localCookieManager = new CookieManager();
+			localCookieManager.inputCookie("daniel-thiem.de", "canView", "16ede40c878aee38d0882b3a6b2642c0ae76dafb");
 			RequestObject thisRequest = new RequestObject(URLStringtoCall,
 					localCookieManager, RequestObject.METHOD_GET, "");
 			SimpleSecureBrowser callResultBrowser = new SimpleSecureBrowser(
@@ -98,7 +99,13 @@ public class LoadAcraResults extends SimpleWebListActivity {
 				Log.i(LOG_TAG,"com.dalthed.tucan.ui."+classes.get(position) + " not found");
 				target=null;
 			}
-		
+		if(target==null)
+			try {
+				target=Class.forName("com.dalthed.tucan.scraper."+classes.get(position));
+			} catch (ClassNotFoundException e) {
+				Log.i(LOG_TAG,"com.dalthed.tucan.scraper."+classes.get(position) + " not found");
+				target=null;
+			}
 		
 		if(target!=null){
 			Intent loadDefectClassIntent = new Intent(this,target);

@@ -47,4 +47,11 @@
     <string name="messages_from">From:</string>
     <string name="messages_time">Arrived:</string>
     <string name="messages_title">Subject:</string>
+    
+        <!-- SCHEDULE -->
+    <string name="schedule_today">Today</string>
+    <string name="schedule_tomorrow">Tomorrow</string>
+    
+    <!-- Events -->
+    <string name="events_none_found">No Events found.</string>
 </resources>

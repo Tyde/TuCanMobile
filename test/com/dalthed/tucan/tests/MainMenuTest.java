@@ -13,9 +13,9 @@ import com.dalthed.tucan.ui.MainMenu;
 
 public class MainMenuTest extends BasicTest {
 	
-	//@Test
+	@Test
 	public void testMainMenu() throws IOException, LostSessionException, TucanDownException {
-		String URLStringtoCall = dtef.getErrorURL(9833, "MainMenu");
+		String URLStringtoCall = dtef.getErrorURL(16019, "MainMenu");
 		MainMenu fakeMenu = new MainMenu();
 		String html = Jsoup.connect(URLStringtoCall)
 				.cookie("canView", "16ede40c878aee38d0882b3a6b2642c0ae76dafb").get().html();
@@ -24,5 +24,7 @@ public class MainMenuTest extends BasicTest {
 		MainMenuScraper mmScrape = new MainMenuScraper(fakeMenu, result);
 		mmScrape.scrapeAdapter(0);
 	}
+	
+	
 
 }

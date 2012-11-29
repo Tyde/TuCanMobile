@@ -52,5 +52,8 @@
     <string name="schedule_today">Heute</string>
     <string name="schedule_tomorrow">Morgen</string>
     
+    <!-- Events -->
+    <string name="events_none_found">Keine Veranstaltungen gefunden.</string>
+    
     
 </resources>

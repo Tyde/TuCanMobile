@@ -15,4 +15,11 @@
         <item>Material</item>   
         <!-- <item>Kleingruppen</item>-->   
     </string-array>
+    
+     <string-array name="register_status">
+        <item>Timed out</item>
+        <item>Selected</item>
+        <item>Register</item>
+        <item>Unregister</item>
+    </string-array>
 </resources>

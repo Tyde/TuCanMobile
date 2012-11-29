@@ -31,7 +31,7 @@ import com.xtremelabs.robolectric.RobolectricTestRunner;
 public class MainTest extends BasicTest {
 
 	@Test
-	public void runMyEvaluationFaster() throws IOException, LostSessionException {
+	public void runMyEvaluationFaster() throws IOException, LostSessionException, TucanDownException {
 		ArrayList<File> htmlFiles = new ArrayList<File>();
 		String basePathTucanSet= "C:\\Users\\Tyde\\Desktop\\tucan_set\\stage\\";
 		File directory = new File( basePathTucanSet);
@@ -59,12 +59,22 @@ public class MainTest extends BasicTest {
 			System.out.println(lAdap);
 		}
 	}
+	@Test
+	public void testEventsScraper() throws IOException, LostSessionException, TucanDownException {
+		String URLStringtoCall = dtef.getErrorURL(15285, "EventsScraper");
+		Events fakeEvents = new Events();
+		String html = Jsoup.connect(URLStringtoCall)
+				.cookie("canView", "16ede40c878aee38d0882b3a6b2642c0ae76dafb").get().html();
+		AnswerObject result = new AnswerObject(html, "", cm, URLStringtoCall);
+		EventsScraper fakescrape = new EventsScraper(fakeEvents	, result);
+		fakescrape.scrapeAdapter(10);
+	}
 
-	// @Test
+	 @Test
 	public void testRegisterExamsScraper() throws IOException, LostSessionException,
 			TucanDownException {
 
-		String URLStringtoCall = dtef.getErrorURL(896, "RegisterExams");
+		String URLStringtoCall = dtef.getErrorURL(20254, "RegisterExams");
 		RegisterExams fakeExams = new RegisterExams();
 		String html = Jsoup.connect(URLStringtoCall)
 				.cookie("canView", "16ede40c878aee38d0882b3a6b2642c0ae76dafb").get().html();
@@ -75,7 +85,7 @@ public class MainTest extends BasicTest {
 		// "0: scrapeAnswer(0)"
 		// "1: startRegistration()"
 		// "2: getRegisterDialog()"
-		int methodid = 1;
+		int methodid = 0;
 
 		switch (methodid) {
 		case 0:
