@@ -23,6 +23,7 @@ import com.dalthed.tucan.adapters.HighlightedThreeLinesAdapter;
 import com.dalthed.tucan.adapters.MergedAdapter;
 import com.dalthed.tucan.adapters.ThreeLinesAdapter;
 import com.dalthed.tucan.exceptions.LostSessionException;
+import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.ui.SimpleWebListActivity;
 
 public class EventsScraper extends BasicScraper {
@@ -62,12 +63,9 @@ public class EventsScraper extends BasicScraper {
 
 	}
 
-	public ListAdapter scrapeAdapter(int modus) throws LostSessionException {
+	public ListAdapter scrapeAdapter(int modus) throws LostSessionException, TucanDownException {
 		this.mode = modus;
-		if (doc.select("span.notLoggedText").text().length() > 0) {
-			// Check for logged out
-			throw new LostSessionException();
-		} else {
+		if(checkForLostSeesion()) {
 			// When bug exists: send HTML to resolve Bug
 			SimpleWebListActivity.sendHTMLatBug(doc.html());
 			if (mode == 0) {
