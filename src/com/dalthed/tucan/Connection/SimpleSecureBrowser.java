@@ -127,8 +127,8 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 				dialog.setTitle(parentActivityHandler.getResources().getString(R.string.ui_calc));
 			}
 			outerCallingRecieverActivity.onPostExecute(result);
-
-			if (dialog != null && dialog.isShowing())
+			
+			if (dialog != null  && dialog.isShowing())
 				dialog.dismiss();
 		} catch (IllegalArgumentException e) {
 			ErrorReporter.getInstance().handleSilentException(e);
