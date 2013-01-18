@@ -326,22 +326,20 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 					i.putExtra(TucanMobile.EXTRA_URL, result.getLastCalledURL());
 					startActivity(i);
 				} else {
-					Toast.makeText(this, "Schneller Login fehlgeschlagen", Toast.LENGTH_LONG)
-							.show();
 					onClickSendLogin(null);
 				}
 			} else {
-				Toast.makeText(this, "Schneller Login fehlgeschlagen", Toast.LENGTH_LONG).show();
+				
 				onClickSendLogin(null);
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
 			Log.i(LOG_TAG, "Fehler: " + e.getMessage());
-			Toast.makeText(this, "Schneller Login fehlgeschlagen", Toast.LENGTH_LONG).show();
+			
 			onClickSendLogin(null);
 		} catch (Exception e) {
 			ErrorReporter.getInstance().handleSilentException(e);
 			Log.i(LOG_TAG, "Fehler: " + e.getMessage());
-			Toast.makeText(this, "Schneller Login fehlgeschlagen", Toast.LENGTH_LONG).show();
+			
 			onClickSendLogin(null);
 		}
 
