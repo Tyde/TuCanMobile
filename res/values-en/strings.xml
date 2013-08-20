@@ -37,7 +37,7 @@
     <string name="pref_disable_acra">deactivate Bugreport</string>
     <string name="pref_acra_disabled">The Bugreport may contain private Data like Name and contents of the site. By disabling, Bugs that may occur, may not be analized and not be fixed.</string>
     <string name="pref_acra_enabled">The Bugreport may contain private Data like Name and contents of the site. By disabling, Bugs that may occur, may not be analized and not be fixed.</string>
-
+	<string name="site_opt_unknown">Behaviour of the Tucan-Site has been unexpected. The Error is being reported to the Developer.</string>
      <!-- Image Content Description -->
     <string name="img_content_logo">Logo</string>
     <!-- DEBUG -->

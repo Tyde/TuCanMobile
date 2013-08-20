@@ -36,7 +36,7 @@
     <string name="pref_disable_acra">BugReport deaktivieren</string>
     <string name="pref_acra_disabled">Dieser kann private Daten wie den Namen und Inhalte der Seite beinhalten. Durch das abschalten können Fehler nicht genau analysiert werden und somit wohl auch nicht behoben werden.</string>
     <string name="pref_acra_enabled">Dieser kann private Daten wie den Namen und Inhalte der Seite beinhalten. Durch das abschalten können Fehler nicht genau analysiert werden und somit wohl auch nicht behoben werden.</string>
-
+	<string name="site_opt_unknown">Verhalten der Tucan-Seite war unerwartet. Fehler wird an den Entwickler weitergegeben.</string>
     <!-- Image Content Description -->
     <string name="img_content_logo">Logo</string>
     

@@ -1,12 +1,16 @@
 package com.dalthed.tucan.scraper;
 
+import org.acra.ACRA;
+import org.acra.ErrorReporter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import android.content.Context;
 import android.widget.ListAdapter;
+import android.widget.Toast;
 
+import com.dalthed.tucan.R;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.exceptions.LostSessionException;
@@ -77,6 +81,11 @@ public abstract class BasicScraper {
 		} else {
 			return true;
 		}
+	}
+	
+	protected void reportUnexpectedBehaviour(Exception e) {
+		Toast.makeText(context, context.getResources().getString(R.string.site_opt_unknown), Toast.LENGTH_SHORT).show();
+		ErrorReporter.getInstance().handleSilentException(e);
 	}
 	
 
