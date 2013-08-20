@@ -34,6 +34,7 @@ public class MessagesScraper extends BasicScraper {
 	@Override
 	public ListAdapter scrapeAdapter(int mode) throws LostSessionException,
 			TucanDownException {
+		Log.i(LOG_TAG, "Daten ausgewertet in Step: "+ step);
 		if (checkForLostSeesion()) {
 			if (step == 0) {
 				loadArchive();
