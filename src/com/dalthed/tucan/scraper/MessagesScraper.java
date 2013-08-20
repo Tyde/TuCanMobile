@@ -7,6 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.ListAdapter;
 
 import com.dalthed.tucan.TucanMobile;
@@ -36,13 +37,36 @@ public class MessagesScraper extends BasicScraper {
 			if (step == 0) {
 				loadArchive();
 				step++; 
+			} else if (step == 1) {
+				loadInbox();
+				step++;
 			} else {
 				return extractMessageList();
 			}
 		}
 		return null;
 	}
-
+	/**
+	 * Finds the Inbox link and opens it
+	 */
+	private void loadInbox() {
+		try {
+			String link = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+					+ doc.select("div.tbcontrol").first().select("a").get(1).attr("href");
+			
+			if(context instanceof BrowserAnswerReciever){
+				SimpleSecureBrowser callInboxBrowser = new SimpleSecureBrowser((BrowserAnswerReciever) context);
+				RequestObject thisRequest = new RequestObject(link, localCookieManager,
+						RequestObject.METHOD_GET, "");
+				callInboxBrowser.execute(thisRequest);
+			}
+		} catch (NullPointerException e) {
+			reportUnexpectedBehaviour(e);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			reportUnexpectedBehaviour(e);
+		}
+	}
+	
 	/**
 	 * 
 	 */
@@ -75,7 +99,7 @@ public class MessagesScraper extends BasicScraper {
 	private void loadArchive() {
 		String AllMailLink = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
 				+ doc.select("div.tbcontrol").select("a").last().attr("href");
-		step = 1;
+		
 		if(context instanceof BrowserAnswerReciever){
 			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser((BrowserAnswerReciever) context);
 			RequestObject thisRequest = new RequestObject(AllMailLink, localCookieManager,
