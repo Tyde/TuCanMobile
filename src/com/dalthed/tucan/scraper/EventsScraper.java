@@ -130,7 +130,7 @@ public class EventsScraper extends BasicScraper {
 		ArrayList<String> eventName = new ArrayList<String>();
 		ArrayList<String> eventHead = new ArrayList<String>();
 		ArrayList<String> eventTime = new ArrayList<String>();
-		Element ModuleOverviewTable = doc.select("div.tb").first();
+		Element ModuleOverviewTable = doc.select("table.tb").first();
 		final Element tableBody = ModuleOverviewTable.select("tbody").first();
 		if (tableBody != null) {
 			final Elements tableRow = tableBody.select("tr");

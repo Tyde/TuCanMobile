@@ -60,7 +60,7 @@ public class TucanMobile extends Application {
 	/**
 	 * App is/isn't in Debug mode
 	 */
-	public final static Boolean DEBUG = true;
+	public final static Boolean DEBUG = false;
 	/**
 	 * App is/isn't in Testing mode; App cannot work properly, if it is in Testing mode
 	 */
@@ -92,6 +92,7 @@ public class TucanMobile extends Application {
 	 */
 	public static String getEventNameByString(String evNameString) {
 		String[] evNameAr = nbspPat.split(evNameString);
+		
 		if(evNameAr.length==2){
 			
 			return StringEscapeUtils.unescapeHtml4(evNameAr[1]);
