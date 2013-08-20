@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TucanMobile;
@@ -131,8 +132,10 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 			if (dialog != null  && dialog.isShowing())
 				dialog.dismiss();
 		} catch (IllegalArgumentException e) {
+			Toast.makeText(parentActivityHandler, "Bei dem Drehen des Bildschirmes ist ein Fehler aufgetreten", Toast.LENGTH_LONG).show();
+			
 			ErrorReporter.getInstance().handleSilentException(e);
-
+			parentActivityHandler.finish();
 		}
 
 	}
