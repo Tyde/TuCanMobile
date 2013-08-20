@@ -77,6 +77,7 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 			return true;
 		case android.R.id.home:
 			fsh.startHomeIntent();
+			return true;
 		case DEBUG_MENU_ID:
 			Intent acraInten = new Intent(getBaseContext(), LoadAcraResults.class);
 			startActivity(acraInten);

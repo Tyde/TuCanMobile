@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -76,6 +77,7 @@ public abstract class SimpleWebActivity extends SherlockActivity implements
 			return true;
 		case 9941:
 			// Toast.makeText(this, "jadoiwjdi", Toast.LENGTH_LONG).show();
+			Log.i(TucanMobile.LOG_TAG,"Komischerweise ist er hier");
 			Intent debugIntent = new Intent(getBaseContext(), LoadAcraResults.class);
 			startActivity(debugIntent);
 			return true;

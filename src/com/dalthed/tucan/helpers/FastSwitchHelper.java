@@ -121,6 +121,7 @@ public class FastSwitchHelper {
 
 	public void startHomeIntent() {
 		Intent homeIntent = new Intent(context, MainMenu.class);
+		Log.i(LOG_TAG, "Er sollte nach oben");
 		homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		homeIntent.putExtra("Cookie", cached_Cookie);
 		homeIntent.putExtra("Session", cached_Session);
