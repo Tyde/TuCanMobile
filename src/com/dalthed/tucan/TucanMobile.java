@@ -64,7 +64,7 @@ public class TucanMobile extends Application {
 	/**
 	 * App is/isn't in Testing mode; App cannot work properly, if it is in Testing mode
 	 */
-	public final static Boolean TESTING = false;
+	public final static Boolean TESTING = true;
 	/**
 	 * Tag for Log
 	 */
