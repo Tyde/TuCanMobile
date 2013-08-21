@@ -1,5 +1,6 @@
 package com.dalthed.tucan.ui;
 
+import org.acra.ACRA;
 import org.acra.ErrorReporter;
 
 import android.content.Intent;
@@ -60,7 +61,7 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 
 	public static void sendHTMLatBug(String html) {
 		if (!TucanMobile.TESTING) {
-			ErrorReporter.getInstance().putCustomData("html", html);
+			ACRA.getErrorReporter().putCustomData("html", html);
 		}
 
 	}

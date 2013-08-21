@@ -7,6 +7,8 @@ import java.util.regex.Pattern;
 
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
+import org.acra.sender.HttpSender.Method;
+import org.acra.sender.HttpSender.Type;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import android.app.AlertDialog;
@@ -16,7 +18,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Environment;
-import android.sax.StartElementListener;
+
 import android.util.Log;
 
 //@ReportsCrashes(formKey = "dGxJeFNVZk5YQXRmaXV6WVZfVHYzdWc6MQ")
@@ -25,7 +27,11 @@ import android.util.Log;
  *
  */
 @ReportsCrashes(formKey = "", // will not be used
-formUri = "http://daniel-thiem.de/ACRA/insertsql.php")
+	httpMethod = Method.PUT,
+	reportType = Type.JSON,
+	formUri = "http://dttyde.de:5984/acra-tucan/_design/acra-storage/_update/report",
+	formUriBasicAuthLogin = "tucanApp",
+    formUriBasicAuthPassword = "thordielrbl")
 //@ReportsCrashes(formUri = "http://www.bugsense.com/api/acra?api_key=f08ba688", formKey="")
 public class TucanMobile extends Application {
 	private static Context Appcontext; 
@@ -56,7 +62,7 @@ public class TucanMobile extends Application {
 	/**
 	 * Make App Crash (Bug-Reporting testing)
 	 */
-	public final static Boolean CRASH = false;
+	public final static Boolean CRASH = true;
 	/**
 	 * App is/isn't in Debug mode
 	 */

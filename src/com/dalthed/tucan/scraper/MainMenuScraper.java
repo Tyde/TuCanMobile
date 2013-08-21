@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jsoup.nodes.Element;
@@ -69,8 +70,14 @@ public class MainMenuScraper extends BasicScraper {
 
 	@Override
 	public ListAdapter scrapeAdapter(int mode) throws LostSessionException, TucanDownException {
-
+		
 		if (checkForLostSeesion()) {
+			if(TucanMobile.CRASH) {
+				//Crash with HTML
+				ArrayList<String> crashList = new ArrayList<String>();
+				crashList.add("fail");
+				crashList.get(16);
+			}
 			getSessionArgument();
 			scrapeMenuLinks();
 			return getTodaysEvents();

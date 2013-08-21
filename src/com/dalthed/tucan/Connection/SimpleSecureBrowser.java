@@ -1,6 +1,7 @@
 package com.dalthed.tucan.Connection;
 
-import org.acra.ErrorReporter;
+import org.acra.ACRA;
+
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -134,7 +135,7 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 		} catch (IllegalArgumentException e) {
 			Toast.makeText(parentActivityHandler, "Bei dem Drehen des Bildschirmes ist ein Fehler aufgetreten", Toast.LENGTH_LONG).show();
 			
-			ErrorReporter.getInstance().handleSilentException(e);
+			ACRA.getErrorReporter().handleSilentException(e);
 			parentActivityHandler.finish();
 		}
 

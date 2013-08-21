@@ -85,7 +85,8 @@ public abstract class BasicScraper {
 	
 	protected void reportUnexpectedBehaviour(Exception e) {
 		Toast.makeText(context, context.getResources().getString(R.string.site_opt_unknown), Toast.LENGTH_SHORT).show();
-		ErrorReporter.getInstance().handleSilentException(e);
+		
+		ACRA.getErrorReporter().handleSilentException(e);
 	}
 	
 

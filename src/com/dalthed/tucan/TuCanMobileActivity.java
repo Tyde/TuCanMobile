@@ -4,7 +4,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import org.acra.ErrorReporter;
+import org.acra.ACRA;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -67,7 +68,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 		// Insert saved login information into EditTexts
 		usrnameField = (EditText) findViewById(R.id.login_usrname);
 		pwdField = (EditText) findViewById(R.id.login_pw);
-
+		
 		usrnameField.setText(tuid);
 		pwdField.setText(pw);
 
@@ -259,7 +260,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 					SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1].split(",")[0];
 				} catch (MalformedURLException e) {
 					// Send Bugreport
-					ErrorReporter.getInstance().handleSilentException(e);
+					ACRA.getErrorReporter().handleSilentException(e);
 				}
 				// Redeem username
 				User = Jsoup.parse(UserSpan.html().split(":")[1]).text();
@@ -337,7 +338,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 			
 			onClickSendLogin(null);
 		} catch (Exception e) {
-			ErrorReporter.getInstance().handleSilentException(e);
+			ACRA.getErrorReporter().handleSilentException(e);
 			Log.i(LOG_TAG, "Fehler: " + e.getMessage());
 			
 			onClickSendLogin(null);

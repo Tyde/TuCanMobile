@@ -3,6 +3,7 @@ package com.dalthed.tucan.ui;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.acra.ACRA;
 import org.acra.ErrorReporter;
 
 import android.content.Intent;
@@ -56,7 +57,7 @@ public class Schedule extends SimpleWebListActivity {
 
 				callResultBrowser.execute(thisRequest);
 			} catch (MalformedURLException e) {
-				ErrorReporter.getInstance().handleSilentException(e);
+				ACRA.getErrorReporter().handleSilentException(e);
 			}
 		}
 

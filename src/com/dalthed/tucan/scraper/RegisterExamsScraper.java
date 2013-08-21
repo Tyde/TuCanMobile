@@ -3,6 +3,7 @@ package com.dalthed.tucan.scraper;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.acra.ACRA;
 import org.acra.ErrorReporter;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -140,7 +141,7 @@ public class RegisterExamsScraper extends BasicScraper implements OnClickListene
 				try {
 					resultText = doc.select("p.remarks").first().select("span.error").text();
 				} catch (NullPointerException e) {
-					ErrorReporter.getInstance().handleSilentException(e);
+					ACRA.getErrorReporter().handleSilentException(e);
 				}
 			}
 			Toast.makeText(context, resultText, Toast.LENGTH_LONG).show();
@@ -213,7 +214,7 @@ public class RegisterExamsScraper extends BasicScraper implements OnClickListene
 
 			catch (IndexOutOfBoundsException e) {
 				Log.e(LOG_TAG, "Index out of Bounds");
-				ErrorReporter.getInstance().handleSilentException(e);
+				ACRA.getErrorReporter().handleSilentException(e);
 			}
 			// System.out.println();
 		}

@@ -12,7 +12,8 @@ import java.net.UnknownHostException;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLException;
 
-import org.acra.ErrorReporter;
+import org.acra.ACRA;
+
 
 import android.os.Build;
 import android.util.Log;
@@ -174,7 +175,7 @@ public class BrowseMethods {
 
 		} catch (Exception e) {
 			if (!(e instanceof UnknownHostException) && !(e instanceof SSLException)) {
-				ErrorReporter.getInstance().handleSilentException(e);
+				ACRA.getErrorReporter().handleSilentException(e);
 			}
 			if (TucanMobile.DEBUG) {
 				e.printStackTrace();
