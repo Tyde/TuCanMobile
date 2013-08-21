@@ -252,7 +252,12 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 				wrongLoginNotif.show();
 			} else {
 				// Login worked
-				dialog.dismiss();
+				try{
+					dialog.dismiss();
+				} catch (IllegalArgumentException e) {
+					Toast.makeText(TuCanMobileActivity.this, "Ich mag es nicht, wenn du mich drehst!",Toast.LENGTH_SHORT).show();
+				}
+				
 				// Get SessionArgument for other purposes in other activities
 				String lcURLString = result.getLastCalledURL();
 				try {
