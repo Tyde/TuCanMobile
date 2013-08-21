@@ -29,7 +29,7 @@ import com.dalthed.tucan.ui.Schedule;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 
 public class MainTest extends BasicTest {
-
+	/*
 	@Test
 	public void runMyEvaluationFaster() throws IOException, LostSessionException, TucanDownException {
 		ArrayList<File> htmlFiles = new ArrayList<File>();
@@ -59,15 +59,16 @@ public class MainTest extends BasicTest {
 			System.out.println(lAdap);
 		}
 	}
+	*/
 	@Test
 	public void testEventsScraper() throws IOException, LostSessionException, TucanDownException {
-		String URLStringtoCall = dtef.getErrorURL(15285, "EventsScraper");
+		String URLStringtoCall = dtef.getErrorURL(68968, "EventsScraper");
 		Events fakeEvents = new Events();
 		String html = Jsoup.connect(URLStringtoCall)
 				.cookie("canView", "16ede40c878aee38d0882b3a6b2642c0ae76dafb").get().html();
 		AnswerObject result = new AnswerObject(html, "", cm, URLStringtoCall);
 		EventsScraper fakescrape = new EventsScraper(fakeEvents	, result);
-		fakescrape.scrapeAdapter(10);
+		fakescrape.scrapeAdapter(1);
 	}
 
 	 @Test

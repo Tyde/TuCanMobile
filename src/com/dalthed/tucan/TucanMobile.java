@@ -62,7 +62,7 @@ public class TucanMobile extends Application {
 	/**
 	 * Make App Crash (Bug-Reporting testing)
 	 */
-	public final static Boolean CRASH = true;
+	public final static Boolean CRASH = false;
 	/**
 	 * App is/isn't in Debug mode
 	 */
