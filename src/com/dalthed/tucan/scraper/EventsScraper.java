@@ -63,9 +63,10 @@ public class EventsScraper extends BasicScraper {
 
 	}
 
-	public ListAdapter scrapeAdapter(int modus) throws LostSessionException, TucanDownException {
+	public ListAdapter scrapeAdapter(int modus) throws LostSessionException,
+			TucanDownException {
 		this.mode = modus;
-		if(checkForLostSeesion()) {
+		if (checkForLostSeesion()) {
 			// When bug exists: send HTML to resolve Bug
 			SimpleWebListActivity.sendHTMLatBug(doc.html());
 			if (mode == 0) {
@@ -102,7 +103,8 @@ public class EventsScraper extends BasicScraper {
 		SemesterOptionName = new ArrayList<String>();
 		SemesterOptionValue = new ArrayList<String>();
 
-		Iterator<Element> SemesterOptionIterator = doc.select("option").iterator();
+		Iterator<Element> SemesterOptionIterator = doc.select("option")
+				.iterator();
 		int i = 0;
 		while (SemesterOptionIterator.hasNext()) {
 			Element next = SemesterOptionIterator.next();
@@ -131,32 +133,40 @@ public class EventsScraper extends BasicScraper {
 		ArrayList<String> eventHead = new ArrayList<String>();
 		ArrayList<String> eventTime = new ArrayList<String>();
 		Element ModuleOverviewTable = doc.select("table.tb").first();
-		final Element tableBody = ModuleOverviewTable.select("tbody").first();
-		if (tableBody != null) {
-			final Elements tableRow = tableBody.select("tr");
-			if (tableRow != null) {
-				Iterator<Element> ExamRowIterator = tableRow.iterator();
-				while (ExamRowIterator.hasNext()) {
-					Element next = ExamRowIterator.next();
-					Elements ExamCols = next.select("td");
-					if (ExamCols.size() > 0) {
-						eventName.add(ExamCols.get(2).text());
-						eventLink.add(ExamCols.get(2).select("a").attr("href"));
-						Log.i(LOG_TAG, "Link" + ExamCols.get(2).select("a").attr("href"));
-						eventHead.add(ExamCols.get(3).text());
-						eventTime.add(ExamCols.get(4).text());
+		if (ModuleOverviewTable != null) {
+			final Element tableBody = ModuleOverviewTable.select("tbody")
+					.first();
+			if (tableBody != null) {
+				final Elements tableRow = tableBody.select("tr");
+				if (tableRow != null) {
+					Iterator<Element> ExamRowIterator = tableRow.iterator();
+					while (ExamRowIterator.hasNext()) {
+						Element next = ExamRowIterator.next();
+						Elements ExamCols = next.select("td");
+						if (ExamCols.size() > 0) {
+							eventName.add(ExamCols.get(2).text());
+							eventLink.add(ExamCols.get(2).select("a")
+									.attr("href"));
+							Log.i(LOG_TAG, "Link"
+									+ ExamCols.get(2).select("a").attr("href"));
+							eventHead.add(ExamCols.get(3).text());
+							eventTime.add(ExamCols.get(4).text());
+						}
 					}
+					if (ListAdapter != null) {
+						ListAdapter.clear();
+					}
+					ListAdapter = new ThreeLinesAdapter(context, eventName,
+							eventTime, eventHead);
+					return ListAdapter;
 				}
-				if (ListAdapter != null) {
-					ListAdapter.clear();
-				}
-				ListAdapter = new ThreeLinesAdapter(context, eventName, eventTime, eventHead);
-				return ListAdapter;
 			}
 		}
-		return new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,
-				android.R.id.text1, new String[] { context.getResources().getString(
+		return new ArrayAdapter<String>(context,
+				android.R.layout.simple_list_item_1, android.R.id.text1,
+				new String[] { context.getResources().getString(
 						R.string.events_none_found) });
+
 	}
 
 	/**
@@ -170,8 +180,8 @@ public class EventsScraper extends BasicScraper {
 		ArrayList<String> eventHead = new ArrayList<String>();
 		ArrayList<String> eventCredits = new ArrayList<String>();
 		Element ModuleOverviewTable = doc.select("div.tb").first();
-		Iterator<Element> ExamRowIterator = ModuleOverviewTable.select("tbody").first()
-				.select("tr").iterator();
+		Iterator<Element> ExamRowIterator = ModuleOverviewTable.select("tbody")
+				.first().select("tr").iterator();
 		while (ExamRowIterator.hasNext()) {
 			Element next = ExamRowIterator.next();
 			Elements ExamCols = next.select("td");
@@ -180,13 +190,15 @@ public class EventsScraper extends BasicScraper {
 				eventHead.add(ExamCols.get(3).text());
 				eventCredits.add(ExamCols.get(4).text());
 				eventLink.add(ExamCols.get(2).select("a").attr("href"));
-				Log.i(LOG_TAG, "Link" + ExamCols.get(2).select("a").attr("href"));
+				Log.i(LOG_TAG, "Link"
+						+ ExamCols.get(2).select("a").attr("href"));
 			}
 		}
 		if (ListAdapter != null) {
 			ListAdapter.clear();
 		}
-		ListAdapter = new ThreeLinesAdapter(context, eventName, eventCredits, eventHead);
+		ListAdapter = new ThreeLinesAdapter(context, eventName, eventCredits,
+				eventHead);
 		return ListAdapter;
 	}
 
@@ -227,7 +239,8 @@ public class EventsScraper extends BasicScraper {
 	 * @author Daniel Thiem
 	 */
 	private ListAdapter getApplicationSingleItems(Element content) {
-		final Element coursestatusTable = content.select("table.tbcoursestatus").first();
+		final Element coursestatusTable = content
+				.select("table.tbcoursestatus").first();
 		if (coursestatusTable != null) {
 			Elements moduleTable = coursestatusTable.select("tr");
 			ListAdapter singleEventAdapter = null;
@@ -252,8 +265,10 @@ public class EventsScraper extends BasicScraper {
 								final Node instructorNode = innerChilds.get(3);
 								if (instructorNode instanceof TextNode) {
 
-									String moduleInstructor = ((TextNode) instructorNode).text();
-									String moduleName = secondCol.select("span.eventTitle").text();
+									String moduleInstructor = ((TextNode) instructorNode)
+											.text();
+									String moduleName = secondCol.select(
+											"span.eventTitle").text();
 									String moduleDeadline = cols.get(2).text();
 									itemName.add(moduleName);
 									itemInstructor.add(moduleInstructor);
@@ -269,7 +284,8 @@ public class EventsScraper extends BasicScraper {
 							if (innerChilds.size() == 1) {
 								// Event nur mit Namen
 								final String evNmHtml = secondCol.html();
-								eventName = TucanMobile.getEventNameByString(evNmHtml);
+								eventName = TucanMobile
+										.getEventNameByString(evNmHtml);
 								eventInstructor = "";
 								eventDates = "";
 
@@ -279,16 +295,21 @@ public class EventsScraper extends BasicScraper {
 								final Node dateNode = innerChilds.get(6);
 								if (instructorNode instanceof TextNode
 										&& dateNode instanceof TextNode) {
-									eventName = secondCol.select("span.eventTitle").text();
-									eventInstructor = ((TextNode) instructorNode).text().trim();
-									eventDates = ((TextNode) dateNode).text().trim();
+									eventName = secondCol.select(
+											"span.eventTitle").text();
+									eventInstructor = ((TextNode) instructorNode)
+											.text().trim();
+									eventDates = ((TextNode) dateNode).text()
+											.trim();
 								}
 							} else if (innerChilds.size() == 5) {
 								// Event ohne Datum
 								final Node instructorNode = innerChilds.get(4);
 								if (instructorNode instanceof TextNode) {
-									eventName = secondCol.select("span.eventTitle").text();
-									eventInstructor = ((TextNode) instructorNode).text().trim();
+									eventName = secondCol.select(
+											"span.eventTitle").text();
+									eventInstructor = ((TextNode) instructorNode)
+											.text().trim();
 									eventDates = "";
 								}
 							}
@@ -301,8 +322,8 @@ public class EventsScraper extends BasicScraper {
 					}
 				}
 				// Adapter zum zurückgeben erstellen
-				singleEventAdapter = new HighlightedThreeLinesAdapter(context, itemName,
-						itemInstructor, itemDate, isModule);
+				singleEventAdapter = new HighlightedThreeLinesAdapter(context,
+						itemName, itemInstructor, itemDate, isModule);
 			}
 
 			return singleEventAdapter;
@@ -321,7 +342,8 @@ public class EventsScraper extends BasicScraper {
 	 * @since 2012-11-26
 	 */
 	private ListAdapter getApplicationDeepLinkAdapter(Element content) {
-		final Elements deepLinkListElement = content.select("div#contentSpacer_IE > ul");
+		final Elements deepLinkListElement = content
+				.select("div#contentSpacer_IE > ul");
 		if (deepLinkListElement.size() > 0) {
 			Elements deepLinkList = deepLinkListElement.first().select("li");
 			if (deepLinkList.size() > 0) {
@@ -379,7 +401,8 @@ public class EventsScraper extends BasicScraper {
 		}
 		// ArrayList kopieren um Links nicht neu laden zu müssen
 		@SuppressWarnings("unchecked")
-		ArrayList<String> eventNameBuffer = (ArrayList<String>) eventNames.clone();
+		ArrayList<String> eventNameBuffer = (ArrayList<String>) eventNames
+				.clone();
 		// Adapter erstellen und einsetzen
 		ListAdapter = new ArrayAdapter<String>(context, R.layout.menu_row,
 				R.id.main_menu_row_textField, eventNameBuffer);
