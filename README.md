@@ -1,4 +1,4 @@
-# TuCan.Mobile f�r Android
+# TuCan.Mobile für Android
 
 
 Willkommen auf der OpenSource Seite von TuCan Mobile
@@ -11,7 +11,7 @@ Um die App selbst zu Compilen sind folgende Pakete notwendig:
 	[viewPagerIndicator](http://viewpagerindicator.com/)¹ (inkl android support)
 	[ActionbarSherlock](http://actionbarsherlock.com/)¹ (inkl android support)
 	
-Mitmachen ist erw�nscht ;)
+Mitmachen ist erwünscht ;)
 	
 	
 	Lizenzen:
