@@ -14,6 +14,11 @@ Um die App selbst zu Compilen sind folgende Pakete notwendig:
 Mitmachen ist erwünscht ;)
 	
 	
+	
+	
+	
+	
+	
 	Lizenzen:
 		¹Apache License 2.0
 		²MIT license
