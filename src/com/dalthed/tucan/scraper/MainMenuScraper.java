@@ -63,6 +63,10 @@ public class MainMenuScraper extends BasicScraper {
 	 * URL zu Stundenplan
 	 */
 	public String menu_link_month;
+	/**
+	 * Gibt an, ob die Tucan-Webseite eine Bewerbungsseite darstellt.
+	 */
+	public boolean isApplication = false;
 
 	public MainMenuScraper(Context context, AnswerObject result) {
 		super(context, result);
@@ -206,18 +210,23 @@ public class MainMenuScraper extends BasicScraper {
 		} catch (MalformedURLException e) {
 			Log.e(LOG_TAG, "Malformed URL");
 		}
-		Elements LinkstoOuterWorld = doc.select("div.tb");
-		Element ArchivLink = LinkstoOuterWorld.get(1).select("a").first();
-		menu_link_month = lcURL.getProtocol() + "://" + lcURL.getHost()
-				+ doc.select("li#link000271").select("a").attr("href");
-		menu_link_vv = lcURL.getProtocol() + "://" + lcURL.getHost()
-				+ doc.select("li#link000326").select("a").attr("href");
-		menu_link_ex = lcURL.getProtocol() + "://" + lcURL.getHost()
-				+ doc.select("li#link000280").select("a").attr("href");
-		menu_link_msg = lcURL.getProtocol() + "://" + lcURL.getHost() + ArchivLink.attr("href");
-		// Load special Location Information
-		load_link_ev_loc = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-				+ doc.select("li#link000269").select("a").attr("href");
+		Elements linkstoOuterWorld = doc.select("div.tb");
+		if(linkstoOuterWorld.size()>1){
+			Element ArchivLink = linkstoOuterWorld.get(1).select("a").first();
+			menu_link_month = lcURL.getProtocol() + "://" + lcURL.getHost()
+					+ doc.select("li#link000271").select("a").attr("href");
+			menu_link_vv = lcURL.getProtocol() + "://" + lcURL.getHost()
+					+ doc.select("li#link000326").select("a").attr("href");
+			menu_link_ex = lcURL.getProtocol() + "://" + lcURL.getHost()
+					+ doc.select("li#link000280").select("a").attr("href");
+			menu_link_msg = lcURL.getProtocol() + "://" + lcURL.getHost() + ArchivLink.attr("href");
+			// Load special Location Information
+			load_link_ev_loc = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+					+ doc.select("li#link000269").select("a").attr("href");
+		} else {
+			//Bewerbungsmodus
+			isApplication = true;
+		}
 	}
 
 	/**

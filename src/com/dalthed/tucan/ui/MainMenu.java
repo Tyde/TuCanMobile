@@ -30,9 +30,11 @@ import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.scraper.BasicScraper;
 import com.dalthed.tucan.scraper.MainMenuScraper;
+import com.dalthed.tucan.scraper.UniApplicationScraper;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
-public class MainMenu extends SimpleWebListActivity implements BackgroundBrowserReciever {
+public class MainMenu extends SimpleWebListActivity implements
+		BackgroundBrowserReciever {
 	private Boolean windowFeatureCalled = false;
 	CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
@@ -41,7 +43,7 @@ public class MainMenu extends SimpleWebListActivity implements BackgroundBrowser
 	 * s HTML Scraper
 	 */
 	private MainMenuScraper scrape;
-
+	private UniApplicationScraper appScrape;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
@@ -64,11 +66,12 @@ public class MainMenu extends SimpleWebListActivity implements BackgroundBrowser
 				try {
 					lastCalledURL = new URL(lastCalledURLString);
 					localCookieManager = new CookieManager();
-					localCookieManager.generateManagerfromHTTPString(lastCalledURL.getHost(),
-							CookieHTTPString);
+					localCookieManager.generateManagerfromHTTPString(
+							lastCalledURL.getHost(), CookieHTTPString);
 					callResultBrowser = new SimpleSecureBrowser(this);
-					RequestObject thisRequest = new RequestObject(lastCalledURLString,
-							localCookieManager, RequestObject.METHOD_GET, "");
+					RequestObject thisRequest = new RequestObject(
+							lastCalledURLString, localCookieManager,
+							RequestObject.METHOD_GET, "");
 
 					callResultBrowser.execute(thisRequest);
 				} catch (MalformedURLException e) {
@@ -76,9 +79,10 @@ public class MainMenu extends SimpleWebListActivity implements BackgroundBrowser
 				}
 			} else {
 				localCookieManager = new CookieManager();
-				localCookieManager.generateManagerfromHTTPString(TucanMobile.TUCAN_HOST,
-						CookieHTTPString);
-				onPostExecute(new AnswerObject(source, "", localCookieManager, lastCalledURLString));
+				localCookieManager.generateManagerfromHTTPString(
+						TucanMobile.TUCAN_HOST, CookieHTTPString);
+				onPostExecute(new AnswerObject(source, "", localCookieManager,
+						lastCalledURLString));
 			}
 		}
 
@@ -127,15 +131,23 @@ public class MainMenu extends SimpleWebListActivity implements BackgroundBrowser
 		try {
 			// Adapter mittels scraper starten und auf die Liste setzen
 			todayseventsadapter = scrape.scrapeAdapter(0);
-			ListView EventList = (ListView) findViewById(R.id.mm_eventList);
-			EventList.setAdapter(todayseventsadapter);
+			if (!scrape.isApplication) {
+				ListView EventList = (ListView) findViewById(R.id.mm_eventList);
+				EventList.setAdapter(todayseventsadapter);
 
-			// OnClicklistener für Eventliste: Bei klick wird ein intent für die
-			// SingleEventAnsicht gestartet
-			setEventListListener(EventList);
+				// OnClicklistener für Eventliste: Bei klick wird ein intent für
+				// die
+				// SingleEventAnsicht gestartet
+				setEventListListener(EventList);
+			}
+			else {
+				appScrape = new UniApplicationScraper(this, result);
+				setListAdapter(appScrape.scrapeAdapter(0));
+			}
 		} catch (LostSessionException e) {
 			// Im falle einer verlorenen Session -> zurück zum login
-			Intent BackToLoginIntent = new Intent(this, TuCanMobileActivity.class);
+			Intent BackToLoginIntent = new Intent(this,
+					TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);
 
@@ -146,9 +158,11 @@ public class MainMenu extends SimpleWebListActivity implements BackgroundBrowser
 		acBar.setSubtitle(scrape.UserName);
 
 		// Start Location finding
-		SimpleBackgroundBrowser simpleBackgroundBrowser = new SimpleBackgroundBrowser(this, acBar);
-		simpleBackgroundBrowser.execute(new RequestObject(scrape.load_link_ev_loc, result
-				.getCookieManager(), RequestObject.METHOD_GET, ""));
+		SimpleBackgroundBrowser simpleBackgroundBrowser = new SimpleBackgroundBrowser(
+				this, acBar);
+		simpleBackgroundBrowser.execute(new RequestObject(
+				scrape.load_link_ev_loc, result.getCookieManager(),
+				RequestObject.METHOD_GET, ""));
 		// User, welche Tucan auf englisch gestellt haben, ausschließen, da
 		// sonst fehler auftreten würden
 		scrape.checkForRightTucanLanguage(this);
@@ -163,14 +177,18 @@ public class MainMenu extends SimpleWebListActivity implements BackgroundBrowser
 	private void setEventListListener(ListView EventList) {
 		EventList.setOnItemClickListener(new OnItemClickListener() {
 
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
 				if (scrape.noeventstoday == false) {
 					Intent StartSingleEventIntent = new Intent(MainMenu.this,
 							FragmentSingleEvent.class);
-					StartSingleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT
-							+ TucanMobile.TUCAN_HOST + scrape.today_event_links[position]);
-					StartSingleEventIntent.putExtra("Cookie",
-							localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+					StartSingleEventIntent.putExtra("URL",
+							TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+									+ scrape.today_event_links[position]);
+					StartSingleEventIntent.putExtra(
+							"Cookie",
+							localCookieManager
+									.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 					// StartSingleEventIntent.putExtra("UserName",
 					// UserName);
 					parent.invalidate();
@@ -186,52 +204,66 @@ public class MainMenu extends SimpleWebListActivity implements BackgroundBrowser
 	 */
 	private void setMenuListListener(ListView menuList) {
 		menuList.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long arg3) {
 				if (scrape != null) {
 					view.invalidate();
 					switch (position) {
 					case 0:
-						Intent StartVVIntent = new Intent(MainMenu.this, VV.class);
+						Intent StartVVIntent = new Intent(MainMenu.this,
+								VV.class);
 						StartVVIntent.putExtra("URL", scrape.menu_link_vv);
-						StartVVIntent.putExtra("Cookie",
-								localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+						StartVVIntent.putExtra("Cookie", localCookieManager
+								.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 						StartVVIntent.putExtra("UserName", scrape.UserName);
 						startActivity(StartVVIntent);
 						// Vorlesungsverzeichnis
 						break;
 					case 1:
-						Intent StartScheduleIntent = new Intent(MainMenu.this, Schedule.class);
-						StartScheduleIntent.putExtra("URL", scrape.menu_link_month);
-						StartScheduleIntent.putExtra("Cookie",
-								localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-						StartScheduleIntent.putExtra("Session", scrape.SessionArgument);
+						Intent StartScheduleIntent = new Intent(MainMenu.this,
+								Schedule.class);
+						StartScheduleIntent.putExtra("URL",
+								scrape.menu_link_month);
+						StartScheduleIntent.putExtra(
+								"Cookie",
+								localCookieManager
+										.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+						StartScheduleIntent.putExtra("Session",
+								scrape.SessionArgument);
 						startActivity(StartScheduleIntent);
 						// Stundenplan
 						break;
 					case 2:
-						Intent StartEventIntent = new Intent(MainMenu.this, Events.class);
+						Intent StartEventIntent = new Intent(MainMenu.this,
+								Events.class);
 						StartEventIntent.putExtra("URL", scrape.menu_link_ex);
-						StartEventIntent.putExtra("Cookie",
-								localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+						StartEventIntent.putExtra("Cookie", localCookieManager
+								.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 						StartEventIntent.putExtra("UserName", scrape.UserName);
 						startActivity(StartEventIntent);
 						// Veranstaltungen
 						break;
 					case 3:
-						Intent StartExamIntent = new Intent(MainMenu.this, Exams.class);
+						Intent StartExamIntent = new Intent(MainMenu.this,
+								Exams.class);
 						StartExamIntent.putExtra("URL", scrape.menu_link_ex);
-						StartExamIntent.putExtra("Cookie",
-								localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+						StartExamIntent.putExtra("Cookie", localCookieManager
+								.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 						StartExamIntent.putExtra("UserName", scrape.UserName);
 						startActivity(StartExamIntent);
 						// Prüfungen
 						break;
 					case 4:
-						Intent StartMessageIntent = new Intent(MainMenu.this, Messages.class);
-						StartMessageIntent.putExtra("URL", scrape.menu_link_msg);
-						StartMessageIntent.putExtra("Cookie",
-								localCookieManager.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-						StartMessageIntent.putExtra("UserName", scrape.UserName);
+						Intent StartMessageIntent = new Intent(MainMenu.this,
+								Messages.class);
+						StartMessageIntent
+								.putExtra("URL", scrape.menu_link_msg);
+						StartMessageIntent.putExtra(
+								"Cookie",
+								localCookieManager
+										.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+						StartMessageIntent
+								.putExtra("UserName", scrape.UserName);
 						startActivity(StartMessageIntent);
 						break;
 					}
@@ -256,6 +288,7 @@ public class MainMenu extends SimpleWebListActivity implements BackgroundBrowser
 		cStore.adapters.add(menuList.getAdapter());
 		cStore.adapters.add(eventList.getAdapter());
 		cStore.addScraper(scrape);
+		cStore.addScraper(appScrape);
 		return cStore;
 	}
 
@@ -264,6 +297,10 @@ public class MainMenu extends SimpleWebListActivity implements BackgroundBrowser
 		BasicScraper retainedScraper = conf.getScraper(0, this);
 		if (retainedScraper instanceof MainMenuScraper) {
 			scrape = (MainMenuScraper) retainedScraper;
+		}
+		retainedScraper = conf.getScraper(1, this);
+		if(retainedScraper instanceof UniApplicationScraper) {
+			appScrape = (UniApplicationScraper) retainedScraper;
 		}
 		ListView eventList = (ListView) findViewById(R.id.mm_eventList);
 		eventList.setAdapter(conf.adapters.get(1));
