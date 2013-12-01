@@ -7,7 +7,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.CookieManager;
@@ -30,7 +29,6 @@ public class SingleMessage extends SimpleWebListActivity {
 
 		super.onCreate(savedInstanceState, true, 4);
 		setContentView(R.layout.singlemessage);
-		BugSenseHandler.setup(this, "ed5c1682");
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		URLStringtoCall = getIntent().getExtras().getString("URL");
 		URL URLtoCall;

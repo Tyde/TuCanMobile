@@ -16,7 +16,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
@@ -54,7 +53,6 @@ public class MainMenu extends SimpleWebListActivity implements
 		// sthis.windowFeatureCalled = true;
 		acBar.setTitle("Startseite");
 
-		BugSenseHandler.setup(this, "ed5c1682");
 		// Webhandling Start
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		String lastCalledURLString = getIntent().getExtras().getString("URL");
@@ -126,7 +124,7 @@ public class MainMenu extends SimpleWebListActivity implements
 		// Scraper initialisieren
 		scrape = new MainMenuScraper(this, result);
 
-		// Adapter für heutige Events erstellen
+		// Adapter fï¿½r heutige Events erstellen
 		ListAdapter todayseventsadapter;
 		try {
 			// Adapter mittels scraper starten und auf die Liste setzen
@@ -135,7 +133,7 @@ public class MainMenu extends SimpleWebListActivity implements
 				ListView EventList = (ListView) findViewById(R.id.mm_eventList);
 				EventList.setAdapter(todayseventsadapter);
 
-				// OnClicklistener für Eventliste: Bei klick wird ein intent für
+				// OnClicklistener fï¿½r Eventliste: Bei klick wird ein intent fï¿½r
 				// die
 				// SingleEventAnsicht gestartet
 				setEventListListener(EventList);
@@ -145,7 +143,7 @@ public class MainMenu extends SimpleWebListActivity implements
 				setListAdapter(appScrape.scrapeAdapter(0));
 			}
 		} catch (LostSessionException e) {
-			// Im falle einer verlorenen Session -> zurück zum login
+			// Im falle einer verlorenen Session -> zurï¿½ck zum login
 			Intent BackToLoginIntent = new Intent(this,
 					TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
@@ -163,10 +161,10 @@ public class MainMenu extends SimpleWebListActivity implements
 		simpleBackgroundBrowser.execute(new RequestObject(
 				scrape.load_link_ev_loc, result.getCookieManager(),
 				RequestObject.METHOD_GET, ""));
-		// User, welche Tucan auf englisch gestellt haben, ausschließen, da
-		// sonst fehler auftreten würden
+		// User, welche Tucan auf englisch gestellt haben, ausschlieï¿½en, da
+		// sonst fehler auftreten wï¿½rden
 		scrape.checkForRightTucanLanguage(this);
-		// Links in den Buffer für die Actionbar schreiben
+		// Links in den Buffer fï¿½r die Actionbar schreiben
 		scrape.bufferLinks(this, localCookieManager);
 
 	}
@@ -251,7 +249,7 @@ public class MainMenu extends SimpleWebListActivity implements
 								.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 						StartExamIntent.putExtra("UserName", scrape.UserName);
 						startActivity(StartExamIntent);
-						// Prüfungen
+						// Prï¿½fungen
 						break;
 					case 4:
 						Intent StartMessageIntent = new Intent(MainMenu.this,

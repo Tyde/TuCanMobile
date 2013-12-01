@@ -4,17 +4,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.acra.ACRA;
-import org.acra.ErrorReporter;
 
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
@@ -40,7 +37,6 @@ public class Schedule extends SimpleWebListActivity {
 
 		super.onCreate(savedInstanceState, true, 1);
 		setContentView(R.layout.schedule);
-		BugSenseHandler.setup(this, "ed5c1682");
 
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		URLStringtoCall = getIntent().getExtras().getString("URL");

@@ -14,7 +14,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
@@ -39,7 +38,6 @@ public class VV_Events extends SimpleWebListActivity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.vv_events);
-		BugSenseHandler.setup(this, "ed5c1682");
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		String URLStringtoCall = getIntent().getExtras().getString("URL");
 		UserName = getIntent().getExtras().getString("UserName");
@@ -110,7 +108,7 @@ public class VV_Events extends SimpleWebListActivity {
 				setListAdapter(adapter);
 			}
 		} catch (LostSessionException e) {
-			// Im falle einer verlorenen Session -> zurück zum login
+			// Im falle einer verlorenen Session -> zurï¿½ck zum login
 			Intent BackToLoginIntent = new Intent(this, TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
 			startActivity(BackToLoginIntent);

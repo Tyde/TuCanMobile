@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
@@ -36,7 +35,6 @@ public class RegisterExams extends SimpleWebListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.exams);
-		BugSenseHandler.setup(this, "ed5c1682");
 
 		// Webhandling Start
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");

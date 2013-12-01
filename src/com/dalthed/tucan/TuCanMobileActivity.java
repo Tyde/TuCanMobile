@@ -23,7 +23,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.BrowseMethods;
 import com.dalthed.tucan.Connection.CookieManager;
@@ -47,9 +46,6 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		if (TucanMobile.DEBUG == false) {
-			BugSenseHandler.setup(this, "ed5c1682");
-		}
 		// this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 		// Get saved login information
@@ -191,8 +187,8 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 			AnswerObject answer = new AnswerObject("", "", null, null);
 			for (int i = 0; i < requestInfo.length; i++) {
 				// requestInfo[i] kann null sein, da das Array mit 2
-				// null-Objekten übergeben wird und dort erst
-				// später Redirects hinein geschrieben werden
+				// null-Objekten ï¿½bergeben wird und dort erst
+				// spï¿½ter Redirects hinein geschrieben werden
 				// TODO: requestInfo in ArrayList umwandeln ?
 				if (requestInfo[i] != null) {
 					BrowseMethods Browser = new BrowseMethods();
