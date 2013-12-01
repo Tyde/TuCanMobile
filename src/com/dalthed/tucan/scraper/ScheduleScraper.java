@@ -127,7 +127,7 @@ public class ScheduleScraper extends BasicScraper {
 							displayDate.append(context.getResources().getString(R.string.schedule_tomorrow));
 							
 						} else {
-							displayDate.append(monthday).append(".").append((month + 1));
+							displayDate.append(monthday).append(".").append((month % 12 + 1));
 							
 						}
 						String weekday = sdf.format(new Date(year-1900, month, Integer.parseInt(monthday.trim())));
