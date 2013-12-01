@@ -1,3 +1,20 @@
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.dalthed.tucan.ui;
 
 import java.net.MalformedURLException;
@@ -124,7 +141,7 @@ public class MainMenu extends SimpleWebListActivity implements
 		// Scraper initialisieren
 		scrape = new MainMenuScraper(this, result);
 
-		// Adapter f�r heutige Events erstellen
+		// Adapter für heutige Events erstellen
 		ListAdapter todayseventsadapter;
 		try {
 			// Adapter mittels scraper starten und auf die Liste setzen
@@ -133,7 +150,7 @@ public class MainMenu extends SimpleWebListActivity implements
 				ListView EventList = (ListView) findViewById(R.id.mm_eventList);
 				EventList.setAdapter(todayseventsadapter);
 
-				// OnClicklistener f�r Eventliste: Bei klick wird ein intent f�r
+				// OnClicklistener für Eventliste: Bei klick wird ein intent für
 				// die
 				// SingleEventAnsicht gestartet
 				setEventListListener(EventList);
@@ -143,7 +160,7 @@ public class MainMenu extends SimpleWebListActivity implements
 				setListAdapter(appScrape.scrapeAdapter(0));
 			}
 		} catch (LostSessionException e) {
-			// Im falle einer verlorenen Session -> zur�ck zum login
+			// Im falle einer verlorenen Session -> zurück zum login
 			Intent BackToLoginIntent = new Intent(this,
 					TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
@@ -161,10 +178,10 @@ public class MainMenu extends SimpleWebListActivity implements
 		simpleBackgroundBrowser.execute(new RequestObject(
 				scrape.load_link_ev_loc, result.getCookieManager(),
 				RequestObject.METHOD_GET, ""));
-		// User, welche Tucan auf englisch gestellt haben, ausschlie�en, da
-		// sonst fehler auftreten w�rden
+		// User, welche Tucan auf englisch gestellt haben, ausschließen, da
+		// sonst fehler auftreten würden
 		scrape.checkForRightTucanLanguage(this);
-		// Links in den Buffer f�r die Actionbar schreiben
+		// Links in den Buffer für die Actionbar schreiben
 		scrape.bufferLinks(this, localCookieManager);
 
 	}
@@ -249,7 +266,7 @@ public class MainMenu extends SimpleWebListActivity implements
 								.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 						StartExamIntent.putExtra("UserName", scrape.UserName);
 						startActivity(StartExamIntent);
-						// Pr�fungen
+						// Prüfungen
 						break;
 					case 4:
 						Intent StartMessageIntent = new Intent(MainMenu.this,

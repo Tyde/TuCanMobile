@@ -1,15 +1,30 @@
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.dalthed.tucan.scraper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.Locale;
 
 import org.jsoup.nodes.Element;
 
 import android.content.Context;
-import android.text.format.DateFormat;
 import android.widget.ListAdapter;
 
 import com.dalthed.tucan.R;

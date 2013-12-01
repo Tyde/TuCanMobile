@@ -1,3 +1,20 @@
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.dalthed.tucan;
 
 import java.io.File;
@@ -18,7 +35,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Environment;
-
 import android.util.Log;
 
 //@ReportsCrashes(formKey = "dGxJeFNVZk5YQXRmaXV6WVZfVHYzdWc6MQ")
@@ -92,7 +108,7 @@ public class TucanMobile extends Application {
 		TucanMobile.Appcontext = getApplicationContext();
 	}
 	/**
-	 * Gibt bei einem String wie "04-00-0126-vu&nbsp;Mathematik 1 (f&uuml;r ET)" "Mathematik 1 (f&uuml;r ET)" zurück
+	 * Gibt bei einem String wie "04-00-0126-vu&nbsp;Mathematik 1 (f&uuml;r ET)" "Mathematik 1 (f&uuml;r ET)" zurÃ¼ck
 	 * @param evNameString
 	 * @return
 	 */

@@ -1,3 +1,20 @@
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.dalthed.tucan.scraper;
 
 import java.io.FileNotFoundException;
@@ -44,7 +61,7 @@ public class MainMenuScraper extends BasicScraper {
 	 */
 	public String menu_link_vv;
 	/**
-	 * URL zu den Prüfungen
+	 * URL zu den PrÃ¼fungen
 	 */
 	public String menu_link_ex;
 	/**
@@ -155,7 +172,7 @@ public class MainMenuScraper extends BasicScraper {
 
 			if (EventTable.select("tr.tbdata").first().select("td").size() == 5) {
 				// Wen die Anzahl der Spalten der entsprechenden Tabelle 5
-				// ist, ist das ein Anzeichen dafür, dass heute keine
+				// ist, ist das ein Anzeichen dafÃ¼r, dass heute keine
 				// Veranstaltungen sind
 				Events = new String[1];
 				Times = new String[1];
@@ -179,7 +196,7 @@ public class MainMenuScraper extends BasicScraper {
 					today_event_links[i] = currentElement.select("td[headers=Name]").select("a")
 							.first().attr("href");
 
-					// Zeit zusammenfügen
+					// Zeit zusammenfÃ¼gen
 					String EventTimeString = currentElement.select("td").get(2).select("a").first()
 							.text();
 					String EventTimeEndString = currentElement.select("td").get(3).select("a")

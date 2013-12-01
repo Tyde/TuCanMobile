@@ -1,3 +1,20 @@
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.dalthed.tucan.Connection;
 
 import java.io.BufferedReader;
@@ -37,12 +54,12 @@ public class BrowseMethods {
 	public boolean HTTPS = true;
 
 	/**
-	 * setImportantHeaders setzt Header für den HTTP-Request
+	 * setImportantHeaders setzt Header fÃ¼r den HTTP-Request
 	 * 
 	 * @param RequestMethod
 	 *            RequestObject.METHOD_POST oder RequestObject.METHOD_GET
 	 * @param domain
-	 *            wichtig für CookieHandler
+	 *            wichtig fÃ¼r CookieHandler
 	 */
 	private void setImportantHeaders(String RequestMethod, String domain) {
 		try {
@@ -67,8 +84,8 @@ public class BrowseMethods {
 	}
 
 	/**
-	 * HauptMethode der BrowseMethods: lädt die Seite und gibt sie als
-	 * AnswerObject wieder zurück
+	 * HauptMethode der BrowseMethods: lÃ¤dt die Seite und gibt sie als
+	 * AnswerObject wieder zurÃ¼ck
 	 * 
 	 * @param requestInfo
 	 *            RequestObject mit allen Wichtigen Informationen zum Request
@@ -78,7 +95,7 @@ public class BrowseMethods {
 		String redirectURL = "";
 		String alllines = "";
 		if (Integer.parseInt(Build.VERSION.SDK) < 9) {
-			// Notwendig, da sonst die Verbindung bei älteren Systemen nicht
+			// Notwendig, da sonst die Verbindung bei Ã¤lteren Systemen nicht
 			// klappt
 			System.setProperty("http.keepAlive", "false");
 		}
@@ -99,10 +116,10 @@ public class BrowseMethods {
 					Log.i(LOG_TAG, "Started Connection with: " + realURL.toString());
 				}
 				if (RequestMethod == "POST") {
-					// Output bei POST-Übertragung aktivierten
+					// Output bei POST-Ãœbertragung aktivierten
 					HTTPConnection.setDoOutput(true);
 				}
-				// Ursprünglichen Request setzen
+				// UrsprÃ¼nglichen Request setzen
 				setImportantHeaders(RequestMethod, realURL.getHost());
 
 				if (RequestMethod == "POST") {

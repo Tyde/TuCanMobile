@@ -1,8 +1,21 @@
-package com.dalthed.tucan.preferences;
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-import com.dalthed.tucan.R;
-import com.dalthed.tucan.TuCanMobileActivity;
-import com.dalthed.tucan.TucanMobile;
+package com.dalthed.tucan.preferences;
 
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -11,7 +24,9 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
-import android.util.Log;
+
+import com.dalthed.tucan.R;
+import com.dalthed.tucan.TuCanMobileActivity;
 
 public class MainPreferences extends PreferenceActivity {
 

@@ -1,3 +1,20 @@
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.dalthed.tucan.adapters;
 
 import java.util.ArrayList;
@@ -14,23 +31,22 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.dalthed.tucan.R;
-import com.dalthed.tucan.ui.RegisterExams;
 import com.dalthed.tucan.ui.SimpleWebListActivity;
 
 /**
- * {@link ListAdapter}, welcher zum darstellen von Prüfungsanmeldungen sinnvoll
+ * {@link ListAdapter}, welcher zum darstellen von PrÃ¼fungsanmeldungen sinnvoll
  * ist. Der Adapter nutzt registerexam_row_date.xml.<br>
  * <br>
- * Der Adapter ist fähig, eine Überschrift darzustellen oder Content:<br>
+ * Der Adapter ist fÃ¤hig, eine Ãœberschrift darzustellen oder Content:<br>
  * <br>
- * Schema Überschrift:
+ * Schema Ãœberschrift:
  * <table>
  * <tr>
  * <td colspan=4>***************************************************</td>
  * </tr>
  * <tr>
  * <td>*</td>
- * <td>ÜBERSCHRIFT</td>
+ * <td>ÃœBERSCHRIFT</td>
  * <td align=right></td>
  * <td>*</td>
  * </tr>
@@ -53,7 +69,7 @@ import com.dalthed.tucan.ui.SimpleWebListActivity;
  * </tr>
  * <tr>
  * <td>*</td>
- * <td>Name der Prüfung</td>
+ * <td>Name der PrÃ¼fung</td>
  * <td align=right></td>
  * <td>*</td>
  * </tr>
@@ -73,12 +89,12 @@ public class RegisterExamAdapter extends ArrayAdapter<String> {
 	private Context context;
 
 	/**
-	 * {@link ListAdapter}, welcher zum darstellen von Prüfungsanmeldungen
+	 * {@link ListAdapter}, welcher zum darstellen von PrÃ¼fungsanmeldungen
 	 * sinnvoll ist. Der Adapter nutzt registerexam_row_date.xml.<br>
 	 * <br>
-	 * Der Adapter ist fähig, eine Überschrift darzustellen oder Content:<br>
+	 * Der Adapter ist fÃ¤hig, eine Ãœberschrift darzustellen oder Content:<br>
 	 * <br>
-	 * Schema Überschrift (eventisModule == true):
+	 * Schema Ãœberschrift (eventisModule == true):
 	 * <table>
 	 * <tr>
 	 * <td colspan=4>***************************************************</td>
@@ -151,9 +167,9 @@ public class RegisterExamAdapter extends ArrayAdapter<String> {
 
 		Log.i(SimpleWebListActivity.LOG_TAG, "Calling " + position);
 
-		// Unterscheiden, ob Überschrift oder Content angezeigt wird
+		// Unterscheiden, ob Ãœberschrift oder Content angezeigt wird
 		if (eventisModule.get(position)) {
-			// Überschrift Frame anzeigen
+			// Ãœberschrift Frame anzeigen
 			isModuleLayout.setVisibility(View.VISIBLE);
 			isEventLayout.setVisibility(View.GONE);
 			TextView ModuleNameView = (TextView) row
@@ -170,7 +186,7 @@ public class RegisterExamAdapter extends ArrayAdapter<String> {
 			eventNameView.setText(eventName.get(position));
 			String selectionstring = "";
 
-			// Auswahlstatus in Text umwandeln und Farben wählen
+			// Auswahlstatus in Text umwandeln und Farben wÃ¤hlen
 			String[] selectionstrings = context.getResources().getStringArray(
 					R.array.register_status);
 			selectionstring = selectionstrings[examSelection.get(position)];

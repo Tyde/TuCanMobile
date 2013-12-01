@@ -1,3 +1,20 @@
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.dalthed.tucan.scraper;
 
 import java.util.ArrayList;
@@ -30,7 +47,7 @@ import com.dalthed.tucan.ui.Module;
 public class SingleEventScraper extends BasicScraper {
 	/**
 	 * Prepcall wird bei einem Intent aus dem Schedule mitgesendet, und
-	 * bedeutet, dass eine Seite geöffnet wurde, welche nur informationen zum
+	 * bedeutet, dass eine Seite geÃ¶ffnet wurde, welche nur informationen zum
 	 * einzelnen Termin gibt.
 	 */
 	public boolean PREPCall;
@@ -87,7 +104,7 @@ public class SingleEventScraper extends BasicScraper {
 				}
 
 			} else {
-				// Es handelt sich um eine Übersichtsseite zu einem einzelnen
+				// Es handelt sich um eine Ãœbersichtsseite zu einem einzelnen
 				// Termin
 				callRealEventPage();
 
@@ -274,7 +291,7 @@ public class SingleEventScraper extends BasicScraper {
 	 */
 	private Boolean checkforModule() {
 		if (!doc.select("form[name=moduleform]").isEmpty()) {
-			// Möglicherweise ist ein Modul angewählt
+			// MÃ¶glicherweise ist ein Modul angewÃ¤hlt
 			Intent goToModule = new Intent(context, Module.class);
 
 			goToModule.putExtra("Cookie",

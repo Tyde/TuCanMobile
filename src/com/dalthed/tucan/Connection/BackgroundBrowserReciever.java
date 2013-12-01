@@ -1,14 +1,31 @@
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.dalthed.tucan.Connection;
 
 /**
- * Wie {@link BrowserAnswerReciever}, nur f¸r {@link SimpleBackgroundBrowser}. Derzeit noch nicht voll funktionsf‰hig
+ * Wie {@link BrowserAnswerReciever}, nur f√ºr {@link SimpleBackgroundBrowser}. Derzeit noch nicht voll funktionsf√§hig
  * @author Daniel Thiem
  *
  */
 public interface BackgroundBrowserReciever {
 	
 	/**
-	 * Wird aufgerufen, wenn der Request vollst‰ndig ausgelesen wurde
+	 * Wird aufgerufen, wenn der Request vollst√§ndig ausgelesen wurde
 	 * @param result Antwort des Servers
 	 */
 	public void onBackgroundBrowserFinalized(AnswerObject result);

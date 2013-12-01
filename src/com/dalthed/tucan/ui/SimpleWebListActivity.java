@@ -1,7 +1,23 @@
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.dalthed.tucan.ui;
 
 import org.acra.ACRA;
-import org.acra.ErrorReporter;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -21,7 +37,7 @@ import com.dalthed.tucan.helpers.FastSwitchHelper;
 import com.dalthed.tucan.preferences.MainPreferences;
 
 /**
- * SimpleWebListActivity notwendig für SimpleSecureBrowser
+ * SimpleWebListActivity notwendig fÃ¼r SimpleSecureBrowser
  * 
  * @author Tyde
  * 
