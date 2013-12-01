@@ -15,6 +15,7 @@ public class BasicTest {
 	
 	protected DanielThiemdeErrorFinder dtef;
 	protected CookieManager cm;
+	protected LocalhostErrorFinder lhef;
 
 	@Before
 	public void setUp() throws Exception {
@@ -25,6 +26,7 @@ public class BasicTest {
 			System.exit(1);
 		}
 		dtef = new DanielThiemdeErrorFinder();
+		lhef = new LocalhostErrorFinder();
 		cm = new CookieManager();
 		cm.inputCookie("www.daniel-thiem.de", "canView", "16ede40c878aee38d0882b3a6b2642c0ae76dafb");
 	}

@@ -56,4 +56,12 @@
     <string name="events_none_found">Keine Veranstaltungen gefunden.</string>
     
     
+    <!--  Applications -->
+    <string	name="application_type">Abschlussart</string>
+    <string name="application_field">Fach</string>
+    <string name="application_semester">Fachsemester</string>
+    <string name="application_status">Status</string>
+    <string name="application_begin">Gestartet</string>
+    <string name="application_sent">Abgeschickt</string>
+    
 </resources>
