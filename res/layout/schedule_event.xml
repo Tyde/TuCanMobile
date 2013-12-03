@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             />
         <FrameLayout 
-            android:background="@color/triadic_light"
+            android:background="@color/tucan_title_darkgrey"
             android:layout_height="2dip"
             android:layout_width="fill_parent"></FrameLayout>
     </LinearLayout>
