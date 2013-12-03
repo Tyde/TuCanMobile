@@ -65,13 +65,16 @@
             style="@style/mm_events_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mm_events_title" />
+            android:text="@string/mm_events_title"
+            android:paddingLeft="2dp" />
 
         <ListView
             android:id="@+id/mm_eventList"
             style="@style/mm_events_list"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp" >
         </ListView>
     </LinearLayout>
 

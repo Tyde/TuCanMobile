@@ -63,12 +63,7 @@ public class ScheduleScraper extends BasicScraper {
 
 			}
 			if (step == 1) {
-				if(Month==12) {
-					Month=1;
-				}else {
-					Month++;
-				}
-				
+				Month = Month % 12 +1;
 			}
 			scrapeDates(step, schedDays, Month, Day,year);
 

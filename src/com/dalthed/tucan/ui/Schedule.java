@@ -83,6 +83,10 @@ public class Schedule extends SimpleWebListActivity {
 	}
 
 	public void onPostExecute(AnswerObject result) {
+		if (adapter != null) {
+			setListAdapter(adapter);
+			return;
+		}
 		if (scrape == null) {
 			scrape = new ScheduleScraper(this, result);
 		} else {
