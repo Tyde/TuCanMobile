@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -71,7 +72,7 @@ public class TwoLinesAdapter extends ArrayAdapter<String> {
 		TextView ValueTextView = (TextView) row
 				.findViewById(R.id.singleevent_row_value);
 
-		ValueTextView.setText(" " + this.values.get(position));
+		ValueTextView.setText(" " + Html.fromHtml(this.values.get(position)));
 
 		return row;
 	}

@@ -265,8 +265,10 @@ public class SingleEventScraper extends BasicScraper {
 
 				Element next = PaIt.next();
 				String[] information = crop(next.html());
-				titles.add(information[0]);
-				values.add(information[1]);
+				if(information[1].length() > 0){
+					titles.add(information[0]);
+					values.add(information[1]);
+				}
 
 			}
 			if (mPageAdapter != null) {
@@ -276,10 +278,21 @@ public class SingleEventScraper extends BasicScraper {
 	}
 
 	private static String[] crop(String startstring) {
-		if (startstring.length() > 0) {
-			String[] splitted = startstring.split("</b>");
-			return new String[] { Jsoup.parse(splitted[0]).text().trim(),
-					Jsoup.parse(splitted[1]).text() };
+		int pos = startstring.indexOf("</b>"); //wir suchen nur den ersten close-Tag. Bei Split wuerden wir bei jedem </b> splitten!
+		if (startstring.length() > 0 && pos != -1 && startstring.length() > pos+4) {
+			String first = startstring.substring(0, pos+4);
+			String second = startstring.substring(pos+4).trim();
+			if(!first.endsWith(":</b>")) // Doppelpunkte immer in der ersten Zeile
+				first.replaceAll("</b>", ":</b>");
+			if(second.startsWith(":<br />")) // und nicht manchmal in der zweiten
+				second = second.substring(7).trim();
+			while(second.startsWith("<br />")) // Schwachsinn entfernen, z.B. " <br /> <br />SomeText"
+				second = second.replaceFirst("<br />", "").trim();
+			while(second.endsWith("<br />")) // Schwachsinn entfernen, z.B. "SomeText <br /> <br />"
+				second = second.substring(0, second.length()-6).trim();
+			
+			return new String[] { Jsoup.parse(first).text().trim(),
+					second.trim() };
 		} else {
 			return new String[] { "", "" };
 

@@ -85,21 +85,22 @@ public class EventsScraper extends BasicScraper {
 		if (checkForLostSeesion()) {
 			// When bug exists: send HTML to resolve Bug
 			SimpleWebListActivity.sendHTMLatBug(doc.html());
-			if (mode == 0) {
+			
+			switch (mode) {
+			case 0:
 				// LinkGruppe Veranstaltungen finden und durchlaufen
 				return getMenuAdapter();
-			} else if (mode == 2) {
+			case 2:
 				// Modus Anmeldung
 				return getApplicationAdapter();
-			} else {
+			case 10:
 				eventLink = new ArrayList<String>();
-				if (mode == 10) {
-					// Modus Module
-					return getModules();
-				} else if (mode == 1) {
-					// Modus Veranstaltungen
-					return getEvents();
-				}
+				// Modus Module
+				return getModules();
+			case 1:
+				eventLink = new ArrayList<String>();
+				// Modus Veranstaltungen
+				return getEvents();
 			}
 		}
 		return null;
