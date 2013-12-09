@@ -29,6 +29,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.dalthed.tucan.R;
+import com.dalthed.tucan.datamodel.Appointment;
 /**
  * {@link ListAdapter}, welcher zum darstellen von Veranstaltungen im Stundenplan sinnvoll ist.
  * Der Adapter nutzt schedule_event.xml und folgt folgendem Schema:
@@ -43,8 +44,7 @@ import com.dalthed.tucan.R;
  *
  */
 public class ScheduleAdapter extends ArrayAdapter<String> {
-	ArrayList<String> appointmentTime,appointmentName,appointmentDay;
-	ArrayList<Boolean> appontmentfirstofDay;
+	ArrayList<Appointment> appointments;
 	/**
 	 *  * {@link ListAdapter}, welcher zum darstellen von Veranstaltungen im Stundenplan sinnvoll ist.
 	 * Der Adapter nutzt schedule_event.xml und folgt folgendem Schema:
@@ -56,20 +56,12 @@ public class ScheduleAdapter extends ArrayAdapter<String> {
 	 *<tr><td colspan=4>***************************************************</td></tr>
 	 *</table> 
 	 * @param context {@link Activity} context
-	 * @param appDate siehe Tabelle
-	 * @param appTime siehe Tabelle
-	 * @param appfirstofDay siehe Tabelle
-	 * @param appRoom siehe Tabelle
-	 * @param appName siehe Tabelle
+	 * @param appointments a list of all appointments
 	 */
-	public ScheduleAdapter(Context context,ArrayList<String> appDate,ArrayList<String> appTime
-			,ArrayList<Boolean> appfirstofDay,ArrayList<String> appRoom,ArrayList<String> appName) {
-		super(context,R.layout.schedule_event, R.id.schedule_event_room,
-				appRoom);
-		this.appointmentDay=appDate;
-		this.appointmentTime=appTime;
-		this.appointmentName=appName;
-		this.appontmentfirstofDay=appfirstofDay;
+	public ScheduleAdapter(Context context,ArrayList<Appointment> appointments, ArrayList<String> rooms) {
+		
+		super(context,R.layout.schedule_event, R.id.schedule_event_room, rooms); // TODO: Check this
+		this.appointments = appointments;
 	}
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -84,19 +76,16 @@ public class ScheduleAdapter extends ArrayAdapter<String> {
 				.findViewById(R.id.schedule_daytitlebartext);
 		LinearLayout AppDayTitle = (LinearLayout) row.findViewById(R.id.schedule_daytitle);
 		
-		AppTimeView.setText(this.appointmentTime.get(position));
-		AppNameView.setText(appointmentName.get(position));
-		
+		AppTimeView.setText(appointments.get(position).getTimeInterval());
+		AppNameView.setText(appointments.get(position).getName());
+
 		//Titelleiste zeigen, falls erste Veranstaltung am tag
-		if(this.appontmentfirstofDay.get(position)==true) {
-			AppDayTitle.setVisibility(View.VISIBLE);
-			AppDayView.setText(this.appointmentDay.get(position));
-			
-		}
-		else {
+		if(appointments.get(position).isFirstDay()) {
+			AppDayTitle.setVisibility(View.VISIBLE);			
+		}else {
 			AppDayTitle.setVisibility(View.GONE);
-			AppDayView.setText(this.appointmentDay.get(position));
 		}
+		AppDayView.setText(appointments.get(position).getDateDescr());
 
 		return row;
 	}
