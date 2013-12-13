@@ -10,6 +10,8 @@
     <dimen name="dropdown_subtitle">14sp</dimen>
     <dimen name="dropdown_maintitle_alone">18sp</dimen>
     
+    <dimen name="widget_event_title">18dip</dimen>
+    
     
     <!-- New Layout -->
     <dimen name="main_menu_left_space">13dip</dimen>

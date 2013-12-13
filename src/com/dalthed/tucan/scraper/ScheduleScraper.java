@@ -35,6 +35,7 @@ import com.dalthed.tucan.adapters.ScheduleAdapter;
 import com.dalthed.tucan.datamodel.Appointment;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
+import com.dalthed.tucan.util.ScheduleSaver;
 
 public class ScheduleScraper extends BasicScraper {
 
@@ -70,6 +71,8 @@ public class ScheduleScraper extends BasicScraper {
 
 			if (step == 1) {
 				ArrayList<String> rooms = new ArrayList<String>();
+				// save appointments for widget
+				ScheduleSaver.saveSchedule(appointments);
 				for(Appointment appointmnt : appointments)
 					rooms.add(appointmnt.getRoom());
 				ScheduleAdapter externAdapter = new ScheduleAdapter(context, appointments,rooms);
@@ -113,9 +116,7 @@ public class ScheduleScraper extends BasicScraper {
 						String[] time = LinktitleArgument[0].trim().split("-");
 						String[] fromTime = time[0].trim().split(":");
 						String[] toTime   = time[1].trim().split(":");
-						System.out.println("Jahr: "+year);
-						System.out.println("Monat: "+month);
-						System.out.println("Tag: "+Integer.valueOf(monthday.trim()));
+
 						Appointment appointmnt = new Appointment(year, month, Integer.parseInt(monthday.trim()), 
 								Integer.parseInt(fromTime[0]), Integer.parseInt(fromTime[1]),
 								Integer.parseInt(toTime[0]), Integer.parseInt(toTime[1]),

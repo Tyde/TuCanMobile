@@ -5,7 +5,7 @@
     android:versionName="0.3.5" >
 
     <uses-sdk
-        android:minSdkVersion="4"
+        android:minSdkVersion="11"
         android:targetSdkVersion="16" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -106,6 +106,17 @@
             android:name=".preferences.MainPreferences"
             android:label="Sicherheitseinstellungen" >
         </activity>
+        <receiver
+              android:label="TuCan Stundenplan"
+              android:name=".widget.WidgetProvider">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+      <meta-data android:name="android.appwidget.provider"
+                 android:resource="@xml/widget_provider" />
+    </receiver>
+    <service android:name=".widget.WidgetService"
+             android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>
