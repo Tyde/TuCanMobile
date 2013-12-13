@@ -1,3 +1,20 @@
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.dalthed.tucan.ui;
 
 import java.net.MalformedURLException;
@@ -16,7 +33,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
@@ -54,7 +70,6 @@ public class MainMenu extends SimpleWebListActivity implements
 		// sthis.windowFeatureCalled = true;
 		acBar.setTitle("Startseite");
 
-		BugSenseHandler.setup(this, "ed5c1682");
 		// Webhandling Start
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		String lastCalledURLString = getIntent().getExtras().getString("URL");
@@ -126,7 +141,7 @@ public class MainMenu extends SimpleWebListActivity implements
 		// Scraper initialisieren
 		scrape = new MainMenuScraper(this, result);
 
-		// Adapter für heutige Events erstellen
+		// Adapter fÃ¼r heutige Events erstellen
 		ListAdapter todayseventsadapter;
 		try {
 			// Adapter mittels scraper starten und auf die Liste setzen
@@ -135,7 +150,7 @@ public class MainMenu extends SimpleWebListActivity implements
 				ListView EventList = (ListView) findViewById(R.id.mm_eventList);
 				EventList.setAdapter(todayseventsadapter);
 
-				// OnClicklistener für Eventliste: Bei klick wird ein intent für
+				// OnClicklistener fÃ¼r Eventliste: Bei klick wird ein intent fÃ¼r
 				// die
 				// SingleEventAnsicht gestartet
 				setEventListListener(EventList);
@@ -145,7 +160,7 @@ public class MainMenu extends SimpleWebListActivity implements
 				setListAdapter(appScrape.scrapeAdapter(0));
 			}
 		} catch (LostSessionException e) {
-			// Im falle einer verlorenen Session -> zurück zum login
+			// Im falle einer verlorenen Session -> zurÃ¼ck zum login
 			Intent BackToLoginIntent = new Intent(this,
 					TuCanMobileActivity.class);
 			BackToLoginIntent.putExtra("lostSession", true);
@@ -163,10 +178,10 @@ public class MainMenu extends SimpleWebListActivity implements
 		simpleBackgroundBrowser.execute(new RequestObject(
 				scrape.load_link_ev_loc, result.getCookieManager(),
 				RequestObject.METHOD_GET, ""));
-		// User, welche Tucan auf englisch gestellt haben, ausschließen, da
-		// sonst fehler auftreten würden
+		// User, welche Tucan auf englisch gestellt haben, ausschlieÃŸen, da
+		// sonst fehler auftreten wÃ¼rden
 		scrape.checkForRightTucanLanguage(this);
-		// Links in den Buffer für die Actionbar schreiben
+		// Links in den Buffer fÃ¼r die Actionbar schreiben
 		scrape.bufferLinks(this, localCookieManager);
 
 	}
@@ -251,7 +266,7 @@ public class MainMenu extends SimpleWebListActivity implements
 								.getCookieHTTPString(TucanMobile.TUCAN_HOST));
 						StartExamIntent.putExtra("UserName", scrape.UserName);
 						startActivity(StartExamIntent);
-						// Prüfungen
+						// PrÃ¼fungen
 						break;
 					case 4:
 						Intent StartMessageIntent = new Intent(MainMenu.this,

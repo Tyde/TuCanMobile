@@ -1,7 +1,21 @@
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.dalthed.tucan.Connection;
-
-import org.acra.ACRA;
-
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -17,7 +31,7 @@ import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 /**
  * SimpleSecureBrowser ist ein AsyncTask welcher die RequestObjects passend
- * abschickt und zurückgibt. Muss aus einer SimpleWebListActivity gestartet
+ * abschickt und zurÃ¼ckgibt. Muss aus einer SimpleWebListActivity gestartet
  * werden. Nachdem die Daten angekommen sind, wird die onPostExecute der
  * aufrufenden SimpleWebListActivity aufgerufen.
  * 
@@ -33,8 +47,8 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 	 */
 	public BrowserAnswerReciever outerCallingRecieverActivity;
 	/**
-	 * Der lade-{@link Dialog}, welcher während des Ladevorgangs gezeigt wird,
-	 * jedoch bei manchen Events von außen auch abgebrochen werden muss
+	 * Der lade-{@link Dialog}, welcher wÃ¤hrend des Ladevorgangs gezeigt wird,
+	 * jedoch bei manchen Events von aussen auch abgebrochen werden muss
 	 */
 	public ProgressDialog dialog;
 	/**
@@ -54,7 +68,7 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 
 	/**
 	 * SimpleSecureBrowser ist ein AsyncTask welcher die RequestObjects passend
-	 * abschickt und zurückgibt. Muss aus einer SimpleWebListActivity gestartet
+	 * abschickt und zurÃ¼ckgibt. Muss aus einer SimpleWebListActivity gestartet
 	 * werden. Nachdem die Daten angekommen sind, wird die onPostExecute der
 	 * aufrufenden SimpleWebListActivity aufgerufen.
 	 * 

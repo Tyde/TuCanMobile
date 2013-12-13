@@ -23,4 +23,6 @@
     <color name="level03">#efefee</color>
     <color name="level04">#d0d65e</color>
     
+    <color name="widget_background">#55555500</color>
+    
 </resources>

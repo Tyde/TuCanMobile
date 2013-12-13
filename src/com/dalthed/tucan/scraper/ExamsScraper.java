@@ -1,3 +1,20 @@
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.dalthed.tucan.scraper;
 
 import java.util.ArrayList;
@@ -8,7 +25,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
@@ -20,7 +36,6 @@ import com.dalthed.tucan.adapters.ThreeLinesAdapter;
 import com.dalthed.tucan.adapters.ThreeLinesTableAdapter;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
-import com.dalthed.tucan.ui.SimpleWebListActivity;
 
 public class ExamsScraper extends BasicScraper {
 
@@ -258,7 +273,7 @@ public class ExamsScraper extends BasicScraper {
 		while (ExamResultRowIterator.hasNext()) {
 			Element next = ExamResultRowIterator.next();
 			Elements ExamResultCols = next.select("td");
-			Log.i(LOG_TAG, "Größe Cols:" + ExamResultCols.size());
+			Log.i(LOG_TAG, "GrÃ¶ÃŸe Cols:" + ExamResultCols.size());
 			ResultName.add(Jsoup.parse(ExamResultCols.get(0).html().split("<br />")[0]).text());
 			ResultDate.add(ExamResultCols.get(1).text());
 			ResultGrade.add(ExamResultCols.get(2).text() + "  " + ExamResultCols.get(3).text());
@@ -281,7 +296,7 @@ public class ExamsScraper extends BasicScraper {
 		while (ExamResultRowIterator.hasNext()) {
 			Element next = ExamResultRowIterator.next();
 			Elements ExamResultCols = next.select("td");
-			Log.i(LOG_TAG, "Größe Cols:" + ExamResultCols.size());
+			Log.i(LOG_TAG, "GrÃ¶ÃŸe Cols:" + ExamResultCols.size());
 			if (ExamResultCols.size() > 1) {
 				ResultName.add(ExamResultCols.get(1).text());
 				ResultCredits.add(ExamResultCols.get(4).text());
@@ -354,7 +369,7 @@ public class ExamsScraper extends BasicScraper {
 		examLinks
 				.add("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=EXAMREGISTRATION&ARGUMENTS="
 						+ SessionArgument + ",-N000318,");
-		examNames.add("Anmeldung zu Prüfungen");
+		examNames.add("Anmeldung zu PrÃ¼fungen");
 		examNameBuffer = (ArrayList<String>) examNames.clone();
 		ListAdapter = new ArrayAdapter<String>(context, R.layout.menu_row,
 				R.id.main_menu_row_textField, examNameBuffer);

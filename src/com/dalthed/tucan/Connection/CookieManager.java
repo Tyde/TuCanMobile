@@ -1,3 +1,20 @@
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.dalthed.tucan.Connection;
 
 import java.util.HashMap;
@@ -32,7 +49,7 @@ public class CookieManager {
 	}
 
 	/**
-	 * fügt ein neues Cookie hinzu
+	 * fÃ¼gt ein neues Cookie hinzu
 	 * 
 	 * @param domain
 	 *            Die Domain, auf welche der Cookie registriert werden soll
@@ -53,10 +70,10 @@ public class CookieManager {
 	}
 
 	/**
-	 * Prüft ob die angegeben Domain schon Cookies gespeichert hat
+	 * PrÃ¼ft ob die angegeben Domain schon Cookies gespeichert hat
 	 * 
 	 * @param domain
-	 *            die zu prüfende Domain
+	 *            die zu prÃ¼fende Domain
 	 * @return <code>true</code>, wenn schon ein Cookie unter dieser Domain
 	 *         eingespeichert wurde, <code>false</code> anderenfalls
 	 */

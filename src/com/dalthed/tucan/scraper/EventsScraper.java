@@ -1,9 +1,25 @@
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.dalthed.tucan.scraper;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -54,7 +70,7 @@ public class EventsScraper extends BasicScraper {
 	 */
 	public ArrayList<String> SemesterOptionValue;
 	/**
-	 * id des gewählten Semesters
+	 * id des gewÃ¤hlten Semesters
 	 */
 	public int SemesterOptionSelected;
 
@@ -69,21 +85,22 @@ public class EventsScraper extends BasicScraper {
 		if (checkForLostSeesion()) {
 			// When bug exists: send HTML to resolve Bug
 			SimpleWebListActivity.sendHTMLatBug(doc.html());
-			if (mode == 0) {
+			
+			switch (mode) {
+			case 0:
 				// LinkGruppe Veranstaltungen finden und durchlaufen
 				return getMenuAdapter();
-			} else if (mode == 2) {
+			case 2:
 				// Modus Anmeldung
 				return getApplicationAdapter();
-			} else {
+			case 10:
 				eventLink = new ArrayList<String>();
-				if (mode == 10) {
-					// Modus Module
-					return getModules();
-				} else if (mode == 1) {
-					// Modus Veranstaltungen
-					return getEvents();
-				}
+				// Modus Module
+				return getModules();
+			case 1:
+				eventLink = new ArrayList<String>();
+				// Modus Veranstaltungen
+				return getEvents();
 			}
 		}
 		return null;
@@ -91,7 +108,7 @@ public class EventsScraper extends BasicScraper {
 	}
 
 	/**
-	 * Gibt den Adapter für den Spinner zurück
+	 * Gibt den Adapter fÃ¼r den Spinner zurÃ¼ck
 	 * 
 	 * @return Spinneradapter mit den Semestern
 	 * @author Daniel Thiem
@@ -122,7 +139,7 @@ public class EventsScraper extends BasicScraper {
 	}
 
 	/**
-	 * Gibt einen ListAdapter mit allen Events zurück
+	 * Gibt einen ListAdapter mit allen Events zurÃ¼ck
 	 * 
 	 * @return ListAdapter mit Events zu Semester
 	 * @author Daniel Thiem
@@ -170,7 +187,7 @@ public class EventsScraper extends BasicScraper {
 	}
 
 	/**
-	 * Gibt einen ListAdapter mit den Modulen zurück
+	 * Gibt einen ListAdapter mit den Modulen zurÃ¼ck
 	 * 
 	 * @return ListAdapter mit dem zum Semester passenden Modulen
 	 * @author Daniel Thiem
@@ -203,7 +220,7 @@ public class EventsScraper extends BasicScraper {
 	}
 
 	/**
-	 * Gibt einen ListAdapter zurück der durch die Anmeldungsdaten anzeigt
+	 * Gibt einen ListAdapter zurÃ¼ck der durch die Anmeldungsdaten anzeigt
 	 * 
 	 * @return ListAdapter mit anmeldungsdaten
 	 * @author Daniel Thiem
@@ -211,11 +228,11 @@ public class EventsScraper extends BasicScraper {
 	private ListAdapter getApplicationAdapter() {
 		Element content = doc.select("div#contentSpacer_IE").first();
 		if (content != null) {
-			// Informationen über tiefere Kategorien
+			// Informationen Ã¼ber tiefere Kategorien
 			ListAdapter deepLinkAdapter = getApplicationDeepLinkAdapter(content);
-			// Informationen über einzelne Events
+			// Informationen Ã¼ber einzelne Events
 			ListAdapter singleItemAdapter = getApplicationSingleItems(content);
-			// Adapter ggf. zusammenfügen
+			// Adapter ggf. zusammenfÃ¼gen
 			if (deepLinkAdapter != null && singleItemAdapter != null) {
 				return new MergedAdapter(deepLinkAdapter, singleItemAdapter);
 			} else if (deepLinkAdapter != null && singleItemAdapter == null) {
@@ -231,7 +248,7 @@ public class EventsScraper extends BasicScraper {
 	}
 
 	/**
-	 * Gibt einzelne Events in einem ListAdapter zurück.
+	 * Gibt einzelne Events in einem ListAdapter zurÃ¼ck.
 	 * 
 	 * @param content
 	 *            Content div Element
@@ -321,7 +338,7 @@ public class EventsScraper extends BasicScraper {
 						}
 					}
 				}
-				// Adapter zum zurückgeben erstellen
+				// Adapter zum zurÃ¼ckgeben erstellen
 				singleEventAdapter = new HighlightedThreeLinesAdapter(context,
 						itemName, itemInstructor, itemDate, isModule);
 			}
@@ -332,11 +349,11 @@ public class EventsScraper extends BasicScraper {
 	}
 
 	/**
-	 * Gibt einen Adapter zurück welcher die Kategorien enthalten um tiefer zu
-	 * gehen. Speichert außerdem den Link zu diesen Kategorien in applyLink ab
+	 * Gibt einen Adapter zurÃ¼ck welcher die Kategorien enthalten um tiefer zu
+	 * gehen. Speichert ausserdem den Link zu diesen Kategorien in applyLink ab
 	 * 
 	 * @param content
-	 *            Das Seitenelement, welches diese informationen enthält
+	 *            Das Seitenelement, welches diese informationen enthÃ¤lt
 	 * @return Adapter mit Kategorien
 	 * @author Daniel Thiem
 	 * @since 2012-11-26
@@ -347,7 +364,7 @@ public class EventsScraper extends BasicScraper {
 		if (deepLinkListElement.size() > 0) {
 			Elements deepLinkList = deepLinkListElement.first().select("li");
 			if (deepLinkList.size() > 0) {
-				// Tiefergehende Links verfügbar
+				// Tiefergehende Links verfÃ¼gbar
 				applyLink = new ArrayList<String>();
 				ArrayList<String> applyName = new ArrayList<String>();
 				for (Element next : deepLinkList) {
@@ -370,11 +387,11 @@ public class EventsScraper extends BasicScraper {
 	}
 
 	/**
-	 * Gibt einen Adapter zurück, welcher auf der Hauptseite angezeigt wird.
-	 * Außerdem speichert er die Links für die Einzelnen Seiten in den
+	 * Gibt einen Adapter zurÃ¼ck, welcher auf der Hauptseite angezeigt wird.
+	 * Ausserdem speichert er die Links fÃ¼r die Einzelnen Seiten in den
 	 * eventLinks ab
 	 * 
-	 * @return ListAdapter mit der MenüNavigation
+	 * @return ListAdapter mit der MenÃ¼Navigation
 	 * @author Daniel Thiem
 	 * 
 	 */
@@ -399,7 +416,7 @@ public class EventsScraper extends BasicScraper {
 			}
 
 		}
-		// ArrayList kopieren um Links nicht neu laden zu müssen
+		// ArrayList kopieren um Links nicht neu laden zu mÃ¼ssen
 		@SuppressWarnings("unchecked")
 		ArrayList<String> eventNameBuffer = (ArrayList<String>) eventNames
 				.clone();

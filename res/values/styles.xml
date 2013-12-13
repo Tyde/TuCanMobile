@@ -1,58 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <style name="LoginBoxes">
-  	<item name="android:textSize">20sp</item>
-  </style>  
-  <style name="LoginSendButton">
-  	<item name="android:textColor">@color/tucan_green</item>
-  	<item name="android:textStyle">italic</item>
-  	<item name="android:textSize">@dimen/login_send_text</item>
-  </style>
-  <style name="mainmenu_nav_strings">
-  	<item name="android:textSize">@dimen/biglink</item>
-  	<item name="android:typeface">sans</item>
-  </style>
-  <style name="tucan_title">
-  	<item name="android:textSize">@dimen/activity_titles</item>
-  	<item name="android:textColor">@color/tucan_title_darkgrey</item>
-  	<item name="android:textStyle">bold</item>
-  </style>
-  <style name="mm_events_title">
-  	<item name="android:textSize">@dimen/mm_event_title</item>
-  	<item name="android:textColor">@color/tucan_title_darkgrey</item>
-  	<item name="android:textStyle">bold</item>
-  </style>
-  <style name="mm_events_list">
-  	<item name="android:textSize">@dimen/mm_event_list</item>
-  </style>
-  <style name="vv_events_title">
-  	<item name="android:textSize">@dimen/vv_event_title</item>
-  	<item name="android:textColor">@color/tucan_title_darkgrey</item>
-  	<item name="android:textStyle">bold</item>
-  </style>
-  <style name="event_title">
-      <item name="android:textSize">@dimen/event_title</item>
-      <item name="android:textColor">#000000</item>
-  </style>
-  <style name="singleevent_property">
-      <item name="android:textSize">@dimen/vv_event_title</item>
-      <item name="android:textStyle">bold</item>
-  </style>
-  <style name="singleevent_value">
-      <item name="android:textSize">@dimen/vv_event_title</item>
-  </style>
-  <style name="schedule_daytitlebar">
-      <item name="android:background">@color/triadic_dark</item>
-      
-  </style>
-  <style name="schedule_daytitlebartext">
-      <item name="android:textColor">@color/tucan_grey</item>
-  </style>
-  <style name="dropdown_subtitle">
-      <item name="android:textSize">@dimen/dropdown_subtitle</item>
-  </style>
-      
-      <style name="register_module">
-          <item name="android:background">@color/tucan_grey</item>
-       </style>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="LoginBoxes">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="LoginSendButton">
+        <item name="android:textColor">@color/tucan_green</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">@dimen/login_send_text</item>
+    </style>
+
+    <style name="mainmenu_nav_strings">
+        <item name="android:textSize">@dimen/biglink</item>
+        <item name="android:typeface">sans</item>
+    </style>
+
+    <style name="tucan_title">
+        <item name="android:textSize">@dimen/activity_titles</item>
+        <item name="android:textColor">@color/tucan_title_darkgrey</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="mm_events_title">
+        <item name="android:textSize">@dimen/mm_event_title</item>
+        <item name="android:textColor">@color/tucan_title_darkgrey</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="mm_events_list">
+        <item name="android:textSize">@dimen/mm_event_list</item>
+    </style>
+
+    <style name="vv_events_title">
+        <item name="android:textSize">@dimen/vv_event_title</item>
+        <item name="android:textColor">@color/tucan_title_darkgrey</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="event_title">
+        <item name="android:textSize">@dimen/event_title</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <style name="singleevent_property">
+        <item name="android:textSize">@dimen/vv_event_title</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="singleevent_value">
+        <item name="android:textSize">@dimen/vv_event_title</item>
+    </style>
+
+    <style name="schedule_daytitlebar">
+        <item name="android:background">@color/menu_bg</item>
+    </style>
+
+    <style name="schedule_daytitlebartext">
+        <item name="android:textColor">#000000</item>
+        <item name="android:padding">2dp</item>
+    </style>
+
+    <style name="dropdown_subtitle">
+        <item name="android:textSize">@dimen/dropdown_subtitle</item>
+    </style>
+
+    <style name="register_module">
+        <item name="android:background">@color/tucan_grey</item>
+    </style>
+
+    <style name="widget_daytitlebar">
+        <item name="android:background">#33B5E5</item>
+    </style>
+        <style name="widget_daytitlebartext">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:padding">2dp</item>
+    </style>
+    <style name="widget_event_title">
+        <item name="android:textSize">@dimen/widget_event_title</item>
+        <item name="android:textColor">#EEEEEE</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

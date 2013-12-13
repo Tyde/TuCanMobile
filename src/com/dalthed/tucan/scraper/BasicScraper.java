@@ -1,10 +1,25 @@
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.dalthed.tucan.scraper;
 
 import org.acra.ACRA;
-import org.acra.ErrorReporter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 import android.content.Context;
 import android.widget.ListAdapter;
@@ -36,7 +51,7 @@ public abstract class BasicScraper {
 		doc= Jsoup.parse(result.getHTML());
 	}
 	/**
-	 * Gibt den genutzten CookieManager zurück
+	 * Gibt den genutzten CookieManager zurÃ¼ck
 	 * @return genutzter CookieManager
 	 */
 	public CookieManager getCookieManager() {
@@ -44,14 +59,14 @@ public abstract class BasicScraper {
 	}
 	/**
 	 * Bei einem Configurationchange wird die Activity neu gestartet und somit ist 
-	 * ein neuer Context von nöten
+	 * ein neuer Context von nten
 	 * @param context Context der Activity
 	 */
 	public void renewContext(Context context) {
 		this.context = context;
 	}
 	/**
-	 * Hin und wieder muss eine neue Antwort des Browsers übergeben werden
+	 * Hin und wieder muss eine neue Antwort des Browsers Ã¼bergeben werden
 	 * @param result Antwort des Browsers
 	 */
 	public void setNewAnswer (AnswerObject result){
@@ -59,14 +74,14 @@ public abstract class BasicScraper {
 		doc= Jsoup.parse(result.getHTML());
 	}
 	/**
-	 * Gibt entsprechenden ListAdapter nach dem auswerten der Daten zurück
-	 * @param mode evtl genutzt, falls eine Activity mehrere Ansichten unterstützt
-	 * @return der Adapter für die Liste
+	 * Gibt entsprechenden ListAdapter nach dem auswerten der Daten zurÃ¼ck
+	 * @param mode evtl genutzt, falls eine Activity mehrere Ansichten unterstÃ¼tzt
+	 * @return der Adapter fÃ¼r die Liste
 	 * @throws LostSessionException
 	 */
 	abstract public ListAdapter scrapeAdapter(int mode) throws LostSessionException,TucanDownException;
 	/**
-	 * Prüft ob die Session schon abgelaufen ist und wirft eine Exception falls dies passiert
+	 * PrÃ¼ft ob die Session schon abgelaufen ist und wirft eine Exception falls dies passiert
 	 * @return true, wenn Session noch aktiv
 	 * @throws LostSessionException
 	 */

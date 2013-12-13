@@ -1,3 +1,20 @@
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.dalthed.tucan.Connection;
 
 import java.net.MalformedURLException;
@@ -6,8 +23,8 @@ import java.net.URL;
 import android.util.Log;
 
 /**
- * Objekt, welches alle notwendigen Informationen für einen <code>HTTP</code>/
- * <code>HTTPS</code>-Request enthält
+ * Objekt, welches alle notwendigen Informationen fÃ¼r einen <code>HTTP</code>/
+ * <code>HTTPS</code>-Request enthÃ¤lt
  * 
  * @author Tyde
  * 
@@ -29,8 +46,8 @@ public class RequestObject {
 	private static final String LOG_TAG = "TuCanMobile";
 
 	/**
-	 * Objekt, welches alle notwendigen Informationen für einen
-	 * <code>HTTP</code>/<code>HTTPS</code>-Request enthält
+	 * Objekt, welches alle notwendigen Informationen fÃ¼r einen
+	 * <code>HTTP</code>/<code>HTTPS</code>-Request enthÃ¤lt
 	 * 
 	 * @param RequestString
 	 *            URL(als String), welche aufgerufen werden soll
@@ -41,7 +58,7 @@ public class RequestObject {
 	 *            Entweder {@link #METHOD_GET} oder {@link #METHOD_POST}
 	 * @param postdata
 	 *            Daten, welche bei {@link #METHOD_POST} mitgesendert werden
-	 *            können
+	 *            kÃ¶nnen
 	 * @author Daniel Thiem
 	 */
 	public RequestObject(String RequestString, CookieManager RequestCookiemanager, String method,
@@ -65,8 +82,8 @@ public class RequestObject {
 	}
 
 	/**
-	 * Objekt, welches alle notwendigen Informationen für einen
-	 * <code>HTTP</code>/<code>HTTPS</code>-Request enthält. <br>
+	 * Objekt, welches alle notwendigen Informationen fÃ¼r einen
+	 * <code>HTTP</code>/<code>HTTPS</code>-Request enthÃ¤lt. <br>
 	 * <br>
 	 * Dieser Konstruktor sollte nur aufgerufen werden, falls noch keine Cookies
 	 * vorhanden sind.
@@ -77,7 +94,7 @@ public class RequestObject {
 	 *            Entweder {@link #METHOD_GET} oder {@link #METHOD_POST}
 	 * @param postdata
 	 *            Daten, welche bei {@link #METHOD_POST} mitgesendert werden
-	 *            können
+	 *            kÃ¶nnen
 	 * @author Daniel Thiem
 	 */
 	public RequestObject(String RequestString, String method, String postdata) {

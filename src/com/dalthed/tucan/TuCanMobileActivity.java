@@ -1,3 +1,20 @@
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.dalthed.tucan;
 
 import java.net.MalformedURLException;
@@ -5,7 +22,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 import org.acra.ACRA;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -23,7 +39,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.BrowseMethods;
 import com.dalthed.tucan.Connection.CookieManager;
@@ -47,9 +62,6 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		if (TucanMobile.DEBUG == false) {
-			BugSenseHandler.setup(this, "ed5c1682");
-		}
 		// this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 		// Get saved login information
@@ -191,8 +203,8 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 			AnswerObject answer = new AnswerObject("", "", null, null);
 			for (int i = 0; i < requestInfo.length; i++) {
 				// requestInfo[i] kann null sein, da das Array mit 2
-				// null-Objekten übergeben wird und dort erst
-				// später Redirects hinein geschrieben werden
+				// null-Objekten Ã¼bergeben wird und dort erst
+				// spÃ¤ter Redirects hinein geschrieben werden
 				// TODO: requestInfo in ArrayList umwandeln ?
 				if (requestInfo[i] != null) {
 					BrowseMethods Browser = new BrowseMethods();

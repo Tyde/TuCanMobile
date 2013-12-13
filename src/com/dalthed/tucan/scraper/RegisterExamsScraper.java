@@ -1,15 +1,30 @@
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.dalthed.tucan.scraper;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.acra.ACRA;
-import org.acra.ErrorReporter;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -124,9 +139,9 @@ public class RegisterExamsScraper extends BasicScraper implements OnClickListene
 	}
 
 	/**
-	 * Führt die Anmeldung aus und gibt den nächsten modus zurück
+	 * FÃ¼hrt die Anmeldung aus und gibt den nÃ¤chsten modus zurÃ¼ck
 	 * 
-	 * @return der nächste modus
+	 * @return der nÃ¤chste modus
 	 * @throws LostSessionException
 	 * @since 2012-06-01
 	 */
@@ -191,16 +206,16 @@ public class RegisterExamsScraper extends BasicScraper implements OnClickListene
 					Elements cols = next.select("td");
 					eventName.add(cols.get(2).text());
 					examDate.add(cols.get(3).text());
-					// Wenn keine Anmeldung/Abmeldung möglich ist
+					// Wenn keine Anmeldung/Abmeldung mÃ¶glich ist
 					if (cols.get(4).select("a").isEmpty()) {
-						if (cols.get(4).text().equals("Ausgewählt"))
+						if (cols.get(4).text().equals("AusgewÃ¤hlt"))
 							examSelection.add(1);
 						else
 							examSelection.add(0);
 
 						registerLink.add("");
 					} else {
-						// Anmeldung/Abmeldung möglich
+						// Anmeldung/Abmeldung mÃ¶glich
 						if (cols.get(4).select("a").text().equals("Anmelden"))
 							examSelection.add(2);
 						else
