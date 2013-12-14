@@ -113,7 +113,7 @@ public class Schedule extends SimpleWebListActivity {
 			Intent singleEventIntent = new Intent(Schedule.this, FragmentSingleEvent.class);
 			singleEventIntent.putExtra("PREPLink", true);
 			singleEventIntent.putExtra("URL", TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-					+ scrape.eventLink.get(position));
+					+ scrape.appointments.get(position).link);
 			singleEventIntent.putExtra("Cookie",
 					scrape.getCookieManager().getCookieHTTPString(TucanMobile.TUCAN_HOST));
 			startActivity(singleEventIntent);

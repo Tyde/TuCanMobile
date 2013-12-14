@@ -39,8 +39,8 @@ import com.dalthed.tucan.util.ScheduleSaver;
 
 public class ScheduleScraper extends BasicScraper {
 
-	public ArrayList<String> eventLink; // why do we collect this?
-	private ArrayList<Appointment> appointments;
+	
+	public ArrayList<Appointment> appointments;
 	
 	private CookieManager localCookieManager;
 	private int step = 0;
@@ -116,16 +116,16 @@ public class ScheduleScraper extends BasicScraper {
 						String[] time = LinktitleArgument[0].trim().split("-");
 						String[] fromTime = time[0].trim().split(":");
 						String[] toTime   = time[1].trim().split(":");
-
+						String evLink = nextEvent.select("a").attr("href");
 						Appointment appointmnt = new Appointment(year, month, Integer.parseInt(monthday.trim()), 
 								Integer.parseInt(fromTime[0]), Integer.parseInt(fromTime[1]),
 								Integer.parseInt(toTime[0]), Integer.parseInt(toTime[1]),
 								(LinktitleArgument.length > 2) ? LinktitleArgument[2].trim() : "", 
-								LinktitleArgument[1].trim());
+								LinktitleArgument[1].trim(),evLink);
 						appointmnt.setFirstDay(isFirst);
 						appointments.add(appointmnt);
 
-						eventLink.add(nextEvent.select("a").attr("href"));
+						
 
 					}
 				}
@@ -138,7 +138,7 @@ public class ScheduleScraper extends BasicScraper {
 	 */
 	private void loadNextPage() {
 		appointments = new ArrayList<Appointment>();
-		eventLink = new ArrayList<String>();
+		
 		String nextLink = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
 				+ doc.select("a[name=skipForward_btn]").attr("href");
 		if (context instanceof BrowserAnswerReciever) {

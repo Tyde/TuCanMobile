@@ -33,12 +33,14 @@ public class Appointment implements Serializable{
 	private String room = "";
 	private String name;
 	private boolean firstofDay = false;
+	public String link;
 	
-	public Appointment(int year, int month, int day, int fromHour, int fromMinute, int toHour, int toMinute, String name, String room){
+	public Appointment(int year, int month, int day, int fromHour, int fromMinute, int toHour, int toMinute, String name, String room, String link){
 		this.fromDate = new GregorianCalendar(year, month, day, fromHour, fromMinute);
 		this.toDate = new GregorianCalendar(year, month, day, toHour, toMinute);
 		this.name = name;
 		this.room = room;
+		this.link = link;
 	}
 	
 	public void setFirstDay(boolean isFirstDay){
