@@ -51,8 +51,12 @@ public class Appointment implements Serializable{
 		return firstofDay;
 	}
 	
-	public GregorianCalendar getDate() {
+	public GregorianCalendar getStartTime() {
 		return fromDate;
+	}
+	
+	public GregorianCalendar getEndTime(){
+		return toDate;
 	}
 	
 	public String getTimeInterval(){

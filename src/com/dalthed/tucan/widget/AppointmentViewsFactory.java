@@ -20,13 +20,13 @@ package com.dalthed.tucan.widget;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
-
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.datamodel.Appointment;
 import com.dalthed.tucan.util.ScheduleSaver;
@@ -36,6 +36,7 @@ import com.dalthed.tucan.util.ScheduleSaver;
  * @author Tim Kranz
  *
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class AppointmentViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 	private ArrayList<Appointment> items = ScheduleSaver.loadSchedule();
 	private Context ctxt = null;
@@ -45,10 +46,10 @@ public class AppointmentViewsFactory implements RemoteViewsService.RemoteViewsFa
 	}
 
 	private void removeOldEntries() {
-		Calendar today = GregorianCalendar.getInstance();
+		Calendar now = GregorianCalendar.getInstance(); //now contains date and time
 		int i = 0;
 		while (i < items.size()) {
-			if (items.get(i).getDate().before(today)) {
+			if (items.get(i).getEndTime().before(now)) { //remove only if appointment is over
 				items.remove(0);
 			} else {
 				break;
