@@ -3,7 +3,7 @@
   android:minWidth="110dip"
   android:minHeight="110dip"
   android:minResizeWidth="110dip"
-  android:updatePeriodMillis="86400000"
+  android:updatePeriodMillis="2700000"
   android:initialLayout="@layout/widget"
   android:autoAdvanceViewId="@+id/words"
   android:resizeMode="vertical|horizontal"
