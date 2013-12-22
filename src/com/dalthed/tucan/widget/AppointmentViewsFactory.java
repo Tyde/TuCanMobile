@@ -126,7 +126,7 @@ public class AppointmentViewsFactory implements RemoteViewsService.RemoteViewsFa
 
 	@Override
 	public boolean hasStableIds() {
-		return true;
+		return false;
 	}
 
 	@Override
