@@ -20,13 +20,15 @@ package com.dalthed.tucan.widget;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.view.View;
 import android.widget.RemoteViews;
-import android.widget.RemoteViewsService;
+import android.widget.RemoteViewsService.RemoteViewsFactory;
+
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.datamodel.Appointment;
 import com.dalthed.tucan.util.ScheduleSaver;
@@ -37,7 +39,7 @@ import com.dalthed.tucan.util.ScheduleSaver;
  *
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class AppointmentViewsFactory implements RemoteViewsService.RemoteViewsFactory {
+public class AppointmentViewsFactory implements RemoteViewsFactory {
 	private ArrayList<Appointment> items = ScheduleSaver.loadSchedule();
 	private Context ctxt = null;
 
@@ -83,7 +85,7 @@ public class AppointmentViewsFactory implements RemoteViewsService.RemoteViewsFa
 				R.layout.widget_row);
 
 		if(items == null || items.isEmpty()){
-			row.setTextViewText(R.id.widget_event_room, "Fehler: TuCan App");
+			row.setTextViewText(R.id.widget_event_room, "Fehler: TUCaN.Mobile App");
 			row.setTextViewText(R.id.widget_event_name, "Bitte erst den Stundenplan in App öffnen!");
 			return row;
 		}
@@ -131,5 +133,8 @@ public class AppointmentViewsFactory implements RemoteViewsService.RemoteViewsFa
 
 	@Override
 	public void onDataSetChanged() {
+		//force update data
+		items = ScheduleSaver.loadSchedule();
+		removeOldEntries();
 	}
 }

@@ -26,9 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.os.Build;
 
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.datamodel.Appointment;
+import com.dalthed.tucan.widget.WidgetProvider;
 
 /**
  * Zwischenspeicherung von Stundenplan auf internen Speicher (z.B. fuer Widget)
@@ -50,6 +52,9 @@ public class ScheduleSaver {
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(appointments);
 			oos.close();
+			// new data available => update widget
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+				WidgetProvider.updateWidgets(context);			
 		}catch(Exception e){
 			
 		}
