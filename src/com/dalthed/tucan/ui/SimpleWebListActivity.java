@@ -89,6 +89,10 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 			Intent settingsACTIVITY = new Intent(getBaseContext(), MainPreferences.class);
 			startActivity(settingsACTIVITY);
 			return true;
+		case R.id.loginmenu_opt_changelog:
+			ChangeLog cl = new ChangeLog(this);
+		    cl.getFullLogDialog().show();
+			return true;
 		case R.id.loginmenu_opt_close:
 			finish();
 			return true;
