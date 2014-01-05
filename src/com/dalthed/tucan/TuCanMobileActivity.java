@@ -45,6 +45,7 @@ import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.preferences.MainPreferences;
+import com.dalthed.tucan.ui.ChangeLog;
 import com.dalthed.tucan.ui.MainMenu;
 import com.dalthed.tucan.ui.ProgressBarDialogFactory;
 import com.dalthed.tucan.ui.SimpleWebActivity;
@@ -62,6 +63,11 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+		ChangeLog cl = new ChangeLog(this);
+	    if (cl.firstRun())
+	        cl.getLogDialog().show();
+		
 		// this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 		// Get saved login information
