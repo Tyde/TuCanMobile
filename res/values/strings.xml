@@ -59,6 +59,12 @@
     <string name="application_begin">Gestartet</string>
     <string name="application_sent">Abgeschickt</string>
     
+    <!-- ACRA -->
+	<string name="pref_disable_acra">BugReport deaktivieren</string>
+	<string name="pref_acra_disabled">Dieser kann private Daten wie den Namen und Inhalte der Seite beinhalten. Durch das abschalten können Fehler nicht genau analysiert werden und somit wohl auch nicht behoben werden.</string>
+	<string name="pref_acra_enabled">Dieser kann private Daten wie den Namen und Inhalte der Seite beinhalten. Durch das abschalten können Fehler nicht genau analysiert werden und somit wohl auch nicht behoben werden.</string>
+	<string name="site_opt_unknown">Verhalten der Tucan-Seite war unerwartet. Fehler wird an den Entwickler weitergegeben.</string>
+    
     <!-- Changelog -->
     <string name="changelog_full_title">Changelog</string>
     <string name="changelog_title">Neuerungen</string>
