@@ -26,6 +26,7 @@ $ 0.3.6
     * <b>Neu:</b> Changelog
     * Informationen über Veranstaltungen werden besser verarbeitet
     * Darstellung von Veranstaltungen verbessert
+    * Einstellungen überarbeitet
     * Fix: 13. Monat statt Januar
 $ 0.3.5
   % Version 0.3.5

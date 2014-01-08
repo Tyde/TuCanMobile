@@ -24,9 +24,15 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.widget.RemoteViews;
+
 import com.dalthed.tucan.R;
 
 /**
@@ -53,19 +59,35 @@ public class WidgetProvider extends AppWidgetProvider {
 
 			RemoteViews widget = new RemoteViews(ctxt.getPackageName(),
 					R.layout.widget);
+			
+			//transparency begin, inspired by https://github.com/azapps/mirakel-android
+			GradientDrawable drawable = (GradientDrawable) ctxt
+                    .getResources().getDrawable(R.drawable.widget_background);
+			drawable.setAlpha(getWidgetTransparency(ctxt));
+			Bitmap bitmap = Bitmap.createBitmap(500, 400, Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+            widget.setImageViewBitmap(R.id.widget_background, bitmap);
+            // transparency end
 
-			widget.setRemoteAdapter(appWidgetIds[i], R.id.words, svcIntent);
+			widget.setRemoteAdapter(appWidgetIds[i], R.id.widget_main, svcIntent);
 
 			Intent clickIntent = new Intent(ctxt, AppointmentActivity.class);
 			PendingIntent clickPI = PendingIntent.getActivity(ctxt, 0,
 					clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-			widget.setPendingIntentTemplate(R.id.words, clickPI);
+			widget.setPendingIntentTemplate(R.id.widget_main, clickPI);
 
 			appWidgetManager.updateAppWidget(appWidgetIds[i], widget);
 		}
 
 		super.onUpdate(ctxt, appWidgetManager, appWidgetIds);
+	}
+	
+	private int getWidgetTransparency(Context ctxt){
+		final SharedPreferences altPrefs = ctxt.getSharedPreferences("WIDGET", Context.MODE_PRIVATE);
+		return 255-altPrefs.getInt("transparency", 64);
 	}
 
 	public static void updateWidgets(Context context) {
@@ -78,7 +100,7 @@ public class WidgetProvider extends AppWidgetProvider {
 		int[] ids = appWidgetManager.getAppWidgetIds(thisWidget);
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-			appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.id.words);
+			appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.id.widget_main);
 
 	}
 }

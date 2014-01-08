@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/words"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:layout_marginTop="3dp"
-  android:layout_marginLeft="3dp"
-  android:background="@drawable/widget_background"
-/>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/widget_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/widget_background"
+        tools:ignore="ContentDescription" />
+
+    <ListView
+        android:id="@+id/widget_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp"
+        android:padding="2dp" />
+
+</RelativeLayout>

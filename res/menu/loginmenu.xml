@@ -4,7 +4,7 @@
 		android:title="@string/loginmenu_preferences" android:icon="@android:drawable/ic_menu_preferences" />
 	
 	<item android:id="@+id/loginmenu_opt_changelog"
-	    android:title="@string/loginmenu_changelog"/>
+	    android:title="@string/loginmenu_changelog" android:visible="false"/>
 	
 	<item android:id="@+id/loginmenu_opt_close" android:title="@string/loginmenu_close"
 		 android:icon="@android:drawable/ic_menu_close_clear_cancel"/>
