@@ -21,7 +21,7 @@
   <body>
 $ 0.3.6
   % Version 0.3.6
-  _ XX.01.2014
+  _ 10.01.2014
     * <b>Neu:</b> Homescreen Widget
     * <b>Neu:</b> Changelog
     * Informationen über Veranstaltungen werden besser verarbeitet
