@@ -5,6 +5,6 @@
   android:minResizeWidth="110dip"
   android:updatePeriodMillis="2700000"
   android:initialLayout="@layout/widget"
-  android:autoAdvanceViewId="@+id/words"
+  android:autoAdvanceViewId="@+id/widget_main"
   android:resizeMode="vertical|horizontal"
 />

@@ -9,6 +9,7 @@
     <string name="login_send">Anmelden</string>
     <string name="login_stay_logged">Passwort merken</string>
     <string name="loginmenu_preferences">Einstellungen</string>
+    <string name="loginmenu_changelog">Changelog</string>
     <string name="loginmenu_close">Schließen</string>
 
     <!-- Hauptmenü -->
@@ -27,16 +28,17 @@
 
     <!-- Preferences -->
     <string name="settings_general">Haupteinstellungen:</string>
+    <string name="settings_widget">Widget:</string>
+    <string name="settings_misc">Sonstiges:</string>
+    <string name="settings_transparency">Hintergrund-Transparenz</string>
+    <string name="settings_transparency_summary">%s%% transparent</string>
+    <string name="settings_changelog">Changelog</string>
+    <string name="settings_changelog_summary">Auflistung der Neuerungen</string>
     
 	
     <!-- Wrong Lang -->
     <string name="general_not_supported_lang">We are sorry to inform you, that this App does currently not support usage, when the TuCan Website is set to English. To use this App, please change back into German. English support will be added in the future.</string>
 
-    <!-- ACRA -->
-    <string name="pref_disable_acra">BugReport deaktivieren</string>
-    <string name="pref_acra_disabled">Dieser kann private Daten wie den Namen und Inhalte der Seite beinhalten. Durch das abschalten können Fehler nicht genau analysiert werden und somit wohl auch nicht behoben werden.</string>
-    <string name="pref_acra_enabled">Dieser kann private Daten wie den Namen und Inhalte der Seite beinhalten. Durch das abschalten können Fehler nicht genau analysiert werden und somit wohl auch nicht behoben werden.</string>
-	<string name="site_opt_unknown">Verhalten der Tucan-Seite war unerwartet. Fehler wird an den Entwickler weitergegeben.</string>
     <!-- Image Content Description -->
     <string name="img_content_logo">Logo</string>
     
@@ -63,5 +65,17 @@
     <string name="application_status">Status</string>
     <string name="application_begin">Gestartet</string>
     <string name="application_sent">Abgeschickt</string>
+    
+    <!-- ACRA -->
+	<string name="pref_disable_acra">BugReport deaktivieren</string>
+	<string name="pref_acra_disabled">Dieser kann private Daten wie den Namen und Inhalte der Seite beinhalten. Durch das abschalten können Fehler nicht genau analysiert werden und somit wohl auch nicht behoben werden.</string>
+	<string name="pref_acra_enabled">Dieser kann private Daten wie den Namen und Inhalte der Seite beinhalten. Durch das abschalten können Fehler nicht genau analysiert werden und somit wohl auch nicht behoben werden.</string>
+	<string name="site_opt_unknown">Verhalten der Tucan-Seite war unerwartet. Fehler wird an den Entwickler weitergegeben.</string>
+    
+    <!-- Changelog -->
+    <string name="changelog_full_title">Changelog</string>
+    <string name="changelog_title">Neuerungen</string>
+    <string name="changelog_show_full">Alles anzeigen</string>
+    <string name="changelog_ok_button">OK</string>
     
 </resources>

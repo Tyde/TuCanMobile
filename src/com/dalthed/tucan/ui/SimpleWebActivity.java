@@ -75,6 +75,7 @@ public abstract class SimpleWebActivity extends SherlockActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.loginmenu, menu);
+		
 		if (TucanMobile.DEBUG) {
 			menu.add(Menu.NONE, 9941, Menu.NONE, "Test");
 		}
@@ -88,6 +89,10 @@ public abstract class SimpleWebActivity extends SherlockActivity implements
 		case R.id.loginmenu_opt_setpreferences:
 			Intent settingsACTIVITY = new Intent(getBaseContext(), MainPreferences.class);
 			startActivity(settingsACTIVITY);
+			return true;
+		case R.id.loginmenu_opt_changelog:
+			ChangeLog cl = new ChangeLog(this);
+		    cl.getFullLogDialog().show();
 			return true;
 		case R.id.loginmenu_opt_close:
 			finish();

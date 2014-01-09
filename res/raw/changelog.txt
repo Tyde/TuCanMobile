@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <style type='text/css'>
+      a            { color:#33B5E5 }
+      
+      div.title    { 
+          font-size:1.2em; 
+          font-weight:bold; 
+          margin-top:1em; 
+          margin-bottom:0.2em; 
+          text-align:center;
+           }
+      div.subtitle { 
+          font-size:0.8em; 
+          margin-bottom:1em; 
+          text-align:center; }
+      div.freetext { }
+      div.list     { }
+    </style>
+  </head>
+  <body>
+$ 0.3.6
+  % Version 0.3.6
+  _ 10.01.2014
+    * <b>Neu:</b> Homescreen Widget
+    * <b>Neu:</b> Changelog
+    * Informationen über Veranstaltungen werden besser verarbeitet
+    * Darstellung von Veranstaltungen verbessert
+    * Einstellungen überarbeitet
+    * Fix: 13. Monat statt Januar
+$ 0.3.5
+  % Version 0.3.5
+  _ 21.08.2013
+    * Bugfix release
+    * Fix: ACRA-Error #68968
+$ 0.3.4
+  % Version 0.3.4
+  _ 20.08.2013
+    * Fix: Home Button funktioniert wieder
+    * Fix: Rotation
+    * Fix: Nachrichten
+    * Fix: Kalender
+    * ...
+$ END_OF_CHANGE_LOG
+  </body>
+</html>
