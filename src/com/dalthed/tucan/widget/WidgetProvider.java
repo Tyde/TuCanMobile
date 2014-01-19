@@ -49,6 +49,8 @@ public class WidgetProvider extends AppWidgetProvider {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
 			return;
 		
+		updateWidgets(ctxt); //fixes widget update problem?
+		
 		for (int i = 0; i < appWidgetIds.length; i++) {
 			Intent svcIntent = new Intent(ctxt, WidgetService.class);
 
