@@ -18,6 +18,9 @@
 package com.dalthed.tucan.preferences;
 
 import android.app.AlertDialog;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -29,12 +32,14 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
+import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.SeekBar;
 
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.ui.ChangeLog;
+import com.dalthed.tucan.widget.WidgetProvider;
 
 public class MainPreferences extends PreferenceActivity {
 	
@@ -152,6 +157,7 @@ public class MainPreferences extends PreferenceActivity {
 		SharedPreferences.Editor editor = altPrefs.edit();
 		editor.putInt("transparency", transparency);
 		editor.commit();
+		forceWidgetRedraw();
 	}
 	
 	private int getWidgetTransparency(){
@@ -159,5 +165,19 @@ public class MainPreferences extends PreferenceActivity {
 		return altPrefs.getInt("transparency", 64);
 	}
 	
+	private void forceWidgetRedraw(){
+		Intent intent = new Intent(this, WidgetProvider.class);
+		intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+		
+		AppWidgetManager appWidgetManager = AppWidgetManager
+				.getInstance(this);
+		ComponentName thisWidget = new ComponentName(this,
+				WidgetProvider.class);
+		
+		int[] ids = appWidgetManager.getAppWidgetIds(thisWidget);
+		
+		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+		sendBroadcast(intent);
+	}
 
 }
