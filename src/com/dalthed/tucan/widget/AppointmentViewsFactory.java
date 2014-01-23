@@ -50,13 +50,17 @@ public class AppointmentViewsFactory implements RemoteViewsFactory {
 	private void removeOldEntries() {
 		Calendar now = GregorianCalendar.getInstance(); //now contains date and time
 		int i = 0;
+		boolean changed = false;
 		while (i < items.size()) {
-			if (items.get(i).getEndTime().before(now)) { //remove only if appointment is over
+			if (items.get(i).getEndTime().before(now)) { //remove only if appointment is ended
 				items.remove(0);
+				changed = true;
 			} else {
 				break;
 			}
 		}
+		if(changed)
+			ScheduleSaver.saveSchedule(items);
 	}
 
 	public AppointmentViewsFactory(Context ctxt, Intent intent) {
@@ -85,8 +89,8 @@ public class AppointmentViewsFactory implements RemoteViewsFactory {
 				R.layout.widget_row);
 
 		if(items == null || items.isEmpty()){
-			row.setTextViewText(R.id.widget_event_room, "Fehler: TUCaN.Mobile App");
-			row.setTextViewText(R.id.widget_event_name, "Bitte erst den Stundenplan in App öffnen!");
+			row.setTextViewText(R.id.widget_event_room, ctxt.getResources().getString(R.string.widget_no_data_msg_title));
+			row.setTextViewText(R.id.widget_event_name, ctxt.getResources().getString(R.string.widget_no_data_msg));
 			return row;
 		}
 		

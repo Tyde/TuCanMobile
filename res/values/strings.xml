@@ -78,4 +78,8 @@
     <string name="changelog_show_full">Alles anzeigen</string>
     <string name="changelog_ok_button">OK</string>
     
+    <!-- Widget -->
+    <string name="widget_no_data_msg_title">Fehler: TUCaN.Mobile App</string>
+    <string name="widget_no_data_msg">Bitte erst den Stundenplan in App öffnen!</string>
+    
 </resources>

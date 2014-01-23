@@ -19,6 +19,11 @@
     </style>
   </head>
   <body>
+$ 0.3.7
+  % Version 0.3.7
+  _ XX.XX.2014
+    * Stundenplanwidget für Lockscreen verfügbar
+    * Fix: Einstellung 'Transparenz des Widgets' wird nun sofort übernommen
 $ 0.3.6
   % Version 0.3.6
   _ 10.01.2014
