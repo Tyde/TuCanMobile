@@ -92,6 +92,10 @@ public class WidgetProvider extends AppWidgetProvider {
 		return 255-altPrefs.getInt("transparency", 64);
 	}
 
+	/**
+	 * Updates the entries of all schedule widgets (for instance after removing old entries)
+	 * @param context
+	 */
 	public static void updateWidgets(Context context) {
 		AppWidgetManager appWidgetManager = AppWidgetManager
 				.getInstance(context);

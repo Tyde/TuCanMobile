@@ -94,7 +94,7 @@ public class BrowseMethods {
 	public AnswerObject browse(RequestObject requestInfo) {
 		String redirectURL = "";
 		String alllines = "";
-		if (Integer.parseInt(Build.VERSION.SDK) < 9) {
+		if (Build.VERSION.SDK_INT < 9) {
 			// Notwendig, da sonst die Verbindung bei älteren Systemen nicht
 			// klappt
 			System.setProperty("http.keepAlive", "false");

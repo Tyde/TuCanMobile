@@ -31,7 +31,7 @@ import android.widget.TextView;
 import com.dalthed.tucan.R;
 
 /**
- * {@link ListAdapter}, welcher eine Tabelle mit 3 Zeilen dargibt (�hnlich {@link AppointmentAdapter}, nur ohne Nummer)
+ * {@link ListAdapter}, welcher eine Tabelle mit 3 Zeilen dargibt (ähnlich {@link AppointmentAdapter}, nur ohne Nummer)
  * Der Adapter nutzt singleevent_row_date.xml und folgt folgendem Schema:
  *<table>
  *<tr><td colspan=4>***************************************************</td></tr>

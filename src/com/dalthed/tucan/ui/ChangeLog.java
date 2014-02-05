@@ -145,7 +145,7 @@ public class ChangeLog {
                 null);
        
         int theme;
-		if (Integer.valueOf(android.os.Build.VERSION.SDK_INT) >= Build.VERSION_CODES.HONEYCOMB){
+		if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
 			theme = android.R.style.Theme_Holo_Light_Dialog;
 		}else
 			theme = android.R.style.Theme_Dialog;
@@ -153,13 +153,6 @@ public class ChangeLog {
         AlertDialog.Builder builder = new AlertDialog.Builder(
                 new ContextThemeWrapper(
                         this.context, theme));;
-        
-        
-        if(Integer.valueOf(android.os.Build.VERSION.SDK) >= 11){
-	        
-        }else{
-        	
-        }
 
         builder.setTitle(
                 context.getResources().getString(

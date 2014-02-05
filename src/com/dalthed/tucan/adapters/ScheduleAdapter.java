@@ -63,6 +63,7 @@ public class ScheduleAdapter extends ArrayAdapter<String> {
 		super(context,R.layout.schedule_event, R.id.schedule_event_room, rooms); // TODO: Check this
 		this.appointments = appointments;
 	}
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = super.getView(position, convertView, parent);

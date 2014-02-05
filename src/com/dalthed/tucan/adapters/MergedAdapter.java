@@ -39,7 +39,6 @@ public class MergedAdapter extends BaseAdapter {
 			this.firstAdapter = firstAdapter;
 			this.secondAdapter = secondAdapter;
 		}
-
 	}
 	
 

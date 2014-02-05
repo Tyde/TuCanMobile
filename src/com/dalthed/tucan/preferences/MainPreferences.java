@@ -20,7 +20,6 @@ package com.dalthed.tucan.preferences;
 import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -32,7 +31,6 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
-import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.SeekBar;
 

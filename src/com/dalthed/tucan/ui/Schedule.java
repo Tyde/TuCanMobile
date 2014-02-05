@@ -44,7 +44,6 @@ import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class Schedule extends SimpleWebListActivity {
 
-	private static final String LOG_TAG = "TuCanMobile";
 	private String URLStringtoCall;
 	ScheduleScraper scrape = null;
 	private ListAdapter adapter;
