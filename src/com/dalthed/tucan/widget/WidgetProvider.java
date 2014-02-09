@@ -74,9 +74,11 @@ public class WidgetProvider extends AppWidgetProvider {
             // transparency end
 
 			widget.setRemoteAdapter(appWidgetIds[i], R.id.widget_main, svcIntent);
-
-			Intent clickIntent = new Intent(ctxt, AppointmentActivity.class);
-			PendingIntent clickPI = PendingIntent.getActivity(ctxt, 0,
+			
+			Intent clickIntent = new Intent(ctxt, WidgetProvider.class);
+			clickIntent.setAction("lolxd");
+			
+			PendingIntent clickPI = PendingIntent.getBroadcast(ctxt, 0,
 					clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 			widget.setPendingIntentTemplate(R.id.widget_main, clickPI);
@@ -108,5 +110,11 @@ public class WidgetProvider extends AppWidgetProvider {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 			appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.id.widget_main);
 
+	}
+	
+	@Override
+	public void onReceive(Context context, Intent intent) {
+		System.out.println("=>0>0>0>0>0 YES YEss works jippy 999999999999999");
+		super.onReceive(context, intent);
 	}
 }

@@ -25,6 +25,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
@@ -109,8 +110,10 @@ public class AppointmentViewsFactory implements RemoteViewsFactory {
 		row.setTextViewText(R.id.widget_event_time, item.getTimeInterval());
 		row.setTextViewText(R.id.widget_event_room, item.getRoom());
 
+
 		Intent i = new Intent();
-		row.setOnClickFillInIntent(android.R.id.text1, i);
+		i.putExtra("pos", position);
+		row.setOnClickFillInIntent(R.id.widget_row, i);
 
 		return row;
 	}
