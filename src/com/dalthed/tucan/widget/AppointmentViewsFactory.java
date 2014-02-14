@@ -22,10 +22,10 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import android.annotation.TargetApi;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
@@ -43,6 +43,9 @@ import com.dalthed.tucan.util.ScheduleSaver;
 public class AppointmentViewsFactory implements RemoteViewsFactory {
 	private ArrayList<Appointment> items = ScheduleSaver.loadSchedule();
 	private Context ctxt = null;
+	private int appWidgetID;
+	
+	public static final String INTENT_CLICK_POSITION = "INTENT_CLICK_POSITION";
 
 	public AppointmentViewsFactory() {
 		removeOldEntries();
@@ -66,6 +69,7 @@ public class AppointmentViewsFactory implements RemoteViewsFactory {
 
 	public AppointmentViewsFactory(Context ctxt, Intent intent) {
 		this.ctxt = ctxt;
+		appWidgetID = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 	}
 
 	@Override
@@ -81,13 +85,14 @@ public class AppointmentViewsFactory implements RemoteViewsFactory {
 		removeOldEntries();
 		if(items == null || items.isEmpty())
 			return 1;
-		return Math.max(items.size(), 10);
+		//limit to 15 entries
+		return Math.min(items.size(), 25);
 	}
 
 	@Override
 	public RemoteViews getViewAt(int position) {
 		RemoteViews row = new RemoteViews(ctxt.getPackageName(),
-				R.layout.widget_row);
+				R.layout.widget_schedule_row);
 
 		if(items == null || items.isEmpty()){
 			row.setTextViewText(R.id.widget_event_room, ctxt.getResources().getString(R.string.widget_no_data_msg_title));
@@ -112,7 +117,8 @@ public class AppointmentViewsFactory implements RemoteViewsFactory {
 
 
 		Intent i = new Intent();
-		i.putExtra("pos", position);
+		i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetID);
+		i.putExtra(INTENT_CLICK_POSITION, position);
 		row.setOnClickFillInIntent(R.id.widget_row, i);
 
 		return row;

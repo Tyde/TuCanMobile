@@ -20,6 +20,7 @@ package com.dalthed.tucan.preferences;
 import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -155,7 +156,7 @@ public class MainPreferences extends PreferenceActivity {
 		SharedPreferences.Editor editor = altPrefs.edit();
 		editor.putInt("transparency", transparency);
 		editor.commit();
-		forceWidgetRedraw();
+		MainPreferences.forceWidgetRedraw(this);
 	}
 	
 	private int getWidgetTransparency(){
@@ -163,19 +164,23 @@ public class MainPreferences extends PreferenceActivity {
 		return altPrefs.getInt("transparency", 64);
 	}
 	
-	private void forceWidgetRedraw(){
-		Intent intent = new Intent(this, WidgetProvider.class);
+	/**
+	 * triggers onUpdate
+	 * @param pkg
+	 */
+	public static void forceWidgetRedraw(Context pkg){
+		Intent intent = new Intent();
 		intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
 		
 		AppWidgetManager appWidgetManager = AppWidgetManager
-				.getInstance(this);
-		ComponentName thisWidget = new ComponentName(this,
+				.getInstance(pkg);
+		ComponentName thisWidget = new ComponentName(pkg,
 				WidgetProvider.class);
 		
 		int[] ids = appWidgetManager.getAppWidgetIds(thisWidget);
 		
 		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
-		sendBroadcast(intent);
+		pkg.sendBroadcast(intent);
 	}
 
 }
