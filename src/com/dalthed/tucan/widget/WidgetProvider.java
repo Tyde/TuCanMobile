@@ -31,6 +31,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
+import android.util.SparseArray;
 import android.widget.RemoteViews;
 
 import com.dalthed.tucan.R;
@@ -42,23 +43,19 @@ import com.dalthed.tucan.R;
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class WidgetProvider extends AppWidgetProvider {
+	
+	public static final String SCHEDULE_CLICK_ACTION = "com.dalthed.tucan.widget.SCHEDULE_CLICK_ACTION";
 
 	@Override
 	public void onUpdate(Context ctxt, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
 			return;
-		
-		updateWidgets(ctxt); //fixes widget update problem?
-		
-		for (int i = 0; i < appWidgetIds.length; i++) {
-			Intent svcIntent = new Intent(ctxt, WidgetService.class);
 
-			svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-					appWidgetIds[i]);
-			svcIntent.setData(Uri.parse(svcIntent
-					.toUri(Intent.URI_INTENT_SCHEME)));
-
+		updateWidgetData(ctxt); //fixes widget update problem?
+		System.out.println("Run..");
+		for (int widgetID : appWidgetIds) {
+			
 			RemoteViews widget = new RemoteViews(ctxt.getPackageName(),
 					R.layout.widget);
 			
@@ -72,19 +69,45 @@ public class WidgetProvider extends AppWidgetProvider {
             drawable.draw(canvas);
             widget.setImageViewBitmap(R.id.widget_background, bitmap);
             // transparency end
+			
+			
+			Intent svcIntent = new Intent(ctxt, WidgetService.class);
 
-			widget.setRemoteAdapter(appWidgetIds[i], R.id.widget_main, svcIntent);
+			svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+					widgetID);
+			svcIntent.setData(Uri.parse(svcIntent
+					.toUri(Intent.URI_INTENT_SCHEME)));
 
-			Intent clickIntent = new Intent(ctxt, AppointmentActivity.class);
-			PendingIntent clickPI = PendingIntent.getActivity(ctxt, 0,
+			widget.setRemoteAdapter(widgetID, R.id.widget_main, svcIntent);
+			
+			Intent clickIntent = new Intent(ctxt, WidgetProvider.class);
+			clickIntent.setAction(SCHEDULE_CLICK_ACTION);
+			
+			PendingIntent clickPI = PendingIntent.getBroadcast(ctxt, 0,
 					clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 			widget.setPendingIntentTemplate(R.id.widget_main, clickPI);
 
-			appWidgetManager.updateAppWidget(appWidgetIds[i], widget);
+			appWidgetManager.updateAppWidget(widgetID, widget);
 		}
 
 		super.onUpdate(ctxt, appWidgetManager, appWidgetIds);
+	}
+	
+	@Override
+	public void onReceive(Context context, Intent intent) {
+//		// for later usage
+//		System.out.println("in \"onReceive\"");
+//		// action of 'click on an item in schedule list (widget)'
+//		if(SCHEDULE_CLICK_ACTION.equals(intent.getAction())){
+//			System.out.println("schedule click action");
+//			int widgetID = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+//			System.out.println("WidgetID: "+widgetID);
+//			int position = intent.getIntExtra(AppointmentViewsFactory.INTENT_CLICK_POSITION, -1);
+//			System.out.println("Click position: "+position);
+//		}
+		
+		super.onReceive(context, intent);
 	}
 	
 	private int getWidgetTransparency(Context ctxt){
@@ -92,7 +115,11 @@ public class WidgetProvider extends AppWidgetProvider {
 		return 255-altPrefs.getInt("transparency", 64);
 	}
 
-	public static void updateWidgets(Context context) {
+	/**
+	 * Updates the entries of all schedule widgets (for instance after removing old entries)
+	 * @param context
+	 */
+	public static void updateWidgetData(Context context) {
 		AppWidgetManager appWidgetManager = AppWidgetManager
 				.getInstance(context);
 
@@ -103,6 +130,6 @@ public class WidgetProvider extends AppWidgetProvider {
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 			appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.id.widget_main);
-
 	}
+	
 }

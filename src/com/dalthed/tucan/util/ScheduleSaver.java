@@ -54,7 +54,7 @@ public class ScheduleSaver {
 			oos.close();
 			// new data available => update widget
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-				WidgetProvider.updateWidgets(context);			
+				WidgetProvider.updateWidgetData(context);			
 		}catch(Exception e){
 			
 		}

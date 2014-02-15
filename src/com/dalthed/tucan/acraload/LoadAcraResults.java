@@ -44,7 +44,7 @@ import com.dalthed.tucan.util.ConfigurationChangeStorage;
 public class LoadAcraResults extends SimpleWebListActivity {
 	private CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
-	private String URLStringtoCall;
+	private final String URLStringtoCall = "http://daniel-thiem.de/ACRA/export.php";
 	private ArrayList<String> classes,ids,urls;
 	
 	@Override
@@ -52,10 +52,6 @@ public class LoadAcraResults extends SimpleWebListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.acra);
 		
-
-
-		
-		URLStringtoCall = "http://daniel-thiem.de/ACRA/export.php";
 		URL URLtoCall;
 		
 		try {
@@ -142,7 +138,4 @@ public class LoadAcraResults extends SimpleWebListActivity {
 	@Override
 	public void retainConfiguration(ConfigurationChangeStorage conf) {
 	}
-	
-
-
 }

@@ -23,7 +23,8 @@ $ 0.3.7
   % Version 0.3.7
   _ XX.XX.2014
     * Stundenplanwidget für Lockscreen verfügbar
-    * Fix: Einstellung 'Transparenz des Widgets' wird nun sofort übernommen
+    * <b>Fix:</b> Einstellung 'Transparenz des Widgets' wird nun sofort übernommen
+    * <b>Fix:</b> Absturz der App bei weniger als 10 Stundenplaneinträgen im Widget behoben
 $ 0.3.6
   % Version 0.3.6
   _ 10.01.2014
