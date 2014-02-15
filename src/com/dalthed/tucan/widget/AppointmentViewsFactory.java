@@ -92,7 +92,7 @@ public class AppointmentViewsFactory implements RemoteViewsFactory {
 		//limit to (value from settings) entries
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctxt.getApplicationContext());
 		int maxEntries = Integer.parseInt(prefs.getString("widget_max_entries", "25")); //a bit dirty...
-		return Math.min(items.size(), maxEntries);
+		return Math.min(items.size(), Math.max(maxEntries,1));
 	}
 
 	@Override
