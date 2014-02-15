@@ -32,6 +32,7 @@
             android:defaultValue="25"
             android:inputType="number"
             android:key="widget_max_entries"
+            android:summary="@string/settings_widget_max_entries_summary"
             android:title="@string/settings_widget_max_entries" />
 
         <Preference
