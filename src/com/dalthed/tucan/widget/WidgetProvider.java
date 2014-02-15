@@ -31,7 +31,6 @@ import android.graphics.Canvas;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
-import android.util.SparseArray;
 import android.widget.RemoteViews;
 
 import com.dalthed.tucan.R;

@@ -25,7 +25,9 @@ import android.annotation.TargetApi;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
@@ -85,8 +87,10 @@ public class AppointmentViewsFactory implements RemoteViewsFactory {
 		removeOldEntries();
 		if(items == null || items.isEmpty())
 			return 1;
-		//limit to 15 entries
-		return Math.min(items.size(), 25);
+		//limit to (value from settings) entries
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctxt.getApplicationContext());
+		int maxEntries = Integer.parseInt(prefs.getString("widget_max_entries", "25")); //a bit dirty...
+		return Math.min(items.size(), maxEntries);
 	}
 
 	@Override

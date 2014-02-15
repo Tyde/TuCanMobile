@@ -8,9 +8,8 @@
 			android:title="@string/settings_tuid" android:defaultValue="" />
 		<EditTextPreference android:key="pw"
 			android:title="@string/settings_pw" android:summary=""
-			android:inputType="textPassword" />
+			android:inputType="textPassword" />
         -->
-
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="acra.disable"
@@ -22,20 +21,18 @@
         <Preference
             android:key="logout"
             android:title="Logout" >
-        </Preference>
+        </Preference>
         -->
     </PreferenceCategory>
     <PreferenceCategory
         android:key="pref_category_widget"
         android:title="@string/settings_widget" >
-
-        <!--
-        <EditTextPreference android:key="tuid"
-			android:title="@string/settings_tuid" android:defaultValue="" />
-		<EditTextPreference android:key="pw"
-			android:title="@string/settings_pw" android:summary=""
-			android:inputType="textPassword" />
-        -->
+        
+        <EditTextPreference
+            android:defaultValue="25"
+            android:inputType="number"
+            android:key="widget_max_entries"
+            android:title="@string/settings_widget_max_entries" />
 
         <Preference
             android:defaultValue="0.5"

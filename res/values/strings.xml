@@ -31,6 +31,7 @@
     <string name="settings_widget">Widget:</string>
     <string name="settings_misc">Sonstiges:</string>
     <string name="settings_transparency">Hintergrund-Transparenz</string>
+    <string name="settings_widget_max_entries">Max. Einträge</string>
     <string name="settings_transparency_summary">%s%% transparent</string>
     <string name="settings_changelog">Changelog</string>
     <string name="settings_changelog_summary">Auflistung der Neuerungen</string>
