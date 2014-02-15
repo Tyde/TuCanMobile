@@ -25,6 +25,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -95,16 +96,31 @@ public class WidgetProvider extends AppWidgetProvider {
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
-//		// for later usage
-//		System.out.println("in \"onReceive\"");
-//		// action of 'click on an item in schedule list (widget)'
-//		if(SCHEDULE_CLICK_ACTION.equals(intent.getAction())){
-//			System.out.println("schedule click action");
-//			int widgetID = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-//			System.out.println("WidgetID: "+widgetID);
-//			int position = intent.getIntExtra(AppointmentViewsFactory.INTENT_CLICK_POSITION, -1);
-//			System.out.println("Click position: "+position);
-//		}
+
+		// action of 'click on an item in schedule list (widget)'
+		if(SCHEDULE_CLICK_ACTION.equals(intent.getAction())){
+			// it is not clear whether its an regular item that was clicked or sth else
+			if(intent.hasExtra(AppointmentViewsFactory.INTENT_TYPE)){
+				if(AppointmentViewsFactory.INTENT_TYPE_OPEN_APP.equals(intent.getStringExtra(AppointmentViewsFactory.INTENT_TYPE))){
+					// click on empty list
+					PackageManager pm = context.getPackageManager();
+					try
+					{
+						// run the main app to load schedule
+					    Intent launchIntent = pm.getLaunchIntentForPackage(context.getPackageName());
+					    context.startActivity(launchIntent);
+					}
+					catch (Exception e1)
+					{
+					}
+				}else{
+//					int widgetID = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+//					System.out.println("WidgetID: "+widgetID);
+//					int position = intent.getIntExtra(AppointmentViewsFactory.INTENT_CLICK_POSITION, -1);
+//					System.out.println("Click position: "+position);
+				}
+			}
+		}
 		
 		super.onReceive(context, intent);
 	}
