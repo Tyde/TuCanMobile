@@ -8,4 +8,5 @@
   android:autoAdvanceViewId="@+id/widget_main"
   android:widgetCategory="home_screen|keyguard"
   android:resizeMode="vertical|horizontal"
+  android:previewImage="@drawable/widget_preview"
 />
