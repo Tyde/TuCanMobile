@@ -36,7 +36,7 @@
             android:title="@string/settings_widget_max_entries" />
 
         <Preference
-            android:defaultValue="0.5"
+            android:defaultValue="0.25"
             android:key="widget_transparency"
             android:title="@string/settings_transparency" />
     </PreferenceCategory>

@@ -52,7 +52,7 @@ public class WidgetProvider extends AppWidgetProvider {
 			return;
 
 		updateWidgetData(ctxt); //fixes widget update problem?
-		System.out.println("Run..");
+		
 		for (int widgetID : appWidgetIds) {
 			
 			RemoteViews widget = new RemoteViews(ctxt.getPackageName(),
