@@ -25,7 +25,9 @@ import android.annotation.TargetApi;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
@@ -46,6 +48,8 @@ public class AppointmentViewsFactory implements RemoteViewsFactory {
 	private int appWidgetID;
 	
 	public static final String INTENT_CLICK_POSITION = "INTENT_CLICK_POSITION";
+	public static final String INTENT_TYPE = "INTENT_TYPE";
+	public static final String INTENT_TYPE_OPEN_APP = "OPEN TUCAB APP";
 
 	public AppointmentViewsFactory() {
 		removeOldEntries();
@@ -85,8 +89,10 @@ public class AppointmentViewsFactory implements RemoteViewsFactory {
 		removeOldEntries();
 		if(items == null || items.isEmpty())
 			return 1;
-		//limit to 15 entries
-		return Math.min(items.size(), 25);
+		//limit to (value from settings) entries
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctxt.getApplicationContext());
+		int maxEntries = Integer.parseInt(prefs.getString("widget_max_entries", "25")); //a bit dirty...
+		return Math.min(items.size(), Math.max(maxEntries,1));
 	}
 
 	@Override
@@ -94,31 +100,32 @@ public class AppointmentViewsFactory implements RemoteViewsFactory {
 		RemoteViews row = new RemoteViews(ctxt.getPackageName(),
 				R.layout.widget_schedule_row);
 
-		if(items == null || items.isEmpty()){
-			row.setTextViewText(R.id.widget_event_room, ctxt.getResources().getString(R.string.widget_no_data_msg_title));
-			row.setTextViewText(R.id.widget_event_name, ctxt.getResources().getString(R.string.widget_no_data_msg));
-			return row;
-		}
-		
-		Appointment item = items.get(position);
-		if (position == 0
-				|| !item.getDateDescr().equals(
-						items.get(position - 1).getDateDescr())) {
-			row.setTextViewText(R.id.widget_daytitlebartext,
-					item.getDateDescr());
-			row.setViewVisibility(R.id.widget_daytitle, View.VISIBLE);
-		} else {
-			row.setViewVisibility(R.id.widget_daytitle, View.GONE);
-		}
-
-		row.setTextViewText(R.id.widget_event_name, item.getName());
-		row.setTextViewText(R.id.widget_event_time, item.getTimeInterval());
-		row.setTextViewText(R.id.widget_event_room, item.getRoom());
-
-
 		Intent i = new Intent();
 		i.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetID);
-		i.putExtra(INTENT_CLICK_POSITION, position);
+		
+		if(items == null || items.isEmpty()){
+			// empty list -> user has to login and open schedule first
+			row.setTextViewText(R.id.widget_event_room, ctxt.getResources().getString(R.string.widget_no_data_msg_title));
+			row.setTextViewText(R.id.widget_event_name, ctxt.getResources().getString(R.string.widget_no_data_msg));
+			
+			i.putExtra(INTENT_TYPE, INTENT_TYPE_OPEN_APP);
+		}else{
+			
+			Appointment item = items.get(position);
+			if (position == 0 || !item.getDateDescr().equals(items.get(position - 1).getDateDescr())) {
+				row.setTextViewText(R.id.widget_daytitlebartext,
+						item.getDateDescr());
+				row.setViewVisibility(R.id.widget_daytitle, View.VISIBLE);
+			} else {
+				row.setViewVisibility(R.id.widget_daytitle, View.GONE);
+			}
+	
+			row.setTextViewText(R.id.widget_event_name, item.getName());
+			row.setTextViewText(R.id.widget_event_time, item.getTimeInterval());
+			row.setTextViewText(R.id.widget_event_room, item.getRoom());
+			// set onclick-Acton
+			i.putExtra(INTENT_CLICK_POSITION, position);
+		}
 		row.setOnClickFillInIntent(R.id.widget_row, i);
 
 		return row;

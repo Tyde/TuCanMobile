@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dalthed.tucan"
-    android:versionCode="31"
-    android:versionName="0.3.6" >
+    android:versionCode="32"
+    android:versionName="0.3.7" >
 
     <uses-sdk
         android:minSdkVersion="4"
@@ -107,7 +107,7 @@
             android:label="Sicherheitseinstellungen" >
         </activity>
         <receiver
-              android:label="TuCan Stundenplan"
+              android:label="TUCaN Stundenplan"
               android:name=".widget.WidgetProvider">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
