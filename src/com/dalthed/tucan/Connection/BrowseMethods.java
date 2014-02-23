@@ -166,7 +166,8 @@ public class BrowseMethods {
 						// Eventuellen redirect auslesen und speichern
 						if ("refresh".equalsIgnoreCase(headerName)) {
 							String[] getredirectURL = headerValue.split("URL=");
-							redirectURL = getredirectURL[1];
+							if(getredirectURL.length>1)
+								redirectURL = getredirectURL[1];
 						}
 						if ("location".equalsIgnoreCase(headerName)) {
 							redirectURL = headerValue;
