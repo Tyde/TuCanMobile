@@ -18,6 +18,7 @@
 package com.dalthed.tucan.Connection;
 
 import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -191,9 +192,15 @@ public class BrowseMethods {
 			}
 
 		} catch (Exception e) {
-			if (!(e instanceof UnknownHostException) && !(e instanceof SSLException)) {
+			if(e instanceof EOFException) {
+				Log.e(LOG_TAG, "Verbindung abgebrochen");
+			}
+			else if (!(e instanceof UnknownHostException) && !(e instanceof SSLException)) {
 				ACRA.getErrorReporter().handleSilentException(e);
 			}
+
+
+			
 			if (TucanMobile.DEBUG) {
 				e.printStackTrace();
 			}
