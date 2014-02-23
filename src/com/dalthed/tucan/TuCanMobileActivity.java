@@ -17,6 +17,7 @@
 
 package com.dalthed.tucan;
 
+import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -226,7 +227,12 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 				if (requestInfo[i] != null) {
 					BrowseMethods Browser = new BrowseMethods();
 					// Requests letztendlich abschicken
-					answer = Browser.browse(requestInfo[i]);
+					try {
+						answer = Browser.browse(requestInfo[i]);
+					} catch (ConnectException e) {
+						Toast.makeText(TuCanMobileActivity.this, "Keine Internetverbindung", Toast.LENGTH_LONG).show();
+					}
+					
 					Log.i(LOG_TAG, "Redirect:" + answer.getRedirectURLString());
 				} else {
 					break;
@@ -285,7 +291,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 			} else {
 				Elements contentSpacer = doc.select("div#contentSpacer_IE");
 				
-				if (contentSpacer != null) {
+				if (contentSpacer == null) {
 					dialog.dismiss();
 					Toast error = Toast.makeText(TuCanMobileActivity.this,
 							"Fehler bei der Anmeldung", Toast.LENGTH_LONG);

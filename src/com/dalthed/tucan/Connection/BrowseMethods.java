@@ -22,6 +22,7 @@ import java.io.EOFException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
@@ -92,7 +93,7 @@ public class BrowseMethods {
 	 *            RequestObject mit allen Wichtigen Informationen zum Request
 	 * @return AnswerObject der Seite
 	 */
-	public AnswerObject browse(RequestObject requestInfo) {
+	public AnswerObject browse(RequestObject requestInfo) throws ConnectException {
 		String redirectURL = "";
 		String alllines = "";
 		if (Build.VERSION.SDK_INT < 9) {
@@ -194,6 +195,10 @@ public class BrowseMethods {
 		} catch (Exception e) {
 			if(e instanceof EOFException) {
 				Log.e(LOG_TAG, "Verbindung abgebrochen");
+			}
+			else if (e instanceof ConnectException) {
+				ConnectException cE = (ConnectException) e;
+				throw(cE);
 			}
 			else if (!(e instanceof UnknownHostException) && !(e instanceof SSLException)) {
 				ACRA.getErrorReporter().handleSilentException(e);

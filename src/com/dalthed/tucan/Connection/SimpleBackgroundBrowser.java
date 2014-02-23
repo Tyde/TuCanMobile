@@ -17,7 +17,11 @@
 
 package com.dalthed.tucan.Connection;
 
+import java.net.ConnectException;
+
+import android.app.Activity;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
@@ -40,7 +44,14 @@ public class SimpleBackgroundBrowser extends AsyncTask<RequestObject, Integer, A
 		RequestObject significantRequest = requestInfo[0];
 		BrowseMethods Browser = new BrowseMethods();
 		Browser.HTTPS = this.HTTPS;
-		answer = Browser.browse(significantRequest);
+		try {
+			answer = Browser.browse(significantRequest);
+		} catch (ConnectException e) {
+			if(callingActivity instanceof Activity) {
+				Toast.makeText((Activity) callingActivity, "Keine Internetverbindung", Toast.LENGTH_LONG).show();
+			}
+			
+		}
 		return answer;
 	}
 

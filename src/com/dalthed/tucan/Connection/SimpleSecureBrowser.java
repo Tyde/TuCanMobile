@@ -17,6 +17,8 @@
 
 package com.dalthed.tucan.Connection;
 
+import java.net.ConnectException;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -86,7 +88,11 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 		RequestObject significantRequest = requestInfo[0];
 		BrowseMethods Browser = new BrowseMethods();
 		Browser.HTTPS = this.HTTPS;
-		answer = Browser.browse(significantRequest);
+		try {
+			answer = Browser.browse(significantRequest);
+		} catch (ConnectException e) {
+			Toast.makeText(getparentActivityHandler(), "Keine Internetverbindung", Toast.LENGTH_LONG).show();
+		}
 		return answer;
 	}
 
