@@ -22,9 +22,12 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 import org.acra.ACRA;
+import org.acra.ACRAConfiguration;
+import org.acra.ErrorReporter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -63,15 +66,16 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		
+
 		ChangeLog cl = new ChangeLog(this);
-	    if (cl.firstRun())
-	        cl.getLogDialog().show();
-		
+		if (cl.firstRun())
+			cl.getLogDialog().show();
+
 		// this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 		// Get saved login information
-		final SharedPreferences altPrefs = getSharedPreferences("LOGIN", MODE_PRIVATE);
+		final SharedPreferences altPrefs = getSharedPreferences("LOGIN",
+				MODE_PRIVATE);
 		String alttuid = altPrefs.getString("tuid", "");
 		String altpw = altPrefs.getString("pw", "");
 
@@ -86,7 +90,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 		// Insert saved login information into EditTexts
 		usrnameField = (EditText) findViewById(R.id.login_usrname);
 		pwdField = (EditText) findViewById(R.id.login_pw);
-		
+
 		usrnameField.setText(tuid);
 		pwdField.setText(pw);
 
@@ -113,12 +117,15 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 			remember.setChecked(true);
 			// Generate Cookiemanager from string
 			CookieManager localCookieManager = new CookieManager();
-			localCookieManager.generateManagerfromHTTPString(TucanMobile.TUCAN_HOST, settCookie);
+			localCookieManager.generateManagerfromHTTPString(
+					TucanMobile.TUCAN_HOST, settCookie);
 			// Start connection
-			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(this);
+			SimpleSecureBrowser callOverviewBrowser = new SimpleSecureBrowser(
+					this);
 			RequestObject thisRequest = new RequestObject(
 					"https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=MLSSTART&ARGUMENTS="
-							+ settArg + ",", localCookieManager, RequestObject.METHOD_GET, "");
+							+ settArg + ",", localCookieManager,
+					RequestObject.METHOD_GET, "");
 
 			callOverviewBrowser.execute(thisRequest);
 
@@ -174,7 +181,8 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 					+ "&APPNAME=CampusNet&PRGNAME=LOGINCHECK&ARGUMENTS=clino%2Cusrname%2Cpass%2Cmenuno%2Cpersno%2Cbrowser%2Cplatform&clino=000000000000001&menuno=000344&persno=00000000&browser=&platform=";
 			Log.i(LOG_TAG, postdata);
 			// AnmeldeRequest Senden
-			thisRequest[1] = new RequestObject("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi",
+			thisRequest[1] = new RequestObject(
+					"https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi",
 					RequestObject.METHOD_POST, postdata);
 			// Restliche Requests werden aus der Antwort ausgelesen..
 
@@ -185,12 +193,14 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 		}
 	}
 
-	public class HTTPSBrowser extends AsyncTask<RequestObject, Integer, AnswerObject> {
+	public class HTTPSBrowser extends
+			AsyncTask<RequestObject, Integer, AnswerObject> {
 		ProgressDialog dialog;
 
 		protected void onPreExecute() {
 			// ProgressDialog anfertigen und anzeigen
-			dialog = ProgressBarDialogFactory.createProgressDialog(TuCanMobileActivity.this,
+			dialog = ProgressBarDialogFactory.createProgressDialog(
+					TuCanMobileActivity.this,
 					getResources().getString(R.string.ui_login));
 			dialog.show();
 		}
@@ -199,7 +209,8 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 		protected void onProgressUpdate(Integer... values) {
 			// Fortschritt Berechnen und anzeigen
 			int Progress = (int) ((((double) values[0] + 1) / (double) values[1]) * 100);
-			Log.i(LOG_TAG, values[0] + " von " + values[1] + " ergibt: " + Progress);
+			Log.i(LOG_TAG, values[0] + " von " + values[1] + " ergibt: "
+					+ Progress);
 			dialog.setProgress(Progress);
 		}
 
@@ -223,19 +234,22 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 				// Letztes Objekt
 				if (i < requestInfo.length - 1) {
 					// Check for HTTP-Redirect
-					if (answer.getRedirectURLString() != "" && requestInfo[i + 1] == null) {
+					if (answer.getRedirectURLString() != ""
+							&& requestInfo[i + 1] == null) {
 						Log.i(LOG_TAG,
 								"Insert new Redirect URL in RequestObject:"
 										+ answer.getRedirectURLString());
 						// Add HTTP-Redirect into requestInfo-List
 						requestInfo[i + 1] = new RequestObject("https://"
 								+ requestInfo[i].getmyURL().getHost()
-								+ answer.getRedirectURLString(), RequestObject.METHOD_GET, "");
+								+ answer.getRedirectURLString(),
+								RequestObject.METHOD_GET, "");
 
 					}
 					// Forward the Cookies
 					if (requestInfo[i + 1] != null)
-						requestInfo[i + 1].setCookieManager(answer.getCookieManager());
+						requestInfo[i + 1].setCookieManager(answer
+								.getCookieManager());
 				} else {
 					Log.i(LOG_TAG, "Zu viele Redirects");
 				}
@@ -250,74 +264,101 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 
 			dialog.setMessage(getResources().getString(R.string.ui_calc));
 			// Evaluate result
-
+			ErrorReporter errorReporter = ACRA.getErrorReporter();
+			//HTML Daten übergeben, falls es zu einem Fehler kommt
+			errorReporter.putCustomData("html", result.getHTML());
 			String User = "";
 			// Parse result
 			Document doc = Jsoup.parse(result.getHTML());
 			Element UserSpan = doc.select("span#loginDataName").first();
 			// If the maintenance message shows, div#zentrale_spalte exists in
 			// the HTML-File
-			if (doc.select("div#zentrale_spalte").first() != null) {
+			Elements zentraleSpalte = doc.select("div#zentrale_spalte");
+			if (zentraleSpalte != null && zentraleSpalte.first() != null) {
 				dialog.dismiss();
-				Toast wrongLoginNotif = Toast.makeText(TuCanMobileActivity.this,
-						"TuCan ist in Wartung und deswegen nicht erreichbar...", Toast.LENGTH_LONG);
-				wrongLoginNotif.show();
-			} else if (UserSpan == null) {
-				// If the UserSpan is null, the Login failed
-				dialog.dismiss();
-				Toast wrongLoginNotif = Toast.makeText(TuCanMobileActivity.this,
-						"Login fehlerhaft", Toast.LENGTH_LONG);
+				Toast wrongLoginNotif = Toast
+						.makeText(
+								TuCanMobileActivity.this,
+								"TuCan ist in Wartung und deswegen nicht erreichbar...",
+								Toast.LENGTH_LONG);
 				wrongLoginNotif.show();
 			} else {
-				// Login worked
-				try{
-					dialog.dismiss();
-				} catch (IllegalArgumentException e) {
-					Toast.makeText(TuCanMobileActivity.this, "Ich mag es nicht, wenn du mich drehst!",Toast.LENGTH_SHORT).show();
-				}
+				Elements contentSpacer = doc.select("div#contentSpacer_IE");
 				
-				// Get SessionArgument for other purposes in other activities
-				String lcURLString = result.getLastCalledURL();
-				try {
-					URL lcURL = new URL(lcURLString);
-					SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1].split(",")[0];
-				} catch (MalformedURLException e) {
-					// Send Bugreport
-					ACRA.getErrorReporter().handleSilentException(e);
-				}
-				// Redeem username
-				User = Jsoup.parse(UserSpan.html().split(":")[1]).text();
-				CheckBox remember = (CheckBox) findViewById(R.id.checkBox1);
-				if (remember.isChecked()) {
+				if (contentSpacer != null) {
+					dialog.dismiss();
+					Toast error = Toast.makeText(TuCanMobileActivity.this,
+							"Fehler bei der Anmeldung", Toast.LENGTH_LONG);
+					error.show();
+					errorReporter.handleSilentException(new Exception("Fehler bei der Anmeldung"));
+				} else if (UserSpan == null) {
 
-					// Delete sensitive Data in old Preferences
-					final SharedPreferences einstellungen = MainPreferences
-							.getSettings(TuCanMobileActivity.this);
-					SharedPreferences.Editor editor = einstellungen.edit();
-					editor.putString("tuid", "");
-					editor.putString("pw", "");
-					editor.putString("Cookie", "");
-					editor.putString("Session", "");
-					editor.commit();
+					// If the UserSpan is null, the Login failed
+					dialog.dismiss();
+					Toast wrongLoginNotif = Toast.makeText(
+							TuCanMobileActivity.this, "Login fehlerhaft",
+							Toast.LENGTH_LONG);
+					wrongLoginNotif.show();
+				} else {
+					// Login worked
+					try {
+						dialog.dismiss();
+					} catch (IllegalArgumentException e) {
+						Toast.makeText(TuCanMobileActivity.this,
+								"Ich mag es nicht, wenn du mich drehst!",
+								Toast.LENGTH_SHORT).show();
+					}
 
-					// Save Data in new Preferences
-					final SharedPreferences altPrefs = getSharedPreferences("LOGIN", MODE_PRIVATE);
-					SharedPreferences.Editor edit = altPrefs.edit();
-					edit.putString("tuid", usrnameField.getText().toString());
-					edit.putString("pw", pwdField.getText().toString());
-					edit.putString("Cookie",
-							result.getCookieManager().getCookieHTTPString(TucanMobile.TUCAN_HOST));
-					edit.putString("Session", SessionArgument);
-					edit.commit();
+					// Get SessionArgument for other purposes in other
+					// activities
+					String lcURLString = result.getLastCalledURL();
+					try {
+						URL lcURL = new URL(lcURLString);
+						SessionArgument = lcURL.getQuery().split("ARGUMENTS=")[1]
+								.split(",")[0];
+					} catch (MalformedURLException e) {
+						// Send Bugreport
+						errorReporter.handleSilentException(e);
+					}
+					// Redeem username
+					User = Jsoup.parse(UserSpan.html().split(":")[1]).text();
+					CheckBox remember = (CheckBox) findViewById(R.id.checkBox1);
+					if (remember.isChecked()) {
+
+						// Delete sensitive Data in old Preferences
+						final SharedPreferences einstellungen = MainPreferences
+								.getSettings(TuCanMobileActivity.this);
+						SharedPreferences.Editor editor = einstellungen.edit();
+						editor.putString("tuid", "");
+						editor.putString("pw", "");
+						editor.putString("Cookie", "");
+						editor.putString("Session", "");
+						editor.commit();
+
+						// Save Data in new Preferences
+						final SharedPreferences altPrefs = getSharedPreferences(
+								"LOGIN", MODE_PRIVATE);
+						SharedPreferences.Editor edit = altPrefs.edit();
+						edit.putString("tuid", usrnameField.getText()
+								.toString());
+						edit.putString("pw", pwdField.getText().toString());
+						edit.putString("Cookie", result.getCookieManager()
+								.getCookieHTTPString(TucanMobile.TUCAN_HOST));
+						edit.putString("Session", SessionArgument);
+						edit.commit();
+					}
+					// Start MainMenu
+					final Intent i = new Intent(TuCanMobileActivity.this,
+							MainMenu.class);
+					i.putExtra(
+							TucanMobile.EXTRA_COOKIE,
+							result.getCookieManager().getCookieHTTPString(
+									"www.tucan.tu-darmstadt.de"));
+					i.putExtra("source", result.getHTML());
+					i.putExtra(TucanMobile.EXTRA_USERNAME, User);
+					i.putExtra(TucanMobile.EXTRA_URL, result.getLastCalledURL());
+					startActivity(i);
 				}
-				// Start MainMenu
-				final Intent i = new Intent(TuCanMobileActivity.this, MainMenu.class);
-				i.putExtra(TucanMobile.EXTRA_COOKIE,
-						result.getCookieManager().getCookieHTTPString("www.tucan.tu-darmstadt.de"));
-				i.putExtra("source", result.getHTML());
-				i.putExtra(TucanMobile.EXTRA_USERNAME, User);
-				i.putExtra(TucanMobile.EXTRA_URL, result.getLastCalledURL());
-				startActivity(i);
 			}
 
 		}
@@ -336,16 +377,17 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 		Document doc = Jsoup.parse(result.getHTML());
 		try {
 			// Get username and check it. If it exists, start MainMenu
-			final String[] userSpan = doc.
-					select("span#loginDataName").
-					text().
-					split(":");
+			final String[] userSpan = doc.select("span#loginDataName").text()
+					.split(":");
 			if (userSpan.length > 1) {
 				String UserName = userSpan[1];
 				if (!UserName.equals("")) {
-					final Intent i = new Intent(TuCanMobileActivity.this, MainMenu.class);
-					i.putExtra(TucanMobile.EXTRA_COOKIE, result.getCookieManager()
-							.getCookieHTTPString("www.tucan.tu-darmstadt.de"));
+					final Intent i = new Intent(TuCanMobileActivity.this,
+							MainMenu.class);
+					i.putExtra(
+							TucanMobile.EXTRA_COOKIE,
+							result.getCookieManager().getCookieHTTPString(
+									"www.tucan.tu-darmstadt.de"));
 					i.putExtra("source", result.getHTML());
 					i.putExtra(TucanMobile.EXTRA_URL, result.getLastCalledURL());
 					startActivity(i);
@@ -353,17 +395,17 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 					onClickSendLogin(null);
 				}
 			} else {
-				
+
 				onClickSendLogin(null);
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
 			Log.i(LOG_TAG, "Fehler: " + e.getMessage());
-			
+
 			onClickSendLogin(null);
 		} catch (Exception e) {
 			ACRA.getErrorReporter().handleSilentException(e);
 			Log.i(LOG_TAG, "Fehler: " + e.getMessage());
-			
+
 			onClickSendLogin(null);
 		}
 
