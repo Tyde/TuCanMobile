@@ -136,7 +136,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 		@Override
 		public ListFragment getItem(int position) {
 			ArrayListFragment newFragment = ArrayListFragment.newInstance(position);
-
+            Log.i(LOG_TAG,"getItem aufgerufen position: "+position);
 			return (ListFragment) newFragment;
 		}
 
@@ -167,10 +167,10 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 
 		public void setPrimaryItem(ViewGroup container, int position, Object object) {
 			super.setPrimaryItem(container, position, object);
-			Log.i(LOG_TAG, "setPrimaryItem called");
+			//Log.i(LOG_TAG, "setPrimaryItem called");
 			if (object instanceof ArrayListFragment && position <= (adapterList.size() - 1)) {
-				Log.i(LOG_TAG, "is the right instance -> Position is " + position
-						+ " and Object is: " + object.toString());
+				//Log.i(LOG_TAG, "is the right instance -> Position is " + position
+				//		+ " and Object is: " + object.toString());
 				ArrayListFragment curFrag = ((ArrayListFragment) object);
 				if (position == 2 && fileList != null) {
 					curFrag.setFilelinks(fileList);

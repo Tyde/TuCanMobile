@@ -27,6 +27,7 @@ import org.jsoup.select.Elements;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 
@@ -81,11 +82,12 @@ public class SingleEventScraper extends BasicScraper {
 					fsh.setSubtitle(Title);
 				}
 
-				scrapeInformations();
+
 
 				Iterator<Element> captionIt = doc.select("caption").iterator();
 				Iterator<Element> dateTable = null;
 				Iterator<Element> materialTable = null;
+                Iterator<Element> informationTable = null;
 				while (captionIt.hasNext()) {
 					Element next = captionIt.next();
 					if (next.text().equals("Termine")) {
@@ -94,8 +96,12 @@ public class SingleEventScraper extends BasicScraper {
 					} else if (next.text().contains("Material")) {
 
 						materialTable = next.parent().select("tr").iterator();
-					}
+					} else if (next.text().contains("Veranstaltungsdetails")) {
+                        informationTable = next.parent().select("tr").iterator();
+                    }
 				}
+
+                scrapeInformations(informationTable);
 				scrapeAppointments(dateTable);
 
 				scrapeMaterials(materialTable);
@@ -245,36 +251,36 @@ public class SingleEventScraper extends BasicScraper {
 	/**
 	 * 
 	 */
-	private void scrapeInformations() {
-		final Element courseTable = doc.select("table[courseid]").first();
-		if (courseTable != null) {
-			Elements Deltarows = courseTable.select("tr");
-			Element rows;
-			if (Deltarows.size() == 1) {
-				rows = Deltarows.get(0).select("td").first();
-			} else {
-				rows = Deltarows.get(1).select("td").first();
-			}
+	private void scrapeInformations(Iterator<Element> informationIterator) {
 
-			Elements Paragraphs = rows.select("p");
-			Iterator<Element> PaIt = Paragraphs.iterator();
-			ArrayList<String> titles = new ArrayList<String>();
-			ArrayList<String> values = new ArrayList<String>();
+        while (informationIterator.hasNext()) {
 
-			while (PaIt.hasNext()) {
+            Element nextElement = informationIterator.next();
 
-				Element next = PaIt.next();
-				String[] information = crop(next.html());
-				if(information[1].length() > 0){
-					titles.add(information[0]);
-					values.add(information[1]);
-				}
+            Elements td = nextElement.select("td");
+            if(td!=null && td.hasClass("tbdata")){
+                Elements Paragraphs = nextElement.select("p");
+                Iterator<Element> PaIt = Paragraphs.iterator();
+                ArrayList<String> titles = new ArrayList<String>();
+                ArrayList<String> values = new ArrayList<String>();
 
-			}
-			if (mPageAdapter != null) {
-				mPageAdapter.setAdapter(new TwoLinesAdapter(context, titles, values));
-			}
-		}
+                while (PaIt.hasNext()) {
+
+                    Element next = PaIt.next();
+                    String[] information = crop(next.html());
+                    if(information[1].length() > 0){
+                        titles.add(information[0]);
+                        values.add(information[1]);
+                    }
+
+                }
+                Log.i(LOG_TAG, "Informationscraper working");
+                if (mPageAdapter != null) {
+                    Log.i(LOG_TAG, "InformationAdapter set");
+                    mPageAdapter.setAdapter(new TwoLinesAdapter(context, titles, values));
+                }
+            }
+        }
 	}
 
 	private static String[] crop(String startstring) {
