@@ -77,7 +77,7 @@ public class SingleEventScraper extends BasicScraper {
 				if (checkforModule()) {
 					return null;
 				}
-				String Title = doc.select("h1").text();
+				String Title = doc.select("h1").text().replace("\n"," ");
 				if (fsh != null) {
 					fsh.setSubtitle(Title);
 				}

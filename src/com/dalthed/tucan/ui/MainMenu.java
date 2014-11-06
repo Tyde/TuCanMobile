@@ -74,6 +74,7 @@ public class MainMenu extends SimpleWebListActivity implements
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
 		String lastCalledURLString = getIntent().getExtras().getString("URL");
 		String source = getIntent().getExtras().getString("source");
+
 		// Log.i(LOG_TAG,"Qsource);
 		URL lastCalledURL;
 		if (!restoreResultBrowser()) {

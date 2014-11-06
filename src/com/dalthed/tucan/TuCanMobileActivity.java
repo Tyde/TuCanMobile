@@ -354,16 +354,25 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 						edit.commit();
 					}
 					// Start MainMenu
-					final Intent i = new Intent(TuCanMobileActivity.this,
-							MainMenu.class);
-					i.putExtra(
-							TucanMobile.EXTRA_COOKIE,
-							result.getCookieManager().getCookieHTTPString(
-									"www.tucan.tu-darmstadt.de"));
-					i.putExtra("source", result.getHTML());
-					i.putExtra(TucanMobile.EXTRA_USERNAME, User);
-					i.putExtra(TucanMobile.EXTRA_URL, result.getLastCalledURL());
-					startActivity(i);
+                    final Intent i = new Intent(TuCanMobileActivity.this,
+                            MainMenu.class);
+                    i.putExtra(
+                            TucanMobile.EXTRA_COOKIE,
+                            result.getCookieManager().getCookieHTTPString(
+                                    "www.tucan.tu-darmstadt.de"));
+                    if(result.getHTML().length()<200000){
+
+                        i.putExtra("source", result.getHTML());
+
+                    }
+                    else {
+                        Log.i(LOG_TAG,"No source mode");
+                        i.putExtra("noSource",true);
+                    }
+                    i.putExtra(TucanMobile.EXTRA_USERNAME, User);
+                    i.putExtra(TucanMobile.EXTRA_URL, result.getLastCalledURL());
+                    startActivity(i);
+
 				}
 			}
 

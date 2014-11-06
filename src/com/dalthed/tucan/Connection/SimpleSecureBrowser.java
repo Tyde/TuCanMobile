@@ -153,10 +153,12 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 			if (dialog != null  && dialog.isShowing())
 				dialog.dismiss();
 		} catch (IllegalArgumentException e) {
-			Toast.makeText(parentActivityHandler, "Bei dem Drehen des Bildschirmes ist ein Fehler aufgetreten", Toast.LENGTH_LONG).show();
-			
-			//ACRA.getErrorReporter().handleSilentException(e);
-			parentActivityHandler.finish();
+            if(parentActivityHandler!=null) {
+                Toast.makeText(parentActivityHandler, "Bei dem Drehen des Bildschirmes ist ein Fehler aufgetreten", Toast.LENGTH_LONG).show();
+
+                //ACRA.getErrorReporter().handleSilentException(e);
+                parentActivityHandler.finish();
+            }
 		}
 
 	}

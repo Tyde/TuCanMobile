@@ -47,4 +47,7 @@ public interface BrowserAnswerReciever {
 	 * @param conf {@link ConfigurationChangeStorage}, welcher relevante Daten für die Activity enthält
 	 */
 	public abstract void retainConfiguration(ConfigurationChangeStorage conf);
+
+
+
 }
