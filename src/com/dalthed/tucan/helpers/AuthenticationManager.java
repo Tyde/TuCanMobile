@@ -1,3 +1,20 @@
+/**
+ *	This file is part of TuCan Mobile.
+ *
+ *	TuCan Mobile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	TuCan Mobile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.dalthed.tucan.helpers;
 
 import android.content.Context;
@@ -10,8 +27,9 @@ public class AuthenticationManager {
     public static final String PREF_FILE_NAME = "LOGIN";
     private static final String PREF_KEY_TUID = "tuid";
     private static final String PREF_KEY_PASSWORD = "pw";
-    private static final String PREF_KEY_COOKIE = "cookie";
-    private static final String PREF_KEY_SESSION = "session";
+    private static final String PREF_KEY_COOKIE = "Cookie";
+    private static final String PREF_KEY_SESSION = "Session";
+    private static final String PREF_KEY_ENCRYPTION = "crypted";
 
     private static SharedPreferences mPreferences;
 
@@ -40,9 +58,19 @@ public class AuthenticationManager {
     public Account getAccount()
     {
         SharedPreferences prefs = mPreferences;
+        // encryption flag for backward compatibility
+        boolean encrypted = prefs.getBoolean(PREF_KEY_ENCRYPTION, false);
+
+        String tuid = prefs.getString(PREF_KEY_TUID, "");
+        String pw = prefs.getString(PREF_KEY_PASSWORD, "");
+        if(encrypted) {
+            tuid = EncryptionHelper.decrypt(tuid);
+            pw = EncryptionHelper.decrypt(pw);
+        }
+
         return new Account(
-                prefs.getString(PREF_KEY_TUID, ""),
-                prefs.getString(PREF_KEY_PASSWORD, ""),
+                tuid,
+                pw,
                 prefs.getString(PREF_KEY_COOKIE, null),
                 prefs.getString(PREF_KEY_SESSION, null)
         );
@@ -57,8 +85,9 @@ public class AuthenticationManager {
     {
         SharedPreferences prefs = mPreferences;
         SharedPreferences.Editor e = prefs.edit();
-        e.putString(PREF_KEY_TUID, account.getTuId());
-        e.putString(PREF_KEY_PASSWORD, account.getPassword());
+        e.putBoolean(PREF_KEY_ENCRYPTION, true);
+        e.putString(PREF_KEY_TUID, EncryptionHelper.encrypt(account.getTuId()));
+        e.putString(PREF_KEY_PASSWORD, EncryptionHelper.encrypt(account.getPassword()));
         if(account.getStoredSession() != null)
             e.putString(PREF_KEY_SESSION, account.getStoredSession());
         if(account.getStoredCookie() != null)
@@ -99,6 +128,7 @@ public class AuthenticationManager {
     {
         return updateAccount("", "", "", "");
     }
+
     /**
      * Holder for login information
      */
