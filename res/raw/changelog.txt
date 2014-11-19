@@ -22,15 +22,15 @@
 $ 0.3.X
   % Version 0.3.X
   _ XX.1X.2014
-    * <b>Fix</b> Widget zeigt Uhrzeit in neuer Zeile falls Raum zu lang
+    * <b>Fix:</b> Widget: Zeilenumbruch falls Uhrzeit und Raum überlappen würden.
 $ 0.3.9
   % Version 0.3.9
   _ 06.11.2014
-    * <b>Fix</b> Absturz bei zu vielen ungelesenen Nachrichten
+    * <b>Fix:</b> Absturz bei zu vielen ungelesenen Nachrichten
 $ 0.3.8
   % Version 0.3.8
   _ 05.11.2014
-    * <b>Fix</b> Einzelansicht von Veranstaltungen
+    * <b>Fix:</b> Einzelansicht von Veranstaltungen
 $ 0.3.7
   % Version 0.3.7
   _ 16.02.2014
