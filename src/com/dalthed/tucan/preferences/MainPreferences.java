@@ -58,6 +58,7 @@ public class MainPreferences extends PreferenceActivity {
 			public boolean onPreferenceClick(Preference preference) {
 				logout();
 				Intent backtostartIntent = new Intent(MainPreferences.this,TuCanMobileActivity.class);
+				backtostartIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				backtostartIntent.putExtra("loggedout", true);
 				startActivity(backtostartIntent);
 				return true;
@@ -67,7 +68,7 @@ public class MainPreferences extends PreferenceActivity {
 //			PreferenceCategory category = (PreferenceCategory) findPreference("pref_category_misc");
 //			category.removePreference(logoutPreference);
 //		}
-		
+
 		
 		Preference changelogPreference = (Preference) findPreference("changelog");
 		
