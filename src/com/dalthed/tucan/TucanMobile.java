@@ -22,6 +22,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import com.dalthed.tucan.helpers.AuthenticationManager;
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender.Method;
@@ -102,6 +103,7 @@ public class TucanMobile extends Application {
 		if(!TucanMobile.TESTING){
 			ACRA.init(this);
 		}
+		AuthenticationManager.init(this);
 		
 		
 		super.onCreate();

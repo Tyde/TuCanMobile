@@ -37,6 +37,7 @@ import android.widget.SeekBar;
 
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
+import com.dalthed.tucan.helpers.AuthenticationManager;
 import com.dalthed.tucan.ui.ChangeLog;
 import com.dalthed.tucan.widget.WidgetProvider;
 
@@ -142,13 +143,7 @@ public class MainPreferences extends PreferenceActivity {
 	}
 	
 	private void logout(){
-		final SharedPreferences altPrefs = getSharedPreferences("LOGIN", MODE_PRIVATE);
-		SharedPreferences.Editor editor = altPrefs.edit();
-		editor.putString("tuid", "");
-		editor.putString("pw", "");
-		editor.putString("Cookie", "");
-		editor.putString("Session", "");
-		editor.commit();
+		AuthenticationManager.getInstance().deleteAccount();
 	}
 	
 	private void setWidgetTransparency(int transparency){
