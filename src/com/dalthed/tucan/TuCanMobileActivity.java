@@ -22,8 +22,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import com.dalthed.tucan.helpers.AuthenticationManager;
 import org.acra.ACRA;
-import org.acra.ACRAConfiguration;
 import org.acra.ErrorReporter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -75,17 +75,14 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 		// this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 		// Get saved login information
-		final SharedPreferences altPrefs = getSharedPreferences("LOGIN",
-				MODE_PRIVATE);
-		String alttuid = altPrefs.getString("tuid", "");
-		String altpw = altPrefs.getString("pw", "");
+		AuthenticationManager.Account acc = AuthenticationManager.getInstance().getAccount();
 
 		String tuid = "";
 		String pw = "";
 
-		if (!alttuid.equals("")) {
-			tuid = alttuid;
-			pw = altpw;
+		if (!acc.getTuId().equals("")) {
+			tuid = acc.getTuId();
+			pw = acc.getPassword();
 
 		}
 		// Insert saved login information into EditTexts
@@ -97,8 +94,8 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 
 		// Get old Cookie and Session from Preferences to try using the site
 		// without login
-		String settCookie = altPrefs.getString("Cookie", null);
-		String settArg = altPrefs.getString("Session", null);
+		String settCookie = acc.getStoredCookie();
+		String settArg = acc.getStoredSession();
 		Boolean failedSession = false;
 		Boolean loggedout = false;
 		// Check if coming back from a lostSessionError and do not try to use
@@ -331,27 +328,12 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 					CheckBox remember = (CheckBox) findViewById(R.id.checkBox1);
 					if (remember.isChecked()) {
 
-						// Delete sensitive Data in old Preferences
-						final SharedPreferences einstellungen = MainPreferences
-								.getSettings(TuCanMobileActivity.this);
-						SharedPreferences.Editor editor = einstellungen.edit();
-						editor.putString("tuid", "");
-						editor.putString("pw", "");
-						editor.putString("Cookie", "");
-						editor.putString("Session", "");
-						editor.commit();
-
-						// Save Data in new Preferences
-						final SharedPreferences altPrefs = getSharedPreferences(
-								"LOGIN", MODE_PRIVATE);
-						SharedPreferences.Editor edit = altPrefs.edit();
-						edit.putString("tuid", usrnameField.getText()
-								.toString());
-						edit.putString("pw", pwdField.getText().toString());
-						edit.putString("Cookie", result.getCookieManager()
-								.getCookieHTTPString(TucanMobile.TUCAN_HOST));
-						edit.putString("Session", SessionArgument);
-						edit.commit();
+						AuthenticationManager.getInstance().updateAccount(
+								usrnameField.getText().toString(),
+								pwdField.getText().toString(),
+								result.getCookieManager().getCookieHTTPString(TucanMobile.TUCAN_HOST),
+								SessionArgument
+						);
 					}
 					// Start MainMenu
                     final Intent i = new Intent(TuCanMobileActivity.this,

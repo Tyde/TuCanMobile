@@ -37,6 +37,7 @@ import android.widget.SeekBar;
 
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
+import com.dalthed.tucan.helpers.AuthenticationManager;
 import com.dalthed.tucan.ui.ChangeLog;
 import com.dalthed.tucan.widget.WidgetProvider;
 
@@ -57,6 +58,7 @@ public class MainPreferences extends PreferenceActivity {
 			public boolean onPreferenceClick(Preference preference) {
 				logout();
 				Intent backtostartIntent = new Intent(MainPreferences.this,TuCanMobileActivity.class);
+				backtostartIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				backtostartIntent.putExtra("loggedout", true);
 				startActivity(backtostartIntent);
 				return true;
@@ -66,7 +68,7 @@ public class MainPreferences extends PreferenceActivity {
 //			PreferenceCategory category = (PreferenceCategory) findPreference("pref_category_misc");
 //			category.removePreference(logoutPreference);
 //		}
-		
+
 		
 		Preference changelogPreference = (Preference) findPreference("changelog");
 		
@@ -142,13 +144,7 @@ public class MainPreferences extends PreferenceActivity {
 	}
 	
 	private void logout(){
-		final SharedPreferences altPrefs = getSharedPreferences("LOGIN", MODE_PRIVATE);
-		SharedPreferences.Editor editor = altPrefs.edit();
-		editor.putString("tuid", "");
-		editor.putString("pw", "");
-		editor.putString("Cookie", "");
-		editor.putString("Session", "");
-		editor.commit();
+		AuthenticationManager.getInstance().deleteAccount();
 	}
 	
 	private void setWidgetTransparency(int transparency){
