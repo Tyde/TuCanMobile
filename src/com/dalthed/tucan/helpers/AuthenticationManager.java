@@ -19,6 +19,7 @@ package com.dalthed.tucan.helpers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 
 /**
  * Class to manage user credentials
@@ -63,7 +64,7 @@ public class AuthenticationManager {
 
         String tuid = prefs.getString(PREF_KEY_TUID, "");
         String pw = prefs.getString(PREF_KEY_PASSWORD, "");
-        if(encrypted) {
+        if(encrypted && Build.VERSION.SDK_INT > 7) {
             tuid = EncryptionHelper.decrypt(tuid);
             pw = EncryptionHelper.decrypt(pw);
         }
@@ -85,9 +86,17 @@ public class AuthenticationManager {
     {
         SharedPreferences prefs = mPreferences;
         SharedPreferences.Editor e = prefs.edit();
-        e.putBoolean(PREF_KEY_ENCRYPTION, true);
-        e.putString(PREF_KEY_TUID, EncryptionHelper.encrypt(account.getTuId()));
-        e.putString(PREF_KEY_PASSWORD, EncryptionHelper.encrypt(account.getPassword()));
+        
+        if(Build.VERSION.SDK_INT > 7)
+        {
+            e.putString(PREF_KEY_TUID, EncryptionHelper.encrypt(account.getTuId()));
+            e.putString(PREF_KEY_PASSWORD, EncryptionHelper.encrypt(account.getPassword()));
+            e.putBoolean(PREF_KEY_ENCRYPTION, true);
+        } else
+        {
+            e.putString(PREF_KEY_TUID, account.getTuId());
+            e.putString(PREF_KEY_PASSWORD, account.getPassword());
+        }
         if(account.getStoredSession() != null)
             e.putString(PREF_KEY_SESSION, account.getStoredSession());
         if(account.getStoredCookie() != null)
