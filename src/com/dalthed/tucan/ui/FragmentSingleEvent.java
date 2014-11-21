@@ -315,6 +315,10 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 	public void retainConfiguration(ConfigurationChangeStorage conf) {
 	}
 
-	
+    @Override
+    public void runOnUI(Runnable runnable) {
+        runnable.run();
+    }
+
 
 }

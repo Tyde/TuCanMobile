@@ -161,4 +161,9 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 
 	}
 
+    @Override
+    public void runOnUI(Runnable runnable) {
+        runnable.run();
+    }
+
 }

@@ -22,6 +22,9 @@ import android.widget.ListAdapter;
 
 import com.dalthed.tucan.scraper.BasicScraper;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
+
+import java.util.logging.Handler;
+
 /**
  * Interface, das es ermöglicht, die empfangenen Antworten vom Server innerhalb der {@link Activity} weiterzuverarbeiten
  * @author Daniel Thiem
@@ -48,6 +51,8 @@ public interface BrowserAnswerReciever {
 	 */
 	public abstract void retainConfiguration(ConfigurationChangeStorage conf);
 
+
+    public abstract void runOnUI(Runnable runnable);
 
 
 }

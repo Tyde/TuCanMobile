@@ -149,4 +149,9 @@ public abstract class SimpleWebActivity extends SherlockActivity implements
 		return false;
 	}
 
+
+    @Override
+    public void runOnUI(Runnable runnable) {
+        runnable.run();
+    }
 }
