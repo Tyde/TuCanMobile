@@ -11,6 +11,10 @@ Um die App selbst zu Compilen sind folgende Pakete notwendig:
 	[viewPagerIndicator](http://viewpagerindicator.com/)¹ (inkl android support)
 	[ActionbarSherlock](http://actionbarsherlock.com/)¹ (inkl android support)
 	
+
+Das Importieren über die .gradle Datei mit Android Studio erlaubt es, direkt loszulegen und eigentlich nichts einzurichten.
+
+
 Mitmachen ist erwünscht ;)
 	
 	Lizenzen:
