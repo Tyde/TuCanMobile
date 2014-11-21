@@ -93,7 +93,7 @@ public class BrowseMethods {
 	 *            RequestObject mit allen Wichtigen Informationen zum Request
 	 * @return AnswerObject der Seite
 	 */
-	public AnswerObject browse(RequestObject requestInfo) throws ConnectException {
+	public AnswerObject browse(RequestObject requestInfo) throws ConnectException, UnknownHostException {
 		String redirectURL = "";
 		String alllines = "";
 		if (Build.VERSION.SDK_INT < 9) {
@@ -201,6 +201,10 @@ public class BrowseMethods {
 				ConnectException cE = (ConnectException) e;
 				throw(cE);
 			}
+            else if(e instanceof UnknownHostException) {
+                UnknownHostException uE = (UnknownHostException) e;
+                throw uE;
+            }
 			else if (!(e instanceof UnknownHostException) && !(e instanceof SSLException)) {
 				ACRA.getErrorReporter().handleSilentException(e);
 			}

@@ -52,7 +52,7 @@ public interface BrowserAnswerReciever {
 	public abstract void retainConfiguration(ConfigurationChangeStorage conf);
 
 
-    public abstract void runOnUI(Runnable runnable);
+
 
 
 }

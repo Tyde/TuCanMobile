@@ -226,7 +226,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 					// Requests letztendlich abschicken
 					try {
 						answer = Browser.browse(requestInfo[i]);
-					} catch (ConnectException e) {
+					} catch (Exception e) {
 						Toast.makeText(TuCanMobileActivity.this, "Keine Internetverbindung", Toast.LENGTH_LONG).show();
 					}
 					

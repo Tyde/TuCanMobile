@@ -18,6 +18,7 @@
 package com.dalthed.tucan.Connection;
 
 import java.net.ConnectException;
+import java.net.UnknownHostException;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -25,6 +26,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.widget.Toast;
 
 import com.dalthed.tucan.R;
@@ -90,13 +92,23 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 		Browser.HTTPS = this.HTTPS;
 		try {
 			answer = Browser.browse(significantRequest);
-		} catch (ConnectException e) {
-            outerCallingRecieverActivity.runOnUI(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(TucanMobile.getAppContext(), "Keine Internetverbindung", Toast.LENGTH_LONG).show();
-                }
-            });
+		} catch (Exception e) {
+            if(e instanceof ConnectException || e instanceof UnknownHostException) {
+                final Activity context = getparentActivityHandler();
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Toast toast = Toast.makeText(context, "Keine Internetverbindung",
+                                Toast.LENGTH_LONG);
+                        toast.show();
+
+                    }
+                };
+                getparentActivityHandler().runOnUiThread(runnable);
+
+
+            }
 
 
 		}
@@ -150,7 +162,7 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 	@Override
 	protected void onPostExecute(AnswerObject result) {
 
-		Activity parentActivityHandler = getparentActivityHandler();
+		final Activity parentActivityHandler = getparentActivityHandler();
 		try {
 			if (dialog != null) {
 				dialog.setTitle(parentActivityHandler.getResources().getString(R.string.ui_calc));
@@ -161,10 +173,10 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 				dialog.dismiss();
 		} catch (IllegalArgumentException e) {
             if(parentActivityHandler!=null) {
-                outerCallingRecieverActivity.runOnUI(new Runnable() {
+                getparentActivityHandler().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(TucanMobile.getAppContext(), "Bei dem Drehen des Bildschirmes ist ein Fehler aufgetreten", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getparentActivityHandler(), "Bei dem Drehen des Bildschirmes ist ein Fehler aufgetreten", Toast.LENGTH_LONG).show();
                     }
                 });
 

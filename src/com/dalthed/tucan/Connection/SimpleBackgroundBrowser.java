@@ -46,7 +46,7 @@ public class SimpleBackgroundBrowser extends AsyncTask<RequestObject, Integer, A
 		Browser.HTTPS = this.HTTPS;
 		try {
 			answer = Browser.browse(significantRequest);
-		} catch (ConnectException e) {
+		} catch (Exception e) {
 			if(callingActivity instanceof Activity) {
 				Toast.makeText((Activity) callingActivity, "Keine Internetverbindung", Toast.LENGTH_LONG).show();
 			}
