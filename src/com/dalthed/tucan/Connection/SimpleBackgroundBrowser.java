@@ -48,7 +48,15 @@ public class SimpleBackgroundBrowser extends AsyncTask<RequestObject, Integer, A
 			answer = Browser.browse(significantRequest);
 		} catch (Exception e) {
 			if(callingActivity instanceof Activity) {
-				Toast.makeText((Activity) callingActivity, "Keine Internetverbindung", Toast.LENGTH_LONG).show();
+
+                final Activity realCallingActivity = (Activity) callingActivity;
+                realCallingActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(realCallingActivity, "Keine Internetverbindung", Toast.LENGTH_LONG).show();
+                    }
+                });
+
 			}
 			
 		}
