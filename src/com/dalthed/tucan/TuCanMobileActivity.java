@@ -227,7 +227,13 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 					try {
 						answer = Browser.browse(requestInfo[i]);
 					} catch (Exception e) {
-						Toast.makeText(TuCanMobileActivity.this, "Keine Internetverbindung", Toast.LENGTH_LONG).show();
+                        TuCanMobileActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(TuCanMobileActivity.this, "Keine Internetverbindung", Toast.LENGTH_LONG).show();
+                            }
+                        });
+
 					}
 					
 					Log.i(LOG_TAG, "Redirect:" + answer.getRedirectURLString());

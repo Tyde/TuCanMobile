@@ -22,6 +22,7 @@ import org.acra.ACRA;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -161,9 +162,6 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 
 	}
 
-    @Override
-    public void runOnUI(Runnable runnable) {
-        runnable.run();
-    }
+
 
 }

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.ListFragment;
@@ -315,10 +316,7 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 	public void retainConfiguration(ConfigurationChangeStorage conf) {
 	}
 
-    @Override
-    public void runOnUI(Runnable runnable) {
-        runnable.run();
-    }
+
 
 
 }

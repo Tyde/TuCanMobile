@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
@@ -150,8 +151,5 @@ public abstract class SimpleWebActivity extends SherlockActivity implements
 	}
 
 
-    @Override
-    public void runOnUI(Runnable runnable) {
-        runnable.run();
-    }
+
 }
