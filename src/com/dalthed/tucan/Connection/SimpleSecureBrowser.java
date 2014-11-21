@@ -91,7 +91,8 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 		try {
 			answer = Browser.browse(significantRequest);
 		} catch (ConnectException e) {
-			Toast.makeText(getparentActivityHandler(), "Keine Internetverbindung", Toast.LENGTH_LONG).show();
+            Toast.makeText(TucanMobile.getAppContext(), "Keine Internetverbindung", Toast.LENGTH_LONG).show();
+
 		}
 		return answer;
 	}
@@ -154,7 +155,7 @@ public class SimpleSecureBrowser extends AsyncTask<RequestObject, Integer, Answe
 				dialog.dismiss();
 		} catch (IllegalArgumentException e) {
             if(parentActivityHandler!=null) {
-                Toast.makeText(parentActivityHandler, "Bei dem Drehen des Bildschirmes ist ein Fehler aufgetreten", Toast.LENGTH_LONG).show();
+                Toast.makeText(TucanMobile.getAppContext(), "Bei dem Drehen des Bildschirmes ist ein Fehler aufgetreten", Toast.LENGTH_LONG).show();
 
                 //ACRA.getErrorReporter().handleSilentException(e);
                 parentActivityHandler.finish();
