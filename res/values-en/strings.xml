@@ -82,4 +82,10 @@
     <!-- Widget -->
     <string name="widget_no_data_msg_title">Error: TUCaN.Mobile App</string>
     <string name="widget_no_data_msg">Please open Schedule in App!</string>
+
+
+    <!-- Register Exams -->
+    <string name="register_exams_alert_message">The exam registration is still an experimental feature. Please always check on the website, if your registration was really successfull.</string>
+    <string name="register_exams_alert_title">Experimental feature</string>
+    <string name="register_exams_alert_accept">I understand.</string>
 </resources>
