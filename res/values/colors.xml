@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="tucan_green">#99a504</color>
+    <color name="tucan_green">#779324</color>
     <color name="tucan_grey">#a2a6ab</color>
     <color name="tucan_title_darkgrey">#6b6d6f</color>
     <color name="register_deregister_red">#C00808</color>
-    
+
+    <color name="tucan_background">#f2f2f2</color>
         
     <color name="triadic_dark">#72130E</color>
     <color name="triadic_light">#F11D12</color>
-    <color name="triadic_blue">#1668B2</color>
+    <color name="triadic_blue">#37465d</color>
     
     <!-- New Design -->
-    <color name="actionbar_green">#b1bd00</color>
-    <color name="menu_left_stop">#1667b2</color>
-    <color name="menu_bg">#f4f5d0</color>
+    <color name="actionbar_green">#779324</color>
+    <color name="menu_left_stop">#37465d</color>
+    <color name="menu_bg">#9dc02e</color>
     <color name="subtitle_grey">#e8e8e8</color>
     
     <!-- ACCOMPLISHMEHT-LEVELS -->

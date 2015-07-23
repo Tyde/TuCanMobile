@@ -4,9 +4,10 @@
     android:layout_height="@dimen/main_menu_row_height"
     android:orientation="horizontal"
     android:paddingTop="@dimen/main_menu_row_padding_top"
-    android:background="#FFFFFF" >
+    android:background="@color/tucan_background" >
 
-     
+    
+ 
 
     <!-- <android.widget.Space
         android:id="@+id/main_menu_row_left_space"

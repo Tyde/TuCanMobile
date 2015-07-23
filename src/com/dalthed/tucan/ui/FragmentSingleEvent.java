@@ -29,7 +29,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +87,9 @@ public class FragmentSingleEvent extends FragmentWebActivity {
 		// TitlePageIndicator befüllen
 		TitlePageIndicator titleIndicator = (TitlePageIndicator) findViewById(R.id.titles);
 		titleIndicator.setViewPager(mPager);
-		titleIndicator.setTextSize(20);
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+		titleIndicator.setTextSize(15*dm.scaledDensity);
 		titleIndicator.setTextColor(0x33333333);
 		titleIndicator.setSelectedColor(0xFF000000);
 		titleIndicator.setFooterColor(getResources().getColor(R.color.tucan_green));

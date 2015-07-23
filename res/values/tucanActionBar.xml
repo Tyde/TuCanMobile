@@ -7,6 +7,6 @@
 
     <style name="Theme.TucanActionBar" parent="@style/Theme.Sherlock.Light">
         <item name="android:actionBarStyle">@style/TucanActionBarStyle</item>
-        <item name="android:windowBackground">@android:color/white</item>	
+        <item name="android:windowBackground">@color/tucan_background</item>
     </style>
 </resources>

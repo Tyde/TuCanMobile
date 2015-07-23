@@ -83,5 +83,10 @@
     <!-- Widget -->
     <string name="widget_no_data_msg_title">Fehler: TUCaN.Mobile App</string>
     <string name="widget_no_data_msg">Bitte erst den Stundenplan in App öffnen!</string>
-    
+
+    <!-- Register Exams -->
+    <string name="register_exams_alert_message">Das Anmelden für Prüfungen ist immer noch ein experimentelles Feature. Das Anmelden zu einer Prüfüng sollte unbending immer nochmals auf der richtigen Webseite überprüft werden.</string>
+    <string name="register_exams_alert_title">Experimentelles feature</string>
+    <string name="register_exams_alert_accept">Ich habe verstanden!</string>
+
 </resources>

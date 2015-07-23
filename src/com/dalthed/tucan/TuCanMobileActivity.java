@@ -38,6 +38,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -68,7 +69,8 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		ChangeLog cl = new ChangeLog(this);
+        getSupportActionBar().hide();
+        ChangeLog cl = new ChangeLog(this);
 		if (cl.firstRun())
 			cl.getLogDialog().show();
 

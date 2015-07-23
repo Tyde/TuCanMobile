@@ -19,9 +19,15 @@
     </style>
   </head>
   <body>
+$ 0.3.7
+  % Version 0.3.8
+  _ 23.07.2015
+    * <b>Fix:</b> Korrektes Anzeigen der Umlaute
+    * Warnmeldung bei Prüfungsanmeldung
+    * <b>Fix:</b> Absturz der App bei weniger als 10 Stundenplaneinträgen im Widget behoben
 $ 0.3.X
   % Version 0.3.X
-  _ XX.1X.2014
+  _
     * <b>Fix:</b> Widget: Zeilenumbruch falls Uhrzeit und Raum überlappen würden.
 $ 0.3.9
   % Version 0.3.9
