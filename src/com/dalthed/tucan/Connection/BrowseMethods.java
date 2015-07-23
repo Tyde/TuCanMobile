@@ -74,7 +74,7 @@ public class BrowseMethods {
 		HTTPConnection
 				.setRequestProperty(
 						"User-Agent",
-						"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.94 Safari/537.4");
+						"TuCan.Mobile Android App");
 		HTTPConnection.setInstanceFollowRedirects(false);
 		// Cookies setzen:
 		if (myCookies != null && myCookies.domain_exists(domain)) {
