@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/singleevent_row_date_linear"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/schedule_daytitle"
+        style="@style/schedule_daytitlebar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" 
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/schedule_daytitlebartext"
+            style="@style/schedule_daytitlebartext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <FrameLayout 
+            android:background="@color/tucan_title_darkgrey"
+            android:layout_height="2dip"
+            android:layout_width="fill_parent"></FrameLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/schedule_event_room"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="2dp"
+            />
+
+        <TextView
+            android:id="@+id/schedule_event_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="2dp"
+             />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+		<!-- 
+        <TextView
+            android:id="@+id/singleevent_row_date_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="#" />
+		 -->
+        <TextView
+            android:id="@+id/schedule_event_name"
+            style="@style/mm_events_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="right"
+            android:layout_marginRight="2dp"
+            />
+    </RelativeLayout>
+
+  
+
+</LinearLayout>

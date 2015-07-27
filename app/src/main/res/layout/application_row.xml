@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/application_type_desc"
+        android:text="@string/application_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView 
+        android:id="@+id/application_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/application_type_desc" />
+    <TextView
+        android:id="@+id/application_field_desc"
+        android:text="@string/application_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_below="@id/application_type"/>
+    <TextView 
+        android:id="@+id/application_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/application_field_desc" />
+    <TextView
+        android:id="@+id/application_semester_desc"
+        android:text="@string/application_semester"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_below="@id/application_field"/>
+    <TextView 
+        android:id="@+id/application_semester"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/application_semester_desc" />
+    <TextView
+        android:id="@+id/application_begin_desc"
+        android:text="@string/application_begin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/application_semester" />
+    <TextView 
+        android:id="@+id/application_begin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/application_begin_desc" />
+    <TextView
+        android:id="@+id/application_sent_desc"
+        android:text="@string/application_sent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/application_begin" />
+    <TextView 
+        android:id="@+id/application_sent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/application_sent_desc" />
+    <TextView
+        android:id="@+id/application_status_desc"
+        android:text="@string/application_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/application_sent" />
+    <TextView 
+        android:id="@+id/application_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/application_status_desc" />
+
+</RelativeLayout>

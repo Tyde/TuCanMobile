@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/loginmenu_opt_setpreferences"
+		android:title="@string/loginmenu_preferences" android:icon="@android:drawable/ic_menu_preferences" />
+	
+	<item android:id="@+id/loginmenu_opt_changelog"
+	    android:title="@string/loginmenu_changelog" android:visible="false"/>
+	
+	<item android:id="@+id/loginmenu_opt_close" android:title="@string/loginmenu_close"
+		 android:icon="@android:drawable/ic_menu_close_clear_cancel"/>
+
+</menu>
