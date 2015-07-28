@@ -76,12 +76,6 @@ public abstract class SimpleWebListActivity extends SherlockListActivity impleme
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	public static void sendHTMLatBug(String html) {
-		if (!TucanMobile.TESTING) {
-			ACRA.getErrorReporter().putCustomData("html", html);
-		}
-
-	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

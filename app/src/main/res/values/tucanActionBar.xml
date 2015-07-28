@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="TucanActionBarStyle" parent="Widget.Sherlock.Light.ActionBar">
-        <item name="android:background">@color/actionbar_green</item>
-    </style>
 
-    <style name="Theme.TucanActionBar" parent="@style/Theme.Sherlock.Light">
-        <item name="android:actionBarStyle">@style/TucanActionBarStyle</item>
+
+    <style name="Theme.TucanActionBar" parent="Theme.AppCompat.Light">
+        <item name="android:background">@color/actionbar_green</item>
+        <item name="android:colorPrimary">@color/actionbar_green</item>
         <item name="android:windowBackground">@color/tucan_background</item>
     </style>
 </resources>

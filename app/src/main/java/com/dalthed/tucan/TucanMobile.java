@@ -168,4 +168,11 @@ public class TucanMobile extends Application {
 				}).create();
 	}
 
+	public static void sendHTMLatBug(String html) {
+		if (!TucanMobile.TESTING) {
+			ACRA.getErrorReporter().putCustomData("html", html);
+		}
+
+	}
+
 }
