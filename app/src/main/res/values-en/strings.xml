@@ -88,4 +88,13 @@
     <string name="register_exams_alert_message">The exam registration is still an experimental feature. Please always check on the website, if your registration was really successfull.</string>
     <string name="register_exams_alert_title">Experimental feature</string>
     <string name="register_exams_alert_accept">I understand.</string>
+
+    <!-- Imprint Shit -->
+    <string name="hintToInofficial">
+        <![CDATA[
+            This app is not officially supported by the TU Darmstadt, but it is a private project.<br><u>Imprint</u>
+        ]]>
+    </string>
+    <string name="imprint">Imprint:\n Daniel Thiem\n Bartningstraße 16\n 64289 Darmstadt\n\n This app is not officially supported by the TU Darmstadt. Registrations done with this app should always be rechecked on the real TUCaN-Website.</string>
+    <string name="title_activity_imprint">Impressum</string>
 </resources>

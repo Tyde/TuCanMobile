@@ -87,7 +87,13 @@
                 android:layout_height="wrap_content"
                 android:text="" >
             </TextView>
-        </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/paddingTopToImprint"
+                android:id="@+id/hintForPrivateproject"
+                android:gravity="center"
+                /></LinearLayout>
         
         
     </LinearLayout>

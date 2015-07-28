@@ -37,12 +37,14 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dalthed.tucan.Connection.AnswerObject;
@@ -52,6 +54,7 @@ import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
 import com.dalthed.tucan.preferences.MainPreferences;
 import com.dalthed.tucan.ui.ChangeLog;
+import com.dalthed.tucan.ui.ImprintActivity;
 import com.dalthed.tucan.ui.MainMenu;
 import com.dalthed.tucan.ui.ProgressBarDialogFactory;
 import com.dalthed.tucan.ui.SimpleWebActivity;
@@ -72,6 +75,16 @@ public class TuCanMobileActivity extends SimpleWebActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+
+        TextView hint = (TextView) findViewById(R.id.hintForPrivateproject);
+        hint.setText(Html.fromHtml(getString(R.string.hintToInofficial)));
+        hint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent startImprint = new Intent(TuCanMobileActivity.this,ImprintActivity.class);
+                startActivity(startImprint);
+            }
+        });
         getSupportActionBar().hide();
         ChangeLog cl = new ChangeLog(this);
         if (cl.firstRun()) {

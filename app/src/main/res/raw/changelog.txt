@@ -19,7 +19,12 @@
     </style>
   </head>
   <body>
-$ 0.3.7
+$ 0.4.3
+  % Version 0.4.3
+  _ 28.07.2015
+    * Rechtschreibfehler behoben
+    * Einbau eines Impressums
+$ 0.4.2
   % Version 0.4.2
   _ 23.07.2015
     * <b>Fix:</b> Korrektes Anzeigen der Umlaute

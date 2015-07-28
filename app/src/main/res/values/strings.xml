@@ -85,8 +85,19 @@
     <string name="widget_no_data_msg">Bitte erst den Stundenplan in App öffnen!</string>
 
     <!-- Register Exams -->
-    <string name="register_exams_alert_message">Das Anmelden für Prüfungen ist immer noch ein experimentelles Feature. Das Anmelden zu einer Prüfüng sollte unbending immer nochmals auf der richtigen Webseite überprüft werden.</string>
+    <string name="register_exams_alert_message">Das Anmelden für Prüfungen ist immer noch ein experimentelles Feature. Die Anmeldung zu einer Prüfüng sollte unbendingt immer nochmals auf der richtigen Webseite überprüft werden.</string>
     <string name="register_exams_alert_title">Experimentelles feature</string>
     <string name="register_exams_alert_accept">Ich habe verstanden!</string>
+
+    <!-- Imprint Shit -->
+    <string name="hintToInofficial">
+        <![CDATA[
+            Dies ist keine offiziell unterstütze App der TU Darmstadt, sondern ein Privatprojekt.<br><u>Impressum</u>
+        ]]>
+    </string>
+    <string name="imprint">Impressum:\n Daniel Thiem\n Bartningstraße 16\n 64289 Darmstadt\n\n Dies ist kein offizielles Projekt der TU Darmstadt. Es wird keine Haftung für fehlgeschlagene Anmeldungen übernommen. Es ist geraten, die ausgeführten Aktionen auf der offiziellen Webseite zu überprüfen.</string>
+    <string name="title_activity_imprint">Impressum</string>
+
+
 
 </resources>

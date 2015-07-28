@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dalthed.tucan"
-    android:versionCode="38"
-    android:versionName="0.4.2" >
+    android:versionCode="39"
+    android:versionName="0.4.3" >
 
     <uses-sdk
         android:minSdkVersion="7"
         android:targetSdkVersion="16" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    
-
 
     <application
         android:name=".TucanMobile"
@@ -106,17 +103,27 @@
             android:name=".preferences.MainPreferences"
             android:label="Sicherheitseinstellungen" >
         </activity>
+
         <receiver
-              android:label="TUCaN Stundenplan"
-              android:name=".widget.WidgetProvider">
-      <intent-filter>
-        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-      </intent-filter>
-      <meta-data android:name="android.appwidget.provider"
-                 android:resource="@xml/widget_provider" />
-    </receiver>
-    <service android:name=".widget.WidgetService"
-             android:permission="android.permission.BIND_REMOTEVIEWS" />
+            android:name=".widget.WidgetProvider"
+            android:label="TUCaN Stundenplan" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider" />
+        </receiver>
+
+        <service
+            android:name=".widget.WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <activity
+            android:name=".ui.ImprintActivity"
+            android:label="@string/title_activity_imprint" >
+        </activity>
     </application>
 
 </manifest>
