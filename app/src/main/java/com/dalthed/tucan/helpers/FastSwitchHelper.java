@@ -77,21 +77,7 @@ public class FastSwitchHelper {
             spinner.setAdapter(dropAdapter);
             spinner.setOnItemClickListener((AdapterView.OnItemClickListener) context);
         }
-        /*
-        this.context = context;
-        this.navigateList = navigateList;
-        this.navigationItem = navigationItem;
-        this.acBar = acBar;
-        if (navigateList && createLinkArray() && context instanceof ActionBar.OnNavigationListener) {
-            Context ac_context = acBar.getThemedContext();
-            dropAdapter = new FastSwitchAdapter(context, context.getResources().getStringArray(R.array.mainmenu_options));
 
-            acBar.setDisplayShowTitleEnabled(false);
-
-
-
-
-        }*/
     }
 
     public void setSubtitle(CharSequence subtitle) {
