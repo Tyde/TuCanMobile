@@ -32,6 +32,9 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLException;
 
 import org.acra.ACRA;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 
 import android.os.Build;
@@ -46,7 +49,7 @@ import com.dalthed.tucan.TucanMobile;
  * @author Tyde
  */
 public class BrowseMethods {
-    private HttpURLConnection HTTPConnection;
+    private HttpURLConnection httpConnection;
     private CookieManager myCookies;
     public boolean iwantthereader = false;
     public InputStream in;
@@ -63,22 +66,22 @@ public class BrowseMethods {
     private void setImportantHeaders(String RequestMethod, String domain) {
         try {
             // GET oder POST setzen
-            HTTPConnection.setRequestMethod(RequestMethod);
+            httpConnection.setRequestMethod(RequestMethod);
         } catch (ProtocolException e) {
             e.printStackTrace();
         }
         // Browser-Header: Currently Chrome 22
-        HTTPConnection
+        httpConnection
                 .setRequestProperty(
                         "User-Agent",
                         "TuCan.Mobile Android App");
-        HTTPConnection.setInstanceFollowRedirects(false);
+        httpConnection.setInstanceFollowRedirects(false);
         // Cookies setzen:
         if (myCookies != null && myCookies.domain_exists(domain)) {
             if (TucanMobile.DEBUG) {
                 Log.i(LOG_TAG, "Cookie gesetzt:" + myCookies.getCookieHTTPString(domain));
             }
-            HTTPConnection.setRequestProperty("Cookie", myCookies.getCookieHTTPString(domain));
+            httpConnection.setRequestProperty("Cookie", myCookies.getCookieHTTPString(domain));
         }
     }
 
@@ -106,16 +109,16 @@ public class BrowseMethods {
                 String postdata = requestInfo.getPostData();
 
                 if (HTTPS) {
-                    HTTPConnection = (HttpsURLConnection) realURL.openConnection();
+                    httpConnection = (HttpsURLConnection) realURL.openConnection();
                 } else {
-                    HTTPConnection = (HttpURLConnection) realURL.openConnection();
+                    httpConnection = (HttpURLConnection) realURL.openConnection();
                 }
                 if (TucanMobile.DEBUG) {
                     Log.i(LOG_TAG, "Started Connection with: " + realURL.toString());
                 }
                 if (RequestMethod.equals("POST")) {
                     // Output bei POST-Übertragung aktivierten
-                    HTTPConnection.setDoOutput(true);
+                    httpConnection.setDoOutput(true);
                 }
                 // Ursprünglichen Request setzen
                 setImportantHeaders(RequestMethod, realURL.getHost());
@@ -123,22 +126,23 @@ public class BrowseMethods {
                 if (RequestMethod.equals("POST")) {
                     // Post-Daten senden
                     OutputStreamWriter out = new OutputStreamWriter(
-                            HTTPConnection.getOutputStream());
+                            httpConnection.getOutputStream());
                     out.write(postdata);
                     out.close();
                 }
 
-                // Antwort auslesen
-                in = HTTPConnection.getInputStream();
-                isr = new InputStreamReader(in, "UTF-8");
+
 
                 if (!iwantthereader) {
-
+                    // Antwort auslesen
+                    in = httpConnection.getInputStream();
+                    isr = new InputStreamReader(in, "UTF-8");
                     BufferedReader bin = new BufferedReader(isr, 8 * 1024);
+
                     // Header auslesen
                     for (int n = 0; ; n++) {
-                        String headerValue = HTTPConnection.getHeaderField(n);
-                        String headerName = HTTPConnection.getHeaderFieldKey(n);
+                        String headerValue = httpConnection.getHeaderField(n);
+                        String headerName = httpConnection.getHeaderFieldKey(n);
                         if (headerValue == null && headerName == null) {
 
                             break;
@@ -170,10 +174,11 @@ public class BrowseMethods {
                         }
 
                     }
-                    int contentlength = HTTPConnection.getContentLength();
+                    int contentlength = httpConnection.getContentLength();
                     if (TucanMobile.DEBUG) {
                         Log.i(LOG_TAG, contentlength + "...");
                     }
+
 
                     // Server-Antwort auslesen und speichern
                     StringBuilder inputBuilder = new StringBuilder();
@@ -186,11 +191,37 @@ public class BrowseMethods {
                     }
                     in.close();
                     alllines = inputBuilder.toString();
+                    if(requestInfo.isRedirectNecessary() && redirectURL.equals("")) {
+                        Document document = Jsoup.parse(alllines);
+                        Elements meta = document.select("html head meta");
+                        if (meta != null)
+                        {
+                            System.out.println("Meta found");
+                            String lvHttpEquiv = meta.attr("http-equiv");
+                            if (lvHttpEquiv != null && lvHttpEquiv.toLowerCase().contains("refresh"))
+                            {
+                                System.out.println("Refresh found");
+                                String lvContent = meta.attr("content");
+                                if (lvContent != null)
+                                {
+                                    System.out.println("lvContent found");
+                                    String[] lvContentArray = lvContent.split(";");
+                                    System.out.println(lvContent);
+                                    if (lvContentArray.length > 1)
+                                        if((lvContentArray[1].toLowerCase()).startsWith("url=")){
+                                            redirectURL = lvContentArray[1].substring(4);
+                                        }
+
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
         } catch (Exception e) {
             if (e instanceof EOFException) {
+                e.printStackTrace();
                 Log.e(LOG_TAG, "Verbindung abgebrochen");
             } else if (e instanceof ConnectException) {
                 throw ((ConnectException) e);

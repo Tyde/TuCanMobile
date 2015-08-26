@@ -34,6 +34,7 @@ public class RequestObject {
 	private CookieManager RequestCookies;
 	private String RequestMethod;
 	private String RequestpostData;
+	private boolean redirectNecessary ;
 	/**
 	 * HTTP-Methode GET
 	 */
@@ -62,7 +63,7 @@ public class RequestObject {
 	 * @author Daniel Thiem
 	 */
 	public RequestObject(String RequestString, CookieManager RequestCookiemanager, String method,
-			String postdata) {
+			String postdata, boolean redirectNecessary) {
 		try {
 			this.RequestURL = new URL(RequestString);
 			// Log.i(LOG_TAG,"Hier haste die URL:"+RequestString);
@@ -79,6 +80,11 @@ public class RequestObject {
 			this.RequestMethod = METHOD_GET;
 		}
 		this.RequestpostData = postdata;
+		this.redirectNecessary = redirectNecessary;
+	}
+	public RequestObject(String RequestString, CookieManager RequestCookiemanager, String method,
+						 String postdata) {
+		this(RequestString, RequestCookiemanager, method, postdata,false);
 	}
 
 	/**
@@ -98,8 +104,13 @@ public class RequestObject {
 	 * @author Daniel Thiem
 	 */
 	public RequestObject(String RequestString, String method, String postdata) {
-		this(RequestString, new CookieManager(), method, postdata);
+		this(RequestString, new CookieManager(), method, postdata,false);
 	}
+
+	public boolean isRedirectNecessary() {
+		return redirectNecessary;
+	}
+
 
 	/**
 	 * 

@@ -19,6 +19,11 @@
     </style>
   </head>
   <body>
+$ 0.4.4
+  % Version 0.4.4
+  _ 26.08.2015
+    * Fehler im Login behoben (TuCan't Update war Schuld)
+    * Update des HTML-Scrapers (Möglicherweise Verbesserungen der Geschwindigkeit)
 $ 0.4.3
   % Version 0.4.3
   _ 28.07.2015

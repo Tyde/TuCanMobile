@@ -1,18 +1,18 @@
 /**
- *	This file is part of TuCan Mobile.
- *
- *	TuCan Mobile is free software: you can redistribute it and/or modify
- *	it under the terms of the GNU General Public License as published by
- *	the Free Software Foundation, either version 3 of the License, or
- *	(at your option) any later version.
- *
- *	TuCan Mobile is distributed in the hope that it will be useful,
- *	but WITHOUT ANY WARRANTY; without even the implied warranty of
- *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *	GNU General Public License for more details.
- *
- *	You should have received a copy of the GNU General Public License
- *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
+ * This file is part of TuCan Mobile.
+ * <p/>
+ * TuCan Mobile is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p/>
+ * TuCan Mobile is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * <p/>
+ * You should have received a copy of the GNU General Public License
+ * along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package com.dalthed.tucan;
@@ -81,7 +81,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
         hint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent startImprint = new Intent(TuCanMobileActivity.this,ImprintActivity.class);
+                Intent startImprint = new Intent(TuCanMobileActivity.this, ImprintActivity.class);
                 startActivity(startImprint);
             }
         });
@@ -110,7 +110,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 
         usrnameField.setText(tuid);
         pwdField.setText(pw);
-        if(!tuid.isEmpty()&& !pw.isEmpty()) {
+        if (!tuid.isEmpty() && !pw.isEmpty()) {
             ((CheckBox) findViewById(R.id.checkBox1)).setChecked(true);
         }
 
@@ -127,7 +127,6 @@ public class TuCanMobileActivity extends SimpleWebActivity {
             if (getIntent().getExtras().getBoolean("loggedout"))
                 loggedout = true;
         }
-
 
 
         // Try to connect to site with old credentials, if they are existent
@@ -147,7 +146,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
             RequestObject thisRequest = new RequestObject(
                     "https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=MLSSTART&ARGUMENTS="
                             + settArg + ",", localCookieManager,
-                    RequestObject.METHOD_GET, "");
+                    RequestObject.METHOD_GET, "", false);
 
             callOverviewBrowser.execute(thisRequest);
 
@@ -199,12 +198,12 @@ public class TuCanMobileActivity extends SimpleWebActivity {
                     + URLEncoder.encode(usrname, "UTF-8")
                     + "&pass="
                     + URLEncoder.encode(pwd, "UTF-8")
-                    + "&APPNAME=CampusNet&PRGNAME=LOGINCHECK&ARGUMENTS=clino%2Cusrname%2Cpass%2Cmenuno%2Cpersno%2Cbrowser%2Cplatform&clino=000000000000001&menuno=000344&persno=00000000&browser=&platform=";
+                    + "&APPNAME=CampusNet&PRGNAME=LOGINCHECK&ARGUMENTS=clino%2Cusrname%2Cpass%2Cmenuno%2Cmenu_type%2Cbrowser%2Cplatform&clino=000000000000001&menuno=000344&menu_type=classic&browser=&platform=";
             Log.i(LOG_TAG, postdata);
             // AnmeldeRequest Senden
             thisRequest[1] = new RequestObject(
-                    "https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi",
-                    RequestObject.METHOD_POST, postdata);
+                    "https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi", new CookieManager(),
+                    RequestObject.METHOD_POST, postdata, true);
             // Restliche Requests werden aus der Antwort ausgelesen..
 
             // Requests abscicken
@@ -246,9 +245,11 @@ public class TuCanMobileActivity extends SimpleWebActivity {
                 // TODO: requestInfo in ArrayList umwandeln ?
                 if (requestInfo[i] != null) {
                     BrowseMethods Browser = new BrowseMethods();
+
                     // Requests letztendlich abschicken
                     try {
                         answer = Browser.browse(requestInfo[i]);
+
                     } catch (Exception e) {
                         TuCanMobileActivity.this.runOnUiThread(new Runnable() {
                             @Override
@@ -274,8 +275,8 @@ public class TuCanMobileActivity extends SimpleWebActivity {
                         // Add HTTP-Redirect into requestInfo-List
                         requestInfo[i + 1] = new RequestObject("https://"
                                 + requestInfo[i].getmyURL().getHost()
-                                + answer.getRedirectURLString(),
-                                RequestObject.METHOD_GET, "");
+                                + answer.getRedirectURLString(), new CookieManager(),
+                                RequestObject.METHOD_GET, "", i < (requestInfo.length - 1));
 
                     }
                     // Forward the Cookies

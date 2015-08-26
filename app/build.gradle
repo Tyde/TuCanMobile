@@ -22,6 +22,6 @@ dependencies {
     compile 'com.viewpagerindicator:library:2.4.1@aar'
     compile 'com.android.support:support-v4:22.0.+'
     compile 'org.apache.commons:commons-lang3:3.0'
-    compile 'org.jsoup:jsoup:1.8.1'
+    compile 'org.jsoup:jsoup:1.8.3'
     compile 'ch.acra:acra:4.5.0'
 }

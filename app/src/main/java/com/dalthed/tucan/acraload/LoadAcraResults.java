@@ -59,7 +59,7 @@ public class LoadAcraResults extends SimpleWebListActivity {
 			localCookieManager = new CookieManager();
 			localCookieManager.inputCookie("daniel-thiem.de", "canView", "16ede40c878aee38d0882b3a6b2642c0ae76dafb");
 			RequestObject thisRequest = new RequestObject(URLStringtoCall,
-					localCookieManager, RequestObject.METHOD_GET, "");
+					localCookieManager, RequestObject.METHOD_GET, "",false);
 			SimpleSecureBrowser callResultBrowser = new SimpleSecureBrowser(
 					this);
 			callResultBrowser.HTTPS=false;
