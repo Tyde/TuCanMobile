@@ -119,7 +119,7 @@ public class EventsScraper extends BasicScraper {
 		}
 		SemesterOptionName = new ArrayList<String>();
 		SemesterOptionValue = new ArrayList<String>();
-
+		doc.select("select#semester");
 		Iterator<Element> SemesterOptionIterator = doc.select("option")
 				.iterator();
 		int i = 0;

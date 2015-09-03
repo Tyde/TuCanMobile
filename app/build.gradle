@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply from: 'build.workaround-missing-resource.gradle'
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
@@ -15,6 +15,8 @@ android {
     }
 }
 
+
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     //compile 'com.android.support:appcompat-v7:22.2.1'
@@ -24,4 +26,9 @@ dependencies {
     compile 'org.apache.commons:commons-lang3:3.0'
     compile 'org.jsoup:jsoup:1.8.3'
     compile 'ch.acra:acra:4.5.0'
+    testCompile 'junit:junit:4.12'
+    testCompile "org.robolectric:robolectric:3.0"
+    testCompile 'commons-io:commons-io:2.4'
+
 }
+
