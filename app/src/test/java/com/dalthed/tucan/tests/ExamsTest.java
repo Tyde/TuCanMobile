@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.jsoup.Jsoup;
 import org.junit.Test;
 
-import com.dalthed.tucan.Connection.AnswerObject;
+import com.dalthed.tucan.connection.AnswerObject;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.scraper.ExamsScraper;

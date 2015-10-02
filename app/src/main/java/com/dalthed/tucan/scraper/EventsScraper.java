@@ -34,7 +34,7 @@ import android.widget.SpinnerAdapter;
 
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TucanMobile;
-import com.dalthed.tucan.Connection.AnswerObject;
+import com.dalthed.tucan.connection.AnswerObject;
 import com.dalthed.tucan.adapters.HighlightedThreeLinesAdapter;
 import com.dalthed.tucan.adapters.MergedAdapter;
 import com.dalthed.tucan.adapters.ThreeLinesAdapter;

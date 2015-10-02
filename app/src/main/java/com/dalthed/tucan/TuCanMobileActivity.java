@@ -17,7 +17,6 @@
 
 package com.dalthed.tucan;
 
-import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -33,26 +32,23 @@ import org.jsoup.select.Elements;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dalthed.tucan.Connection.AnswerObject;
-import com.dalthed.tucan.Connection.BrowseMethods;
-import com.dalthed.tucan.Connection.CookieManager;
-import com.dalthed.tucan.Connection.RequestObject;
-import com.dalthed.tucan.Connection.SimpleSecureBrowser;
-import com.dalthed.tucan.preferences.MainPreferences;
+import com.dalthed.tucan.connection.AnswerObject;
+import com.dalthed.tucan.connection.BrowseMethods;
+import com.dalthed.tucan.connection.CookieManager;
+import com.dalthed.tucan.connection.RequestObject;
+import com.dalthed.tucan.connection.SimpleSecureBrowser;
 import com.dalthed.tucan.ui.ChangeLog;
 import com.dalthed.tucan.ui.ImprintActivity;
 import com.dalthed.tucan.ui.MainMenu;

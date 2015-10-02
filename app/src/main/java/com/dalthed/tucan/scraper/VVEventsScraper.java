@@ -35,8 +35,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 
 import com.dalthed.tucan.TucanMobile;
-import com.dalthed.tucan.Connection.AnswerObject;
-import com.dalthed.tucan.Connection.CookieManager;
+import com.dalthed.tucan.connection.AnswerObject;
+import com.dalthed.tucan.connection.CookieManager;
 import com.dalthed.tucan.adapters.ThreeLinesAdapter;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;

@@ -15,15 +15,13 @@
  *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.dalthed.tucan.Connection;
+package com.dalthed.tucan.connection;
 
 import android.app.Activity;
 import android.widget.ListAdapter;
 
 import com.dalthed.tucan.scraper.BasicScraper;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
-
-import java.util.logging.Handler;
 
 /**
  * Interface, das es ermöglicht, die empfangenen Antworten vom Server innerhalb der {@link Activity} weiterzuverarbeiten

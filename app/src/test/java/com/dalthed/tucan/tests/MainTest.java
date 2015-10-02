@@ -1,11 +1,6 @@
 package com.dalthed.tucan.tests;
 
-import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
 
 import org.jsoup.Jsoup;
 import org.junit.Before;
@@ -13,11 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.junit.Assert.assertTrue;
 
-import android.widget.ListAdapter;
-
-import com.dalthed.tucan.TucanMobile;
-import com.dalthed.tucan.Connection.AnswerObject;
-import com.dalthed.tucan.Connection.CookieManager;
+import com.dalthed.tucan.connection.AnswerObject;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.scraper.EventsScraper;
@@ -82,7 +73,7 @@ public class MainTest extends BasicTest {
 		AnswerObject result = new AnswerObject(html, "", cm, URLStringtoCall);
 		RegisterExamsScraper examScraper = new RegisterExamsScraper(fakeExams, result,
 				URLStringtoCall, cm);
-		// "Welche methode soll ausgeführt werden?"
+		// "Welche methode soll ausgefï¿½hrt werden?"
 		// "0: scrapeAnswer(0)"
 		// "1: startRegistration()"
 		// "2: getRegisterDialog()"

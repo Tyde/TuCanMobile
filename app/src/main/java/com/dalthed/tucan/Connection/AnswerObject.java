@@ -15,7 +15,7 @@
  *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.dalthed.tucan.Connection;
+package com.dalthed.tucan.connection;
 /**
  * AnswerObject ist das Object, welches von BrowseMethods wieder zur�ckgegeben wird
  * Es enthält den HTML text, die redirect URL, die zuletzt aufgerufene URL und den CookieManager

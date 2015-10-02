@@ -31,7 +31,7 @@ import android.widget.ListAdapter;
 import android.widget.SpinnerAdapter;
 
 import com.dalthed.tucan.R;
-import com.dalthed.tucan.Connection.AnswerObject;
+import com.dalthed.tucan.connection.AnswerObject;
 import com.dalthed.tucan.adapters.ThreeLinesAdapter;
 import com.dalthed.tucan.adapters.ThreeLinesTableAdapter;
 import com.dalthed.tucan.exceptions.LostSessionException;

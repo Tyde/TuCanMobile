@@ -15,7 +15,7 @@
  *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.dalthed.tucan.Connection;
+package com.dalthed.tucan.connection;
 
 /**
  * Wie {@link BrowserAnswerReciever}, nur für {@link SimpleBackgroundBrowser}. Derzeit noch nicht voll funktionsfähig
