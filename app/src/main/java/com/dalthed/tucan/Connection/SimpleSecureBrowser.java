@@ -15,7 +15,7 @@
  *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.dalthed.tucan.Connection;
+package com.dalthed.tucan.connection;
 
 import java.net.ConnectException;
 import java.net.UnknownHostException;
@@ -26,7 +26,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.widget.Toast;
 
 import com.dalthed.tucan.R;

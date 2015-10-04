@@ -33,11 +33,11 @@ import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import com.dalthed.tucan.TucanMobile;
-import com.dalthed.tucan.Connection.AnswerObject;
-import com.dalthed.tucan.Connection.BrowserAnswerReciever;
-import com.dalthed.tucan.Connection.CookieManager;
-import com.dalthed.tucan.Connection.RequestObject;
-import com.dalthed.tucan.Connection.SimpleSecureBrowser;
+import com.dalthed.tucan.connection.AnswerObject;
+import com.dalthed.tucan.connection.BrowserAnswerReciever;
+import com.dalthed.tucan.connection.CookieManager;
+import com.dalthed.tucan.connection.RequestObject;
+import com.dalthed.tucan.connection.SimpleSecureBrowser;
 import com.dalthed.tucan.adapters.RegisterExamAdapter;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;

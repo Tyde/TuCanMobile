@@ -26,8 +26,8 @@ import android.util.Log;
 import android.widget.ListAdapter;
 
 import com.dalthed.tucan.TucanMobile;
-import com.dalthed.tucan.Connection.BrowserAnswerReciever;
-import com.dalthed.tucan.Connection.SimpleSecureBrowser;
+import com.dalthed.tucan.connection.BrowserAnswerReciever;
+import com.dalthed.tucan.connection.SimpleSecureBrowser;
 import com.dalthed.tucan.scraper.BasicScraper;
 
 public class ConfigurationChangeStorage {

@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.dalthed.tucan.TucanMobile;
-import com.dalthed.tucan.Connection.CookieManager;
+import com.dalthed.tucan.connection.CookieManager;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 
 @RunWith(RobolectricTestRunner.class)

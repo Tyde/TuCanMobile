@@ -22,7 +22,6 @@ import org.acra.ACRA;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -31,8 +30,8 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TucanMobile;
-import com.dalthed.tucan.Connection.BrowserAnswerReciever;
-import com.dalthed.tucan.Connection.SimpleSecureBrowser;
+import com.dalthed.tucan.connection.BrowserAnswerReciever;
+import com.dalthed.tucan.connection.SimpleSecureBrowser;
 import com.dalthed.tucan.acraload.LoadAcraResults;
 import com.dalthed.tucan.helpers.FastSwitchHelper;
 import com.dalthed.tucan.preferences.MainPreferences;

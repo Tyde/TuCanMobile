@@ -15,9 +15,7 @@
  *	along with TuCan Mobile.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.dalthed.tucan.Connection;
-
-import java.net.ConnectException;
+package com.dalthed.tucan.connection;
 
 import android.app.Activity;
 import android.os.AsyncTask;

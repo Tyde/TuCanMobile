@@ -43,10 +43,10 @@ import android.widget.TextView;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TuCanMobileActivity;
 import com.dalthed.tucan.TucanMobile;
-import com.dalthed.tucan.Connection.AnswerObject;
-import com.dalthed.tucan.Connection.CookieManager;
-import com.dalthed.tucan.Connection.RequestObject;
-import com.dalthed.tucan.Connection.SimpleSecureBrowser;
+import com.dalthed.tucan.connection.AnswerObject;
+import com.dalthed.tucan.connection.CookieManager;
+import com.dalthed.tucan.connection.RequestObject;
+import com.dalthed.tucan.connection.SimpleSecureBrowser;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
 /**
  * Anzeige eines einzelnen Events.

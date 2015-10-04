@@ -29,8 +29,8 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TucanMobile;
-import com.dalthed.tucan.Connection.BrowserAnswerReciever;
-import com.dalthed.tucan.Connection.SimpleSecureBrowser;
+import com.dalthed.tucan.connection.BrowserAnswerReciever;
+import com.dalthed.tucan.connection.SimpleSecureBrowser;
 import com.dalthed.tucan.helpers.FastSwitchHelper;
 import com.dalthed.tucan.preferences.MainPreferences;
 

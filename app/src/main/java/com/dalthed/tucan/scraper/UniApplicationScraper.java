@@ -28,7 +28,7 @@ import android.content.Context;
 import android.widget.ListAdapter;
 
 import com.dalthed.tucan.R;
-import com.dalthed.tucan.Connection.AnswerObject;
+import com.dalthed.tucan.connection.AnswerObject;
 import com.dalthed.tucan.adapters.UniApplicationAdapter;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;

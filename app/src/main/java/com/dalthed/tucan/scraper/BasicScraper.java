@@ -26,8 +26,8 @@ import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import com.dalthed.tucan.R;
-import com.dalthed.tucan.Connection.AnswerObject;
-import com.dalthed.tucan.Connection.CookieManager;
+import com.dalthed.tucan.connection.AnswerObject;
+import com.dalthed.tucan.connection.CookieManager;
 import com.dalthed.tucan.exceptions.LostSessionException;
 import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.ui.SimpleWebListActivity;
