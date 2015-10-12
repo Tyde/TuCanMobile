@@ -98,6 +98,17 @@
     <string name="imprint">Impressum:\n Daniel Thiem\n Bartningstraße 16\n 64289 Darmstadt\n\n Dies ist kein offizielles Projekt der TU Darmstadt. Es wird keine Haftung für fehlgeschlagene Anmeldungen übernommen. Es ist geraten, die ausgeführten Aktionen auf der offiziellen Webseite zu überprüfen.</string>
     <string name="title_activity_imprint">Impressum</string>
 
+    <!-- main menu-->
+    <string name="home">Startseite</string>
+    <string name="signed_out">Abgemeldet</string>
+    <string name="logout_warning">Bitte klicken Sie wieder zu verlassen</string>
+    <string name="no_events_today">Keine Heutigen Veranstaltungen</string>
+    <string name="no_material">Kein Material</string>
+
+    <!-- SingleEventscraper-->
+    <string name="no_data_available">Keine Daten vorhanden</string>
+    <!-- Error messages-->
+    <string name="maintanance_error_msg">TuCan ist in Wartung und deswegen nicht erreichbar. . .</string>
 
 
 </resources>

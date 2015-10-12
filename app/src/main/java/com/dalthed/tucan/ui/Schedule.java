@@ -44,8 +44,8 @@ import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class Schedule extends SimpleWebListActivity {
 
-	private String URLStringtoCall;
 	ScheduleScraper scrape = null;
+	private String URLStringtoCall;
 	private ListAdapter adapter;
 
 	@Override
@@ -122,7 +122,8 @@ public class Schedule extends SimpleWebListActivity {
 	@Override
 	public ConfigurationChangeStorage saveConfiguration() {
 		ConfigurationChangeStorage cStore = new ConfigurationChangeStorage();
-		cStore.adapters.add(adapter);
+//		cStore.adapters.add(adapter);
+		cStore.adapters.add(getListAdapter());
 		cStore.addScraper(scrape);
 		return cStore;
 	}

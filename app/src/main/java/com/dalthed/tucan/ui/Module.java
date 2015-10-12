@@ -113,10 +113,12 @@ public class Module extends SimpleWebListActivity {
 
 	@Override
 	public void retainConfiguration(ConfigurationChangeStorage conf) {
+		TextView titleTextView = (TextView) findViewById(R.id.module_title);
 		setListAdapter(conf.adapters.get(0));
 		BasicScraper retainedScraper = conf.getScraper(0, this);
 		if (retainedScraper != null && retainedScraper instanceof ModuleScraper) {
 			scrape = (ModuleScraper) retainedScraper;
+			titleTextView.setText(scrape.title);   //title was getting hidden after rotating the device.
 		}
 	}
 

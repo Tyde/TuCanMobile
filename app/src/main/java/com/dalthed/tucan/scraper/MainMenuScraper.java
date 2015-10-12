@@ -46,6 +46,10 @@ import com.dalthed.tucan.exceptions.TucanDownException;
 
 public class MainMenuScraper extends BasicScraper {
 
+	/**
+	 * Set true if User has selected English
+	 */
+	public static boolean isEnglish = false;
 	public String SessionArgument;
 	public boolean noeventstoday = false;
 	/**
@@ -89,6 +93,17 @@ public class MainMenuScraper extends BasicScraper {
 		super(context, result);
 	}
 
+	/**
+	 * Getter and Setter
+	 */
+	public boolean getIsEnglish() {
+		return isEnglish;
+	}
+
+	public void setIsEnglish(boolean isEnglish) {
+		MainMenuScraper.isEnglish = isEnglish;
+	}
+
 	@Override
 	public ListAdapter scrapeAdapter(int mode) throws LostSessionException, TucanDownException {
 		
@@ -115,18 +130,22 @@ public class MainMenuScraper extends BasicScraper {
 	 * @author Daniel Thiem
 	 */
 	public void checkForRightTucanLanguage(final Activity context) {
-		
+
+//		if (doc.select("li#link000326").select("a").attr("href").equals("")) {
+//			Dialog wronglanguageDialog = new AlertDialog.Builder(context).setTitle("")
+//					.setMessage(R.string.general_not_supported_lang)
+//					.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+//
+//						public void onClick(DialogInterface dialog, int which) {
+//							context.finish();
+//						}
+//					}).create();
+//			wronglanguageDialog.show();
+//
+//		}
 		if (doc.select("li#link000326").select("a").attr("href").equals("")) {
-			Dialog wronglanguageDialog = new AlertDialog.Builder(context).setTitle("")
-					.setMessage(R.string.general_not_supported_lang)
-					.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-
-						public void onClick(DialogInterface dialog, int which) {
-							context.finish();
-						}
-					}).create();
-			wronglanguageDialog.show();
-
+			setIsEnglish(true);
+			scrapeMenuLinks();
 		}
 	}
 
@@ -165,7 +184,8 @@ public class MainMenuScraper extends BasicScraper {
 			// Falls keine Events gefunden werden, wird das angezeigt
 			Events = new String[1];
 			Times = new String[1];
-			Events[0] = "Keine Heutigen Veranstaltungen";
+//			Events[0] = "Keine Heutigen Veranstaltungen";
+			Events[0] = context.getString(R.string.no_events_today);
 			Times[0] = "";
 			noeventstoday = true;
 		} else {
@@ -176,7 +196,8 @@ public class MainMenuScraper extends BasicScraper {
 				// Veranstaltungen sind
 				Events = new String[1];
 				Times = new String[1];
-				Events[0] = "Keine Heutigen Veranstaltungen";
+//				Events[0] = "Keine Heutigen Veranstaltungen";
+				Events[0] = context.getString(R.string.no_events_today);
 				Times[0] = "";
 				noeventstoday = true;
 			} else {
@@ -228,18 +249,43 @@ public class MainMenuScraper extends BasicScraper {
 			Log.e(LOG_TAG, "Malformed URL");
 		}
 		Elements linkstoOuterWorld = doc.select("div.tb");
-		if(linkstoOuterWorld.size()>1){
-			Element ArchivLink = linkstoOuterWorld.get(1).select("a").first();
-			menu_link_month = lcURL.getProtocol() + "://" + lcURL.getHost()
-					+ doc.select("li#link000271").select("a").attr("href");
-			menu_link_vv = lcURL.getProtocol() + "://" + lcURL.getHost()
-					+ doc.select("li#link000326").select("a").attr("href");
-			menu_link_ex = lcURL.getProtocol() + "://" + lcURL.getHost()
-					+ doc.select("li#link000280").select("a").attr("href");
-			menu_link_msg = lcURL.getProtocol() + "://" + lcURL.getHost() + ArchivLink.attr("href");
-			// Load special Location Information
-			load_link_ev_loc = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
-					+ doc.select("li#link000269").select("a").attr("href");
+		if(linkstoOuterWorld.size() > 1) {
+//			Element ArchivLink = linkstoOuterWorld.get(1).select("a").first();
+//			menu_link_month = lcURL.getProtocol() + "://" + lcURL.getHost()
+//					+ doc.select("li#link000271").select("a").attr("href");
+//			menu_link_vv = lcURL.getProtocol() + "://" + lcURL.getHost()
+//					+ doc.select("li#link000326").select("a").attr("href");
+//			menu_link_ex = lcURL.getProtocol() + "://" + lcURL.getHost()
+//					+ doc.select("li#link000280").select("a").attr("href");
+//			menu_link_msg = lcURL.getProtocol() + "://" + lcURL.getHost() + ArchivLink.attr("href");
+//			// Load special Location Information
+//			load_link_ev_loc = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+//					+ doc.select("li#link000269").select("a").attr("href");
+			if (!getIsEnglish()) {
+				Element ArchivLink = linkstoOuterWorld.get(1).select("a").first();
+				menu_link_month = lcURL.getProtocol() + "://" + lcURL.getHost()
+						+ doc.select("li#link000271").select("a").attr("href");
+				menu_link_vv = lcURL.getProtocol() + "://" + lcURL.getHost()
+						+ doc.select("li#link000326").select("a").attr("href");
+				menu_link_ex = lcURL.getProtocol() + "://" + lcURL.getHost()
+						+ doc.select("li#link000280").select("a").attr("href");
+				menu_link_msg = lcURL.getProtocol() + "://" + lcURL.getHost() + ArchivLink.attr("href");
+				// Load special Location Information
+				load_link_ev_loc = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+						+ doc.select("li#link000269").select("a").attr("href");
+			} else {
+				Element ArchivLink = linkstoOuterWorld.get(1).select("a").first();
+				menu_link_month = lcURL.getProtocol() + "://" + lcURL.getHost()
+						+ doc.select("li#link000057").select("a").attr("href");
+				menu_link_vv = lcURL.getProtocol() + "://" + lcURL.getHost()
+						+ doc.select("li#link000352").select("a").attr("href");
+				menu_link_ex = lcURL.getProtocol() + "://" + lcURL.getHost()
+						+ doc.select("li#link000360").select("a").attr("href");
+				menu_link_msg = lcURL.getProtocol() + "://" + lcURL.getHost() + ArchivLink.attr("href");
+				// Load special Location Information
+				load_link_ev_loc = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
+						+ doc.select("li#link000055").select("a").attr("href");
+			}
 		} else {
 			//Bewerbungsmodus
 			isApplication = true;

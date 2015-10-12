@@ -23,6 +23,7 @@ import java.net.URL;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -51,15 +52,16 @@ import com.dalthed.tucan.util.ConfigurationChangeStorage;
 
 public class MainMenu extends SimpleWebListActivity implements
 		BackgroundBrowserReciever {
-	private Boolean windowFeatureCalled = false;
-	CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
-
+	CookieManager localCookieManager;
+	private Boolean windowFeatureCalled = false;
 	/**
 	 * s HTML Scraper
 	 */
 	private MainMenuScraper scrape;
 	private UniApplicationScraper appScrape;
+	private boolean doubleBackToExitPressedOnce;
+	private Toast toast;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
@@ -68,7 +70,8 @@ public class MainMenu extends SimpleWebListActivity implements
 
 		setContentView(R.layout.main_menu);
 		// sthis.windowFeatureCalled = true;
-		acBar.setTitle("Startseite");
+//		acBar.setTitle("Startseite");
+		acBar.setTitle(R.string.home);
 
 		// Webhandling Start
 		String CookieHTTPString = getIntent().getExtras().getString("Cookie");
@@ -129,13 +132,36 @@ public class MainMenu extends SimpleWebListActivity implements
 		setContentView(R.layout.main_menu);
 	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+	//	Commented as I have added new code to PRESS BACK BUTTON TWICE to logout option
+//	@Override
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+//			localCookieManager = new CookieManager();
+//			Toast.makeText(this, "Abgemeldet", Toast.LENGTH_SHORT).show();
+//		}
+//		return super.onKeyDown(keyCode, event);
+//	}
+	public void onBackPressed() {
+		if (doubleBackToExitPressedOnce) {
+			//todo: Write what should happen when pressed twice
+			super.onBackPressed();
 			localCookieManager = new CookieManager();
-			Toast.makeText(this, "Abgemeldet", Toast.LENGTH_SHORT).show();
-		}
-		return super.onKeyDown(keyCode, event);
+			toast.cancel();
+			toast = Toast.makeText(this, R.string.signed_out, Toast.LENGTH_SHORT);
+			toast.show();
+			return;
+	}
+
+		this.doubleBackToExitPressedOnce = true;
+		toast = Toast.makeText(this, R.string.logout_warning, Toast.LENGTH_SHORT);
+		toast.show();
+		new Handler().postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				doubleBackToExitPressedOnce = false;
+			}
+		}, 2000);
 	}
 
 	public void onPostExecute(AnswerObject result) {

@@ -76,7 +76,8 @@ public class SingleMessageScraper extends BasicScraper {
 			informations.add(Html.fromHtml(titleText.toString()));
 			informations.add(Html.fromHtml(textText.toString()));
 		}
-		ArrayAdapter<Spanned> adapter = new ArrayAdapter<Spanned>(context, android.R.layout.simple_list_item_1, informations);
+//		ArrayAdapter<Spanned> adapter = new ArrayAdapter<Spanned>(context, android.R.layout.simple_list_item_1, informations);
+		ArrayAdapter<Spanned> adapter = new ArrayAdapter<Spanned>(context, R.layout.customlistview, informations);
 		return adapter;
 	}
 

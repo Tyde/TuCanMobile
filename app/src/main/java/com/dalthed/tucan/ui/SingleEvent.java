@@ -56,18 +56,27 @@ import com.dalthed.tucan.util.ConfigurationChangeStorage;
 @Deprecated
 public class SingleEvent extends SimpleWebListActivity {
 
-	private CookieManager localCookieManager;
 	private static final String LOG_TAG = "TuCanMobile";
-	private String URLStringtoCall;
-	private Boolean PREPCall;
-
 	ArrayList<String> materialLink;
-
 	AppointmentAdapter DateAppointmentAdapter;
 	ArrayAdapter<String> FileAdapter;
 	SingleEventAdapter PropertyValueAdapter;
 	int mode = 0;
 	boolean thereAreFiles = false;
+	private CookieManager localCookieManager;
+	private String URLStringtoCall;
+	private Boolean PREPCall;
+
+	private static String[] crop(String startstring) {
+		if (startstring.length() > 0) {
+			String[] splitted = startstring.split("</b>");
+			return new String[]{Jsoup.parse(splitted[0]).text().trim(),
+					Jsoup.parse(splitted[1]).text()};
+		} else {
+			return new String[]{"", ""};
+
+		}
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -106,70 +115,6 @@ public class SingleEvent extends SimpleWebListActivity {
 		super.onConfigurationChanged(newConfig);
 		setContentView(R.layout.singleevent);
 	}
-	
-	class SingleEventAdapter extends ArrayAdapter<String> {
-		ArrayList<String> values;
-
-		public SingleEventAdapter(ArrayList<String> properties,
-				ArrayList<String> values) {
-			super(SingleEvent.this, R.layout.singleevent_row,
-					R.id.singleevent_row_property, properties);
-			this.values = values;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			View row = super.getView(position, convertView, parent);
-			TextView ValueTextView = (TextView) row
-					.findViewById(R.id.singleevent_row_value);
-
-			ValueTextView.setText(" " + this.values.get(position));
-
-			return row;
-		}
-
-	}
-
-	class AppointmentAdapter extends ArrayAdapter<String> {
-		ArrayList<String> appointmentTime, appointmentNumber, appointmentRoom,
-				appointmentInstructor;
-
-		public AppointmentAdapter(ArrayList<String> appDate,
-				ArrayList<String> appTime, ArrayList<String> appNumber,
-				ArrayList<String> appRoom, ArrayList<String> appInstructor) {
-			super(SingleEvent.this, R.layout.singleevent_row_date,
-					R.id.singleevent_row_date_date, appDate);
-			this.appointmentTime = appTime;
-			this.appointmentInstructor = appInstructor;
-			this.appointmentNumber = appNumber;
-			this.appointmentRoom = appRoom;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			View row = super.getView(position, convertView, parent);
-			TextView AppTimeView = (TextView) row
-					.findViewById(R.id.singleevent_row_date_time);
-			TextView AppNumberView = (TextView) row
-					.findViewById(R.id.singleevent_row_date_number);
-			TextView AppRoomView = (TextView) row
-					.findViewById(R.id.singleevent_row_date_room);
-			TextView AppInstructorView = (TextView) row
-					.findViewById(R.id.singleevent_row_date_instructor);
-
-			AppTimeView.setText(this.appointmentTime.get(position));
-			if (this.appointmentNumber != null)
-				AppNumberView.setText(this.appointmentNumber.get(position));
-			else
-				AppNumberView.setText("");
-			AppRoomView.setText(this.appointmentRoom.get(position));
-			AppInstructorView.setText(this.appointmentInstructor.get(position));
-
-			return row;
-		}
-
-	}
-
 
 	public void onPostExecute(AnswerObject result) {
 		Document doc = Jsoup.parse(result.getHTML());
@@ -219,7 +164,8 @@ public class SingleEvent extends SimpleWebListActivity {
 				Iterator<Element> materialTable = null;
 				while (captionIt.hasNext()) {
 					Element next = captionIt.next();
-					if (next.text().equals("Termine")) {
+//					if (next.text().equals("Termine")) {
+					if (next.text().equals("Appointments") || next.text().equals("Termine")) {
 						System.out.println(next.parent().html());
 						DateTable = next.parent().select("tr").iterator();
 					} else if (next.text().contains("Material")) {
@@ -306,19 +252,8 @@ public class SingleEvent extends SimpleWebListActivity {
 				callOverviewBrowser.execute(thisRequest);
 			}
 		}
-		
 
-	}
 
-	private static String[] crop(String startstring) {
-		if (startstring.length() > 0) {
-			String[] splitted = startstring.split("</b>");
-			return new String[] { Jsoup.parse(splitted[0]).text().trim(),
-					Jsoup.parse(splitted[1]).text() };
-		} else {
-			return new String[] { "", "" };
-
-		}
 	}
 
 	@Override
@@ -334,14 +269,86 @@ public class SingleEvent extends SimpleWebListActivity {
 
 				startActivity(DownloadFile);
 			}
-			
+
 		}
+	}
+
+	@Override
+	public ConfigurationChangeStorage saveConfiguration() {
+		return null;
+	}
+
+	@Override
+	public void retainConfiguration(ConfigurationChangeStorage conf) {
+	}
+
+	class SingleEventAdapter extends ArrayAdapter<String> {
+		ArrayList<String> values;
+
+		public SingleEventAdapter(ArrayList<String> properties,
+								  ArrayList<String> values) {
+			super(SingleEvent.this, R.layout.singleevent_row,
+					R.id.singleevent_row_property, properties);
+			this.values = values;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View row = super.getView(position, convertView, parent);
+			TextView ValueTextView = (TextView) row
+					.findViewById(R.id.singleevent_row_value);
+
+			ValueTextView.setText(" " + this.values.get(position));
+
+			return row;
+		}
+
+	}
+
+	class AppointmentAdapter extends ArrayAdapter<String> {
+		ArrayList<String> appointmentTime, appointmentNumber, appointmentRoom,
+				appointmentInstructor;
+
+		public AppointmentAdapter(ArrayList<String> appDate,
+								  ArrayList<String> appTime, ArrayList<String> appNumber,
+								  ArrayList<String> appRoom, ArrayList<String> appInstructor) {
+			super(SingleEvent.this, R.layout.singleevent_row_date,
+					R.id.singleevent_row_date_date, appDate);
+			this.appointmentTime = appTime;
+			this.appointmentInstructor = appInstructor;
+			this.appointmentNumber = appNumber;
+			this.appointmentRoom = appRoom;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View row = super.getView(position, convertView, parent);
+			TextView AppTimeView = (TextView) row
+					.findViewById(R.id.singleevent_row_date_time);
+			TextView AppNumberView = (TextView) row
+					.findViewById(R.id.singleevent_row_date_number);
+			TextView AppRoomView = (TextView) row
+					.findViewById(R.id.singleevent_row_date_room);
+			TextView AppInstructorView = (TextView) row
+					.findViewById(R.id.singleevent_row_date_instructor);
+
+			AppTimeView.setText(this.appointmentTime.get(position));
+			if (this.appointmentNumber != null)
+				AppNumberView.setText(this.appointmentNumber.get(position));
+			else
+				AppNumberView.setText("");
+			AppRoomView.setText(this.appointmentRoom.get(position));
+			AppInstructorView.setText(this.appointmentInstructor.get(position));
+
+			return row;
+		}
+
 	}
 
 	public class OnItemSelectedListener implements
 			android.widget.AdapterView.OnItemSelectedListener {
 
-		
+
 		public void onItemSelected(AdapterView<?> parent, View view,
 				int position, long id) {
 			switch (position) {
@@ -362,20 +369,10 @@ public class SingleEvent extends SimpleWebListActivity {
 			}
 		}
 
-		
+
 		public void onNothingSelected(AdapterView<?> parent) {
-			
+
 
 		}
-	}
-
-
-	@Override
-	public ConfigurationChangeStorage saveConfiguration() {
-		return null;
-	}
-
-	@Override
-	public void retainConfiguration(ConfigurationChangeStorage conf) {
 	}
 }
