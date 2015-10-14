@@ -105,10 +105,14 @@
     <string name="no_events_today">Keine Heutigen Veranstaltungen</string>
     <string name="no_material">Kein Material</string>
 
+    <!-- ExamsScraper-->
+    <string name="register_for_exam">Anmeldung zu Prüfungen</string>
+    <string name="no_information_found">Keine Informationen gefunden</string>
+
     <!-- SingleEventscraper-->
     <string name="no_data_available">Keine Daten vorhanden</string>
     <!-- Error messages-->
-    <string name="maintanance_error_msg">TuCan ist in Wartung und deswegen nicht erreichbar. . .</string>
+    <string name="maintenance_error_msg">TuCan ist in Wartung und deswegen nicht erreichbar. . .</string>
 
 
 </resources>

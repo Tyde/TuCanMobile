@@ -118,7 +118,7 @@ public class ExamsScraper extends BasicScraper {
 					ResultCredits, ResultCountedCredits, resultColor);
 		} else {
 			ListAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,
-					new String[] { "Keine Informationen gefunden" });
+					new String[]{context.getResources().getString(R.string.no_information_found)});
 		}
 
 		return ListAdapter;
@@ -398,7 +398,7 @@ public class ExamsScraper extends BasicScraper {
 					.add("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=EXAMREGISTRATION&ARGUMENTS="
 							+ SessionArgument + ",-N000361,");
 		}
-		examNames.add("Anmeldung zu Prüfungen");
+		examNames.add(context.getResources().getString(R.string.register_for_exam));
 		examNameBuffer = (ArrayList<String>) examNames.clone();
 		ListAdapter = new ArrayAdapter<String>(context, R.layout.menu_row,
 				R.id.main_menu_row_textField, examNameBuffer);

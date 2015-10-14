@@ -66,7 +66,7 @@
 
     <!-- Changelog -->
     <string name="changelog_full_title">Changelog</string>
-    <string name="changelog_title">Recent Chantes</string>
+    <string name="changelog_title">Recent Changes</string>
     <string name="changelog_show_full">Show everything</string>
     <string name="changelog_ok_button">OK</string>
 
@@ -105,10 +105,14 @@
     <string name="no_events_today">No events today</string>
     <string name="no_material">No Material</string>
 
+    <!-- ExamsScraper-->
+    <string name="register_for_exam">Register for Exams</string>
+    <string name="no_information_found">No Information found</string>
+
     <!-- SingleEventScraper-->
     <string name="no_data_available">No Data available</string>
 
     <!-- Error messages-->
-    <string name="maintanance_error_msg">TuCan is in maintenance and therefore unreachable…</string>
+    <string name="maintenance_error_msg">TuCan is in maintenance and therefore unreachable…</string>
 
 </resources>
