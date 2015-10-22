@@ -1,5 +1,19 @@
 apply plugin: 'com.android.application'
 apply from: 'build.workaround-missing-resource.gradle'
+
+
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    //compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
+    compile 'com.viewpagerindicator:library:2.4.1@aar'
+    compile 'com.android.support:support-v4:22.0.+'
+    compile 'org.apache.commons:commons-lang3:3.0'
+    compile 'org.jsoup:jsoup:1.8.3'
+    compile 'ch.acra:acra:4.5.0'
+}
+
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
@@ -12,6 +26,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 
