@@ -1,0 +1,773 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+ 	<head>
+		<title>Technische Universität Darmstadt</title>
+		<!--
+			© DATENLOTSEN INFORMATIONSSYSTEME GMBH
+			e-mail: 		info@datenlotsen.de
+			web: 			http://www.datenlotsen.de
+			
+			customer: 		tuda
+			version: 		6.00.006
+			filename:		head.htm
+		//-->
+		<!-- IE document mode -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		<meta http-equiv="cache-control" 		content="no-cache" />
+		<meta http-equiv="expires" 				content="-1" />
+		<meta http-equiv="pragma" 				content="no-cache" />
+		<meta http-equiv="Content-Type" 		content="text/html; charset=utf-8" />
+		<meta http-equiv="Content-Script-Type"	content="text/javascript" />
+		<meta name="keywords" content="Datenlotsen,Datenlotsen Informationssysteme GmbH,CampusNet,Campus Management" />
+
+						
+						
+					<link rel="shortcut icon" type="image/x-icon" href="/gfx/tuda/icons/favicon.ico"/>
+				
+		<script src="/js/jquery.js" 	type="text/javascript"></script>
+		<script src="/js/checkDate.js" 	type="text/javascript"></script>
+		<script src="/js/edittext.js" 	type="text/javascript"></script>
+		<script src="/js/skripts.js" 	type="text/javascript"></script>
+		<script src="/js/x.js" 			type="text/javascript"></script>
+
+						
+						
+				
+	
+	<!-- ++++++++++++++++++ DEFAULT STYLESHEETS  ++++++++++++++++++++ -->	
+	<link id="defLayout" 	href="/css/_default/def_layout.css"	rel="stylesheet"  type="text/css"	media="screen" />
+	<link id="defMenu" 		href="/css/_default/def_menu.css" 	rel="stylesheet"  type="text/css"	media="screen" />
+	<link id="defStyles" 	href="/css/_default/def_styles.css"	rel="stylesheet"  type="text/css"	/><!-- no media specified - used for screen AND print -->
+	<link id="pagePrint" 	href="/css/_default/def_print.css" 	rel="stylesheet"  type="text/css"	media="print" />
+	
+			
+	<!-- ++++++++++++++++++ CUSTOM STYLESHEETS  ++++++++++++++++++++ -->	
+	<link id="pageStyle"		href="/css/styles.css"	rel="stylesheet"	type="text/css"  	 />	<!-- no media specified - used for screen AND print -->	
+
+		
+	<link id="pageColors"		href="/css/colors.css"	rel="stylesheet" 	type="text/css" 	media="screen" />
+		
+			
+		<!-- ++++++++++++++++++ MINOR IE FIXES ++++++++++++++++++ -->
+		<!--[if IE 9]>
+			<link id="IE9FIXES" href="/css/_default/IE/fixes_ie9.css" rel="stylesheet" type="text/css" />
+		<![endif]-->		
+		<!--[if lt IE 8]>
+			<link id="IE7FIXES" href="/css/_default/IE/fixes_ie.css" rel="stylesheet" type="text/css" />
+		<![endif]-->
+		<!--[if lt IE 7]>
+			<link id="IE6FIXES" href="/css/_default/IE/fixes_ie6.css" rel="stylesheet" type="text/css"  media="screen" />
+			<noscript>
+				<link id="IE6FIXESNOSCRIPT" href="/css/_default/IE/fixes_ie6_noScript.css" 	rel="stylesheet" type="text/css"  media="screen" />
+			</noscript>
+		<![endif]-->
+		<!-- ++++++++++++++++++ MENU_CSS FOR HIGHLITING ++++++++++++++++++ -->		
+		
+
+
+
+
+	
+
+	<style type="text/css">
+		#pageTopNavi ul.nav #link000280 a.link000280{
+													background-color:#ffffff;
+
+								}
+								#pageTopNavi ul.nav #link000280 a.link000280,
+		#pageTopNavi ul.nav #link000280 a.link000280 span{
+			color:#99A604;
+							text-decoration:underline;
+						}
+
+		#pageTopNavi ul.nav.depth_1 #link000280{
+			
+		}
+		#pageTopNavi ul.nav.depth_1 #link000280:before{
+			
+		}
+		#pageTopNavi ul.nav.depth_1 #link000280:first-child:before{
+			
+		}
+		#pageTopNavi ul.nav.depth_1 #link000280:after{
+			
+		}
+		#pageTopNavi ul.nav.depth_1 #link000280:last-child:before{
+			
+		}
+		#pageTopNavi ul.nav.depth_1 #link000280:hover{
+			
+		}
+		#pageTopNavi ul.nav #link000280.tree ul.nav{
+			left:0px;
+			height:auto;
+			display:block;
+		}
+				#pageTopNavi ul.nav #link000280.tree .tree ul{
+			height:0;
+		}	
+			</style>
+
+
+
+
+	
+
+
+	<style type="text/css">
+		#pageTopNavi ul.nav.depth_2 #link000323 a.link000323,
+		#pageTopNavi ul.nav.depth_2 #link000323 a.link000323 span {
+			background-color:#ffffff;
+							color: !important;
+									font-weight:bold;	
+										text-decoration:underline;
+					}
+				#pageTopNavi ul.nav #link000323 a.link000323{
+			background-image:url(/gfx/tuda/buttons/level2_active.gif);
+			background-repeat:no-repeat;
+			background-position:left;
+		}
+		#pageTopNavi ul.nav #link000323.tree a.link000323{
+			background-image:url(/gfx/tuda/buttons/level2_tree_active.gif);
+			background-repeat:no-repeat !important;
+			background-position:left;
+		}
+				#pageTopNavi ul.nav #link000323.tree ul.nav{
+			height:auto;
+
+		}
+				#pageTopNavi ul.nav #link000323.tree .tree ul{
+			height:0;
+		}
+				
+		
+	</style>	
+
+
+
+	
+
+
+
+	<style type="text/css">
+		#pageTopNavi ul.nav.depth_3 #link000324 a.link000324,
+		#pageTopNavi ul.nav.depth_3 #link000324 a.link000324 span{
+							background-color:#ffffff;
+										color:;
+									font-weight:bold;
+										text-decoration:underline;
+					}
+				#pageTopNavi ul.nav #link000324 a.link000324{
+			background-image:url(/gfx/tuda/buttons/level3_active.gif);
+			background-repeat:no-repeat;
+			background-position:left;
+		}
+		#pageTopNavi ul.nav #link000324.tree a.link000324{
+			background-image:url(/gfx/tuda/buttons/level3_tree_active.gif);
+			background-repeat:no-repeat !important;
+			background-position:left;
+		}
+				
+		#pageTopNavi ul.nav #link000324.tree ul.nav{
+			height:auto;
+		}
+				#pageTopNavi ul.nav #link000324.tree .tree ul{
+			height:0;
+		}
+				
+		
+	</style>	
+
+
+	
+	
+
+	</head>
+	<body>
+
+		
+		
+		<div id="Cn-system-desc">                                                                 </div>			
+		<script type="text/javascript">
+		  $(document).ready(function(){
+			var SystemDesc = $.trim($("#Cn-system-desc").text());
+			
+			if(SystemDesc !=''){
+				$("#Cn-system-desc").text(SystemDesc);
+				$("#Cn-system-desc").css('display','block');
+			}
+		  });
+		  			var activateSignCheck = false;
+		  		</script>
+		<div id="acc_pageDescription" class="hidden"><a name="keypadDescription" class="hidden">keypadDescription</a>
+			Für maximale Nutzerfreundlichkeit empfehlen wir, die Ausführung von JavaScript und Cookies zu erlauben.Mithilfe der folgenden Accesskeys können Sie im Portal navigieren:
+			<a href="#mainNavi" accesskey="1">1 Hauptmenü</a>
+			<a href="#mainContent" accesskey="2">2 Inhalt</a>
+			<a href="#keypadDescription" accesskey="3">3 Zurück zu dieser Anleitung</a>
+		</div>
+		<div id="pageContainer" class="pageElementTop">
+			<div class="invAnchor">
+				<a name="top" class="invAnchor"></a>
+			</div>
+			<div id="pageHead" class="pageElementTop">
+				<div id="pageHeadTop" class="pageElementTop">
+					<a href="?APPNAME=CampusNet&amp;PRGNAME=EXTERNALPAGES&amp;ARGUMENTS=-N837573431369860,-N000324,-Aimprint" class="img img_arrowImprint pageElementLeft">Impressum</a>
+					<a href="?APPNAME=CampusNet&amp;PRGNAME=EXTERNALPAGES&amp;ARGUMENTS=-N837573431369860,-N000324,-Acontact" class="img img_arrowContact pageElementLeft">Kontakt</a>
+					<a href="#" onclick="window.print();" class="img img_arrowPrint pageElementLeft">Drucken</a>
+					<a href="#bottom" class="img img_arrowDown pageElementRight">Zum Ende der Seite</a>
+				</div>
+				<div id="pageHeadCenter" class="pageElementTop">
+					<div id="pageHeadLeft" class="pageElementLeft">
+						<a href="http://www.tu-darmstadt.de" title="extern www.tu-darmstadt.de">
+							<img id="imagePageHeadLeft" src="/gfx/tuda/logo.gif" alt="Logo Technische Universität Darmstadt" />
+						</a>
+					</div>
+								<div id="pageHeadRight" class="pageElementRight">
+						&nbsp;
+					</div>
+				</div>
+								<div id="pageHeadBottom_1" class="pageElementTop">
+					<div id="pageHeadControlsLeft" class="pageElementLeft">
+						<a class="img pageHeadLink" href="#" id="extraNav_link1" alt="Homepage" target="_blank">Homepage</a>
+						<a class="img pageHeadLink" href="#" id="extraNav_link2" alt="standardLink undef" target="_blank">standardLink undef</a>
+					</div>
+					<div id="pageHeadControlsRight" class="pageElementRight">
+						<a class="img" href="#" id="extraNav_link3" alt="standardLink undef" target="_blank">standardLink undef</a>
+						<a class="img" href="#" id="extraNav_link4" alt="standardLink undef" target="_blank">standardLink undef</a>
+						<a class="img" href="#" id="extraNav_link5" alt="&nbsp;" target="_blank">&nbsp;</a>
+					</div>
+				</div>
+				<div id="pageHeadBottom_2" class="pageElementTop">
+					
+					<div id="pageHeadBottom_2sub_1" class="pageElementTop">
+						&nbsp;
+					</div>
+					<div id="pageHeadBottom_2sub_2" class="pageElementTop">
+						&nbsp;
+					</div>
+					&nbsp;
+
+				</div>
+				<div id="pageTopNavi" class="pageElementTop"> <!-- INCLUDING MENU-FILE FOR NAVIGATION-->
+						<a name="mainNavi" class="hidden">&nbsp;</a> <!-- ANCHOR NAVI -->
+							
+<ul class="nav depth_1 linkItemContainer"><li class="tree depth_1 linkItem branchLinkItem" title="Aktuelles" id="link000019"><a  class="depth_1 link000019 navLink branchLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=MLSSTART&amp;ARGUMENTS=-N837573431369860,-N000019," >Aktuelles</a><ul class="nav depth_2 linkItemContainer"><li class="intern depth_2 linkItem" title="Nachrichten" id="link000299"><a  class="depth_2 link000299 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=ACTION&amp;ARGUMENTS=-A4XqvdViv1SgarapFJ7Vm.CK-mfx094Xdl3IGA3KhNL4nh-QhRjAS9FbWwLdb223fq4ad-azWa1PLyj5VEJUlO7RpL5i4" >Nachrichten</a></li></ul></li><li class="tree depth_1 linkItem branchLinkItem" title="VV" id="link000326"><a  class="depth_1 link000326 navLink branchLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=ACTION&amp;ARGUMENTS=-ArEggN2Rqqn2V0sr7GqSjTGVvvbq-WbCBHEVV0vJPN2Xi1AYMdda7x.kKNwShdUAFm7R6JC3eZHctEQbqNG3gHNF.lFY6bLP1aQJK32EZuh4RTFOPB9ZqsH5ZLH7=" >VV</a><ul class="nav depth_2 linkItemContainer"><li class="intern depth_2 linkItem" title="Lehrveranstaltungssuche" id="link000327"><a  class="depth_2 link000327 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=ACTION&amp;ARGUMENTS=-A460cd1pDM9.CcYA5dBZ3L6Oea19KeaH6sTzYsnRoq.U2UUE35dK70W1eOfc0Xb0byQpYdxEgJetH9JxPfFQ6ymEJ72JTY9==" >Lehrveranstaltungssuche</a></li><li class="intern depth_2 linkItem" title="Raumsuche" id="link000387"><a  class="depth_2 link000387 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=SEARCHROOM&amp;ARGUMENTS=-N837573431369860,-N000387," >Raumsuche</a></li><li class="intern depth_2 linkItem" title="Aktuell - Wintersemester 2015/16" id="link000537"><a  class="depth_2 link000537 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=ACTION&amp;ARGUMENTS=-Akx0fXOBmMuATPbD2bjEGzln5BuXvQAt3WliF90CFDib71jiS8pYove21YLsE.1qXNuktE35dmyOSjm7lFYAuxetjswEiLikY2ajTQHzFtvUezG0LLNKygMfXy6f=" >Aktuell - Wintersemester 2015/16</a></li><li class="intern depth_2 linkItem" title="Vorlesungsverzeichnis des SoSe 2015" id="link000507"><a  class="depth_2 link000507 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=ACTION&amp;ARGUMENTS=-AI80fTCePE7Nx2qWrxA5Yl3luzqJ-ws.aavIRJpj2JPZCKEMZxAMC-8DmfTd63yuwpbFsF-QRardi-MmC0Mj-EuzghrAErSv8n48wgeR1dphBESxfb54ggExFZ6F=" >Vorlesungsverzeichnis des SoSe 2015</a></li><li class="intern depth_2 linkItem" title="Vorlesungsverzeichnis WiSe 2014/15" id="link000494"><a  class="depth_2 link000494 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=ACTION&amp;ARGUMENTS=-AkR.MjV9Q1jCDnyGJ23RkegBcc2nbQfQu9c-hyR2pH2IPM7ELPgkteJlvkGncg21B4sFXy8UWUWgh-WRn5ADK9BwyeoBg1n4e4GG12myiUyfH3zLZdj9ben.XqMF=" >Vorlesungsverzeichnis WiSe 2014/15</a></li><li class="tree depth_2 linkItem branchLinkItem" title="Archiv" id="link000464"><a  class="depth_2 link000464 navLink branchLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=EXTERNALPAGES&amp;ARGUMENTS=-N837573431369860,-N000464,-Avvarchivstart%2Ehtml" >Archiv</a><ul class="nav depth_3 linkItemContainer"><li class="intern depth_3 linkItem" title="Vorlesungsverzeichnis des SoSe 2014" id="link000531"><a  class="depth_3 link000531 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=ACTION&amp;ARGUMENTS=-A48qcdyogEiailnCzoqkBsJYiDaAnWs8byIKI0Lo4VMLnVp7c.vmqVWyU20vivSfGkcsMJ3XrEGQIqTzMczWGkByCNx5.FeXv89N9t56Tz2fl5FpfS2pDbFFXGne=" >Vorlesungsverzeichnis des SoSe 2014</a></li><li class="intern depth_3 linkItem" title="Vorlesungsverzeichnis des WiSe 2013/14" id="link000506"><a  class="depth_3 link000506 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=ACTION&amp;ARGUMENTS=-A46svTVceMuKDvmqordfn0llt6ixK92kVOpNdZgNDxP1w86IwYasXTxqACmlpbWsUsP5Bj5FhVP5GPP9VpdSv0gDA9s5CfX0aO9TmLSK7AW12eWzljGXTMIXuoa7=" >Vorlesungsverzeichnis des WiSe 2013/14</a></li><li class="intern depth_3 linkItem" title="Vorlesungsverzeichnis des SoSe 2013" id="link000492"><a  class="depth_3 link000492 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=ACTION&amp;ARGUMENTS=-A4RXfjCpgESVwbiYNhhyljgBTJnhLNjxfgevhZnoOI-4ZSF0vBUD2Qnx6GfmEBsDNrrv6ciADtH26E-wchk2lBv0gId.1dTMqnGCMxxmNPpwtfcr2O86IjBLOhJB=" >Vorlesungsverzeichnis des SoSe 2013</a></li><li class="intern depth_3 linkItem" title="Vorlesungsverzeichnis des WiSe 2012/13" id="link000472"><a  class="depth_3 link000472 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=ACTION&amp;ARGUMENTS=-A46tWdcfv1uXAIIVbSLlny7KhUMiUFIW3fjfUIZpytFGnj27I2G.iOHpf1sfNQWs8KQ8VqeSmzx0b4gShljOdpWUnCff7EqOPTtBN-V55cVILLKmPPqVqx6yZkgy=" >Vorlesungsverzeichnis des WiSe 2012/13</a></li><li class="intern depth_3 linkItem" title="Vorlesungsverzeichnis des SoSe 2012" id="link000473"><a  class="depth_3 link000473 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=ACTION&amp;ARGUMENTS=-A48.Md2LU1uqdyPqVrnnXWDDOK8ZPcFmcPDNsHzI-kMuTmTOR5Hq2nagphB8nFnf0U7PS8prQ.z71OiDl8-nA5BlddEnB4asDwz3BGbMTa0b98wmwMdrT6LNnVpc=" >Vorlesungsverzeichnis des SoSe 2012</a></li><li class="intern depth_3 linkItem" title="Vorlesungsverzeichnis des WiSe 2011/12" id="link000474"><a  class="depth_3 link000474 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=ACTION&amp;ARGUMENTS=-A4EsvjOcuqM1KCXgbZauNVb60afWKyCQfVvWVSPY6EBLeABuq0PrWLkM7E9QRbuUL5eYdW6z.F5yS1QIBUUUBqVM9.2DeqONCcLVBvJDR2eqi5JMNKGURZUkM2ie=" >Vorlesungsverzeichnis des WiSe 2011/12</a></li><li class="intern depth_3 linkItem" title="Vorlesungsverzeichnis des SoSe 2011" id="link000475"><a  class="depth_3 link000475 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=ACTION&amp;ARGUMENTS=-A4HtQdyRbFjK-XxfOIamG7dw-ur94mEl5bpoDsf8uLFVm5ytNJoHcgPvRxibeW6UNfXptwi-VYL6uoJa0zRSBKfLbej7XAKHhFAYKVMdyaTS2YqqJiCfRyHZFLMi=" >Vorlesungsverzeichnis des SoSe 2011</a></li><li class="intern depth_3 linkItem" title="Vorlesungsverzeichnis des WiSe 2010/11" id="link000476"><a  class="depth_3 link000476 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=ACTION&amp;ARGUMENTS=-AIH0vTylf19.1atFKEG8lzAGQpgwZbS.y1ORM9Qm5WEpTxXOryeHico2RWTF8ahrvYTPzMK0dIJ32DHUXBM4vM1QG9z8OQ69JAi-BP8fSz2p1n6LVwVibFd2JvhF=" >Vorlesungsverzeichnis des WiSe 2010/11</a></li><li class="intern depth_3 linkItem" title="Altsysteme" id="link000482"><a  class="depth_3 link000482 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=EXTERNALPAGES&amp;ARGUMENTS=-N837573431369860,-N000482,-Avvarchivaltsysteme%2Ehtml" >Altsysteme</a></li></ul></li></ul></li><li class="tree depth_1 linkItem branchLinkItem" title="Stundenplan" id="link000268"><a  class="depth_1 link000268 navLink branchLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=SCHEDULER&amp;ARGUMENTS=-N837573431369860,-N000268,-A,-A,-N1" >Stundenplan</a><ul class="nav depth_2 linkItemContainer"><li class="intern depth_2 linkItem" title="Tagesansicht" id="link000269"><a  class="depth_2 link000269 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=SCHEDULER&amp;ARGUMENTS=-N837573431369860,-N000269,-A,-A,-N0" >Tagesansicht</a></li><li class="intern depth_2 linkItem" title="Wochenansicht" id="link000270"><a  class="depth_2 link000270 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=SCHEDULER&amp;ARGUMENTS=-N837573431369860,-N000270,-A,-A,-N1" >Wochenansicht</a></li><li class="intern depth_2 linkItem" title="Monatsansicht" id="link000271"><a  class="depth_2 link000271 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=MONTH&amp;ARGUMENTS=-N837573431369860,-N000271,-A" >Monatsansicht</a></li><li class="intern depth_2 linkItem" title="Export" id="link000272"><a  class="depth_2 link000272 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=SCHEDULER_EXPORT&amp;ARGUMENTS=-N837573431369860,-N000272," >Export</a></li></ul></li><li class="tree depth_1 linkItem branchLinkItem" title="Veranstaltungen" id="link000273"><a  class="depth_1 link000273 navLink branchLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=EXTERNALPAGES&amp;ARGUMENTS=-N837573431369860,-N000273,-Astudveranst%2Ehtml" >Veranstaltungen</a><ul class="nav depth_2 linkItemContainer"><li class="intern depth_2 linkItem" title="Meine Module" id="link000275"><a  class="depth_2 link000275 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=MYMODULES&amp;ARGUMENTS=-N837573431369860,-N000275," >Meine Module</a></li><li class="intern depth_2 linkItem" title="Meine Veranstaltungen" id="link000274"><a  class="depth_2 link000274 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=PROFCOURSES&amp;ARGUMENTS=-N837573431369860,-N000274," >Meine Veranstaltungen</a></li><li class="intern depth_2 linkItem" title="Meine Wahlbereiche" id="link000307"><a  class="depth_2 link000307 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=STUDENTCHOICECOURSES&amp;ARGUMENTS=-N837573431369860,-N000307," >Meine Wahlbereiche</a></li><li class="intern depth_2 linkItem" title="Anmeldung" id="link000311"><a  class="depth_2 link000311 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=REGISTRATION&amp;ARGUMENTS=-N837573431369860,-N000311,-A" >Anmeldung</a></li><li class="intern depth_2 linkItem" title="Mein aktueller Anmeldestatus" id="link000308"><a  class="depth_2 link000308 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=MYREGISTRATIONS&amp;ARGUMENTS=-N837573431369860,-N000308,-N000000000000000" >Mein aktueller Anmeldestatus</a></li></ul></li><li class="tree depth_1 linkItem branchLinkItem" title="Prüfungen" id="link000280"><a  class="depth_1 link000280 navLink branchLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=EXTERNALPAGES&amp;ARGUMENTS=-N837573431369860,-N000280,-Astudpruefungen%2Ehtml" >Prüfungen</a><ul class="nav depth_2 linkItemContainer"><li class="intern depth_2 linkItem" title="Meine Prüfungen" id="link000318"><a  class="depth_2 link000318 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=MYEXAMS&amp;ARGUMENTS=-N837573431369860,-N000318," >Meine Prüfungen</a></li><li class="tree depth_2 linkItem branchLinkItem" title="Mein Prüfungsplan" id="link000389"><a  class="depth_2 link000389 navLink branchLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=SCPCHOICE&amp;ARGUMENTS=-N837573431369860,-N000389," >Mein Prüfungsplan</a><ul class="nav depth_3 linkItemContainer"><li class="intern depth_3 linkItem" title="Wichtige Hinweise" id="link000391"><a  class="depth_3 link000391 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=EXTERNALPAGES&amp;ARGUMENTS=-N837573431369860,-N000391,-Astudplan%2Ehtml" >Wichtige Hinweise</a></li></ul></li><li class="tree depth_2 linkItem branchLinkItem" title="Semesterergebnisse" id="link000323"><a  class="depth_2 link000323 navLink branchLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=EXTERNALPAGES&amp;ARGUMENTS=-N837573431369860,-N000323,-Astudergebnis%2Ehtml" >Semesterergebnisse</a><ul class="nav depth_3 linkItemContainer"><li class="intern depth_3 linkItem" title="Modulergebnisse" id="link000324"><a  class="depth_3 link000324 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=COURSERESULTS&amp;ARGUMENTS=-N837573431369860,-N000324," >Modulergebnisse</a></li><li class="intern depth_3 linkItem" title="Prüfungsergebnisse" id="link000325"><a  class="depth_3 link000325 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=EXAMRESULTS&amp;ARGUMENTS=-N837573431369860,-N000325," >Prüfungsergebnisse</a></li></ul></li><li class="intern depth_2 linkItem" title="Leistungsspiegel" id="link000316"><a  class="depth_2 link000316 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=STUDENT_RESULT&amp;ARGUMENTS=-N837573431369860,-N000316,-N0,-N000000000000000,-N000000000000000,-N000000000000000,-N0,-N000000000000000" >Leistungsspiegel</a></li></ul></li><li class="tree depth_1 linkItem branchLinkItem" title="Service" id="link000337"><a  class="depth_1 link000337 navLink branchLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=EXTERNALPAGES&amp;ARGUMENTS=-N837573431369860,-N000337,-Aservice%2Ehtml" >Service</a><ul class="nav depth_2 linkItemContainer"><li class="intern depth_2 linkItem" title="Persönliche Daten" id="link000339"><a  class="depth_2 link000339 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=PERSADDRESS&amp;ARGUMENTS=-N837573431369860,-N000339,-A" >Persönliche Daten</a></li></ul></li><li class="tree depth_1 linkItem branchLinkItem" title="Bewerbung" id="link000441"><a  class="depth_1 link000441 navLink branchLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=EXTERNALPAGES&amp;ARGUMENTS=-N837573431369860,-N000441,-Abewerbung" >Bewerbung</a><ul class="nav depth_2 linkItemContainer"><li class="intern depth_2 linkItem" title="Herzlich Willkommen" id="link000442"><a  class="depth_2 link000442 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=EXTERNALPAGES&amp;ARGUMENTS=-N837573431369860,-N000442,-Abewerbung" >Herzlich Willkommen</a></li><li class="intern depth_2 linkItem" title="Meine Bewerbung" id="link000443"><a  class="depth_2 link000443 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=ACTION&amp;ARGUMENTS=-ARXjDN1mUFnb5hFDdGSDnq6CtBCb9szHjYl8Qt4Sw1wES-0N1FoX1M9vuY37cG7O.D2zsNCfWIoyQHc7QlW8gBzpl8PkeO.yVbE2.OTyf" >Meine Bewerbung</a></li><li class="intern depth_2 linkItem" title="Meine Dokumente" id="link000444"><a  class="depth_2 link000444 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=CREATEDOCUMENT&amp;ARGUMENTS=-N837573431369860,-N000444," >Meine Dokumente</a></li></ul></li><li class="intern depth_1 linkItem" title="Hilfe" id="link000340"><a  class="depth_1 link000340 navLink" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=EXTERNALPAGES&amp;ARGUMENTS=-N837573431369860,-N000340,-Ahilfe%2Ehtml" >Hilfe</a></li></ul>
+			
+				</div>
+				<div id="pageHeadBottom_3" class="pageElementTop">
+
+											<div id="pageHeadSwitchLang" class="pageElementRight">
+						
+							
+															<a href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=CHANGELANGUAGE&amp;ARGUMENTS=-N837573431369860,-N002" class="img img_LangEnglish pageElementLeft" title="English">English</a>
+							
+														
+														
+															<a href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=LOGOUT&amp;ARGUMENTS=-N837573431369860,-N001" id="logoutButton"    class="img img_arrowLogout" title="Abmelden">Abmelden</a>
+													</div>
+									</div>
+			</div>
+			
+			<div id="pageContentContainer" class="pageElementTop">
+				<!-- Anker für Content2 -->		
+				<div id="pageLeft" class="pageElementLeft"> <!-- LEFT COL OF CONTENT -->
+				 	<div id="pageLeftTop"></div>
+				</div>
+				
+				<div id="pageContent" class="pageElementLeft">
+					<a name="mainContent" class="hidden">&nbsp;</a> <!-- ANCHOR MAIN CONTENT -->
+					<div id="pageContentTop" class="pageElementTop">
+												<div id="loginData">
+							<span class="loginDataLoggedAs"><b>Sie sind angemeldet als<span class="colon">:</span> </b></span>
+							<span class="loginDataName" id="loginDataName"><b>Name<span class="colon">:</span> </b>Daniel Thiem</span><span class="loginDataDate"><b>am<span class="colon">:</span></b>30.10.2015</span><span class="loginDataTime"><b>um<span class="colon time_colon">:</span></b>18:36Uhr</span>
+						</div>
+											</div>
+					<div id="contentSpacer_IE" class="pageElementTop"><!-- FORCE MIN HEIGHT IN IE<7 -->
+					<!--[if lt IE 7]>
+						<p class="error">
+							Sie verwenden eine Browserversion, die nicht mehr unterstützt wird. Bitte upgraden Sie Ihren Browser auf die aktuelle Version, um funktionale Störungen und Darstellungsprobleme zu vermeiden.
+						</p>
+					<![endif]-->
+							
+					
+<!--
+	© DATENLOTSEN INFORMATIONSSYSTEME GMBH
+	e-mail: 		info@datenlotsen.de
+	web: 			http://www.datenlotsen.de
+	
+	customer: 		tuda
+	version: 		6.00.006
+	filename:		course_results.htm
+//-->
+
+
+<h1>Modulnoten WiSe 2014/15 f&uuml;r Daniel Thiem</h1>
+
+<div class="tb">
+	<form id="semesterchange" action="/scripts/mgrqcgi" method="post"  class="pageElementTop">
+		<div>
+			<div class="tbhead">&nbsp;</div>
+			<div class="tbsubhead">Wählen Sie ein Semester</div>
+
+			<div class="formRow">
+				<div class="inputFieldLabel long">
+					<label for="semester">Semester:</label>
+
+					<select id="semester" name="semester" onchange="reloadpage.createUrlAndReload('/scripts/mgrqcgi','CampusNet','COURSERESULTS','837573431369860','000324','-N'+this.value);" class="tabledata">
+
+																					<option value="000000015020000" selected="selected">WiSe 2014/15</option>
+															<option value="000000015019000" >SoSe 2014</option>
+															<option value="000000015018000" >WiSe 2013/14</option>
+															<option value="000000015017000" >SoSe 2013</option>
+															<option value="000000015016000" >WiSe 2012/13</option>
+															<option value="000000015015000" >SoSe 2012</option>
+															<option value="000000015014000" >WiSe 2011/12</option>
+															<option value="000000015013000" >SoSe 2011</option>
+															<option value="000000015012000" >WiSe 2010/11</option>
+																		</select>
+					
+					<input name="Refresh" type="submit" value="Aktualisieren" class="img img_arrowReload" />
+				</div>
+			</div>
+
+			<input name="APPNAME" type="hidden" value="CampusNet" />
+			<input name="PRGNAME" type="hidden" value="COURSERESULTS" />
+			<input name="ARGUMENTS" type="hidden" value="sessionno,menuno,semester" />
+			<input name="sessionno" type="hidden" value="837573431369860" />
+			<input name="menuno" type="hidden" value="000324" />
+		</div>
+	</form>
+
+	<table class="nb list">
+		<thead>
+			<tr>
+									<td class="tbsubhead">Nr.</td>
+                                <td class="tbsubhead">Kursname</td>
+                <td class="tbsubhead">Endnote</td>
+
+												
+				<td class="tbsubhead">Credits</td>
+                                    <td class="tbsubhead">Maluspunkte</td>
+
+				<td class="tbsubhead">Status</td>
+                <td class="tbsubhead" colspan="2">&nbsp;</td>
+            </tr>
+		</thead>
+		<tbody>
+                
+                                                                                                <tr >
+																								<td class="tbdata">02-03-8101</td>
+											
+											<td class="tbdata">Das politische System der BRD</td>
+
+											<td class="tbdata_numeric" style="vertical-align:top;">
+
+                                                 																											1,7
+																																																												
+                                                                                                             
+                                                 </td>
+                                                    <td class="tbdata_numeric">  3,0</td>
+
+                                                                                                             <td class="tbdata_numeric"></td>
+
+                                                 <td class="tbdata">
+                                                                                                                            bestanden
+                                                                                                                </td>
+
+                                                     <td class="tbdata" style="vertical-align:top;">
+																																																			      	<a id="Popup_details0001" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=RESULTDETAILS&amp;ARGUMENTS=-N837573431369860,-N000324,-N355553551071641,-N000000015020000">Prüfungen</a>
+																								      	<script type="text/javascript">
+                                                      	         <!--
+                                                      	                 var Message0001;
+                                                      	                 function open_details0001() {
+                                                      	                 		var Message0001 = dl_popUp("/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=RESULTDETAILS&ARGUMENTS=-N837573431369860,-N000324,-N355553551071641","Resultdetails",750,400);
+                                                      	                 		
+                                                      	                 }
+                                                      	                 var PopupElt=document.getElementById("Popup_details0001");
+                                                      	                 PopupElt.href="javascript:open_details0001();";
+                                                      	         //-->
+                                                      	</script>
+																											                                                    </td>
+                                                    <td class="tbdata">
+                                                                                                                                                                                                                 <a id="Popup_overview0001" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=GRADEOVERVIEW&amp;ARGUMENTS=-N837573431369860,-N000324,-AMOFF,-N353583468460606,-N0,-N,-N000000015020000,-A,-N,-A,-N,-N,-N1" class="link" title="Notenspiegel"><b>&Oslash;</b></a>
+                                                                             	<script type="text/javascript">
+                                                                                <!--
+                                                                                        var Message0001;
+                                                                                        function open_overview0001() {
+                                                                                        		var Message0001 = dl_popUp("/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=GRADEOVERVIEW&ARGUMENTS=-N837573431369860,-N000324,-AMOFF,-N353583468460606,-N0","Gradeoverview",650,320);
+                                                                                        		Message0001.focus();
+                                                                                        }
+                             																														var PopupElt=document.getElementById("Popup_overview0001");
+                                                                                        PopupElt.href="javascript:open_overview0001();";
+                                                                                //-->
+                                                                         			</script>
+                                                                                                                                                                                        </td>
+                                            </tr>
+                                                                                                                                <tr >
+																								<td class="tbdata">16-19-5030</td>
+											
+											<td class="tbdata">Finite-Elemente-Methoden in der Strukturmechanik</td>
+
+											<td class="tbdata_numeric" style="vertical-align:top;">
+
+                                                 																											1,3
+																																																												
+                                                                                                             
+                                                 </td>
+                                                    <td class="tbdata_numeric">  6,0</td>
+
+                                                                                                             <td class="tbdata_numeric"></td>
+
+                                                 <td class="tbdata">
+                                                                                                                            bestanden
+                                                                                                                </td>
+
+                                                     <td class="tbdata" style="vertical-align:top;">
+																																																			      	<a id="Popup_details0002" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=RESULTDETAILS&amp;ARGUMENTS=-N837573431369860,-N000324,-N356103351958840,-N000000015020000">Prüfungen</a>
+																								      	<script type="text/javascript">
+                                                      	         <!--
+                                                      	                 var Message0002;
+                                                      	                 function open_details0002() {
+                                                      	                 		var Message0002 = dl_popUp("/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=RESULTDETAILS&ARGUMENTS=-N837573431369860,-N000324,-N356103351958840","Resultdetails",750,400);
+                                                      	                 		
+                                                      	                 }
+                                                      	                 var PopupElt=document.getElementById("Popup_details0002");
+                                                      	                 PopupElt.href="javascript:open_details0002();";
+                                                      	         //-->
+                                                      	</script>
+																											                                                    </td>
+                                                    <td class="tbdata">
+                                                                                                                                                                                                                                                    </td>
+                                            </tr>
+                                                                                                                                <tr >
+																								<td class="tbdata">18-ad-2010</td>
+											
+											<td class="tbdata">Systemdynamik und Regelungstechnik III</td>
+
+											<td class="tbdata_numeric" style="vertical-align:top;">
+
+                                                 																											3,3
+																																																												
+                                                                                                             
+                                                 </td>
+                                                    <td class="tbdata_numeric">  4,0</td>
+
+                                                                                                             <td class="tbdata_numeric"></td>
+
+                                                 <td class="tbdata">
+                                                                                                                            bestanden
+                                                                                                                </td>
+
+                                                     <td class="tbdata" style="vertical-align:top;">
+																																																			      	<a id="Popup_details0003" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=RESULTDETAILS&amp;ARGUMENTS=-N837573431369860,-N000324,-N355553543732440,-N000000015020000">Prüfungen</a>
+																								      	<script type="text/javascript">
+                                                      	         <!--
+                                                      	                 var Message0003;
+                                                      	                 function open_details0003() {
+                                                      	                 		var Message0003 = dl_popUp("/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=RESULTDETAILS&ARGUMENTS=-N837573431369860,-N000324,-N355553543732440","Resultdetails",750,400);
+                                                      	                 		
+                                                      	                 }
+                                                      	                 var PopupElt=document.getElementById("Popup_details0003");
+                                                      	                 PopupElt.href="javascript:open_details0003();";
+                                                      	         //-->
+                                                      	</script>
+																											                                                    </td>
+                                                    <td class="tbdata">
+                                                                                                                                                                                                                 <a id="Popup_overview0003" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=GRADEOVERVIEW&amp;ARGUMENTS=-N837573431369860,-N000324,-AMOFF,-N353135227271329,-N0,-N,-N000000015020000,-A,-N,-A,-N,-N,-N1" class="link" title="Notenspiegel"><b>&Oslash;</b></a>
+                                                                             	<script type="text/javascript">
+                                                                                <!--
+                                                                                        var Message0003;
+                                                                                        function open_overview0003() {
+                                                                                        		var Message0003 = dl_popUp("/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=GRADEOVERVIEW&ARGUMENTS=-N837573431369860,-N000324,-AMOFF,-N353135227271329,-N0","Gradeoverview",650,320);
+                                                                                        		Message0003.focus();
+                                                                                        }
+                             																														var PopupElt=document.getElementById("Popup_overview0003");
+                                                                                        PopupElt.href="javascript:open_overview0003();";
+                                                                                //-->
+                                                                         			</script>
+                                                                                                                                                                                        </td>
+                                            </tr>
+                                                                                                                                <tr >
+																								<td class="tbdata">18-ad-2020</td>
+											
+											<td class="tbdata">Fuzzy-Logik, Neuronale Netze und Evolutionäre Algorithmen</td>
+
+											<td class="tbdata_numeric" style="vertical-align:top;">
+
+                                                 																											1,7
+																																																												
+                                                                                                             
+                                                 </td>
+                                                    <td class="tbdata_numeric">  4,0</td>
+
+                                                                                                             <td class="tbdata_numeric"></td>
+
+                                                 <td class="tbdata">
+                                                                                                                            bestanden
+                                                                                                                </td>
+
+                                                     <td class="tbdata" style="vertical-align:top;">
+																																																			      	<a id="Popup_details0004" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=RESULTDETAILS&amp;ARGUMENTS=-N837573431369860,-N000324,-N355553545380613,-N000000015020000">Prüfungen</a>
+																								      	<script type="text/javascript">
+                                                      	         <!--
+                                                      	                 var Message0004;
+                                                      	                 function open_details0004() {
+                                                      	                 		var Message0004 = dl_popUp("/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=RESULTDETAILS&ARGUMENTS=-N837573431369860,-N000324,-N355553545380613","Resultdetails",750,400);
+                                                      	                 		
+                                                      	                 }
+                                                      	                 var PopupElt=document.getElementById("Popup_details0004");
+                                                      	                 PopupElt.href="javascript:open_details0004();";
+                                                      	         //-->
+                                                      	</script>
+																											                                                    </td>
+                                                    <td class="tbdata">
+                                                                                                                                                                                                                 <a id="Popup_overview0004" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=GRADEOVERVIEW&amp;ARGUMENTS=-N837573431369860,-N000324,-AMOFF,-N353135226100980,-N0,-N,-N000000015020000,-A,-N,-A,-N,-N,-N1" class="link" title="Notenspiegel"><b>&Oslash;</b></a>
+                                                                             	<script type="text/javascript">
+                                                                                <!--
+                                                                                        var Message0004;
+                                                                                        function open_overview0004() {
+                                                                                        		var Message0004 = dl_popUp("/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=GRADEOVERVIEW&ARGUMENTS=-N837573431369860,-N000324,-AMOFF,-N353135226100980,-N0","Gradeoverview",650,320);
+                                                                                        		Message0004.focus();
+                                                                                        }
+                             																														var PopupElt=document.getElementById("Popup_overview0004");
+                                                                                        PopupElt.href="javascript:open_overview0004();";
+                                                                                //-->
+                                                                         			</script>
+                                                                                                                                                                                        </td>
+                                            </tr>
+                                                                                                                                <tr >
+																								<td class="tbdata">18-ad-2090</td>
+											
+											<td class="tbdata">Bildverarbeitung für Ingenieure - Grundlagen der bildgestützten Mess- und Automatisierungstechnik</td>
+
+											<td class="tbdata_numeric" style="vertical-align:top;">
+
+                                                 																											2,0
+																																																												
+                                                                                                             
+                                                 </td>
+                                                    <td class="tbdata_numeric">  4,0</td>
+
+                                                                                                             <td class="tbdata_numeric"></td>
+
+                                                 <td class="tbdata">
+                                                                                                                            bestanden
+                                                                                                                </td>
+
+                                                     <td class="tbdata" style="vertical-align:top;">
+																																																			      	<a id="Popup_details0005" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=RESULTDETAILS&amp;ARGUMENTS=-N837573431369860,-N000324,-N355553546977905,-N000000015020000">Prüfungen</a>
+																								      	<script type="text/javascript">
+                                                      	         <!--
+                                                      	                 var Message0005;
+                                                      	                 function open_details0005() {
+                                                      	                 		var Message0005 = dl_popUp("/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=RESULTDETAILS&ARGUMENTS=-N837573431369860,-N000324,-N355553546977905","Resultdetails",750,400);
+                                                      	                 		
+                                                      	                 }
+                                                      	                 var PopupElt=document.getElementById("Popup_details0005");
+                                                      	                 PopupElt.href="javascript:open_details0005();";
+                                                      	         //-->
+                                                      	</script>
+																											                                                    </td>
+                                                    <td class="tbdata">
+                                                                                                                                                                                                                 <a id="Popup_overview0005" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=GRADEOVERVIEW&amp;ARGUMENTS=-N837573431369860,-N000324,-AMOFF,-N353135228284791,-N0,-N,-N000000015020000,-A,-N,-A,-N,-N,-N1" class="link" title="Notenspiegel"><b>&Oslash;</b></a>
+                                                                             	<script type="text/javascript">
+                                                                                <!--
+                                                                                        var Message0005;
+                                                                                        function open_overview0005() {
+                                                                                        		var Message0005 = dl_popUp("/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=GRADEOVERVIEW&ARGUMENTS=-N837573431369860,-N000324,-AMOFF,-N353135228284791,-N0","Gradeoverview",650,320);
+                                                                                        		Message0005.focus();
+                                                                                        }
+                             																														var PopupElt=document.getElementById("Popup_overview0005");
+                                                                                        PopupElt.href="javascript:open_overview0005();";
+                                                                                //-->
+                                                                         			</script>
+                                                                                                                                                                                        </td>
+                                            </tr>
+                                                                                                                                <tr >
+																								<td class="tbdata">18-kh-2030</td>
+											
+											<td class="tbdata">Optoelektronik</td>
+
+											<td class="tbdata_numeric" style="vertical-align:top;">
+
+                                                 																											1,0
+																																																												
+                                                                                                             
+                                                 </td>
+                                                    <td class="tbdata_numeric">  3,0</td>
+
+                                                                                                             <td class="tbdata_numeric"></td>
+
+                                                 <td class="tbdata">
+                                                                                                                            bestanden
+                                                                                                                </td>
+
+                                                     <td class="tbdata" style="vertical-align:top;">
+																																																			      	<a id="Popup_details0006" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=RESULTDETAILS&amp;ARGUMENTS=-N837573431369860,-N000324,-N355553539952579,-N000000015020000">Prüfungen</a>
+																								      	<script type="text/javascript">
+                                                      	         <!--
+                                                      	                 var Message0006;
+                                                      	                 function open_details0006() {
+                                                      	                 		var Message0006 = dl_popUp("/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=RESULTDETAILS&ARGUMENTS=-N837573431369860,-N000324,-N355553539952579","Resultdetails",750,400);
+                                                      	                 		
+                                                      	                 }
+                                                      	                 var PopupElt=document.getElementById("Popup_details0006");
+                                                      	                 PopupElt.href="javascript:open_details0006();";
+                                                      	         //-->
+                                                      	</script>
+																											                                                    </td>
+                                                    <td class="tbdata">
+                                                                                                                                                                                                                 <a id="Popup_overview0006" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=GRADEOVERVIEW&amp;ARGUMENTS=-N837573431369860,-N000324,-AMOFF,-N353135228091713,-N0,-N,-N000000015020000,-A,-N,-A,-N,-N,-N1" class="link" title="Notenspiegel"><b>&Oslash;</b></a>
+                                                                             	<script type="text/javascript">
+                                                                                <!--
+                                                                                        var Message0006;
+                                                                                        function open_overview0006() {
+                                                                                        		var Message0006 = dl_popUp("/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=GRADEOVERVIEW&ARGUMENTS=-N837573431369860,-N000324,-AMOFF,-N353135228091713,-N0","Gradeoverview",650,320);
+                                                                                        		Message0006.focus();
+                                                                                        }
+                             																														var PopupElt=document.getElementById("Popup_overview0006");
+                                                                                        PopupElt.href="javascript:open_overview0006();";
+                                                                                //-->
+                                                                         			</script>
+                                                                                                                                                                                        </td>
+                                            </tr>
+                                                                                                                                <tr >
+																								<td class="tbdata">18-sl-2101</td>
+											
+											<td class="tbdata">Praktische Entwicklungsmethodik IV</td>
+
+											<td class="tbdata_numeric" style="vertical-align:top;">
+
+                                                 																											1,3
+																																																												
+                                                                                                             
+                                                 </td>
+                                                    <td class="tbdata_numeric">  5,0</td>
+
+                                                                                                             <td class="tbdata_numeric"></td>
+
+                                                 <td class="tbdata">
+                                                                                                                            bestanden
+                                                                                                                </td>
+
+                                                     <td class="tbdata" style="vertical-align:top;">
+																																																			      	<a id="Popup_details0007" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=RESULTDETAILS&amp;ARGUMENTS=-N837573431369860,-N000324,-N355005144642938,-N000000015020000">Prüfungen</a>
+																								      	<script type="text/javascript">
+                                                      	         <!--
+                                                      	                 var Message0007;
+                                                      	                 function open_details0007() {
+                                                      	                 		var Message0007 = dl_popUp("/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=RESULTDETAILS&ARGUMENTS=-N837573431369860,-N000324,-N355005144642938","Resultdetails",750,400);
+                                                      	                 		
+                                                      	                 }
+                                                      	                 var PopupElt=document.getElementById("Popup_details0007");
+                                                      	                 PopupElt.href="javascript:open_details0007();";
+                                                      	         //-->
+                                                      	</script>
+																											                                                    </td>
+                                                    <td class="tbdata">
+                                                                                                                                                                                                                                                    </td>
+                                            </tr>
+                                                                                                                                <tr >
+																								<td class="tbdata">18-wy-2101</td>
+											
+											<td class="tbdata">Praktische Entwicklungsmethodik III</td>
+
+											<td class="tbdata_numeric" style="vertical-align:top;">
+
+                                                 																											2,0
+																																																												
+                                                                                                             
+                                                 </td>
+                                                    <td class="tbdata_numeric">  5,0</td>
+
+                                                                                                             <td class="tbdata_numeric"></td>
+
+                                                 <td class="tbdata">
+                                                                                                                            bestanden
+                                                                                                                </td>
+
+                                                     <td class="tbdata" style="vertical-align:top;">
+																																																			      	<a id="Popup_details0008" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=RESULTDETAILS&amp;ARGUMENTS=-N837573431369860,-N000324,-N355553526203692,-N000000015020000">Prüfungen</a>
+																								      	<script type="text/javascript">
+                                                      	         <!--
+                                                      	                 var Message0008;
+                                                      	                 function open_details0008() {
+                                                      	                 		var Message0008 = dl_popUp("/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=RESULTDETAILS&ARGUMENTS=-N837573431369860,-N000324,-N355553526203692","Resultdetails",750,400);
+                                                      	                 		
+                                                      	                 }
+                                                      	                 var PopupElt=document.getElementById("Popup_details0008");
+                                                      	                 PopupElt.href="javascript:open_details0008();";
+                                                      	         //-->
+                                                      	</script>
+																											                                                    </td>
+                                                    <td class="tbdata">
+                                                                                                                                                                                                                 <a id="Popup_overview0008" href="/scripts/mgrqcgi?APPNAME=CampusNet&amp;PRGNAME=GRADEOVERVIEW&amp;ARGUMENTS=-N837573431369860,-N000324,-AMOFF,-N353135228593911,-N0,-N,-N000000015020000,-A,-N,-A,-N,-N,-N1" class="link" title="Notenspiegel"><b>&Oslash;</b></a>
+                                                                             	<script type="text/javascript">
+                                                                                <!--
+                                                                                        var Message0008;
+                                                                                        function open_overview0008() {
+                                                                                        		var Message0008 = dl_popUp("/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=GRADEOVERVIEW&ARGUMENTS=-N837573431369860,-N000324,-AMOFF,-N353135228593911,-N0","Gradeoverview",650,320);
+                                                                                        		Message0008.focus();
+                                                                                        }
+                             																														var PopupElt=document.getElementById("Popup_overview0008");
+                                                                                        PopupElt.href="javascript:open_overview0008();";
+                                                                                //-->
+                                                                         			</script>
+                                                                                                                                                                                        </td>
+                                            </tr>
+                                                                        
+                
+							                                										<tr>
+											<th colspan="2">Semester-GPA</th>
+											<th class="tbdata">  1,650</th>
+																																		
+											<th> 10,0</th>
+
+                                            <th class="tbdata" colspan="4">&nbsp;</th>
+                                        </tr>
+                                                                            		</tbody>
+        </table>
+</div>
+		<!--
+			© DATENLOTSEN INFORMATIONSSYSTEME GMBH
+			e-mail: 		info@datenlotsen.de
+			web: 			http://www.datenlotsen.de
+			
+			customer: 		tuda
+			version: 		6.00.006
+			filename:		foot.htm
+		//-->
+					</div>
+				</div>
+			</div>
+			<div id="pageFoot" class="pageElementTop">
+				<div id="pageFootControls" class="pageElementTop">
+					<div id="pageFootControlsLeft">
+											<a href="?APPNAME=CampusNet&amp;PRGNAME=EXTERNALPAGES&amp;ARGUMENTS=-N837573431369860,-N000324,-Aimprint" class="img img_arrowImprint pageElementLeft" id="pageFootControl_imp">Impressum</a>
+																										<a href="?APPNAME=CampusNet&amp;PRGNAME=EXTERNALPAGES&amp;ARGUMENTS=-N837573431369860,-N000324,-Acontact"  class="img img_arrowContact pageElementLeft" id="pageFootControl_con">Kontakt</a>
+
+																			<a href="#" onclick="window.print();" class="img img_arrowPrint pageElementLeft" id="pageFootControl_pri">Drucken</a>
+						
+																	</div>
+					<div id="pageFootControlsRight">
+						<a href="#top" class="img img_arrowUp pageElementRight" id="pageFootControl_up">&nbsp;</a>
+					</div>
+				</div>	
+			</div>
+		</div>
+		<div id="IEdiv">&nbsp;</div><!-- purpose of this is to avoid a pretty strange bug in IE's -->
+
+		<!-- in case the schedule exceeds the given width in lower IE's-->
+		<!--[if lt IE 7]>
+			<script language="JavaScript" type="text/javascript">
+				adjustWidth();
+			</script>
+		<![endif]-->
+
+		<div class="invAnchor">
+			<a name="bottom" class="invAnchor">&nbsp;</a>
+		</div>
+	</body>
+</html>
+	

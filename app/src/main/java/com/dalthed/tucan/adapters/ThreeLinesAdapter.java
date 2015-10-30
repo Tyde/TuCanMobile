@@ -43,7 +43,7 @@ import com.dalthed.tucan.R;
  */
 public class ThreeLinesAdapter extends ArrayAdapter<String> {
 
-	List<String> middleRightThin, bottomLeftThin;
+	public List<String> middleRightThin, bottomLeftThin;
 	/**
 	 *  * {@link ListAdapter}, welcher 3 Zeilen pro Element dargibt.
 	 * Der Adapter nutzt row_vv_events.xml und folgt folgendem Schema:
