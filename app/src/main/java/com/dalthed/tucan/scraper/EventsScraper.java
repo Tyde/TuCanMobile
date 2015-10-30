@@ -43,7 +43,6 @@ import com.dalthed.tucan.exceptions.TucanDownException;
 import com.dalthed.tucan.ui.SimpleWebListActivity;
 
 public class EventsScraper extends BasicScraper {
-	private int mode;
 	/**
 	 * Links zu den einzelnen Untermodulen
 	 */
@@ -52,7 +51,6 @@ public class EventsScraper extends BasicScraper {
 	 * Namen deer einzelnen Events
 	 */
 	public ArrayList<String> eventNames;
-	private ArrayAdapter<String> ListAdapter;
 	/**
 	 * Links zur Anmeldung zu Events
 	 */
@@ -73,6 +71,8 @@ public class EventsScraper extends BasicScraper {
 	 * id des gewählten Semesters
 	 */
 	public int SemesterOptionSelected;
+	private int mode;
+	private ArrayAdapter<String> ListAdapter;
 
 	public EventsScraper(Context context, AnswerObject result) {
 		super(context, result);
@@ -396,12 +396,32 @@ public class EventsScraper extends BasicScraper {
 	 * 
 	 */
 	private ListAdapter getMenuAdapter() {
-		Elements links = doc.select("li#link000273").select("li");
-		ArrayList<String> linkids = new ArrayList<String>();
-		linkids.add("link000275");
-		linkids.add("link000274");
-		if (TucanMobile.DEBUG) {
-			linkids.add("link000311");
+//		Commented old code and added new code below that.
+//		Elements links = doc.select("li#link000273").select("li");
+//		ArrayList<String> linkids = new ArrayList<String>();
+//		linkids.add("link000275");
+//		linkids.add("link000274");
+//		if (TucanMobile.DEBUG) {
+//			linkids.add("link000311");
+//		}
+		Elements links;
+		ArrayList<String> linkids;
+		if (!MainMenuScraper.isEnglish) {    //if language is not english
+			links = doc.select("li#link000273").select("li");
+			linkids = new ArrayList<String>();
+			linkids.add("link000275");
+			linkids.add("link000274");
+			if (TucanMobile.DEBUG) {
+				linkids.add("link000311");
+			}
+		} else {
+			links = doc.select("li#link000176").select("li");
+			linkids = new ArrayList<String>();
+			linkids.add("link000177");
+			linkids.add("link000356");
+			if (TucanMobile.DEBUG) {
+				linkids.add("link000358");
+			}
 		}
 		Iterator<Element> linkIt = links.iterator();
 		eventLinks = new ArrayList<String>();
