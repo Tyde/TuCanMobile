@@ -17,30 +17,14 @@
 
 package com.dalthed.tucan;
 
-import java.net.ConnectException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-
-import com.dalthed.tucan.helpers.AuthenticationManager;
-
-import org.acra.ACRA;
-import org.acra.ErrorReporter;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -52,13 +36,24 @@ import com.dalthed.tucan.Connection.BrowseMethods;
 import com.dalthed.tucan.Connection.CookieManager;
 import com.dalthed.tucan.Connection.RequestObject;
 import com.dalthed.tucan.Connection.SimpleSecureBrowser;
-import com.dalthed.tucan.preferences.MainPreferences;
+import com.dalthed.tucan.helpers.AuthenticationManager;
 import com.dalthed.tucan.ui.ChangeLog;
 import com.dalthed.tucan.ui.ImprintActivity;
 import com.dalthed.tucan.ui.MainMenu;
 import com.dalthed.tucan.ui.ProgressBarDialogFactory;
 import com.dalthed.tucan.ui.SimpleWebActivity;
 import com.dalthed.tucan.util.ConfigurationChangeStorage;
+
+import org.acra.ACRA;
+import org.acra.ErrorReporter;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 
 public class TuCanMobileActivity extends SimpleWebActivity {
     /**
@@ -110,7 +105,7 @@ public class TuCanMobileActivity extends SimpleWebActivity {
 
         usrnameField.setText(tuid);
         pwdField.setText(pw);
-        if (!tuid.isEmpty() && !pw.isEmpty()) {
+        if (tuid.length() != 0 && pw.length() != 0) {
             ((CheckBox) findViewById(R.id.checkBox1)).setChecked(true);
         }
 
