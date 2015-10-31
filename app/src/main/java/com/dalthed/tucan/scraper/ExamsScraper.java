@@ -41,11 +41,11 @@ public class ExamsScraper extends BasicScraper {
 
 	public ArrayList<String> examLinks;
 	public ArrayList<String> examNames;
+	public ArrayList<String> SemesterOptionValue;
+	public int SemesterOptionSelected;
 	private ArrayList<String> examNameBuffer;
 	private ArrayAdapter<String> ListAdapter;
 	private ArrayList<String> SemesterOptionName;
-	public ArrayList<String> SemesterOptionValue;
-	public int SemesterOptionSelected;
 	private ArrayAdapter<String> spinnerAdapter;
 
 	public ExamsScraper(Context context, AnswerObject result) {
@@ -118,7 +118,7 @@ public class ExamsScraper extends BasicScraper {
 					ResultCredits, ResultCountedCredits, resultColor);
 		} else {
 			ListAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1,
-					new String[] { "Keine Informationen gefunden" });
+					new String[]{context.getResources().getString(R.string.no_information_found)});
 		}
 
 		return ListAdapter;
@@ -338,8 +338,13 @@ public class ExamsScraper extends BasicScraper {
 	 */
 	@SuppressWarnings("unchecked")
 	private ListAdapter getMenuAdapter() {
-		Elements links = doc.select("li#link000280").select("li");
-
+//		Elements links = doc.select("li#link000280").select("li");
+		Elements links;
+		if (!MainMenuScraper.isEnglish) {
+			links = doc.select("li#link000280").select("li");
+		} else {
+			links = doc.select("li#link000360").select("li");
+		}
 		Iterator<Element> linkIt = links.iterator();
 		examLinks = new ArrayList<String>();
 		examNames = new ArrayList<String>();
@@ -347,12 +352,27 @@ public class ExamsScraper extends BasicScraper {
 			Element next = linkIt.next();
 			String id = next.id();
 
-			if (id.equals("link000318") || id.equals("link000316")) {
+//			if (id.equals("link000318") || id.equals("link000316")) {
+//				String link = next.select("a").attr("href");
+//				String name = next.select("a").text();
+//				examLinks.add(link);
+//				examNames.add(name);
+//			} else if (id.equals("link000323")) {
+//				Iterator<Element> subLinks = next.select("li.depth_3").iterator();
+//				while (subLinks.hasNext()) {
+//					Element subnext = subLinks.next();
+//					String link = subnext.select("a").attr("href");
+//					String name = subnext.select("a").text();
+//					examLinks.add(link);
+//					examNames.add(name);
+//				}
+//			}
+			if ((id.equals("link000361") || id.equals("link000365") && MainMenuScraper.isEnglish) || (id.equals("link000318") || id.equals("link000316") && !MainMenuScraper.isEnglish)) {
 				String link = next.select("a").attr("href");
 				String name = next.select("a").text();
 				examLinks.add(link);
 				examNames.add(name);
-			} else if (id.equals("link000323")) {
+			} else if ((id.equals("link000362") && MainMenuScraper.isEnglish) || (id.equals("link000323") && !MainMenuScraper.isEnglish)) {
 				Iterator<Element> subLinks = next.select("li.depth_3").iterator();
 				while (subLinks.hasNext()) {
 					Element subnext = subLinks.next();
@@ -366,10 +386,19 @@ public class ExamsScraper extends BasicScraper {
 			// Log.i(LOG_TAG,next.toString()+"Hakki");
 		}
 		String SessionArgument = lastCalledUrl.split("ARGUMENTS=")[1].split(",")[0];
-		examLinks
-				.add("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=EXAMREGISTRATION&ARGUMENTS="
-						+ SessionArgument + ",-N000318,");
-		examNames.add("Anmeldung zu Prüfungen");
+//		examLinks
+//				.add("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=EXAMREGISTRATION&ARGUMENTS="
+//						+ SessionArgument + ",-N000318,");
+		if (!MainMenuScraper.isEnglish) {
+			examLinks
+					.add("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=EXAMREGISTRATION&ARGUMENTS="
+							+ SessionArgument + ",-N000318,");
+		} else {
+			examLinks
+					.add("https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=EXAMREGISTRATION&ARGUMENTS="
+							+ SessionArgument + ",-N000361,");
+		}
+		examNames.add(context.getResources().getString(R.string.register_for_exam));
 		examNameBuffer = (ArrayList<String>) examNames.clone();
 		ListAdapter = new ArrayAdapter<String>(context, R.layout.menu_row,
 				R.id.main_menu_row_textField, examNameBuffer);

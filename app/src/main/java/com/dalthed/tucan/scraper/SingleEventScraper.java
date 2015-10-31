@@ -31,6 +31,7 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 
+import com.dalthed.tucan.R;
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.Connection.AnswerObject;
 import com.dalthed.tucan.Connection.BrowserAnswerReciever;
@@ -52,11 +53,10 @@ public class SingleEventScraper extends BasicScraper {
 	 * einzelnen Termin gibt.
 	 */
 	public boolean PREPCall;
+	public ArrayList<String> materialLink;
 	private CookieManager localCookieManager;
 	private FastSwitchHelper fsh;
 	private PagerAdapter mPageAdapter;
-	public ArrayList<String> materialLink;
-
 	private ViewPager mPager;
 
 	public SingleEventScraper(Context context, AnswerObject result, Boolean PREPCall,
@@ -67,6 +67,42 @@ public class SingleEventScraper extends BasicScraper {
 		this.fsh = fsh;
 		this.mPageAdapter = mPageAdapter;
 		this.mPager = mPager;
+	}
+
+	private static String[] crop(String startstring) {
+		int pos = startstring.indexOf("</b>"); //wir suchen nur den ersten close-Tag. Bei Split wuerden wir bei jedem </b> splitten!
+		if (startstring.length() > 0 && pos != -1 && startstring.length() > pos + 4) {
+			String first = startstring.substring(0, pos + 4);
+			String second = startstring.substring(pos + 4).trim();
+//			if(!first.endsWith(":</b>")) // Doppelpunkte immer in der ersten Zeile
+//				first.replaceAll("</b>", ":</b>");
+//			if(second.startsWith(":<br />")) // und nicht manchmal in der zweiten
+//				second = second.substring(7).trim();
+//			while(second.startsWith("<br />")) // Schwachsinn entfernen, z.B. " <br /> <br />SomeText"
+//				second = second.replaceFirst("<br />", "").trim();
+//			while(second.endsWith("<br />")) // Schwachsinn entfernen, z.B. "SomeText <br /> <br />"
+//				second = second.substring(0, second.length()-6).trim();
+			if (!first.endsWith(": </b>") && !first.endsWith(":</b>")) { // Doppelpunkte immer in der ersten Zeile
+				first = first.replaceAll("</b>", ":</b>");
+			}
+			if (second.startsWith(":<br />")) { // und nicht manchmal in der zweiten
+				second = second.substring(7).trim();
+			}
+			if (second.startsWith(":<br>")) { // und nicht manchmal in der zweiten
+				second = second.substring(5).trim();
+			}
+			while (second.startsWith("<br />")) { // Schwachsinn entfernen, z.B. " <br /> <br />SomeText"
+				second = second.replaceFirst("<br />", "").trim();
+			}
+			while (second.endsWith("<br />")) {// Schwachsinn entfernen, z.B. "SomeText <br /> <br />"
+				second = second.substring(0, second.length() - 6).trim();
+			}
+			return new String[]{Jsoup.parse(first).text().trim(),
+					second.trim()};
+		} else {
+			return new String[]{"", ""};
+
+		}
 	}
 
 	@Override
@@ -90,14 +126,15 @@ public class SingleEventScraper extends BasicScraper {
                 Iterator<Element> informationTable = null;
 				while (captionIt.hasNext()) {
 					Element next = captionIt.next();
-					if (next.text().equals("Termine")) {
-
+//					if (next.text().equals("Termine")) {
+					if (next.text().equals("Appointments") || next.text().equals("Termine")) {
 						dateTable = next.parent().select("tr").iterator();
 					} else if (next.text().contains("Material")) {
 
 						materialTable = next.parent().select("tr").iterator();
-					} else if (next.text().contains("Veranstaltungsdetails")) {
-                        informationTable = next.parent().select("tr").iterator();
+//					} else if (next.text().contains("Veranstaltungsdetails")) {
+					} else if (next.text().contains("Course offering details") || next.text().contains("Veranstaltungsdetails")) {
+						informationTable = next.parent().select("tr").iterator();
                     }
 				}
 
@@ -128,7 +165,7 @@ public class SingleEventScraper extends BasicScraper {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void callRealEventPage() {
 		String nextlink = TucanMobile.TUCAN_PROT + TucanMobile.TUCAN_HOST
@@ -205,9 +242,8 @@ public class SingleEventScraper extends BasicScraper {
 				mPageAdapter.fileList = materialLink;
 			}
 		} else if (mPageAdapter != null) {
-			mPageAdapter.setAdapter(new ArrayAdapter<String>(context,
-					android.R.layout.simple_list_item_1, new String[] { "Kein Material" }));
-
+//			mPageAdapter.setAdapter(new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1, new String[] { "Kein Material" }));
+			mPageAdapter.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, new String[]{context.getResources().getString(R.string.no_material)}));
 		}
 	}
 
@@ -239,7 +275,8 @@ public class SingleEventScraper extends BasicScraper {
 			eventDate.add("");
 			eventTime.add("");
 			eventNumber.add("");
-			eventRoom.add("Keine Daten vorhanden");
+//			eventRoom.add("Keine Daten vorhanden");
+			eventRoom.add(context.getResources().getString(R.string.no_data_available));
 			eventInstructor.add("");
 		}
 		if (mPageAdapter != null) {
@@ -249,7 +286,7 @@ public class SingleEventScraper extends BasicScraper {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void scrapeInformations(Iterator<Element> informationIterator) {
 
@@ -267,13 +304,27 @@ public class SingleEventScraper extends BasicScraper {
                 while (PaIt.hasNext()) {
 
                     Element next = PaIt.next();
-                    String[] information = crop(next.html());
-                    if(information[1].length() > 0){
-                        titles.add(information[0]);
-                        values.add(information[1]);
-                    }
+//                    String[] information = crop(next.html());
+//                    if(information[1].length() > 0){
+//                        titles.add(information[0]);
+//                        values.add(information[1]);
+//                    }
+					Element siblingElement = next.nextElementSibling();
+					String tmp = "";
+					if (siblingElement != null) {
+						tmp = siblingElement.toString();
+					}
 
-                }
+					String[] information = crop(next.html());
+					if ((information[1].length() > 0) || (!information[0].equals("") && (information[1].isEmpty() || information[1].length() == 0))) {
+						titles.add(information[0]);
+						if (tmp.startsWith("<ul>")) {
+							values.add(information[1] + " " + tmp);//
+						} else {
+							values.add(information[1]);
+						}
+					}
+				}
                 Log.i(LOG_TAG, "Informationscraper working");
                 if (mPageAdapter != null) {
                     Log.i(LOG_TAG, "InformationAdapter set");
@@ -281,28 +332,6 @@ public class SingleEventScraper extends BasicScraper {
                 }
             }
         }
-	}
-
-	private static String[] crop(String startstring) {
-		int pos = startstring.indexOf("</b>"); //wir suchen nur den ersten close-Tag. Bei Split wuerden wir bei jedem </b> splitten!
-		if (startstring.length() > 0 && pos != -1 && startstring.length() > pos+4) {
-			String first = startstring.substring(0, pos+4);
-			String second = startstring.substring(pos+4).trim();
-			if(!first.endsWith(":</b>")) // Doppelpunkte immer in der ersten Zeile
-				first.replaceAll("</b>", ":</b>");
-			if(second.startsWith(":<br />")) // und nicht manchmal in der zweiten
-				second = second.substring(7).trim();
-			while(second.startsWith("<br />")) // Schwachsinn entfernen, z.B. " <br /> <br />SomeText"
-				second = second.replaceFirst("<br />", "").trim();
-			while(second.endsWith("<br />")) // Schwachsinn entfernen, z.B. "SomeText <br /> <br />"
-				second = second.substring(0, second.length()-6).trim();
-			
-			return new String[] { Jsoup.parse(first).text().trim(),
-					second.trim() };
-		} else {
-			return new String[] { "", "" };
-
-		}
 	}
 
 	/**

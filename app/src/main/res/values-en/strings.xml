@@ -13,7 +13,7 @@
     <string name="loginmenu_close">Close</string>
 
     <!-- Hauptmenü -->
-    <string name="mm_events_title">Today`s Evens:</string>
+    <string name="mm_events_title">Today`s Events:</string>
     <string name="events_subtitle">Overview</string>
     <string name="events_subtitle_modules">My Modules</string>
     <string name="events_subtitle_events">My Events</string>
@@ -66,7 +66,7 @@
 
     <!-- Changelog -->
     <string name="changelog_full_title">Changelog</string>
-    <string name="changelog_title">Recent Chantes</string>
+    <string name="changelog_title">Recent Changes</string>
     <string name="changelog_show_full">Show everything</string>
     <string name="changelog_ok_button">OK</string>
 
@@ -97,4 +97,22 @@
     </string>
     <string name="imprint">Imprint:\n Daniel Thiem\n Bartningstraße 16\n 64289 Darmstadt\n\n This app is not officially supported by the TU Darmstadt. Registrations done with this app should always be rechecked on the real TUCaN-Website.</string>
     <string name="title_activity_imprint">Impressum</string>
+
+    <!-- main menu-->
+    <string name="home">Home</string>
+    <string name="signed_out">Signed Out</string>
+    <string name="logout_warning">Please click BACK again to exit</string>
+    <string name="no_events_today">No events today</string>
+    <string name="no_material">No Material</string>
+
+    <!-- ExamsScraper-->
+    <string name="register_for_exam">Register for Exams</string>
+    <string name="no_information_found">No Information found</string>
+
+    <!-- SingleEventScraper-->
+    <string name="no_data_available">No Data available</string>
+
+    <!-- Error messages-->
+    <string name="maintenance_error_msg">TuCan is in maintenance and therefore unreachable…</string>
+
 </resources>

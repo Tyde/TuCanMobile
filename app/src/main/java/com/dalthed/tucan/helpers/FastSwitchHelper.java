@@ -30,6 +30,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.dalthed.tucan.R;
 import com.dalthed.tucan.TucanMobile;
 import com.dalthed.tucan.adapters.FastSwitchAdapter;
+import com.dalthed.tucan.scraper.MainMenuScraper;
 import com.dalthed.tucan.ui.Events;
 import com.dalthed.tucan.ui.Exams;
 import com.dalthed.tucan.ui.MainMenu;
@@ -38,15 +39,11 @@ import com.dalthed.tucan.ui.Schedule;
 import com.dalthed.tucan.ui.VV;
 
 public class FastSwitchHelper {
-	public String[] linkarray = null;
 	protected static final String LOG_TAG = "TuCanMobile";
+	public String[] linkarray = null;
 	public String cached_Session, cached_Cookie;
-	private Context context;
-	protected Boolean navigateList = false;
 	public int navigationItem = 0;
-
-	
-	
+	protected Boolean navigateList = false;
 	protected SparseArray<Class> ActivitiesToStart = new SparseArray<Class>() {
 		{
 			append(0, VV.class);
@@ -56,6 +53,7 @@ public class FastSwitchHelper {
 			append(4, Messages.class);
 		}
 	};
+	private Context context;
 	private ActionBar acBar;
 	private FastSwitchAdapter dropAdapter;
 
@@ -142,9 +140,20 @@ public class FastSwitchHelper {
 		homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		homeIntent.putExtra("Cookie", cached_Cookie);
 		homeIntent.putExtra("Session", cached_Session);
-		homeIntent.putExtra("URL",
-				"https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=MLSSTART&ARGUMENTS="
-						+ cached_Session + ",-N000019");
+
+//		Old code is commented out and added new code below that
+//		homeIntent.putExtra("URL",
+//				"https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=MLSSTART&ARGUMENTS="
+//						+ cached_Session + ",-N000019");
+		if (!MainMenuScraper.isEnglish) {
+			homeIntent.putExtra("URL",
+					"https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=MLSSTART&ARGUMENTS="
+							+ cached_Session + ",-N000019");
+		} else {
+			homeIntent.putExtra("URL",
+					"https://www.tucan.tu-darmstadt.de/scripts/mgrqcgi?APPNAME=CampusNet&PRGNAME=MLSSTART&ARGUMENTS="
+							+ cached_Session + ",-N00035");
+		}
 		context.startActivity(homeIntent);
 	}
 

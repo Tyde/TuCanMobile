@@ -1,5 +1,5 @@
 # TuCan.Mobile für Android
-
+![Build status](https://api.travis-ci.org/Tyde/TuCanMobile.svg)
 
 Willkommen auf der OpenSource Seite von TuCan Mobile
 
